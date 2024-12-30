@@ -52,17 +52,44 @@
             background-color: lightblue;
             color: #001f3d;
         }
-        .social-icons {
-            margin-top: 40px; /* Иконки ниже */
-            display: flex;
-            justify-content: center;
-        }
-        .social-icons a {
-            color: white;
+
+        /* Три точки */
+        .menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
             font-size: 30px;
-            margin: 0 15px;
-            text-decoration: none;
+            color: white;
         }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 35px;
+            right: 0;
+            background-color: #001f3d;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            margin: 10px 0;
+            font-size: 20px;
+        }
+
+        .dropdown a:hover {
+            color: lightblue;
+        }
+
+        .menu.active + .dropdown {
+            display: block;
+        }
+
         .bottom-info {
             text-align: center;
             padding: 10px 0;
@@ -76,6 +103,7 @@
             cursor: pointer;
             color: lightblue;
         }
+
         @media screen and (max-width: 600px) {
             .photo {
                 width: 90%;
@@ -83,10 +111,6 @@
             .next-page a {
                 font-size: 16px;
                 padding: 8px 16px;
-            }
-            .social-icons a {
-                margin: 0 8px;
-                font-size: 25px;
             }
         }
     </style>
@@ -99,31 +123,34 @@
         </div>
     </div>
 
-    <!-- Иконки в самом низу, под текстом -->
-    <div class="social-icons">
+    <!-- Выпадающее меню с тремя точками -->
+    <div class="menu" onclick="toggleDropdown()">&#x2022;&#x2022;&#x2022;</div>
+    <div class="dropdown">
         <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" target="_blank">
-            <i class="fa-brands fa-instagram"></i>
+            <i class="fa-brands fa-instagram"></i> Instagram
         </a>
         <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">
-            <i class="fa-brands fa-telegram"></i>
+            <i class="fa-brands fa-telegram"></i> Telegram
         </a>
-        <a href="chatbot.html" class="chatbot-icon">
-            <i class="fa-solid fa-comments"></i>
+        <a href="chatbot.html">
+            <i class="fa-solid fa-comments"></i> ChatBot
         </a>
     </div>
 
-    <!-- Текст и подробности внизу -->
     <div class="bottom-info">
         <p>Все права защищены | <span class="show-details" onclick="toggleDetails()">Подробные</span></p>
         <div class="details">
             <p>Мы не требуем входа или регистрации ваших данных.</p>
-        </div>
-    </div> 
-    
+        </div></div> 
+
     <script>
         function toggleDetails() {
             const details = document.querySelector('.details');
             details.style.display = details.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleDropdown() {
+            document.querySelector('.menu').classList.toggle('active');
         }
     </script>
 </body>
