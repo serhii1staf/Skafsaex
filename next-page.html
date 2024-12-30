@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #001f3d; /* Темно-синий фон */
+            background-color: #001f3d;
             color: white;
             margin: 0;
             padding: 0;
@@ -80,79 +80,63 @@
                 margin: 0 8px;
                 font-size: 25px;
             }
-
-            /* Уменьшение формы на мобильных устройствах */
-            .form-container {
-                width: 80%;
-                margin-top: 20px;
-                padding: 15px;
-            }
         }
 
-        /* Стиль для меню с тремя точками */
-        .menu-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+        /* Стили для кнопки с тремя точками */
+        .three-dots {
+            position: fixed;
+            top: 10px;
+            right: 10px;
             font-size: 30px;
             cursor: pointer;
+            z-index: 100;
         }
 
-        .menu-content {
+        /* Стили для формы обратной связи */
+        .feedback-form {
             display: none;
-            position: absolute;
-            top: 50px;
-            right: 20px;
-            background-color: #00274d;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .menu-content a {
-            display: block;
-            padding: 10px;
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #001f3d;
             color: white;
-            text-decoration: none;
-        }
-
-        .menu-content a:hover {
-            background-color: #003b5c;
-        }
-
-        /* Форма обратной связи */
-        .form-container {
-            max-width: 500px;
-            margin: 0 auto;
-            background-color: #00274d;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin-top: 50px;
-            display: none; /* Скрыта по умолчанию */
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
         }
-        input, textarea {
+
+        .feedback-form input,
+        .feedback-form textarea {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
+            margin: 5px 0;
+            border: 1px solid lightgray;
             border-radius: 5px;
-            border: 1px solid #ccc;
-            background-color: #003b5c;
+            background-color: #fff;
+            color: #333;
+        }
+
+        .feedback-form button {
+            background-color: lightblue;
+            color: #001f3d;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .feedback-form button:hover {
+            background-color: #001f3d;
             color: white;
         }
-        input[type="submit"] {
-            background-color: #4caf50;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }</style>
+    </style>
 </head>
 <body>
     <header>
-        <h1 style="margin-top: 30px;">Телеграм Канал</h1>
+        <h1>Телеграм Канал</h1>
     </header>
     <div class="container">
         <img src="https://i.postimg.cc/1tZD1ZLy/IMG-4451.png" alt="Фото из телеграм канала" class="photo">
@@ -164,43 +148,41 @@
         </div>
     </div>
 
-    <!-- Иконка для возврата на главную -->
-    <a href="index.html" class="home">
+    <!-- Иконка для возврата на главную --><a href="index.html" class="home">
         <i class="fa-solid fa-house"></i>
     </a>
 
-    <!-- Кнопка меню с тремя точками -->
-    <div class="menu-button" onclick="toggleMenu()">&#8230;</div>
-
-    <!-- Меню с пунктом "Обратная связь" -->
-    <div class="menu-content" id="menuContent">
-        <a href="javascript:void(0);" onclick="showContactForm()">Обратная связь</a>
-    </div>
+    <!-- Кнопка с тремя точками -->
+    <div class="three-dots" onclick="toggleFeedbackForm()">&#8230;</div>
 
     <!-- Форма обратной связи -->
-    <div class="form-container" id="contactForm">
-        <h2>Связаться с нами</h2>
-        <form action="https://httpbin.org/post" method="POST">
-            <input type="text" name="name" placeholder="Ваше имя" required>
-            <input type="email" name="email" placeholder="Ваш email" required>
-            <input type="tel" name="phone" placeholder="Ваш телефон" required>
-            <textarea name="message" rows="4" placeholder="Ваше сообщение" required></textarea>
-            <input type="submit" value="Отправить">
+    <div class="feedback-form" id="feedbackForm">
+        <h2>Связь с нами</h2>
+        <form action="submit_form.php" method="POST">
+            <input type="text" name="name" placeholder="Ваше имя" required><br>
+            <input type="email" name="email" placeholder="Ваш email" required><br>
+            <input type="tel" name="phone" placeholder="Ваш номер телефона" required><br>
+            <textarea name="message" placeholder="Ваше сообщение" required></textarea><br>
+            <button type="submit">Отправить</button>
         </form>
     </div>
 
     <script>
-        // Функция для переключения видимости меню
-        function toggleMenu() {
-            const menu = document.getElementById('menuContent');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        }
+        function toggleFeedbackForm() {
+            const feedbackForm = document.getElementById('feedbackForm');
+            // Если форма скрыта, показываем её
+            if (feedbackForm.style.display === 'none' || feedbackForm.style.display === '') {
+                feedbackForm.style.display = 'block';
 
-        // Функция для отображения формы обратной связи
-        function showContactForm() {
-            document.getElementById('contactForm').style.display = 'block';
+                // Скрыть форму через 5 секунд
+                setTimeout(() => {
+                    feedbackForm.style.display = 'none';
+                }, 5000); // 5000 миллисекунд = 5 секунд
+            } else {
+                // Если форма уже открыта, скрываем её
+                feedbackForm.style.display = 'none';
+            }
         }
     </script>
-
 </body>
 </html>
