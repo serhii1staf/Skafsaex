@@ -3,11 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chatbot</title>
-  <!-- Иконка чат-бота, которая будет изменяться в зависимости от устройства -->
-  <link id="chatbot-icon" rel="icon" href="icon.svg" type="image/svg+xml">
+  <title>ChatBot</title>
   <style>
-    /* Общие стили */
     body {
       background-color: #1e2a47; /* Темно-синий фон */
       color: #fff;
@@ -28,16 +25,37 @@
       max-width: 400px;
     }
 
-    /* Стиль для маленьких экранов (мобильные устройства) */
-    @media (max-width: 600px) {
-      .chat-container {
-        width: 100%;
-        padding: 10px;
-      }
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
-      .chat-header h2 {
-        font-size: 20px;
-      }
+    .chat-header h2 {
+      margin: 0;
+    }
+
+    .chat-messages {
+      height: 300px;
+      overflow-y: auto;
+      padding: 10px;
+    }
+
+    .message {
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .user-message {
+      background-color: #444;
+      text-align: right;
+    }
+
+    .bot-message {
+      background-color: #333;
+      text-align: left;
     }
 
     .input-container {
@@ -64,49 +82,26 @@
       margin-left: 10px;
     }
 
-    /* Иконка чат-бота */
-    #chatbot-icon {
-      width: 40px;
-      height: 40px;
-    }
-
-    /* Адаптивный стиль для больших экранов (ноутбуки, десктопы) */
-    @media (min-width: 601px) {
-      #chatbot-icon {
-        width: 60px;
-        height: 60px;
+    @media (max-width: 450px) {
+      .chat-container {
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Чат-бот -->
   <div class="chat-container">
     <div class="chat-header">
-      <h2>Chatbot</h2>
+      <h2>ChatBot</h2>
     </div>
     <div class="chat-messages"></div>
     <div class="input-container">
-      <input type="text" class="input-field" placeholder="Type your message...">
-      <button class="send-button">Send</button>
+      <input type="text" class="input-field" placeholder="Введите сообщение...">
+      <button class="send-button">Отправить</button>
     </div>
   </div>
 
   <script>
-    // Определяем, мобильное ли устройство или нет
-    const isMobile = window.innerWidth <= 600;  // Если ширина экрана <= 600px, то мобильное устройство
-
-    // Автоматическая настройка иконки в зависимости от устройства
-    const icon = document.getElementById('chatbot-icon');
-    if (isMobile) {
-      // Если мобильное устройство, устанавливаем иконку меньшего размера
-      icon.setAttribute('href', 'icon_mobile.svg'); // Иконка для мобильных устройств
-    } else {
-      // Если устройство не мобильное, устанавливаем иконку для компьютера
-      icon.setAttribute('href', 'icon_desktop.svg'); // Иконка для десктопов
-    }
-
-    // Скрипт для отправки сообщений в чат
     const chatMessages = document.querySelector('.chat-messages');
     const inputField = document.querySelector('.input-field');
     const sendButton = document.querySelector('.send-button');
@@ -124,8 +119,8 @@
         inputField.value = '';
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
-        // Отправляем запрос на сервер Flask (или какой-то другой сервер)
-        fetch('http://127.0.0.1:5000/', {
+        // Отправляем запрос на сервер Flask
+        fetch('http://127.0.0.1:5000/api/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -139,7 +134,8 @@
           botMessage.textContent = data.response;  // Ответ бота
           chatMessages.appendChild(botMessage);
           chatMessages.scrollTop = chatMessages.scrollHeight;
-        }).catch(error => console.error('Error:', error));
+        })
+        .catch(error => console.error('Error:', error));
       }
     }
   </script>
