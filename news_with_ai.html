@@ -32,40 +32,44 @@
 </head>
 <body>
     <div id="ai-content">
-        <!-- Сюда будет выводиться актуальная информация и изображение -->
+        <!-- Здесь будет отображаться актуальная информация -->
     </div>
 
     <script>
         let contentInterval;
         let isTouching = false; // Статус, удерживается ли палец на экране
 
-        // Пример API для получения актуальной информации
-        const API_KEY = 'ВАШ_КЛЮЧ_API'; // Замените на реальный API ключ
+        // Замените на свой реальный ключ API
+        const API_KEY = 'ВАШ_КЛЮЧ_API'; // Получите свой ключ API для новостей
         const newsApiUrl = 'https://newsapi.org/v2/top-headlines?country=no&apiKey=' + API_KEY; // Новости из Норвегии
-        const weatherApiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=Oslo,no&appid=ВАШ_КЛЮЧ_API&units=metric'; // Погода в Норвегии
+        const weatherApiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=Oslo,no&appid=ВАШ_КЛЮЧ_API&units=metric'; // Погода в Осло, Норвегия
 
         // Функция для получения актуальной информации
         async function fetchContent() {
-            // Запрос новостей
-            const newsResponse = await fetch(newsApiUrl);
-            const newsData = await newsResponse.json();
-            const newsContent = newsData.articles[0]; // Берем первую статью (можно настроить)
+            try {
+                // Запрос новостей
+                const newsResponse = await fetch(newsApiUrl);
+                const newsData = await newsResponse.json();
+                const newsContent = newsData.articles[0]; // Первая статья
 
-            // Запрос погоды
-            const weatherResponse = await fetch(weatherApiUrl);
-            const weatherData = await weatherResponse.json();
-            const weatherContent = Температура в Осло: ${weatherData.main.temp}°C, ${weatherData.weather[0].description};
+                // Запрос погоды
+                const weatherResponse = await fetch(weatherApiUrl);
+                const weatherData = await weatherResponse.json();
+                const weatherContent = Температура в Осло: ${weatherData.main.temp}°C, ${weatherData.weather[0].description};
 
-            return {
-                title: newsContent.title,
-                content: ${newsContent.description} ${weatherContent},
-                image: newsContent.urlToImage || 'https://via.placeholder.com/800x600', // Если нет изображения, используем плейсхолдер
-            };
-        }
-
-        // Функция определения устройства
-        function isMobileDevice() {
-            return window.innerWidth <= 768; // Условие для определения мобильного устройства
+                return {
+                    title: newsContent.title,
+                    content: ${newsContent.description} ${weatherContent},
+                    image: newsContent.urlToImage || 'https://via.placeholder.com/800x600', // Плейсхолдер, если нет изображения
+                };
+            } catch (error) {
+                console.error('Ошибка загрузки данных:', error);
+                return {
+                    title: 'Ошибка',
+                    content: 'Не удалось загрузить актуальную информацию.',
+                    image: 'https://via.placeholder.com/800x600', // Плейсхолдер на случай ошибки
+                };
+            }
         }
 
         // Функция для автоматической генерации контента
@@ -75,8 +79,8 @@
             
             const newContent = document.createElement('div');
             
-            // Определяем размеры изображений
-            const imageSize = isMobileDevice() ? '100%' : '80%'; // 100% для мобильного, 80% для ноутбука
+            // Проверяем, если мобильное устройство
+            const imageSize = window.innerWidth <= 768 ? '100%' : '80%'; // 100% для мобильного, 80% для ноутбука
             newContent.innerHTML = `
                 <h2>${randomContent.title}</h2>
                 <p>${randomContent.content}</p>
@@ -95,12 +99,12 @@
 
         // Функция для остановки обновления
         function stopContentUpdate() {
-            clearInterval(contentInterval);
-        }
+            clearInterval(contentInterval);}
 
         // Слушатели событий для остановки и возобновления обновления при касании экрана
         document.body.addEventListener('touchstart', () => {
-            isTouching = true; // Если экран удерживаетсяstopContentUpdate(); // Останавливаем обновление
+            isTouching = true; // Если экран удерживается
+            stopContentUpdate(); // Останавливаем обновление
         });
 
         document.body.addEventListener('touchend', () => {
