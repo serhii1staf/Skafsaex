@@ -6,100 +6,117 @@
     <title>AI Content Update</title>
     <style>
         body {
-            background-color: #001f3d; /* Темно-синий фон */
+            background-color: #1e2a47;
             color: white;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
+
+        #header {
+            background-color: #2c3e50;
+            padding: 10px;
+            text-align: center;
+        }
+
         #ai-content {
-            margin: 20px;
             padding: 20px;
-            background-color: #003366; /* Тёмно-синий цвет для блока контента */
-            border-radius: 10px;
+            text-align: center;
         }
+
+        #home-icon {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #1e2a47;
+            border-radius: 50%;
+            padding: 15px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+        }
+
         .ai-image {
             max-width: 100%;
             height: auto;
-            border-radius: 5px;
-        }
-        .home-icon {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #003366; /* Тёмно-синий фон для иконки */
-            border-radius: 50%;
-            padding: 10px;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <div id="header">
+        <h1>Random AI Content</h1>
+    </div>
 
     <div id="ai-content">
-        <!-- Данные будут вставляться сюда -->
+        <!-- Dynamic content will appear here -->
     </div>
 
-    <div class="home-icon" onclick="window.location.href='index.html';">
-        <i class="fa-solid fa-house"></i> <!-- Иконка домика -->
+    <div id="home-icon">
+        <i class="fa-solid fa-house"></i>
     </div>
 
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script>
-        // Пример API URL (поменяй на реальный API)
-        const apiUrl = 'https://api.example.com/data'; // Вставь сюда реальный URL твоего API
-
         let contentInterval;
         let isTouching = false;
 
-        // Функция для получения данных из API
-        async function fetchAPIContent() {
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json(); // Преобразуем полученные данные в JSON
+        // Replace this with your actual API URL
+        const apiUrl = 'https://api.example.com/data';
 
-                // Пример: получаем случайный факт или новость из полученных данных
-                const randomContent = data[Math.floor(Math.random() * data.length)];
+        // Function to fetch and display content from API
+        function fetchContent() {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const randomContent = data[Math.floor(Math.random() * data.length)];
+                    const aiContentContainer = document.getElementById('ai-content');
 
-                // Обновление контента на странице
-                const aiContentContainer = document.getElementById('ai-content');
-                aiContentContainer.innerHTML = `
-                    <h2>${randomContent.title}</h2>
-                    <p>${randomContent.content}</p>
-                    <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image">
-                `;
-            } catch (error) {
-                console.error('Ошибка при получении данных с API:', error);
-            }
+                    const newContent = document.createElement('div');
+                    newContent.innerHTML = `
+                        <h2>${randomContent.title}</h2>
+                        <p>${randomContent.content}</p>
+                        <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image">
+                    `;
+
+                    aiContentContainer.innerHTML = ''; // Clear previous content
+                    aiContentContainer.appendChild(newContent);
+                })
+                .catch(error => {
+                    console.error('Error fetching content:', error);
+                });
         }
 
-        // Функция для старта обновления контента
+        // Start auto-updating content every 15 seconds
         function startContentUpdate() {
-            // Обновление контента каждые 15 секунд
-            contentInterval = setInterval(fetchAPIContent, 15000);
+            contentInterval = setInterval(fetchContent, 15000);
         }
 
-        // Функция для остановки обновления
+        // Stop auto-updating content
         function stopContentUpdate() {
             clearInterval(contentInterval);
         }
 
-        // Слушатели событий для остановки и возобновления обновления при касании экрана
+        // Event listeners for touch start and end (for pausing and resuming content updates)
         document.body.addEventListener('touchstart', () => {
             isTouching = true;
-            stopContentUpdate(); // Останавливаем обновление
+            stopContentUpdate();
         });
 
         document.body.addEventListener('touchend', () => {
             isTouching = false;
             if (!isTouching) {
-                startContentUpdate(); // Возобновляем обновление
+                startContentUpdate();
             }
         });
 
-        // Инициализация контента и запуск таймера
-        fetchAPIContent();
+        // Event listener for the home icon
+        document.getElementById('home-icon').addEventListener('click', () => {
+            window.location.href = '/'; // Replace with your homepage URL
+        });
+
+        // Initial content fetch and start auto-updating
+        fetchContent();
         startContentUpdate();
     </script>
-
 </body>
 </html>
