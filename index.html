@@ -1,150 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Website Name</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #1a1a2e;
-      color: white;
-    }
-    header {
-      background-color: #0d0d19;
-      padding: 20px;
-      text-align: center;
-    }
-    h1 {
-      margin: 0;
-      font-size: 36px;
-    }
-    .photo {
-      width: 100%;
-      height: auto;
-    }
-    .main-content {
-      padding: 20px;
-      text-align: center;
-    }
-    .contact-info {
-      margin-top: 20px;
-    }
-    .contact-info i {
-      font-size: 30px;
-      margin: 10px;
-      transition: transform 0.3s;
-    }
-    .contact-info i:hover {
-      transform: scale(1.2);
-    }
-    .footer {
-      background-color: #0d0d19;
-      padding: 20px;
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      text-align: center;
-    }
-    .footer a {
-      color: #ff6347;
-      text-decoration: none;
-    }
-    .settings {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      font-size: 30px;
-      cursor: pointer;
-      z-index: 10;
-    }
-    .footer a:hover {
-      text-decoration: underline;
-    }
-    .home-icon {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      font-size: 30px;
-      background-color: #ff6347;
-      color: white;
-      border-radius: 50%;
-      padding: 10px;
-      cursor: pointer;
-      z-index: 10;
-    }
-    .home-icon:hover {
-      background-color: #ff4500;
-    }
-    .navbar {
-      display: none;
-      position: absolute;
-      top: 60px;
-      right: 10px;
-      background-color: #333;
-      border-radius: 5px;
-      width: 200px;
-    }
-    .navbar a {
-      padding: 10px;
-      text-decoration: none;
-      color: white;
-      display: block;
-    }
-    .navbar a:hover {
-      background-color: #555;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добро пожаловать на сайт</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #003366;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #003366;
+            text-align: center;
+            padding: 50px;
+        }
+        header h1 {
+            font-size: 36px;
+        }
+        .owner-photo {
+            display: block;
+            margin: 20px auto;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+        .owner-info {
+            text-align: center;
+        }
+        .owner-info h3 {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .owner-info p {
+            font-size: 18px;
+        }
+        .social-icons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .social-icons a {
+            margin: 0 15px;
+            color: white;
+            font-size: 24px;
+            text-decoration: none;
+        }
+        .social-icons a:hover {
+            color: #ffcc00;
+        }
+        .menu-icon {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 28px;
+            cursor: pointer;
+        }
+        .menu-content {
+            display: none;
+            position: fixed;
+            top: 50px;
+            right: 10px;
+            background-color: #003366;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .menu-content a {
+            display: block;
+            color: white;
+            margin: 10px 0;
+            text-decoration: none;
+        }
+        .menu-content a:hover {
+            color: #ffcc00;
+        }
+        footer {
+            background-color: #003366;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #ffcc00;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Добро пожаловать на мой сайт</h1>
-  </header>
 
-  <div class="main-content">
-    <img class="photo" src="https://drive.google.com/uc?export=view&id=18XejoWT8wer1HH34EYimKLm5ksUn6UVX" alt="Owner Photo">
-    <p>Владелец: Ваше Имя</p>
-
-    <div class="contact-info">
-      <a href="https://www.instagram.com/yourinstagram" target="_blank">
-        <i class="fa-brands fa-instagram"></i>
-      </a>
-      <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">
-        <i class="fa-brands fa-telegram"></i>
-      </a>
+<header>
+    <h1>Добро пожаловать на сайт!</h1>
+    <img src="https://drive.google.com/uc?export=view&id=18XejoWT8wer1HH34EYimKLm5ksUn6UVX" alt="Owner Photo" class="owner-photo">
+    <div class="owner-info">
+        <h3>Владелец: Serhii 👮‍♂️</h3>
+        <p>Instagram | Telegram</p>
     </div>
-  </div>
+</header>
 
-  <div class="footer">
-    <p>&copy; 2020-2024. Все права защищены. <a href="#" id="privacy-policy-link">Подробнее о защите данных</a></p>
-  </div>
+<div class="social-icons">
+    <a href="https://www.instagram.com/your_username" target="_blank">
+        <i class="fa-brands fa-instagram"></i>
+    </a>
+    <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">
+        <i class="fa-brands fa-telegram"></i>
+    </a>
+</div>
 
-  <div class="settings" onclick="toggleNavbar()">
+<div class="menu-icon" onclick="toggleMenu()">
     <i class="fa-solid fa-bars"></i>
-  </div>
+</div>
 
-  <div class="navbar" id="navbar">
-    <a href="#">Настройки</a>
+<div class="menu-content" id="menu-content">
+    <a href="javascript:void(0);" onclick="window.open('https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')">Поддержка</a>
     <a href="#">Политика конфиденциальности</a>
-    <a href="#">Поддержка</a>
-  </div>
+    <a href="#">Настройки</a>
+</div>
 
-  <div class="home-icon" onclick="window.location.href='index.html'">
-    <i class="fa-solid fa-house"></i>
-  </div>
+<footer>
+    <p>&copy; 2024 Все права защищены. Мы не требуем регистрации и не собираем данные. <a href="#">Подробнее</a></p>
+</footer>
 
-  <script>
-    function toggleNavbar() {
-      const navbar = document.getElementById("navbar");
-      navbar.style.display = navbar.style.display === "block" ? "none" : "block";
+<script>
+    function toggleMenu() {
+        var menu = document.getElementById("menu-content");
+        menu.style.display = (menu.style.display === "block" ? "none" : "block");
     }
+</script>
 
-    document.getElementById("privacy-policy-link").onclick = function() {
-      alert("Вы не собираете данные пользователей и не требуете регистрации.");
-    };
-  </script>
 </body>
 </html>
