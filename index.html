@@ -103,37 +103,35 @@
     <img src="https://drive.google.com/uc?export=view&id=18XejoWT8wer1HH34EYimKLm5ksUn6UVX" alt="Owner Photo" class="owner-photo">
     <div class="owner-info">
         <h3>Владелец: Serhii 👮‍♂️</h3>
-        <p>Instagram | Telegram</p>
     </div>
 </header>
-
-<div class="social-icons">
-    <a href="https://www.instagram.com/your_username" target="_blank">
-        <i class="fa-brands fa-instagram"></i>
-    </a>
-    <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">
-        <i class="fa-brands fa-telegram"></i>
-    </a>
-</div>
 
 <div class="menu-icon" onclick="toggleMenu()">
     <i class="fa-solid fa-bars"></i>
 </div>
 
 <div class="menu-content" id="menu-content">
-    <a href="javascript:void(0);" onclick="window.open('https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')">Поддержка</a>
+    <a href="javascript:void(0);" onclick="openTelegram()">Поддержка</a>
     <a href="#">Политика конфиденциальности</a>
     <a href="#">Настройки</a>
 </div>
 
 <footer>
-    <p>&copy; 2024 Все права защищены. Мы не требуем регистрации и не собираем данные. <a href="#">Подробнее</a></p>
+    <p>&copy; 2024 Все права защищены. Мы не требуем регистрации и не собираем данные. <a href="javascript:void(0);" onclick="showDetails()">Подробнее</a></p>
 </footer>
 
 <script>
     function toggleMenu() {
         var menu = document.getElementById("menu-content");
         menu.style.display = (menu.style.display === "block" ? "none" : "block");
+    }
+
+    function openTelegram() {
+        window.open('https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+    }
+
+    function showDetails() {
+        alert('Мы не требуем вход или регистрацию ваших данных');
     }
 </script>
 
