@@ -3,66 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Рандомный контент AI</title>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <title>Random AI Content</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
+            font-family: Arial, sans-serif;
+            background-color: #003366; /* темно-синий фон */
+            color: #ffffff;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #001f3f;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            text-align: center;
         }
+
+        #ai-content {
+            margin: 20px;
+        }
+
         .home-icon {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            font-size: 36px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            padding: 15px;
             color: #ffffff;
-            text-decoration: none;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
         }
+
         .home-icon:hover {
-            color: #cccccc;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        h2 {
+            margin: 10px 0;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        .ai-image {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            display: block;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
-    <div id="ai-content"></div>
-    <a href="index.html" class="home-icon">
-        <i class="fa-regular fa-house"></i>
+
+    <div id="ai-content">
+        <!-- Контент будет автоматически добавляться сюда -->
+    </div>
+
+    <!-- Иконка "Домой" -->
+    <a href="index.html">
+        <div class="home-icon">
+            <i class="fa-solid fa-house"></i>
+        </div>
     </a>
+
     <script>
-        let contentInterval;
         const contentExamples = [
-            { title: "Совет дня", content: "Пейте больше воды, чтобы оставаться бодрыми и здоровыми." },
-            { title: "Интересный факт", content: "Человеческий мозг состоит на 60% из жира." },
-            { title: "Забавный факт", content: "Коровы имеют лучших друзей и становятся грустными, если их разлучают." }
+            {
+                title: 'Фьорды Норвегии',
+                content: 'Норвегия известна своими величественными фьордами, которые считаются одними из самых красивых природных явлений в мире.',
+                image: 'https://via.placeholder.com/500x300?text=%D0%A4%D1%8C%D0%BE%D1%80%D0%B4%D1%8B+%D0%9D%D0%BE%D1%80%D0%B2%D0%B5%D0%B3%D0%B8'
+            },
+            {
+                title: 'Горы Швейцарии',
+                content: 'Швейцария славится своими горными пейзажами, особенно в Альпах, которые привлекают туристов со всего мира.',
+                image: 'https://via.placeholder.com/500x300?text=%D0%93%D0%BE%D1%80%D1%8B+%D0%A8%D0%B2%D0%B5%D0%B9%D1%86%D0%B0%D1%80%D0%B8%D0%B8'
+            },
+            {
+                title: 'Мачу-Пикчу',
+                content: 'Мачу-Пикчу — древний город инков в Перу, расположенный на высоте более 2400 метров над уровнем моря, является одним из семи новых чудес света.',
+                image: 'https://via.placeholder.com/500x300?text=%D0%9C%D0%B0%D1%87%D1%83-%D0%9F%D0%B8%D0%BA%D1%87%D1%83'
+            }
         ];
+
+        let contentInterval;
+        let isTouching = false; // Статус, удерживается ли палец на экране
+
+        // Функция для автоматической генерации контента
         function generateAIContent() {
             const randomContent = contentExamples[Math.floor(Math.random() * contentExamples.length)];
             const aiContentContainer = document.getElementById('ai-content');
+            
             const newContent = document.createElement('div');
             newContent.innerHTML = `
                 <h2>${randomContent.title}</h2>
                 <p>${randomContent.content}</p>
+                <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image">
             `;
-            aiContentContainer.innerHTML = '';
+            
+            aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
             aiContentContainer.appendChild(newContent);
         }
+
+        // Функция для старта обновления контента
         function startContentUpdate() {
+            // Обновление контента каждые 15 секунд
             contentInterval = setInterval(generateAIContent, 15000);
         }
+
+        // Функция для остановки обновления
         function stopContentUpdate() {
             clearInterval(contentInterval);
         }
-        document.body.addEventListener('touchstart', stopContentUpdate);
-        document.body.addEventListener('touchend', startContentUpdate);
+
+        // Слушатели событий для остановки и возобновления обновления при касании экрана
+        document.body.addEventListener('touchstart', () => {isTouching = true; // Если экран удерживается
+            stopContentUpdate(); // Останавливаем обновление
+        });
+
+        document.body.addEventListener('touchend', () => {
+            isTouching = false; // Если палец убран
+            if (!isTouching) {
+                startContentUpdate(); // Возобновляем обновление
+            }
+        });
+
+        // Инициализация контента и запуск таймера
         generateAIContent();
         startContentUpdate();
     </script>
