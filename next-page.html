@@ -1,114 +1,73 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Телеграм Канал</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #001f3d; /* Темно-синий фон */
-            color: white;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        header {
-            text-align: center;
-            padding: 50px 0;
-        }
-        .container {
-            padding: 20px;
-            text-align: center;
-            flex: 1;
-        }
-        .photo {
-            width: 70%;
-            max-width: 500px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        .social-icons {
-            margin-top: 20px;
-        }
-        .social-icons a {
-            color: white;
-            font-size: 30px;
-            margin: 0 15px;
-            text-decoration: none;
-        }
-        .bottom-info {
-            text-align: center;
-            padding: 10px 0;
-            background-color: #001f3d;
-            font-size: 14px;
-        }
-        .home {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            font-size: 24px;
-            text-decoration: none;
-            color: white;
-            padding: 10px;
-            border-radius: 50%;
-            background-color: rgba(0, 0, 0, 0.6);
-        }
-        .home:hover {
-            color: lightblue;
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-        .details {
-            display: none;
-        }
-        .show-details {
-            cursor: pointer;
-            color: lightblue;
-        }
-        /* Адаптивность для мобильных устройств */
-        @media screen and (max-width: 600px) {
-            .photo {
-                width: 90%;
-            }
-            .social-icons {
-                display: flex;
-                justify-content: center;
-                margin-top: 10px;
-            }
-            .social-icons a {
-                margin: 0 8px;
-                font-size: 25px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Телеграм Канал</h1>
-    </header>
-    <div class="container">
-        <img src="https://i.postimg.cc/1tZD1ZLy/IMG-4451.png" alt="Фото из телеграм канала" class="photo">
-        <div class="social-icons">
-            <!-- Ссылка на Телеграм -->
-            <a href="https://t.me/sangklasy" target="_blank">
-                <i class="fa-brands fa-telegram"></i>
-            </a>
-        </div>
+<div class="page-container">
+    <!-- Заголовок с анимацией -->
+    <div class="title-container">
+        <h1 class="title">💬 Присоединяйся к нашему Телеграм-каналу</h1>
     </div>
+    
+    <!-- Содержимое страницы (фотография и описание) -->
+    <div class="content">
+        <img src="https://i.postimg.cc/1tZD1ZLy/IMG-4451.png" alt="Telegram Channel" />
+        <p>Будь в курсе всех обновлений! Подписывайся на наш канал.</p>
+    </div>
+    
+    <!-- Кнопка для продолжения -->
+    <button id="continue-btn">Продолжить</button>
+    
+    <!-- Иконка для возвращения на главную страницу -->
+    <div class="home-icon">
+        <a href="index.html" title="Вернуться на главную">
+            <i class="fa-solid fa-house"></i> Домой
+        </a>
+    </div>
+</div>
 
-    <!-- Иконка для возврата на главную -->
-    <a href="index.html" class="home">
-        <i class="fa-solid fa-house"></i>
-    </a>
+<style>
+    /* Стили для анимации */
+    .title-container {
+        position: relative;
+        text-align: center;
+        margin-top: 50px;
+    }
 
-    <script>
-        function toggleDetails() {
-            var details = document.querySelector('.details');
-            details.style.display = details.style.display === 'none' ? 'block' : 'none';
+    .title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #00aaff;
+        opacity: 0; /* Начинаем с невидимости */
+        transform: translateY(-30px); /* Начальная позиция */
+        animation: fadeInUp 1s ease forwards; /* Анимация */
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-    </script>
-</body>
-</html>
+    }
+
+    /* Стили для кнопки и иконки на главную */
+    .home-icon {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #00aaff;
+        padding: 10px;
+        border-radius: 50%;
+        color: white;
+        font-size: 1.5rem;
+        text-align: center;
+        cursor: pointer;
+    }
+    
+    .home-icon a {
+        text-decoration: none;
+        color: white;
+    }
+</style>
+
+<script>
+    // Добавляем обработчик события для кнопки "Продолжить"
+    document.querySelector("#continue-btn").addEventListener("click", function() {
+        document.querySelector(".title").classList.add("fadeInUp");
+    });
+</script>
