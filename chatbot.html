@@ -27,7 +27,7 @@
             height: 80vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-end;
         }
 
         .chat-box {
@@ -37,7 +37,29 @@
             background-color: #f1f1f1;
             border-radius: 5px;
             margin-bottom: 10px;
-            height: 60%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            max-width: 80%;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #e3e3e3;
+            position: relative;
+        }
+
+        .user-message {
+            align-self: flex-end; /* Сообщение пользователя с правой стороны */
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .bot-message {
+            align-self: flex-start; /* Сообщение бота с левой стороны */
+            background-color: #2196F3;
+            color: white;
         }
 
         textarea {
@@ -73,6 +95,7 @@
     </div>
 
     <script>
+        // Функция для отправки сообщения
         document.getElementById('send-btn').addEventListener('click', sendMessage);
 
         async function sendMessage() {
@@ -80,7 +103,7 @@
             if (!message) return;
 
             // Показываем сообщение пользователя
-            appendMessage('You: ' + message);
+            appendMessage('user', message);
 
             // Отправляем запрос к backend
             const response = await fetch('/chat', {
@@ -95,13 +118,19 @@
             const botReply = data.response || data.error;
 
             // Показываем ответ бота
-            appendMessage('Bot: ' + botReply);
+            appendMessage('bot', botReply);
             document.getElementById('message').value = ''; // Очищаем поле ввода
         }
 
-        function appendMessage(message) {
+        function appendMessage(sender, message) {
             const chatBox = document.getElementById('chat-box');
             const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            if (sender === 'user') {
+                messageElement.classList.add('user-message');
+            } else if (sender === 'bot') {
+                messageElement.classList.add('bot-message');
+            }
             messageElement.textContent = message;
             chatBox.appendChild(messageElement);
             chatBox.scrollTop = chatBox.scrollHeight; // Прокручиваем вниз
