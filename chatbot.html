@@ -27,7 +27,7 @@
             height: 80vh;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
+            justify-content: space-between;
         }
 
         .chat-box {
@@ -37,29 +37,7 @@
             background-color: #f1f1f1;
             border-radius: 5px;
             margin-bottom: 10px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .message {
-            max-width: 80%;
-            margin: 10px;
-            padding: 10px;
-            border-radius: 10px;
-            background-color: #e3e3e3;
-            position: relative;
-        }
-
-        .user-message {
-            align-self: flex-end; /* Сообщение пользователя с правой стороны */
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .bot-message {
-            align-self: flex-start; /* Сообщение бота с левой стороны */
-            background-color: #2196F3;
-            color: white;
+            height: 60%;
         }
 
         textarea {
@@ -95,7 +73,6 @@
     </div>
 
     <script>
-        // Функция для отправки сообщения
         document.getElementById('send-btn').addEventListener('click', sendMessage);
 
         async function sendMessage() {
@@ -103,10 +80,10 @@
             if (!message) return;
 
             // Показываем сообщение пользователя
-            appendMessage('user', message);
+            appendMessage('You: ' + message);
 
-            // Отправляем запрос к backend
-            const response = await fetch('/chat', {
+            // Отправляем запрос к серверу
+            const response = await fetch('https://your-server-url.com/chat', {  // Укажи свой серверный URL
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -118,19 +95,15 @@
             const botReply = data.response || data.error;
 
             // Показываем ответ бота
-            appendMessage('bot', botReply);
-            document.getElementById('message').value = ''; // Очищаем поле ввода
+            appendMessage('Bot: ' + botReply);
+
+            // Очищаем поле ввода
+            document.getElementById('message').value = '';  // Очищаем строку ввода после отправки сообщения
         }
 
-        function appendMessage(sender, message) {
+        function appendMessage(message) {
             const chatBox = document.getElementById('chat-box');
             const messageElement = document.createElement('div');
-            messageElement.classList.add('message');
-            if (sender === 'user') {
-                messageElement.classList.add('user-message');
-            } else if (sender === 'bot') {
-                messageElement.classList.add('bot-message');
-            }
             messageElement.textContent = message;
             chatBox.appendChild(messageElement);
             chatBox.scrollTop = chatBox.scrollHeight; // Прокручиваем вниз
