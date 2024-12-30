@@ -74,6 +74,26 @@
             cursor: pointer;
             color: lightblue;
         }
+        .settings-menu {
+            display: none;
+            background-color: #002b55;
+            padding: 10px;
+            border-radius: 5px;
+            position: absolute;
+            top: 40px;
+            right: 10px;
+            text-align: left;
+        }
+        .settings-menu a {
+            color: white;
+            font-size: 18px;
+            text-decoration: none;
+            display: block;
+            margin: 10px 0;
+        }
+        .settings-menu a:hover {
+            color: lightblue;
+        }
         @media screen and (max-width: 600px) {
             .photo {
                 width: 90%;
@@ -105,15 +125,29 @@
             <p>Мы не требуем входа или регистрации ваших данных.</p>
         </div>
     </div>
+    
+    <!-- Иконка настроек -->
     <div class="settings">
-        <!-- Иконка настроек -->
-        <a href="settings.html"><i class="fa-sharp-duotone fa-solid fa-gear"></i></a>
+        <i class="fa-sharp-duotone fa-solid fa-gear" onclick="toggleSettingsMenu()"></i>
     </div>
+
+    <!-- Меню с пунктами -->
+    <div class="settings-menu" id="settingsMenu">
+        <a href="privacy-policy.html" target="_blank">Политика конфиденциальности</a>
+        <a href="support.html" target="_blank">Поддержка</a>
+    </div>
+
     <a href="index.html" class="home">
         <i class="fa-solid fa-house"></i>
     </a>
 
-    <script>
+    <script>// Функция для отображения/скрытия меню настроек
+        function toggleSettingsMenu() {
+            const menu = document.getElementById('settingsMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+
+        // Функция для скрытия дополнительных подробностей
         function toggleDetails() {
             const details = document.querySelector('.details');
             details.style.display = details.style.display === 'block' ? 'none' : 'block';
