@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мой сайт</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,6 +12,9 @@
             color: white;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         header {
             text-align: center;
@@ -19,6 +23,7 @@
         .container {
             padding: 20px;
             text-align: center;
+            flex: 1;
         }
         .photo {
             width: 70%;
@@ -35,14 +40,11 @@
         }
         .social-icons a {
             color: white;
-            font-size: 20px;
-            margin: 0 10px;
+            font-size: 30px;
+            margin: 0 15px;
             text-decoration: none;
         }
         .bottom-info {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
             text-align: center;
             padding: 10px 0;
             background-color: #001f3d;
@@ -72,9 +74,19 @@
             cursor: pointer;
             color: lightblue;
         }
+        /* Адаптивность для мобильных устройств */
         @media screen and (max-width: 600px) {
             .photo {
                 width: 90%;
+            }
+            .social-icons {
+                display: flex;
+                justify-content: center;
+                margin-top: 10px;
+            }
+            .social-icons a {
+                margin: 0 8px;
+                font-size: 25px;
             }
         }
     </style>
@@ -85,10 +97,16 @@
     </header>
     <div class="container">
         <img src="https://i.postimg.cc/wjFM9bW8/IMG-4456.jpg" alt="Владелец сайта" class="photo">
-        <div class="owner">Сергей 👮‍♂️</div>
+        <div class="owner">Serhii 👮‍♂️</div>
         <div class="social-icons">
-            <a href="https://www.instagram.com/yourusername" target="_blank">Instagram</a>
-            <a href="https://t.me/yourusername" target="_blank">Telegram</a>
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" target="_blank">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <!-- Telegram -->
+            <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">
+                <i class="fa-brands fa-telegram"></i>
+            </a>
         </div>
     </div>
     <div class="bottom-info">
@@ -102,7 +120,9 @@
         <button onclick="window.location.href='privacy-policy.html'">Политика конфиденциальности</button>
         <button onclick="window.location.href='support.html'">Поддержка</button>
     </div>
-    <a href="index.html" class="home">🏠</a>
+    <a href="index.html" class="home">
+        <i class="fa-solid fa-house"></i>
+    </a>
 
     <script>
         function toggleDetails() {
