@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #001f3f; /* Темно-синий фон */
+            background-color: #001f3f;
             color: white;
             display: flex;
             justify-content: center;
@@ -24,23 +24,24 @@
             bottom: 20px;
             right: 20px;
             font-size: 30px;
-            color: #0050a0; /* Темно-синий цвет */
-            cursor: pointer;
+            color: #ffffff;
+            background-color: #0050a0;
+            padding: 10px;
+            border-radius: 50%;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
         .home-icon:hover {
-            color: #ffffff; /* Цвет иконки при наведении */
+            background-color: #003d7a;
         }
     </style>
 </head>
 <body>
-    <div id="ai-content">
-        <!-- Контент будет добавляться сюда динамически -->
-    </div>
-    <!-- Иконка Домой -->
+    <div id="ai-content"></div>
     <a href="index.html" class="home-icon">
         <i class="fa-solid fa-house"></i>
     </a>
-
     <script>
         let contentInterval;
         const contentExamples = [
@@ -48,32 +49,25 @@
             { title: "Совет дня", content: "Улыбайтесь чаще, ведь улыбка помогает создавать позитивное настроение!" },
             { title: "Забавный факт", content: "Пингвины - это единственные птицы, которые могут плавать, но не могут летать." }
         ];
-
         function generateAIContent() {
             const randomContent = contentExamples[Math.floor(Math.random() * contentExamples.length)];
             const aiContentContainer = document.getElementById('ai-content');
-            
             const newContent = document.createElement('div');
             newContent.innerHTML = `
                 <h2>${randomContent.title}</h2>
                 <p>${randomContent.content}</p>
             `;
-            
-            aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
+            aiContentContainer.innerHTML = '';
             aiContentContainer.appendChild(newContent);
         }
-
         function startContentUpdate() {
             contentInterval = setInterval(generateAIContent, 15000);
         }
-
         function stopContentUpdate() {
             clearInterval(contentInterval);
         }
-
         document.body.addEventListener('touchstart', stopContentUpdate);
         document.body.addEventListener('touchend', startContentUpdate);
-
         generateAIContent();
         startContentUpdate();
     </script>
