@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Актуальные Новости</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #001f3d; /* Темно-синий фон */
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            text-align: center;
+            padding: 50px 0;
+        }
+        .container {
+            padding: 20px;
+            text-align: center;
+            flex: 1;
+        }
+        .news {
+            font-size: 18px;
+            color: white;
+            margin-top: 20px;
+        }
+        .home {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 24px;
+            text-decoration: none;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        .home:hover {
+            color: lightblue;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        h1 {
+            font-size: 32px;
+            color: white;
+            margin-top: 20px;
+        }
+        /* Адаптивность для мобильных устройств */
+        @media screen and (max-width: 600px) {
+            .news {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Новости Норвегии</h1>
+    </header>
+    <div class="container">
+        <div id="news"></div> <!-- Это место, куда будут вставляться новости -->
+    </div>
+
+    <!-- Иконка для возврата на главную -->
+    <a href="index.html" class="home">
+        <i class="fa-solid fa-house"></i>
+    </a>
+
+    <script>
+        const apiKey = "62a9aae7a6f34cc3a564257c3dbaa859"; // Это твой API ключ
+        const newsContainer = document.getElementById('news');
+
+        // Функция для получения новостей
+        async function fetchNews() {
+            const url = https://newsapi.org/v2/top-headlines?country=no&apiKey=${apiKey};
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (data.status === "ok") {
+                let newsHTML = '';
+                data.articles.forEach(article => {
+                    newsHTML += `
+                        <div class="news">
+                            <h3>${article.title}</h3>
+                            <p>${article.description}</p>
+                            <a href="${article.url}" target="_blank">Читать далее</a>
+                        </div>
+                    `;
+                });
+                newsContainer.innerHTML = newsHTML;
+            } else {
+                newsContainer.innerHTML = '<p>Не удалось загрузить новости. Попробуйте позже.</p>';
+            }
+        }
+
+        // Загружаем новости при открытии страницы
+        fetchNews();
+    </script>
+</body>
+</html>
