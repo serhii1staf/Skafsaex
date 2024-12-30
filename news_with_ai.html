@@ -23,7 +23,7 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            font-size: 40px;
+            font-size: 36px;
             color: #ffffff;
             text-decoration: none;
         }
@@ -35,14 +35,14 @@
 <body>
     <div id="ai-content"></div>
     <a href="index.html" class="home-icon">
-        <i class="fa-solid fa-house"></i>
+        <i class="fa-regular fa-house"></i>
     </a>
     <script>
         let contentInterval;
         const contentExamples = [
-            { title: "Интересный факт", content: "В Норвегии находится самый длинный туннель в мире - Лэрдалский туннель." },
-            { title: "Совет дня", content: "Улыбайтесь чаще, ведь улыбка помогает создавать позитивное настроение!" },
-            { title: "Забавный факт", content: "Пингвины - это единственные птицы, которые могут плавать, но не могут летать." }
+            { title: "Совет дня", content: "Пейте больше воды, чтобы оставаться бодрыми и здоровыми." },
+            { title: "Интересный факт", content: "Человеческий мозг состоит на 60% из жира." },
+            { title: "Забавный факт", content: "Коровы имеют лучших друзей и становятся грустными, если их разлучают." }
         ];
         function generateAIContent() {
             const randomContent = contentExamples[Math.floor(Math.random() * contentExamples.length)];
