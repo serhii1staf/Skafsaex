@@ -54,7 +54,6 @@
             top: 10px;
             right: 10px;
             font-size: 18px;
-            cursor: pointer;
         }
         .home {
             position: fixed;
@@ -74,31 +73,6 @@
             cursor: pointer;
             color: lightblue;
         }
-
-        /* Добавляем стиль для выпадающего меню */
-        .settings-menu {
-            display: none;
-            background-color: #333;
-            padding: 10px;
-            border-radius: 5px;
-            position: absolute;
-            top: 35px;
-            right: 0;
-            z-index: 10;
-        }
-        .settings-menu a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            margin: 5px 0;
-        }
-        .settings-menu a:hover {
-            color: lightblue;
-        }
-        .settings.active .settings-menu {
-            display: block;
-        }
-
         @media screen and (max-width: 600px) {
             .photo {
                 width: 90%;
@@ -131,15 +105,23 @@
         </div>
     </div>
 
-    <!-- Настройки -->
+    <!-- Настройки, политика и поддержка -->
     <div class="settings">
-        <i class="fa-sharp-duotone fa-solid fa-gear"></i> <!-- Иконка настроек -->
-        <div class="settings-menu">
-            <a href="settings.html">Настройки</a>
-            <a href="privacy-policy.html">Политика конфиденциальности</a>
-            <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">Поддержка</a>
-        </div>
-    </div><!-- Иконка домика -->
+        <!-- Настройки -->
+        <a href="settings.html" title="Настройки">
+            <i class="fa-sharp-duotone fa-solid fa-gear"></i> Настройки
+        </a>
+        <!-- Политика конфиденциальности -->
+        <a href="privacy-policy.html" title="Политика конфиденциальности">
+            <i class="fa-solid fa-file-alt"></i> Политика конфиденциальности
+        </a>
+        <!-- Поддержка -->
+        <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank" title="Поддержка">
+            <i class="fa-brands fa-telegram"></i> Поддержка
+        </a>
+    </div>
+
+    <!-- Иконка домой -->
     <a href="index.html" class="home">
         <i class="fa-solid fa-house"></i>
     </a>
@@ -149,12 +131,6 @@
             const details = document.querySelector('.details');
             details.style.display = details.style.display === 'block' ? 'none' : 'block';
         }
-
-        // Управление выпадающим меню настроек
-        const settings = document.querySelector('.settings');
-        settings.addEventListener('click', function() {
-            settings.classList.toggle('active');
-        });
     </script>
 </body>
 </html>
