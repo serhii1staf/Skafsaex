@@ -1,62 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Актуальная информация</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            text-align: center;
-        }
-        #ai-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .ai-image {
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div id="ai-content">
-        <h2>Заголовок</h2>
-        <p>Описание</p>
-        <img src="" alt="Изображение" class="ai-image">
-    </div>
-
-    <script>
-        let contentInterval;
-        let isTouching = false; // Статус, удерживается ли палец на экране
-
-        // Дефолтные данные
-        const contentExamples = [
-            {
-                title: 'Пример 1',
-                content: 'Это описание первого примера.',
-                image: 'https://via.placeholder.com/800x600'
-            },
-            {
-                title: 'Пример 2',
-                content: 'Это описание второго примера.',
-                image: 'https://via.placeholder.com/600x400'
-            }
-        ];
-
-        // Функция определения устройства
-        function isMobileDevice() {
-            return window.innerWidth <= 768; // Условие для определения мобильного устройства
-        }
+let contentInterval;let isTouching = false; // Статус, удерживается ли палец на экране
 
         // Функция для автоматической генерации контента
         function generateAIContent() {
@@ -64,13 +6,10 @@
             const aiContentContainer = document.getElementById('ai-content');
             
             const newContent = document.createElement('div');
-            
-            // Определяем размеры изображений
-            const imageSize = isMobileDevice() ? '100%' : '80%'; // 100% для мобильного, 80% для ноутбука
             newContent.innerHTML = `
                 <h2>${randomContent.title}</h2>
                 <p>${randomContent.content}</p>
-                <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image" style="width: ${imageSize}; height: auto;">
+                <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image">
             `;
             
             aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
