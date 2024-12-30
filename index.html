@@ -18,8 +18,7 @@
             justify-content: space-between;
         }
         header {
-            text-align: center;
-            padding: 50px 0;
+            display: none; /* Убираем заголовок */
         }
         .container {
             padding: 20px;
@@ -28,19 +27,17 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
         }
         .photo {
             width: 70%;
             max-width: 500px;
             border-radius: 10px;
-            margin-top: 30px; /* Сделано немного ниже */
-        }
-        .owner {
-            font-size: 24px;
-            margin-top: 10px;
+            margin-top: 20px;
+            object-fit: cover;
         }
         .next-page {
-            margin-top: 20px; /* Кнопка "Продолжить" чуть ниже */
+            margin-top: 40px; /* Кнопка ниже центра */
         }
         .next-page a {
             color: lightblue;
@@ -95,13 +92,8 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>Добро пожаловать</h1>
-    </header>
     <div class="container">
         <img src="https://i.postimg.cc/wjFM9bW8/IMG-4456.jpg" alt="Владелец сайта" class="photo">
-        <div class="owner"></div>
-
         <div class="next-page">
             <a href="next-page.html">Продолжить</a>
         </div>
@@ -114,7 +106,7 @@
                 <i class="fa-brands fa-telegram"></i>
             </a>
             <a href="chatbot.html" class="chatbot-icon">
-                <i class="fa-solid fa-comments"></i> <!-- Новый класс иконки -->
+                <i class="fa-solid fa-comments"></i>
             </a>
         </div>
     </div>
