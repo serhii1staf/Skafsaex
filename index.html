@@ -35,21 +35,6 @@
             font-size: 24px;
             margin-top: 10px;
         }
-        .social-icons {
-            margin-top: 20px;
-        }
-        .social-icons a {
-            color: white;
-            font-size: 30px;
-            margin: 0 15px;
-            text-decoration: none;
-        }
-        .bottom-info {
-            text-align: center;
-            padding: 10px 0;
-            background-color: #001f3d;
-            font-size: 14px;
-        }
         .next-page {
             margin-top: 30px;
         }
@@ -66,6 +51,28 @@
             background-color: lightblue;
             color: #001f3d;
         }
+        .social-icons {
+            margin-top: 20px;
+        }
+        .social-icons a {
+            color: white;
+            font-size: 30px;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        .bottom-info {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #001f3d;
+            font-size: 14px;
+        }
+        .details {
+            display: none;
+        }
+        .show-details {
+            cursor: pointer;
+            color: lightblue;
+        }
         /* Адаптивность для мобильных устройств */
         @media screen and (max-width: 600px) {
             .photo {
@@ -80,6 +87,10 @@
                 margin: 0 8px;
                 font-size: 25px;
             }
+            .next-page a {
+                font-size: 16px;
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
@@ -90,6 +101,13 @@
     <div class="container">
         <img src="https://i.postimg.cc/wjFM9bW8/IMG-4456.jpg" alt="Владелец сайта" class="photo">
         <div class="owner">Serhii 👮‍♂️</div>
+        
+        <!-- Кнопка перехода на следующую страничку -->
+        <div class="next-page">
+            <a href="next-page.html">Перейти на следующую страничку</a>
+        </div>
+        
+        <!-- Иконки соцсетей -->
         <div class="social-icons">
             <!-- Instagram -->
             <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" target="_blank">
@@ -101,25 +119,14 @@
             </a>
         </div>
     </div>
+    
+    <!-- Правила использования -->
     <div class="bottom-info">
         <p>Все права защищены | <span class="show-details" onclick="toggleDetails()">Подробные</span></p>
         <div class="details">
             <p>Мы не требуем входа или регистрации ваших данных.</p>
         </div>
     </div>
-
-    <!-- Кнопка для перехода на следующую страничку -->
-    <div class="next-page">
-        <a href="next-page.html">Перейти на следующую страничку</a>
-    </div>
-
-    <div class="settings" onclick="toggleSettingsMenu()">
-        <i class="fa-sharp-duotone fa-solid fa-gear"></i> <!-- Иконка настроек -->
-    </div>
-
-    <a href="index.html" class="home">
-        <i class="fa-solid fa-house"></i> Вернуться на главную
-    </a>
 
     <script>
         function toggleDetails() {
