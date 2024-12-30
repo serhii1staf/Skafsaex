@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Рандомный контент AI</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
         body {
             margin: 0;
@@ -18,24 +19,13 @@
             flex-direction: column;
             text-align: center;
         }
-        #ai-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-        }
         .home-icon {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #0050a0; /* Темно-синий цвет */
-            border: none;
-            padding: 10px;
-            border-radius: 50%;
+            font-size: 30px;
+            color: #0050a0; /* Темно-синий цвет */
             cursor: pointer;
-        }
-        .home-icon img {
-            width: 30px;
-            height: 30px;
         }
     </style>
 </head>
@@ -43,28 +33,16 @@
     <div id="ai-content">
         <!-- Контент будет добавляться сюда динамически -->
     </div>
-    <button class="home-icon" onclick="window.location.href='index.html'">
-        <img src="images/home-icon.png" alt="Домой">
-    </button>
+    <a href="index.html" class="home-icon">
+        <i class="fa-solid fa-house"></i>
+    </a>
 
     <script>
         let contentInterval;
         const contentExamples = [
-            {
-                title: "Интересный факт о Норвегии",
-                content: "В Норвегии находится самый длинный туннель в мире - Лэрдалский туннель, длиной 24,5 км.",
-                image: "images/fact1.jpg"
-            },
-            {
-                title: "Погода в Осло",
-                content: "Сегодня в Осло ясно, температура около 5°C.",
-                image: "images/weather.jpg"
-            },
-            {
-                title: "Норвежский ландшафт",
-                content: "Фьорды Норвегии привлекают миллионы туристов ежегодно.",
-                image: "images/landscape.jpg"
-            }
+            { title: "Интересный факт", content: "В Норвегии находится самый длинный туннель в мире - Лэрдалский туннель." },
+            { title: "Совет дня", content: "Улыбайтесь чаще, ведь улыбка помогает создавать позитивное настроение!" },
+            { title: "Забавный факт", content: "Пингвины - это единственные птицы, которые могут плавать, но не могут летать." }
         ];
 
         function generateAIContent() {
@@ -75,7 +53,6 @@
             newContent.innerHTML = `
                 <h2>${randomContent.title}</h2>
                 <p>${randomContent.content}</p>
-                <img src="${randomContent.image}" alt="${randomContent.title}">
             `;
             
             aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
