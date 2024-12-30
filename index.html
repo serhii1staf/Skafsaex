@@ -24,10 +24,9 @@
         .owner-photo {
             display: block;
             margin: 20px auto;
-            border-radius: 50%;
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
+            width: 100%;
+            max-width: 400px; /* Ограничение для фото на больших экранах */
+            height: auto;
         }
         .owner-info {
             text-align: center;
@@ -82,6 +81,8 @@
             text-align: center;
             padding: 20px;
             position: relative;
+            bottom: 0;
+            width: 100%;
         }
         footer p {
             margin: 0;
@@ -94,6 +95,13 @@
         footer a:hover {
             color: #ffcc00;
         }
+        .home-icon {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 30px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -105,6 +113,15 @@
         <h3>Владелец: Serhii 👮‍♂️</h3>
     </div>
 </header>
+
+<div class="home-icon" onclick="window.location.href='/'">
+    <i class="fa fa-home"></i>
+</div>
+
+<div class="social-icons">
+    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank"><i class="fab fa-telegram"></i></a>
+</div>
 
 <div class="menu-icon" onclick="toggleMenu()">
     <i class="fa-solid fa-bars"></i>
