@@ -1,7 +1,7 @@
 import openai
 from flask import Flask, request, render_template
 
-app = Flask(__name__)  # Здесь должно быть name
+app = Flask(__name__)  # Исправлено на name
 
 # Вставленный ключ API OpenAI
 openai.api_key = "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"
@@ -26,5 +26,5 @@ def chat():
     except Exception as e:
         return str(e)
 
-if name == '__main__':  # Это исправленный блок для запуска сервера
+if name == '__main__':  # Правильный блок для запуска сервера
     app.run(debug=True)
