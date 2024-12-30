@@ -60,12 +60,14 @@
             margin: 0 15px;
             text-decoration: none;
         }
-        /* Для иконки ChatBot */
         .chatbot-icon {
             color: white;
             font-size: 30px;
-            margin: 0 15px;
+            margin-left: 15px;
             text-decoration: none;
+        }
+        .chatbot-icon:hover {
+            color: lightblue;
         }
         .bottom-info {
             text-align: center;
@@ -80,7 +82,6 @@
             cursor: pointer;
             color: lightblue;
         }
-        /* Адаптивность для мобильных устройств */
         @media screen and (max-width: 600px) {
             .photo {
                 width: 90%;
@@ -108,30 +109,25 @@
     <div class="container">
         <img src="https://i.postimg.cc/wjFM9bW8/IMG-4456.jpg" alt="Владелец сайта" class="photo">
         <div class="owner"></div>
-        
-        <!-- Кнопка "Продолжить" -->
+
         <div class="next-page">
             <a href="next-page.html">Продолжить</a>
         </div>
-        
-        <!-- Иконки соцсетей -->
+
         <div class="social-icons">
-            <!-- Instagram -->
             <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" target="_blank">
                 <i class="fa-brands fa-instagram"></i>
             </a>
-            <!-- Telegram -->
             <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">
                 <i class="fa-brands fa-telegram"></i>
             </a>
             <!-- Иконка ChatBot -->
             <a href="chatbot.html" class="chatbot-icon">
-                <i class="fa-duotone fa-regular fa-message-bot"></i>
+                <i class="fa-light fa-message-bot"></i>
             </a>
         </div>
     </div>
-    
-    <!-- Правила использования -->
+
     <div class="bottom-info">
         <p>Все права защищены | <span class="show-details" onclick="toggleDetails()">Подробные</span></p>
         <div class="details">
@@ -139,7 +135,8 @@
         </div>
     </div>
 
-    <script>function toggleDetails() {
+    <script>
+        function toggleDetails() {
             const details = document.querySelector('.details');
             details.style.display = details.style.display === 'block' ? 'none' : 'block';
         }
