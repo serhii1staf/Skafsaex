@@ -8,58 +8,72 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #001f3d; /* Темный фон */
+            background-color: #001f3d;
             color: white;
             margin: 0;
             padding: 0;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        h1 {
-            margin-top: 50px;
-            font-size: 36px;
+        header {
+            text-align: center;
+            padding: 50px 0;
+        }
+        .container {
+            padding: 20px;
+            text-align: center;
+            flex: 1;
+        }
+        .support-message {
+            font-size: 24px;
             color: lightblue;
+            margin-top: 20px;
         }
         .contact-info {
-            font-size: 18px;
-            margin-top: 30px;
+            font-size: 20px;
+            margin-top: 20px;
         }
         .contact-info a {
             color: lightblue;
             text-decoration: none;
-            font-weight: bold;
-            font-size: 24px;
         }
-        .contact-info a:hover {
-            text-decoration: underline;
+        .bottom-info {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #001f3d;
+            font-size: 14px;
         }
-        .back-home {
-            font-size: 18px;
-            margin-top: 50px;
-        }
-        .back-home a {
-            color: lightblue;
+        .home {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 30px;
             text-decoration: none;
-            font-size: 20px;
+            color: white;
         }
-        .back-home a:hover {
-            text-decoration: underline;
+        .home:hover {
+            color: lightblue;
         }
     </style>
 </head>
 <body>
-
-    <h1>Поддержка</h1>
-    <div class="contact-info">
-        <p>Если у вас возникли вопросы, не стесняйтесь обращаться!</p>
-        <p>Для связи с нами используйте Telegram:</p>
-        <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">
-            Написать в Telegram
-        </a>
+    <header>
+        <h1>Поддержка</h1>
+    </header>
+    <div class="container">
+        <div class="support-message">
+            <p>Круто! Мы здесь, чтобы помочь вам!</p>
+        </div>
+        <div class="contact-info">
+            <p>Если у вас есть вопросы, свяжитесь со мной в Telegram:</p>
+            <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">
+                Напишите мне в Telegram
+            </a>
+        </div>
     </div>
-
-    <div class="back-home">
-        <p><a href="index.html">Вернуться на главную страницу</a></p>
+    <div class="bottom-info">
+        <p>Все права защищены | <a href="index.html" class="home">Вернуться на главную страницу</a></p>
     </div>
-
 </body>
 </html>
