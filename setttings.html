@@ -8,64 +8,35 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #001f3d; /* Темно-синий фон */
+            background-color: #001f3d;
             color: white;
             margin: 0;
             padding: 0;
         }
-        header {
-            text-align: center;
-            padding: 50px 0;
-        }
         .container {
-            text-align: center;
             padding: 20px;
+            text-align: center;
         }
-        .back {
-            font-size: 20px;
-            color: white;
-            text-decoration: none;
-            padding: 10px;
-            border: 1px solid white;
-            border-radius: 5px;
+        .back-button {
             margin-top: 20px;
+            font-size: 18px;
         }
-        .back:hover {
-            background-color: lightblue;
-        }
-        .settings-list {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-        .settings-list li {
-            margin-bottom: 10px;
-        }
-        .settings-list a {
-            color: white;
+        .back-button a {
             text-decoration: none;
-            font-size: 20px;
-            border: 1px solid white;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .settings-list a:hover {
-            background-color: lightblue;
+            color: lightblue;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Настройки</h1>
-    </header>
     <div class="container">
-        <h2>Выберите пункт:</h2>
-        <ul class="settings-list">
-            <li><a href="settings.html#settings">Настройки</a></li>
+        <h1>Настройки</h1>
+        <ul>
+            <li><a href="support.html">Поддержка</a></li>
             <li><a href="privacy-policy.html">Политика конфиденциальности</a></li>
-            <li><a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">Поддержка (Телеграм)</a></li>
         </ul>
-        <a href="index.html" class="back">Вернуться на главную</a>
+        <div class="back-button">
+            <a href="index.html">Вернуться на главную страничку</a>
+        </div>
     </div>
 </body>
 </html>
