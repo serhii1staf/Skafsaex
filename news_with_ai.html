@@ -32,28 +32,36 @@
 </head>
 <body>
     <div id="ai-content">
-        <h2>Заголовок</h2>
-        <p>Описание</p>
-        <img src="" alt="Изображение" class="ai-image">
+        <!-- Сюда будет выводиться актуальная информация и изображение -->
     </div>
 
     <script>
         let contentInterval;
         let isTouching = false; // Статус, удерживается ли палец на экране
 
-        // Дефолтные данные
-        const contentExamples = [
-            {
-                title: 'Пример 1',
-                content: 'Это описание первого примера.',
-                image: 'https://via.placeholder.com/800x600'
-            },
-            {
-                title: 'Пример 2',
-                content: 'Это описание второго примера.',
-                image: 'https://via.placeholder.com/600x400'
-            }
-        ];
+        // Пример API для получения актуальной информации
+        const API_KEY = 'ВАШ_КЛЮЧ_API'; // Замените на реальный API ключ
+        const newsApiUrl = 'https://newsapi.org/v2/top-headlines?country=no&apiKey=' + API_KEY; // Новости из Норвегии
+        const weatherApiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=Oslo,no&appid=ВАШ_КЛЮЧ_API&units=metric'; // Погода в Норвегии
+
+        // Функция для получения актуальной информации
+        async function fetchContent() {
+            // Запрос новостей
+            const newsResponse = await fetch(newsApiUrl);
+            const newsData = await newsResponse.json();
+            const newsContent = newsData.articles[0]; // Берем первую статью (можно настроить)
+
+            // Запрос погоды
+            const weatherResponse = await fetch(weatherApiUrl);
+            const weatherData = await weatherResponse.json();
+            const weatherContent = Температура в Осло: ${weatherData.main.temp}°C, ${weatherData.weather[0].description};
+
+            return {
+                title: newsContent.title,
+                content: ${newsContent.description} ${weatherContent},
+                image: newsContent.urlToImage || 'https://via.placeholder.com/800x600', // Если нет изображения, используем плейсхолдер
+            };
+        }
 
         // Функция определения устройства
         function isMobileDevice() {
@@ -61,8 +69,8 @@
         }
 
         // Функция для автоматической генерации контента
-        function generateAIContent() {
-            const randomContent = contentExamples[Math.floor(Math.random() * contentExamples.length)];
+        async function generateAIContent() {
+            const randomContent = await fetchContent(); // Получаем актуальное содержимое через API
             const aiContentContainer = document.getElementById('ai-content');
             
             const newContent = document.createElement('div');
@@ -92,8 +100,7 @@
 
         // Слушатели событий для остановки и возобновления обновления при касании экрана
         document.body.addEventListener('touchstart', () => {
-            isTouching = true; // Если экран удерживается
-            stopContentUpdate(); // Останавливаем обновление
+            isTouching = true; // Если экран удерживаетсяstopContentUpdate(); // Останавливаем обновление
         });
 
         document.body.addEventListener('touchend', () => {
