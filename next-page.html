@@ -61,28 +61,22 @@
             color: lightblue;
             background-color: rgba(0, 0, 0, 0.8);
         }
-        h1 {
-            font-size: 32px;
+        .arrow-button {
+            position: fixed;
+            top: 10px;
+            right: 100px; /* Это регулирует, насколько далеко от правого края будет кнопка */
+            font-size: 28px;
+            background-color: #4CAF50;
             color: white;
-            margin-top: 20px;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            text-align: center;
+            z-index: 10;
         }
-
-        /* Кнопка для перехода на третью страницу */
-        .go-to-third {
-            display: inline-block;
-            font-size: 18px;
-            color: white;
-            background-color: #333;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            margin-top: 20px;
+        .arrow-button:hover {
+            background-color: #45a049;
         }
-
-        .go-to-third:hover {
-            background-color: #555;
-        }
-
         /* Адаптивность для мобильных устройств */
         @media screen and (max-width: 600px) {
             .photo {
@@ -98,28 +92,69 @@
                 font-size: 25px;
             }
         }
+        .three-dots {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .feedback-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 10;
+        }
+        .feedback-form input,
+        .feedback-form textarea {
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #222;
+            color: white;
+        }
+        .feedback-form button {
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .feedback-form button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
+
     <header>
-        <h1 style="margin-top: 30px;">Телеграм Канал</h1>
+        <h1>Телеграм Канал</h1>
     </header>
     <div class="container">
         <img src="https://i.postimg.cc/1tZD1ZLy/IMG-4451.png" alt="Фото из телеграм канала" class="photo">
         <div class="social-icons">
             <!-- Ссылка на Телеграм -->
-            <a href="https://t.me/sangklasy" target="_blank">
-                <i class="fa-brands fa-telegram"></i>
+            <a href="https://t.me/sangklasy" target="_blank"><i class="fa-brands fa-telegram"></i>
             </a>
         </div>
-        
-        <!-- Кнопка для перехода на третью страницу -->
-        <a href="news_with_ai_html.html" class="go-to-third">Перейти на третью страницу</a>
     </div>
 
     <!-- Иконка для возврата на главную -->
     <a href="index.html" class="home">
         <i class="fa-solid fa-house"></i>
+    </a>
+
+    <!-- Кнопка для перехода на третью страницу -->
+    <a href="news_with_ai.html" class="arrow-button">
+        <i class="fa-solid fa-arrow-right"></i>
     </a>
 
     <!-- Кнопка с тремя точками -->
@@ -132,7 +167,8 @@
             <input type="text" name="name" placeholder="Ваше имя" required><br>
             <input type="email" name="email" placeholder="Ваш email" required><br>
             <input type="tel" name="phone" placeholder="Ваш номер телефона" required><br>
-            <textarea name="message" placeholder="Ваше сообщение" required></textarea><br><button type="submit">Отправить</button>
+            <textarea name="message" placeholder="Ваше сообщение" required></textarea><br>
+            <button type="submit">Отправить</button>
         </form>
     </div>
 
