@@ -1,126 +1,81 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Контент</title>
+    <title>AI Content Update</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             background-color: #001f3d; /* Темно-синий фон */
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
+            color: white;
+            font-family: Arial, sans-serif;
         }
-
-        h2 {
-            color: #ffcc00; /* Желтый цвет для заголовков */
-        }
-
         #ai-content {
-            padding: 20px;
             margin: 20px;
-            border: 1px solid #444;
-            border-radius: 8px;
-            background-color: #002a53; /* Темный синий для блока с контентом */
+            padding: 20px;
+            background-color: #003366; /* Тёмно-синий цвет для блока контента */
+            border-radius: 10px;
         }
-
         .ai-image {
-            width: 100%;
+            max-width: 100%;
             height: auto;
-            border-radius: 8px;
+            border-radius: 5px;
         }
-
-        /* Стиль для иконки домика */
         .home-icon {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            font-size: 30px;
-            background-color: #ffffff; /* Белый фон */
-            color: #000000; /* Черный цвет домика */
-            padding: 10px;
+            background-color: #003366; /* Тёмно-синий фон для иконки */
             border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            color: white;
+            font-size: 24px;
             cursor: pointer;
-            transition: background-color 0.3s;
-            text-align: center; /* Центрируем иконку */
         }
-
-        .home-icon:hover {
-            background-color: #f0f0f0;
-        }
-
     </style>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 
     <div id="ai-content">
-        <!-- Здесь будет отображаться контент от AI -->
+        <!-- Данные будут вставляться сюда -->
     </div>
 
-    <!-- Иконка для перехода на главную страницу -->
-    <a href="index.html" class="home-icon">
-        <i class="fa-solid fa-house"></i>
-    </a>
+    <div class="home-icon" onclick="window.location.href='index.html';">
+        <i class="fa-solid fa-house"></i> <!-- Иконка домика -->
+    </div>
 
     <script>
+        // Пример API URL (поменяй на реальный API)
+        const apiUrl = 'https://api.example.com/data'; // Вставь сюда реальный URL твоего API
+
         let contentInterval;
-        let isTouching = false; // Статус, удерживается ли палец на экране
+        let isTouching = false;
 
-        // Ваш API ключ от OpenWeatherMap (получить на https://openweathermap.org/api)
-        const apiKey = 'ВАШ_API_КЛЮЧ';
-
-        // Функция для получения данных с OpenWeatherMap API
-        async function fetchWeatherData() {
-            const url = https://api.openweathermap.org/data/2.5/weather?q=Oslo,no&appid=${apiKey}&units=metric&lang=ru;
-
+        // Функция для получения данных из API
+        async function fetchAPIContent() {
             try {
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                if (data && data.main) {
-                    const temperature = data.main.temp;
-                    const weatherDescription = data.weather[0].description;
-                    const city = data.name;
+                const response = await fetch(apiUrl);
+                const data = await response.json(); // Преобразуем полученные данные в JSON
 
-                    return {
-                        title: Погода в ${city},
-                        content: Сегодня в ${city} температура ${temperature}°C, ${weatherDescription}.,
-                        image: "https://via.placeholder.com/600x300?text=Weather+in+Oslo"
-                    };
-                } else {
-                    throw new Error("Ошибка получения данных с API");
-                }
+                // Пример: получаем случайный факт или новость из полученных данных
+                const randomContent = data[Math.floor(Math.random() * data.length)];
+
+                // Обновление контента на странице
+                const aiContentContainer = document.getElementById('ai-content');
+                aiContentContainer.innerHTML = `
+                    <h2>${randomContent.title}</h2>
+                    <p>${randomContent.content}</p>
+                    <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image">
+                `;
             } catch (error) {
-                console.error(error);
-                return {
-                    title: "Ошибка",
-                    content: "Не удалось загрузить данные о погоде.",
-                    image: "https://via.placeholder.com/600x300?text=Error"
-                };
+                console.error('Ошибка при получении данных с API:', error);
             }
         }
 
-        // Функция для автоматической генерации контента
-        async function generateAIContent() {
-            const weatherContent = await fetchWeatherData();
-            const aiContentContainer = document.getElementById('ai-content');
-            
-            const newContent = document.createElement('div');
-            newContent.innerHTML = `
-                <h2>${weatherContent.title}</h2>
-                <p>${weatherContent.content}</p>
-                <img src="${weatherContent.image}" alt="${weatherContent.title}" class="ai-image">
-            `;
-            
-            aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
-            aiContentContainer.appendChild(newContent);
-        }// Функция для старта обновления контента
+        // Функция для старта обновления контента
         function startContentUpdate() {
             // Обновление контента каждые 15 секунд
-            contentInterval = setInterval(generateAIContent, 15000);
+            contentInterval = setInterval(fetchAPIContent, 15000);
         }
 
         // Функция для остановки обновления
@@ -130,19 +85,19 @@
 
         // Слушатели событий для остановки и возобновления обновления при касании экрана
         document.body.addEventListener('touchstart', () => {
-            isTouching = true; // Если экран удерживается
+            isTouching = true;
             stopContentUpdate(); // Останавливаем обновление
         });
 
         document.body.addEventListener('touchend', () => {
-            isTouching = false; // Если палец убран
+            isTouching = false;
             if (!isTouching) {
                 startContentUpdate(); // Возобновляем обновление
             }
         });
 
         // Инициализация контента и запуск таймера
-        generateAIContent();
+        fetchAPIContent();
         startContentUpdate();
     </script>
 
