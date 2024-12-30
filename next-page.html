@@ -18,7 +18,7 @@
         }
         header {
             text-align: center;
-            padding: 30px 0; /* Меньше отступа сверху */
+            padding: 50px 0;
         }
         .container {
             padding: 20px;
@@ -61,22 +61,6 @@
             color: lightblue;
             background-color: rgba(0, 0, 0, 0.8);
         }
-        .details {
-            display: none;
-        }
-        .show-details {
-            cursor: pointer;
-            color: lightblue;
-        }
-
-        /* Заголовок теперь белый и с отступом вниз */
-        .title {
-            font-size: 2.5rem; /* Меньший размер */
-            font-weight: bold;
-            color: white; /* Белый цвет */
-            margin-bottom: 20px; /* Отступ вниз, ближе к фотографии */
-        }
-
         /* Адаптивность для мобильных устройств */
         @media screen and (max-width: 600px) {
             .photo {
@@ -96,7 +80,7 @@
 </head>
 <body>
     <header>
-        <h1 class="title">Телеграм Канал</h1> <!-- Заголовок теперь белый и с отступом вниз -->
+        <h1 id="channelTitle">Телеграм Канал</h1>
     </header>
     <div class="container">
         <img src="https://i.postimg.cc/1tZD1ZLy/IMG-4451.png" alt="Фото из телеграм канала" class="photo">
@@ -114,10 +98,22 @@
     </a>
 
     <script>
-        function toggleDetails() {
-            var details = document.querySelector('.details');
-            details.style.display = details.style.display === 'none' ? 'block' : 'none';
+        // Функция для определения языка браузера
+        function detectLanguage() {
+            let userLang = navigator.language || navigator.userLanguage; 
+            console.log("Detected language: " + userLang);
+            // Если язык пользователя русский или английский
+            if (userLang.startsWith("ru")) {
+                document.getElementById("channelTitle").textContent = "Телеграм Канал"; // Оставляем на русском
+            } else if (userLang.startsWith("en")) {
+                document.getElementById("channelTitle").textContent = "Telegram Channel"; // Переводим на английский
+            } else {
+                document.getElementById("channelTitle").textContent = "Telegram Channel"; // По умолчанию английский
+            }
         }
+
+        // Вызов функции при загрузке страницы
+        window.onload = detectLanguage;
     </script>
 </body>
 </html>
