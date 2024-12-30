@@ -46,7 +46,38 @@
     </div>
 
     <a href="index.html" class="home-icon">
-        <i class="fa-solid fa-house"></i> <!-- Исправленная иконка Домика -->
+        <i class="fa-solid fa-house"></i> <!-- Иконка Домика -->
     </a>
+
+    <script>
+        // Массив с примерами контента
+        const contentExamples = [
+            { title: "Совет 1", content: "Начни день с утренней зарядки для бодрости.", image: "image1.jpg" },
+            { title: "Совет 2", content: "Читай книги, чтобы развивать интеллект.", image: "image2.jpg" },
+            { title: "Совет 3", content: "Планируй свой день заранее, чтобы избежать стресса.", image: "image3.jpg" }
+        ];
+
+        let contentInterval;
+
+        // Функция для автоматической генерации контента
+        function generateAIContent() {
+            const randomContent = contentExamples[Math.floor(Math.random() * contentExamples.length)];
+            const aiContentContainer = document.getElementById('ai-content');
+            
+            aiContentContainer.innerHTML = `
+                <h2>${randomContent.title}</h2>
+                <p>${randomContent.content}</p>
+            `;
+        }
+
+        // Функция для старта обновления контента
+        function startContentUpdate() {
+            contentInterval = setInterval(generateAIContent, 15000); // Каждые 15 секунд
+        }
+
+        // Инициализация контента и запуск таймера
+        generateAIContent(); // Генерируем первый контент
+        startContentUpdate(); // Запускаем обновление контента
+    </script>
 </body>
 </html>
