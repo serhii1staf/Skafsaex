@@ -22,7 +22,7 @@
             text-align: center;
         }
         .ai-image {
-            width: 100px;
+            width: 100%;
             height: auto;
         }
         #home-icon {
@@ -45,7 +45,14 @@
     <div id="ai-content" class="content-container">
         <h2>Заголовок контента</h2>
         <p>Текст контента...</p>
-        <img src="https://via.placeholder.com/100" alt="AI Image" class="ai-image">
+        <picture>
+            <!-- Для телефонов с маленьким экраном -->
+            <source srcset="https://via.placeholder.com/150?text=MobileImage" media="(max-width: 600px)">
+            <!-- Для планшетов -->
+            <source srcset="https://via.placeholder.com/300?text=TabletImage" media="(max-width: 1024px)">
+            <!-- Для десктопов -->
+            <img src="https://via.placeholder.com/500?text=DesktopImage" alt="AI Image" class="ai-image">
+        </picture>
     </div>
 
     <!-- Иконка домика для перехода на главную страницу -->
@@ -71,7 +78,14 @@
             newContent.innerHTML = `
                 <h2>${randomContent.title}</h2>
                 <p>${randomContent.content}</p>
-                <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image">
+                <picture>
+                    <!-- Для телефонов с маленьким экраном -->
+                    <source srcset="${randomContent.image}?text=MobileImage" media="(max-width: 600px)">
+                    <!-- Для планшетов -->
+                    <source srcset="${randomContent.image}?text=TabletImage" media="(max-width: 1024px)">
+                    <!-- Для десктопов -->
+                    <img src="${randomContent.image}?text=DesktopImage" alt="${randomContent.title}" class="ai-image">
+                </picture>
             `;
             
             aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
@@ -84,8 +98,7 @@
         }
 
         // Функция для остановки обновления
-        function stopContentUpdate() {
-            clearInterval(contentInterval);
+        function stopContentUpdate() {clearInterval(contentInterval);
         }
 
         // Слушатели событий для остановки и возобновления обновления при касании экрана
