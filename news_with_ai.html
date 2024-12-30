@@ -6,7 +6,7 @@
     <title>AI Content Update</title>
     <style>
         body {
-            background-color: #1e2a47;
+            background-color: #1e2a47; /* Темно-синий фон */
             color: white;
             font-family: Arial, sans-serif;
             margin: 0;
@@ -27,7 +27,7 @@
         #home-icon {
             position: fixed;
             bottom: 20px;
-            left: 20px;
+            right: 20px;
             background-color: #1e2a47;
             border-radius: 50%;
             padding: 15px;
@@ -61,21 +61,20 @@
         let isTouching = false;
 
         // Replace this with your actual API URL
-        const apiUrl = 'https://api.example.com/data';
+        const apiUrl = 'https://api.adviceslip.com/advice'; // Пример API для советов
 
         // Function to fetch and display content from API
         function fetchContent() {
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    const randomContent = data[Math.floor(Math.random() * data.length)];
+                    const randomContent = data.slip;
                     const aiContentContainer = document.getElementById('ai-content');
 
                     const newContent = document.createElement('div');
                     newContent.innerHTML = `
-                        <h2>${randomContent.title}</h2>
-                        <p>${randomContent.content}</p>
-                        <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image">
+                        <h2>Random Advice</h2>
+                        <p>${randomContent.advice}</p>
                     `;
 
                     aiContentContainer.innerHTML = ''; // Clear previous content
