@@ -1,30 +1,32 @@
+from flask import Flask, request, jsonify
 import openai
-from flask import Flask, request, render_template
 
-app = Flask(__name__)  # Исправлено на name
+# Установи свой ключ OpenAI API
+openai.api_key = "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"
 
-# Вставленный ключ API OpenAI
-openai.api_key = "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"
+app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+# Обработка запросов от фронтенда
+@app.route("/", methods=["POST"])
+def chatbot():
+    data = request.get_json()  # Получение данных из запроса
+    user_message = data.get("message")
 
-@app.route('/chat', methods=['POST'])
-def chat():
-    user_message = request.form['message']
-    
-    # Отправка запроса в OpenAI API
+    if not user_message:
+        return jsonify({"response": "Пожалуйста, введите сообщение."})
+
     try:
+        # Отправляем запрос в OpenAI API
         response = openai.Completion.create(
-            engine="text-davinci-003",  # Ты можешь использовать другие модели OpenAI
-            prompt=user_message,        # Сообщение пользователя
-            max_tokens=150              # Максимальное количество токенов для ответа
+            engine="text-davinci-003",  # Укажи нужный движок
+            prompt=user_message,
+            max_tokens=150,
+            temperature=0.7
         )
-        bot_message = response.choices[0].text.strip()  # Ответ бота
-        return render_template('chatbot.html', bot_message=bot_message)
+        bot_reply = response.choices[0].text.strip()
+        return jsonify({"response": bot_reply})
     except Exception as e:
-        return str(e)
+        return jsonify({"response": f"Произошла ошибка: {str(e)}"})
 
-if name == '__main__':  # Правильный блок для запуска сервера
+if name == "__main__":
     app.run(debug=True)
