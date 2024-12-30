@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой сайт</title>
+    <title>Главная страница</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -44,49 +44,44 @@
             margin: 0 15px;
             text-decoration: none;
         }
-        .bottom-info {
-            text-align: center;
-            padding: 10px 0;
-            background-color: #001f3d;
-            font-size: 14px;
-        }
         .settings {
-            position: absolute;
+            position: fixed;
             top: 10px;
             right: 10px;
-            font-size: 18px;
+            font-size: 20px;
+            cursor: pointer;
         }
-        .home {
-            position: fixed;
-            bottom: 10px;
+        .settings-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
             right: 10px;
-            font-size: 30px;
+            background-color: #003366;
+            border: 1px solid white;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .settings-menu a {
+            display: block;
             text-decoration: none;
             color: white;
+            margin: 5px 0;
+            font-size: 16px;
         }
-        .home:hover {
+        .settings-menu a:hover {
             color: lightblue;
         }
-        .details {
-            display: none;
-        }
-        .show-details {
-            cursor: pointer;
-            color: lightblue;
-        }
-        /* Адаптивность для мобильных устройств */
+        /* Адаптивность */
         @media screen and (max-width: 600px) {
             .photo {
                 width: 90%;
             }
-            .social-icons {
-                display: flex;
-                justify-content: center;
-                margin-top: 10px;
-            }
             .social-icons a {
-                margin: 0 8px;
+                margin: 0 10px;
                 font-size: 25px;
+            }
+            .settings {
+                font-size: 18px;
             }
         }
     </style>
@@ -99,35 +94,26 @@
         <img src="https://i.postimg.cc/wjFM9bW8/IMG-4456.jpg" alt="Владелец сайта" class="photo">
         <div class="owner">Serhii 👮‍♂️</div>
         <div class="social-icons">
-            <!-- Instagram -->
-            <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" target="_blank">
+            <a href="https://www.instagram.com/serhii_stafiichuk" target="_blank">
                 <i class="fa-brands fa-instagram"></i>
             </a>
-            <!-- Telegram -->
             <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">
                 <i class="fa-brands fa-telegram"></i>
             </a>
         </div>
     </div>
-    <div class="bottom-info">
-        <p>Все права защищены | <span class="show-details" onclick="toggleDetails()">Подробные</span></p>
-        <div class="details">
-            <p>Мы не требуем входа или регистрации ваших данных.</p>
+    <div class="settings" onclick="toggleSettingsMenu()">
+        <i class="fa-solid fa-cog"></i>
+        <div class="settings-menu">
+            <a href="pages/policy.html">Политика конфиденциальности</a>
+            <a href="pages/help.html">Поддержка</a>
         </div>
     </div>
-    <div class="settings">
-        <button onclick="window.location.href='settings.html'">Настройки</button>
-        <button onclick="window.location.href='privacy-policy.html'">Политика конфиденциальности</button>
-        <button onclick="window.location.href='support.html'">Поддержка</button>
-    </div>
-    <a href="index.html" class="home">
-        <i class="fa-solid fa-house"></i>
-    </a>
 
     <script>
-        function toggleDetails() {
-            const details = document.querySelector('.details');
-            details.style.display = details.style.display === 'block' ? 'none' : 'block';
+        function toggleSettingsMenu() {
+            const menu = document.querySelector('.settings-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         }
     </script>
 </body>
