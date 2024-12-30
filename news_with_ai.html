@@ -75,10 +75,7 @@
             newContent.innerHTML = `
                 <h2>${randomContent.title}</h2>
                 <p>${randomContent.content}</p>
-                <picture>
-                    <source srcset="${randomContent.image}" media="(max-width: 768px)">
-                    <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image">
-                </picture>
+                <img src="${randomContent.image}" alt="${randomContent.title}">
             `;
             
             aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
