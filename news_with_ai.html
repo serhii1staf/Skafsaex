@@ -69,50 +69,63 @@
         let contentInterval;
         let isTouching = false; // Статус, удерживается ли палец на экране
 
+        // Ваш API ключ от OpenWeatherMap (получить на https://openweathermap.org/api)
+        const apiKey = 'ВАШ_API_КЛЮЧ';
+
+        // Функция для получения данных с OpenWeatherMap API
+        async function fetchWeatherData() {
+            const url = https://api.openweathermap.org/data/2.5/weather?q=Oslo,no&appid=${apiKey}&units=metric&lang=ru;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data && data.main) {
+                    const temperature = data.main.temp;
+                    const weatherDescription = data.weather[0].description;
+                    const city = data.name;
+
+                    return {
+                        title: Погода в ${city},
+                        content: Сегодня в ${city} температура ${temperature}°C, ${weatherDescription}.,
+                        image: "https://via.placeholder.com/600x300?text=Weather+in+Oslo"
+                    };
+                } else {
+                    throw new Error("Ошибка получения данных с API");
+                }
+            } catch (error) {
+                console.error(error);
+                return {
+                    title: "Ошибка",
+                    content: "Не удалось загрузить данные о погоде.",
+                    image: "https://via.placeholder.com/600x300?text=Error"
+                };
+            }
+        }
+
         // Функция для автоматической генерации контента
         async function generateAIContent() {
+            const weatherContent = await fetchWeatherData();
             const aiContentContainer = document.getElementById('ai-content');
             
-            // API для погоды в Норвегии
-            const weatherResponse = await fetch('https://api.openweathermap.org/data/2.5/weather?q=Oslo&appid=your_weather_api_key&units=metric&lang=ru');
-            const weatherData = await weatherResponse.json();
-            const weather = Температура в Осло: ${weatherData.main.temp}°C, ${weatherData.weather[0].description};
-
-            // API для новостей из Норвегии
-            const newsResponse = await fetch('https://newsapi.org/v2/top-headlines?country=no&apiKey=your_news_api_key');
-            const newsData = await newsResponse.json();
-            const news = newsData.articles[0].title;  // Выводим только заголовок первой новости
-
-            // Факты о Норвегии
-            const facts = "Норвегия — одна из самых устойчивых и развитых стран в мире, и лидер в области экологических технологий."; // Пример факта
-
-            // Получаем еще одну информацию о Норвегии с API (например, о спорте или культуре)
-            const randomFact = "Норвегия — родина всемирно известных лыжных курортов.";
-
             const newContent = document.createElement('div');
             newContent.innerHTML = `
-                <h2>Новости о Норвегии</h2>
-                <p>${news}</p>
-                <h2>Погода в Осло</h2>
-                <p>${weather}</p>
-                <h2>Интересный факт</h2>
-                <p>${facts}</p>
-                <h2>Дополнительный факт</h2>
-                <p>${randomFact}</p>
+                <h2>${weatherContent.title}</h2>
+                <p>${weatherContent.content}</p>
+                <img src="${weatherContent.image}" alt="${weatherContent.title}" class="ai-image">
             `;
             
             aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
             aiContentContainer.appendChild(newContent);
-        }
-
-        // Функция для старта обновления контента
+        }// Функция для старта обновления контента
         function startContentUpdate() {
             // Обновление контента каждые 15 секунд
             contentInterval = setInterval(generateAIContent, 15000);
         }
 
         // Функция для остановки обновления
-        function stopContentUpdate() {clearInterval(contentInterval);
+        function stopContentUpdate() {
+            clearInterval(contentInterval);
         }
 
         // Слушатели событий для остановки и возобновления обновления при касании экрана
