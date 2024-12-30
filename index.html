@@ -4,87 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная страница</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #001f3d;
-            color: white;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        header {
-            text-align: center;
-            padding: 50px 0;
-        }
-        .container {
-            padding: 20px;
-            text-align: center;
-            flex: 1;
-        }
-        .photo {
-            width: 70%;
-            max-width: 500px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        .owner {
-            font-size: 24px;
-            margin-top: 10px;
-        }
-        .social-icons {
-            margin-top: 20px;
-        }
-        .social-icons a {
-            color: white;
-            font-size: 30px;
-            margin: 0 15px;
-            text-decoration: none;
-        }
-        .settings {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .settings-menu {
-            display: none;
-            position: absolute;
-            top: 40px;
-            right: 10px;
-            background-color: #003366;
-            border: 1px solid white;
-            border-radius: 5px;
-            padding: 10px;
-        }
-        .settings-menu a {
-            display: block;
-            text-decoration: none;
-            color: white;
-            margin: 5px 0;
-            font-size: 16px;
-        }
-        .settings-menu a:hover {
-            color: lightblue;
-        }
-        /* Адаптивность */
-        @media screen and (max-width: 600px) {
-            .photo {
-                width: 90%;
-            }
-            .social-icons a {
-                margin: 0 10px;
-                font-size: 25px;
-            }
-            .settings {
-                font-size: 18px;
-            }
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -102,18 +23,42 @@
             </a>
         </div>
     </div>
-    <div class="settings" onclick="toggleSettingsMenu()">
-        <i class="fa-solid fa-cog"></i>
-        <div class="settings-menu">
-            <a href="pages/policy.html">Политика конфиденциальности</a>
-            <a href="pages/help.html">Поддержка</a>
+
+    <!-- Иконка настроек -->
+    <div class="settings" onclick="toggleSettingsMenu(event)">
+        <i class="fa-solid fa-gear"></i>
+    </div>
+    <div class="settings-menu">
+        <a href="pages/policy.html">Политика конфиденциальности</a>
+        <a href="pages/help.html">Поддержка</a>
+    </div>
+
+    <!-- Пункт с правилами -->
+    <div class="footer">
+        <a href="#" onclick="toggleRules()">Все правила</a>
+        <div id="rules" style="display: none; margin-top: 10px;">
+            <p>Мы не требуем регистрации, не собираем, не храним ваши данные и не используем их.</p>
         </div>
     </div>
 
     <script>
-        function toggleSettingsMenu() {
+        function toggleSettingsMenu(event) {
             const menu = document.querySelector('.settings-menu');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+            event.stopPropagation(); // предотвращаем закрытие меню при клике на иконку
+        }
+
+        // Закрываем меню, если кликнуть вне его области
+        document.addEventListener('click', function(event) {
+            const menu = document.querySelector('.settings-menu');
+            if (!menu.contains(event.target) && !event.target.closest('.settings')) {
+                menu.style.display = 'none';
+            }
+        });
+
+        function toggleRules() {
+            const rules = document.getElementById('rules');
+            rules.style.display = (rules.style.display === 'block') ? 'none' : 'block';
         }
     </script>
 </body>
