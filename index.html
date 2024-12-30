@@ -50,34 +50,21 @@
             background-color: #001f3d;
             font-size: 14px;
         }
-        .settings {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            color: white;
+        .next-page {
+            margin-top: 30px;
         }
-        .settings:hover {
+        .next-page a {
             color: lightblue;
-        }
-        .home {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            font-size: 30px;
             text-decoration: none;
-            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid lightblue;
+            padding: 10px 20px;
+            border-radius: 5px;
         }
-        .home:hover {
-            color: lightblue;
-        }
-        .details {
-            display: none;
-        }
-        .show-details {
-            cursor: pointer;
-            color: lightblue;
+        .next-page a:hover {
+            background-color: lightblue;
+            color: #001f3d;
         }
         /* Адаптивность для мобильных устройств */
         @media screen and (max-width: 600px) {
@@ -115,17 +102,23 @@
         </div>
     </div>
     <div class="bottom-info">
-        <p>Все права защищены | <span class="show-details" onclick="toggleDetails()">Подробнее</span></p>
+        <p>Все права защищены | <span class="show-details" onclick="toggleDetails()">Подробные</span></p>
         <div class="details">
-            <p>Мы не требуем входа или регистрации ваших данных. Мы не используем и не сохраняем данные пользователей.</p>
+            <p>Мы не требуем входа или регистрации ваших данных.</p>
         </div>
     </div>
+
+    <!-- Кнопка для перехода на следующую страничку -->
+    <div class="next-page">
+        <a href="next-page.html">Перейти на следующую страничку</a>
+    </div>
+
     <div class="settings" onclick="toggleSettingsMenu()">
         <i class="fa-sharp-duotone fa-solid fa-gear"></i> <!-- Иконка настроек -->
     </div>
 
     <a href="index.html" class="home">
-        <i class="fa-solid fa-house"></i>
+        <i class="fa-solid fa-house"></i> Вернуться на главную
     </a>
 
     <script>
