@@ -10,33 +10,25 @@ openai.api_key = "sk-proj-HPGuT62g1N1pLtnGvLgP3GdzvIj4p9Ev5DVZyB2cO29_WRMaDiJPGJ
 # Главная страница
 @app.route('/')
 def home():
-    print("Home route accessed.")  # Отладка
     return render_template('index.html')
 
 # Страница чата
 @app.route('/chat', methods=['POST'])
 def chat():
-    print("Chat route accessed.")  # Отладка
     user_message = request.form['message']
-    print("User message:", user_message)  # Отладка
     
     # Отправка запроса в OpenAI API
     try:
-        print("Sending request to OpenAI...")  # Для отладки
         response = openai.Completion.create(
             engine="text-davinci-003",  # Ты можешь использовать другие модели OpenAI
             prompt=user_message,        # Сообщение пользователя
             max_tokens=150              # Максимальное количество токенов для ответа
         )
-        print("Response received:", response)  # Для отладки
         bot_message = response.choices[0].text.strip()  # Ответ бота
-        print("Bot message:", bot_message)  # Для отладки
         return render_template('chatbot.html', bot_message=bot_message)
     except Exception as e:
-        print("Error:", str(e))  # Печать ошибки для отладки
-        return "Error: " + str(e)
+        return str(e)
 
 # Запуск сервера
 if name == '__main__':  # Заменил 'name' на '__name__'
-    print("Server starting...")  # Отладка
     app.run(debug=True)
