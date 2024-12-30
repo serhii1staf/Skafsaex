@@ -3,122 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random AI Content</title>
+    <title>AI Контент</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #003366; /* темно-синий фон */
-            color: #ffffff;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #001f3f; /* Тёмно-синий фон */
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
         }
 
         #ai-content {
-            margin: 20px;
+            max-width: 600px;
         }
 
         .home-icon {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: rgba(0, 0, 0, 0.5);
-            border-radius: 50%;
-            padding: 15px;
-            color: #ffffff;
             font-size: 24px;
-            cursor: pointer;
-            z-index: 1000;
+            color: white;
+            text-decoration: none;
         }
 
         .home-icon:hover {
-            background-color: rgba(0, 0, 0, 0.7);
+            color: #ffcc00; /* Немного подсветки при наведении */
         }
-
-        h2 {
-            margin: 10px 0;
-        }
-
-        p {
-            margin: 10px 0;
-        }
-
     </style>
 </head>
 <body>
-
     <div id="ai-content">
-        <!-- Контент будет автоматически добавляться сюда -->
+        <h2>Совет дня</h2>
+        <p>Используй день с пользой: запланируй время для отдыха и новых идей!</p>
     </div>
 
-    <!-- Иконка "Домой" -->
-    <a href="index.html">
-        <div class="home-icon">
-            <i class="fa-solid fa-house"></i>
-        </div>
+    <a href="index.html" class="home-icon">
+        <i class="fa-regular fa-house"></i>
     </a>
-
-    <script>
-        const contentExamples = [
-            {
-                title: 'Фьорды Норвегии',
-                content: 'Норвегия известна своими величественными фьордами, которые считаются одними из самых красивых природных явлений в мире.'
-            },
-            {
-                title: 'Горы Швейцарии',
-                content: 'Швейцария славится своими горными пейзажами, особенно в Альпах, которые привлекают туристов со всего мира.'
-            },
-            {
-                title: 'Мачу-Пикчу',
-                content: 'Мачу-Пикчу — древний город инков в Перу, расположенный на высоте более 2400 метров над уровнем моря, является одним из семи новых чудес света.'
-            }
-        ];
-
-        let contentInterval;
-        let isTouching = false; // Статус, удерживается ли палец на экране
-
-        // Функция для автоматической генерации контента
-        function generateAIContent() {
-            const randomContent = contentExamples[Math.floor(Math.random() * contentExamples.length)];
-            const aiContentContainer = document.getElementById('ai-content');
-            
-            const newContent = document.createElement('div');
-            newContent.innerHTML = `
-                <h2>${randomContent.title}</h2>
-                <p>${randomContent.content}</p>
-            `;
-            
-            aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
-            aiContentContainer.appendChild(newContent);
-        }
-
-        // Функция для старта обновления контента
-        function startContentUpdate() {
-            // Обновление контента каждые 15 секунд
-            contentInterval = setInterval(generateAIContent, 15000);
-        }
-
-        // Функция для остановки обновления
-        function stopContentUpdate() {
-            clearInterval(contentInterval);
-        }
-
-        // Слушатели событий для остановки и возобновления обновления при касании экрана
-        document.body.addEventListener('touchstart', () => {
-            isTouching = true; // Если экран удерживается
-            stopContentUpdate(); // Останавливаем обновление
-        });
-
-        document.body.addEventListener('touchend', () => {
-            isTouching = false; // Если палец убран
-            if (!isTouching) {
-                startContentUpdate(); // Возобновляем обновление
-            }
-        });
-
-        // Инициализация контента и запуск таймера
-        generateAIContent();
-        startContentUpdate();
-    </script>
 </body>
 </html>
