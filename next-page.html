@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #001f3d;
+            background-color: #001f3d; /* Темно-синий фон */
             color: white;
             margin: 0;
             padding: 0;
@@ -40,6 +40,12 @@
             margin: 0 15px;
             text-decoration: none;
         }
+        .bottom-info {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #001f3d;
+            font-size: 14px;
+        }
         .home {
             position: fixed;
             bottom: 10px;
@@ -55,24 +61,31 @@
             color: lightblue;
             background-color: rgba(0, 0, 0, 0.8);
         }
-        .bottom-info {
-            text-align: center;
-            padding: 10px 0;
-            background-color: #001f3d;
-            font-size: 14px;
+        h1 {
+            font-size: 32px;
+            color: white;
+            margin-top: 20px;
         }
-        .details {
-            display: none;
-        }
-        .show-details {
-            cursor: pointer;
-            color: lightblue;
+        /* Адаптивность для мобильных устройств */
+        @media screen and (max-width: 600px) {
+            .photo {
+                width: 90%;
+            }
+            .social-icons {
+                display: flex;
+                justify-content: center;
+                margin-top: 10px;
+            }
+            .social-icons a {
+                margin: 0 8px;
+                font-size: 25px;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1 style="color: white;">Телеграм Канал</h1>
+        <h1 style="margin-top: 30px;">Телеграм Канал</h1>
     </header>
     <div class="container">
         <img src="https://i.postimg.cc/1tZD1ZLy/IMG-4451.png" alt="Фото из телеграм канала" class="photo">
@@ -88,19 +101,5 @@
     <a href="index.html" class="home">
         <i class="fa-solid fa-house"></i>
     </a>
-
-    <div class="bottom-info">
-        <p>Все права защищены | <span class="show-details" onclick="toggleDetails()">Подробные</span></p>
-        <div class="details">
-            <p>Мы не требуем входа или регистрации ваших данных.</p>
-        </div>
-    </div>
-
-    <script>
-        function toggleDetails() {
-            var details = document.querySelector('.details');
-            details.style.display = details.style.display === 'none' ? 'block' : 'none';
-        }
-    </script>
 </body>
 </html>
