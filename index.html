@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой сайт</title>
+    <title>Настройки</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -13,123 +13,76 @@
             margin: 0;
             padding: 0;
         }
-        header {
-            text-align: center;
-            padding: 50px 0;
-        }
         .container {
             padding: 20px;
             text-align: center;
         }
-        .photo {
-            width: 70%;
-            max-width: 500px;
-            border-radius: 10px;
-            margin-top: 20px;
+        .settings-btns {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
         }
-        .owner {
-            font-size: 24px;
-            margin-top: 10px;
-        }
-        .social-icons {
-            margin-top: 20px;
-        }
-        .social-icons a {
+        .settings-btn {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #0056b3;
             color: white;
-            font-size: 30px;
-            margin: 0 15px;
-            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
         }
-        .bottom-info {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px 0;
-            background-color: #001f3d;
-            font-size: 14px;
+        .settings-btn i {
+            margin-right: 10px;
         }
-        .settings {
+        .settings-btn:hover {
+            background-color: #003f7f;
+        }
+        /* Иконка настроек в правом верхнем углу */
+        .settings-icon {
             position: absolute;
             top: 10px;
             right: 10px;
-            font-size: 18px;
-        }
-        .home {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
             font-size: 30px;
-            text-decoration: none;
+            cursor: pointer;
             color: white;
         }
-        .home:hover {
+        .settings-icon:hover {
             color: lightblue;
-        }
-        .details {
-            display: none;
-        }
-        .show-details {
-            cursor: pointer;
-            color: lightblue;
-        }
-        @media screen and (max-width: 600px) {
-            .photo {
-                width: 90%;
-            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Добро пожаловать</h1>
-    </header>
+    <!-- Иконка настроек -->
+    <div class="settings-icon">
+        <i class="fa-sharp-duotone fa-solid fa-gear" onclick="toggleSettings()"></i>
+    </div>
+
+    <!-- Содержание страницы -->
     <div class="container">
-        <img src="https://i.postimg.cc/wjFM9bW8/IMG-4456.jpg" alt="Владелец сайта" class="photo">
-        <div class="owner">владелец</div>
-        <div class="social-icons">
-            <!-- Instagram -->
-            <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" target="_blank">
-                <i class="fa-brands fa-instagram"></i>
-            </a>
-            <!-- Telegram -->
-            <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">
-                <i class="fa-brands fa-telegram"></i>
-            </a>
+        <h1>Настройки</h1>
+        <div id="settings-menu" style="display: none;">
+            <div class="settings-btns">
+                <button class="settings-btn" onclick="window.location.href='settings.html'">
+                    <i class="fa fa-cogs"></i> Настройки
+                </button>
+                <button class="settings-btn" onclick="window.location.href='privacy-policy.html'">
+                    <i class="fa fa-shield-alt"></i> Политика конфиденциальности
+                </button>
+                <button class="settings-btn" onclick="window.location.href='support.html'">
+                    <i class="fa fa-headset"></i> Поддержка
+                </button>
+            </div>
         </div>
     </div>
-    <div class="bottom-info">
-        <p>Все права защищены | <span class="show-details" onclick="toggleDetails()">Подробные</span></p>
-        <div class="details">
-            <p>Мы не требуем входа или регистрации ваших данных.</p>
-        </div>
-    </div>
-
-    <!-- Настройки, политика и поддержка -->
-    <div class="settings">
-        <!-- Настройки -->
-        <a href="settings.html" title="Настройки">
-            <i class="fa-sharp-duotone fa-solid fa-gear"></i> Настройки
-        </a>
-        <!-- Политика конфиденциальности -->
-        <a href="privacy-policy.html" title="Политика конфиденциальности">
-            <i class="fa-solid fa-file-alt"></i> Политика конфиденциальности
-        </a>
-        <!-- Поддержка -->
-        <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank" title="Поддержка">
-            <i class="fa-brands fa-telegram"></i> Поддержка
-        </a>
-    </div>
-
-    <!-- Иконка домой -->
-    <a href="index.html" class="home">
-        <i class="fa-solid fa-house"></i>
-    </a>
 
     <script>
-        function toggleDetails() {
-            const details = document.querySelector('.details');
-            details.style.display = details.style.display === 'block' ? 'none' : 'block';
+        // Функция для отображения или скрытия меню настроек
+        function toggleSettings() {
+            const menu = document.getElementById("settings-menu");
+            menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
         }
     </script>
 </body>
