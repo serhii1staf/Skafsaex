@@ -80,6 +80,13 @@
                 margin: 0 8px;
                 font-size: 25px;
             }
+
+            /* Уменьшение формы на мобильных устройствах */
+            .form-container {
+                width: 80%;
+                margin-top: 20px;
+                padding: 15px;
+            }
         }
 
         /* Стиль для меню с тремя точками */
@@ -115,7 +122,7 @@
 
         /* Форма обратной связи */
         .form-container {
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
             background-color: #00274d;
             padding: 20px;
@@ -141,8 +148,7 @@
         }
         input[type="submit"]:hover {
             background-color: #45a049;
-        }
-    </style>
+        }</style>
 </head>
 <body>
     <header>
@@ -174,7 +180,7 @@
     <!-- Форма обратной связи -->
     <div class="form-container" id="contactForm">
         <h2>Связаться с нами</h2>
-        <form action="your-backend-script-url" method="POST">
+        <form action="https://httpbin.org/post" method="POST">
             <input type="text" name="name" placeholder="Ваше имя" required>
             <input type="email" name="email" placeholder="Ваш email" required>
             <input type="tel" name="phone" placeholder="Ваш телефон" required>
