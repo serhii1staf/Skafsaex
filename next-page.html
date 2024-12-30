@@ -18,7 +18,7 @@
         }
         header {
             text-align: center;
-            padding: 50px 0;
+            padding: 30px 0; /* Меньше отступа сверху */
         }
         .container {
             padding: 20px;
@@ -69,29 +69,12 @@
             color: lightblue;
         }
 
-        /* Анимация для заголовка */
+        /* Заголовок теперь будет меньше и с отступом вниз */
         .title {
-            font-size: 3rem;
+            font-size: 2.5rem; /* Меньший размер */
             font-weight: bold;
             color: #3498db; /* Синий цвет */
-            opacity: 0;
-            transform: scale(0.8);
-            animation: sparkle 1s ease-out forwards;
-        }
-
-        @keyframes sparkle {
-            0% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.1);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
+            margin-bottom: 10px; /* Отступ вниз, ближе к фотографии */
         }
 
         /* Адаптивность для мобильных устройств */
@@ -113,7 +96,7 @@
 </head>
 <body>
     <header>
-        <h1 class="title">Телеграм Канал</h1> <!-- Добавлена анимация для заголовка -->
+        <h1 class="title">Телеграм Канал</h1> <!-- Заголовок с уменьшенным размером и отступом вниз -->
     </header>
     <div class="container">
         <img src="https://i.postimg.cc/1tZD1ZLy/IMG-4451.png" alt="Фото из телеграм канала" class="photo">
