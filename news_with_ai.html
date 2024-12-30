@@ -1,130 +1,45 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Искусственный Интеллект - Третья Страница</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #001f3d; /* Темно-синий фон */
-            color: white;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        header {
-            text-align: center;
-            padding: 50px 0;
-        }
-        .container {
-            padding: 20px;
-            text-align: center;
-            flex: 1;
-        }
-        .ai-section {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-        h1 {
-            font-size: 32px;
-            color: white;
-            margin-top: 20px;
-        }
-        /* Иконка Домой */
-        .home {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            font-size: 24px;
-            text-decoration: none;
-            color: white;
-            padding: 10px;
-            border-radius: 50%;
-            background-color: rgba(0, 0, 0, 0.6);
-        }
-        .home:hover {
-            color: lightblue;
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-        /* Адаптивность для мобильных устройств */
-        @media screen and (max-width: 600px) {
-            .ai-section {
-                margin-top: 20px;
-                padding: 15px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Искусственный Интеллект</h1>
-    </header>
-    
-    <div class="container">
-        <!-- Блок с искусственным интеллектом, контент генерируется автоматически -->
-        <div class="ai-section" id="ai-content">
-            <!-- Здесь будет автоматически генерироваться контент -->
-        </div>
-    </div>
-
-    <!-- Иконка для возврата на главную -->
-    <a href="index.html" class="home">
-        <i class="fa-solid fa-house"></i>
-    </a>
-
-    <script>
-        // Массив с примерами контента, которые будут показываться автоматически
-        const contentExamples = [
-            {
-                title: "Новости Норвегии",
-                content: "Сегодня в Норвегии прошел важный экономический форум, где обсуждали будущее технологий в стране.",
-                image: "https://via.placeholder.com/400x200"
-            },
-            {
-                title: "Погода в Норвегии",
-                content: "Сегодня в Осло температура воздуха 5°C, дождливо. Ожидаются сильные осадки.",
-                image: "https://via.placeholder.com/400x200"
-            },
-            {
-                title: "Новые исследования",
-                content: "Новые исследования показывают, что ИИ будет иметь огромный вклад в будущем медицине.",
-                image: "https://via.placeholder.com/400x200"
-            },
-            {
-                title: "Инновации в Норвегии",
-                content: "В Норвегии запуск нового проекта по возобновляемым источникам энергии.",
-                image: "https://via.placeholder.com/400x200"
-            }
-        ];
-
-        // Функция для автоматической генерации контента
-        function generateAIContent() {
-            // Выбираем случайный элемент из массива контента
+function generateAIContent() {
             const randomContent = contentExamples[Math.floor(Math.random() * contentExamples.length)];
-
-            // Получаем контейнер для контента
             const aiContentContainer = document.getElementById('ai-content');
             
-            // Создаем HTML для нового контента
             const newContent = document.createElement('div');
             newContent.innerHTML = `
-                <h3>${randomContent.title}</h3>
+                <h2>${randomContent.title}</h2>
                 <p>${randomContent.content}</p>
-                <img src="${randomContent.image}" alt="Генерируемое изображение" />
+                <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image">
             `;
-
-            // Добавляем новый контент в контейнер
+            
+            aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
             aiContentContainer.appendChild(newContent);
         }
 
-        // Инициализация генерации контента при загрузке страницы
-        window.onload = generateAIContent;
+        // Функция для старта обновления контента
+        function startContentUpdate() {
+            // Обновление контента каждые 15 секунд
+            contentInterval = setInterval(generateAIContent, 15000);
+        }
+
+        // Функция для остановки обновления
+        function stopContentUpdate() {
+            clearInterval(contentInterval);
+        }
+
+        // Слушатели событий для остановки и возобновления обновления при касании экрана
+        document.body.addEventListener('touchstart', () => {
+            isTouching = true; // Если экран удерживается
+            stopContentUpdate(); // Останавливаем обновление
+        });
+
+        document.body.addEventListener('touchend', () => {
+            isTouching = false; // Если палец убран
+            if (!isTouching) {
+                startContentUpdate(); // Возобновляем обновление
+            }
+        });
+
+        // Инициализация контента и запуск таймера
+        generateAIContent();
+        startContentUpdate();
     </script>
 </body>
 </html>
