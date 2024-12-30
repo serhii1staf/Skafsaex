@@ -1,28 +1,30 @@
 import openai
-from flask import Flask, request, jsonify
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
-# Вставленный ключ API
-openai.api_key = "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"
+# Вставленный ключ API OpenAI
+openai.api_key = "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"
+
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    user_message = request.json.get('message')
+    user_message = request.form['message']
     
-    if not user_message:
-        return jsonify({"error": "No message provided"}), 400
-
+    # Отправка запроса в OpenAI API
     try:
         response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=user_message,
-            max_tokens=150
+            engine="text-davinci-003",  # Ты можешь использовать другие модели OpenAI
+            prompt=user_message,        # Сообщение пользователя
+            max_tokens=150              # Максимальное количество токенов для ответа
         )
-        bot_message = response.choices[0].text.strip()
-        return jsonify({"response": bot_message})
+        bot_message = response.choices[0].text.strip()  # Ответ бота
+        return render_template('chatbot.html', bot_message=bot_message)
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return str(e)
 
 if name == '__main__':
     app.run(debug=True)
