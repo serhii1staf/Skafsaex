@@ -3,120 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Актуальная информация</title>
+    <title>Новости с AI</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            text-align: center;
         }
-        #ai-content {
-            max-width: 800px;
-            margin: 0 auto;
+
+        /* Стиль для иконки домика */
+        .home-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 30px;
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
-        .ai-image {
-            border-radius: 10px;
-            margin-top: 20px;
-            max-width: 100%;
-            height: auto;
+
+        .home-icon:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Стиль для блока новостей */
+        #news {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .news-item {
+            margin-bottom: 10px;
+        }
+
+        /* Адаптивность для разных экранов */
+        @media (max-width: 768px) {
+            .home-icon {
+                font-size: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .home-icon {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="ai-content">
-        <!-- Здесь будет отображаться актуальная информация -->
+
+    <div id="news">
+        <h2>Актуальные новости</h2>
+        <div id="newsContent"></div>
     </div>
 
+    <!-- Иконка для перехода на главную страницу -->
+    <a href="index.html" class="home-icon">
+        <i class="fa-solid fa-house"></i>
+    </a>
+
     <script>
-        let contentInterval;
-        let isTouching = false; // Статус, удерживается ли палец на экране
-
-        // Замените на свой реальный ключ API
-        const API_KEY = 'ВАШ_КЛЮЧ_API'; // Получите свой ключ API для новостей
-        const newsApiUrl = 'https://newsapi.org/v2/top-headlines?country=no&apiKey=' + API_KEY; // Новости из Норвегии
-        const weatherApiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=Oslo,no&appid=ВАШ_КЛЮЧ_API&units=metric'; // Погода в Осло, Норвегия
-
-        // Функция для получения актуальной информации
-        async function fetchContent() {
-            try {
-                // Запрос новостей
-                const newsResponse = await fetch(newsApiUrl);
-                const newsData = await newsResponse.json();
-                const newsContent = newsData.articles[0]; // Первая статья
-
-                // Запрос погоды
-                const weatherResponse = await fetch(weatherApiUrl);
-                const weatherData = await weatherResponse.json();
-                const weatherContent = Температура в Осло: ${weatherData.main.temp}°C, ${weatherData.weather[0].description};
-
-                return {
-                    title: newsContent.title,
-                    content: ${newsContent.description} ${weatherContent},
-                    image: newsContent.urlToImage || 'https://via.placeholder.com/800x600', // Плейсхолдер, если нет изображения
-                };
-            } catch (error) {
-                console.error('Ошибка загрузки данных:', error);
-                return {
-                    title: 'Ошибка',
-                    content: 'Не удалось загрузить актуальную информацию.',
-                    image: 'https://via.placeholder.com/800x600', // Плейсхолдер на случай ошибки
-                };
-            }
+        // Функция для обновления новостей
+        function fetchNews() {
+            const news = [
+                "ВОСЛО сегодня +5.",
+                "Норвегия планирует развитие искусственного интеллекта.",
+                "Новые технологии в области экологии начали активно развиваться.",
+                "Исследования показывают, что AI может повысить качество жизни.",
+            ];
+            
+            // Выбираем случайную новость
+            const randomNews = news[Math.floor(Math.random() * news.length)];
+            
+            // Вставляем новость в блок на странице
+            document.getElementById("newsContent").innerHTML = <div class="news-item">${randomNews}</div>;
         }
 
-        // Функция для автоматической генерации контента
-        async function generateAIContent() {
-            const randomContent = await fetchContent(); // Получаем актуальное содержимое через API
-            const aiContentContainer = document.getElementById('ai-content');
-            
-            const newContent = document.createElement('div');
-            
-            // Проверяем, если мобильное устройство
-            const imageSize = window.innerWidth <= 768 ? '100%' : '80%'; // 100% для мобильного, 80% для ноутбука
-            newContent.innerHTML = `
-                <h2>${randomContent.title}</h2>
-                <p>${randomContent.content}</p>
-                <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image" style="width: ${imageSize}; height: auto;">
-            `;
-            
-            aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
-            aiContentContainer.appendChild(newContent);
-        }
+        // Обновляем новость каждые 15 секунд
+        let newsInterval = setInterval(fetchNews, 15000);
 
-        // Функция для старта обновления контента
-        function startContentUpdate() {
-            // Обновление контента каждые 15 секунд
-            contentInterval = setInterval(generateAIContent, 15000);
-        }
+        // Загружаем первую новость сразу
+        fetchNews();
 
-        // Функция для остановки обновления
-        function stopContentUpdate() {
-            clearInterval(contentInterval);}
+        // Функция для остановки обновления новости при нажатии
+        let isPressing = false;
 
-        // Слушатели событий для остановки и возобновления обновления при касании экрана
-        document.body.addEventListener('touchstart', () => {
-            isTouching = true; // Если экран удерживается
-            stopContentUpdate(); // Останавливаем обновление
+        document.getElementById("newsContent").addEventListener("touchstart", function() {
+            isPressing = true;
+            clearInterval(newsInterval); // Останавливаем обновление
         });
 
-        document.body.addEventListener('touchend', () => {
-            isTouching = false; // Если палец убран
-            if (!isTouching) {
-                startContentUpdate(); // Возобновляем обновление
-            }
+        document.getElementById("newsContent").addEventListener("touchend", function() {
+            isPressing = false;
+            newsInterval = setInterval(fetchNews, 15000); // Возобновляем обновление
         });
 
-        // Инициализация контента и запуск таймера
-        generateAIContent();
-        startContentUpdate();
+        document.getElementById("newsContent").addEventListener("mousedown", function() {
+            isPressing = true;
+            clearInterval(newsInterval); // Останавливаем обновление
+        });
+
+        document.getElementById("newsContent").addEventListener("mouseup", function() {
+            isPressing = false;
+            newsInterval = setInterval(fetchNews, 15000); // Возобновляем обновление
+        });
     </script>
+
 </body>
 </html>
