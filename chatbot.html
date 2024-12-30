@@ -6,6 +6,10 @@
     <title>ChatBot</title>
     <style>
         /* Общие стили для ChatBot */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
         .chatbot-container {
             background-color: #001f3d; /* Темно-синий фон */
             color: white;
@@ -14,9 +18,11 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 300px;
+            width: 350px;
             max-width: 100%;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
         }
 
         .chatbot-header {
@@ -25,7 +31,13 @@
             text-align: center;
         }
 
-        /* Стили для input и кнопки */
+        .chatbox {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            max-height: 300px;
+        }
+
         .chatbot-input {
             width: 100%;
             padding: 10px;
@@ -47,7 +59,7 @@
         /* Для мобильных устройств */
         @media screen and (max-width: 600px) {
             .chatbot-container {
-                width: 90%;
+                width: 100%;
                 bottom: 10px;
                 right: 10px;
             }
@@ -55,12 +67,9 @@
             .chatbot-header {
                 font-size: 18px;
             }
-        }
 
-        /* Для десктопов */
-        @media screen and (min-width: 601px) {
-            .chatbot-container {
-                width: 350px;
+            .chatbox {
+                max-height: 200px;
             }
         }
 
@@ -70,6 +79,7 @@
             border-radius: 5px;
             margin-bottom: 10px;
             max-width: 80%;
+            word-wrap: break-word;
         }
 
         .userMessage {
@@ -84,10 +94,9 @@
             align-self: flex-start;
         }
 
-        #chatBox {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-bottom: 20px;
+        .input-container {
+            display: flex;
+            flex-direction: column;
         }
     </style>
 </head>
@@ -96,9 +105,11 @@
 <!-- Структура ChatBot -->
 <div id="chatbot" class="chatbot-container">
     <div class="chatbot-header">ChatBot</div>
-    <div id="chatBox" class="chatBox"></div>
-    <input id="userInput" class="chatbot-input" type="text" placeholder="Напишите сообщение..." />
-    <button id="sendButton" class="chatbot-send-btn">Отправить</button>
+    <div id="chatBox" class="chatbox"></div>
+    <div class="input-container">
+        <input id="userInput" class="chatbot-input" type="text" placeholder="Напишите сообщение..." />
+        <button id="sendButton" class="chatbot-send-btn">Отправить</button>
+    </div>
 </div>
 
 <script>
@@ -116,7 +127,7 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': Bearer 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';// 
+                'Authorization': 'Bearer sk-XXXX' // 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';
             },
             body: JSON.stringify({
                 model: 'text-davinci-003',
@@ -135,11 +146,10 @@
 
         // Очищаем поле ввода после отправки
         document.getElementById('userInput').value = '';
-    });
-
-    // Функция для отображения сообщений пользователя
+    });// Функция для отображения сообщений пользователя
     function displayUserMessage(message) {
-        const chatBox = document.getElementById('chatBox');const userMessage = document.createElement('div');
+        const chatBox = document.getElementById('chatBox');
+        const userMessage = document.createElement('div');
         userMessage.classList.add('userMessage');
         userMessage.textContent = message;
         chatBox.appendChild(userMessage);
