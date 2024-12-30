@@ -60,6 +60,13 @@
             margin: 0 15px;
             text-decoration: none;
         }
+        /* Для иконки ChatBot */
+        .chatbot-icon {
+            color: white;
+            font-size: 30px;
+            margin: 0 15px;
+            text-decoration: none;
+        }
         .bottom-info {
             text-align: center;
             padding: 10px 0;
@@ -117,6 +124,10 @@
             <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">
                 <i class="fa-brands fa-telegram"></i>
             </a>
+            <!-- Иконка ChatBot -->
+            <a href="chatbot.html" class="chatbot-icon">
+                <i class="fa-duotone fa-regular fa-message-bot"></i>
+            </a>
         </div>
     </div>
     
@@ -128,8 +139,7 @@
         </div>
     </div>
 
-    <script>
-        function toggleDetails() {
+    <script>function toggleDetails() {
             const details = document.querySelector('.details');
             details.style.display = details.style.display === 'block' ? 'none' : 'block';
         }
