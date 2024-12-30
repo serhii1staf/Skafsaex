@@ -1,133 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBot</title>
-    <style>
-        body {
-            background-color: #003366;  /* Темно-синий фон */
-            font-family: Arial, sans-serif;
-            color: white;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .chat-container {
-            width: 100%;
-            max-width: 600px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .chat-box {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 10px;
-            background-color: #f1f1f1;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            height: 60%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .message {
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 10px;
-            max-width: 70%;
-        }
-
-        .user-message {
-            background-color: #003366;
-            color: white;
-            align-self: flex-end;  /* Сообщение пользователя справа */
-        }
-
-        .bot-message {
-            background-color: #e0e0e0;
-            color: black;
-            align-self: flex-start;  /* Сообщение бота слева */
-        }
-
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-            resize: none;
-            height: 50px;
-        }
-
-        button {
-            padding: 10px 15px;
-            background-color: #003366; /* Темно-синие кнопки */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #005f73;
-        }
-    </style>
+  <title>Chatbot</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-box" id="chat-box"></div>
-        <textarea id="message" placeholder="Type your message..."></textarea>
-        <button id="send-btn">Send</button>
+  <div class="chat-container">
+    <div class="chat-header">
+      <h2>Chatbot</h2>
     </div>
-
-    <script>
-        document.getElementById('send-btn').addEventListener('click', sendMessage);
-
-        async function sendMessage() {
-            const message = document.getElementById('message').value;
-            if (!message) return;
-
-            // Показываем сообщение пользователя
-            appendMessage('You: ' + message, 'user');
-
-            // Отправляем запрос к backend
-            const response = await fetch('/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ message })
-            });
-
-            const data = await response.json();
-            const botReply = data.response || data.error;
-
-            // Показываем ответ бота
-            appendMessage('Bot: ' + botReply, 'bot');
-            document.getElementById('message').value = ''; // Очищаем поле ввода
-        }
-
-        function appendMessage(message, sender) {
-            const chatBox = document.getElementById('chat-box');
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
-            messageElement.textContent = message;
-            chatBox.appendChild(messageElement);
-            chatBox.scrollTop = chatBox.scrollHeight; // Прокручиваем вниз
-        }
-    </script>
+    <div class="chat-messages">
+      </div>
+    <div class="input-container">
+      <input type="text" class="input-field" placeholder="Type your message...">
+      <button class="send-button">Send</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
