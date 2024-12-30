@@ -55,11 +55,6 @@
             top: 10px;
             right: 10px;
             font-size: 18px;
-            cursor: pointer;
-            color: white;
-        }
-        .settings:hover {
-            color: lightblue;
         }
         .home {
             position: fixed;
@@ -120,29 +115,18 @@
             <p>Мы не требуем входа или регистрации ваших данных.</p>
         </div>
     </div>
-    <div class="settings" onclick="toggleSettingsMenu()">
-        <i class="fa-sharp-duotone fa-solid fa-gear"></i> <!-- Иконка настроек -->
+    <div class="settings">
+        <button onclick="window.location.href='privacy-policy.html'">Политика конфиденциальности</button>
+        <button onclick="window.location.href='support.html'">Поддержка</button>
     </div>
-
     <a href="index.html" class="home">
         <i class="fa-solid fa-house"></i>
     </a>
-
-    <!-- Скрытое меню настроек -->
-    <div id="settingsMenu" style="display: none; position: fixed; top: 50px; right: 10px; background-color: #001f3d; padding: 10px; border-radius: 5px; color: white; font-size: 18px;">
-        <a href="support.html" style="display: block; margin-bottom: 10px;">Поддержка</a>
-        <a href="privacy-policy.html" style="display: block; margin-bottom: 10px;">Политика конфиденциальности</a>
-    </div>
 
     <script>
         function toggleDetails() {
             const details = document.querySelector('.details');
             details.style.display = details.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function toggleSettingsMenu() {
-            const menu = document.getElementById('settingsMenu');
-            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
         }
     </script>
 </body>
