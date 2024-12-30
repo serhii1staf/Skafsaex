@@ -3,73 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random AI Content</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>Рандомный контент AI</title>
     <style>
         body {
-            background-color: #001f3d; /* Темно-синий фон */
-            color: white;
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #001f3f; /* Темно-синий фон */
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             flex-direction: column;
-        }
-        .content-container {
             text-align: center;
         }
-        .ai-image {
-            width: 100%;
+        #ai-content img {
+            max-width: 100%;
             height: auto;
+            border-radius: 10px;
         }
-        #home-icon {
+        .home-icon {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            font-size: 2em;
-            color: white;
-            background-color: #001f3d;
-            border-radius: 50%;
+            background-color: #0050a0; /* Темно-синий цвет */
+            border: none;
             padding: 10px;
+            border-radius: 50%;
             cursor: pointer;
         }
-        #ai-content {
-            margin-top: 20px;
+        .home-icon img {
+            width: 30px;
+            height: 30px;
         }
     </style>
 </head>
 <body>
-    <div id="ai-content" class="content-container">
-        <h2>Заголовок контента</h2>
-        <p>Текст контента...</p>
-        <picture>
-            <!-- Для телефонов с маленьким экраном -->
-            <source srcset="https://via.placeholder.com/150?text=MobileImage" media="(max-width: 600px)">
-            <!-- Для планшетов -->
-            <source srcset="https://via.placeholder.com/300?text=TabletImage" media="(max-width: 1024px)">
-            <!-- Для десктопов -->
-            <img src="https://via.placeholder.com/500?text=DesktopImage" alt="AI Image" class="ai-image">
-        </picture>
+    <div id="ai-content">
+        <!-- Контент будет добавляться сюда динамически -->
     </div>
-
-    <!-- Иконка домика для перехода на главную страницу -->
-    <i id="home-icon" class="fas fa-home" onclick="window.location.href='index.html';"></i>
+    <button class="home-icon" onclick="window.location.href='index.html'">
+        <img src="images/home-icon.png" alt="Домой">
+    </button>
 
     <script>
         let contentInterval;
-        let isTouching = false; // Статус, удерживается ли палец на экране
-
-        // Пример контента
         const contentExamples = [
-            {title: "Норвегия и искусственный интеллект", content: "Норвегия рассматривает использование ИИ в различных областях.", image: "https://via.placeholder.com/100"},
-            {title: "Погода в Осло", content: "В Осло сегодня +5°C и дождливо.", image: "https://via.placeholder.com/100"},
-            {title: "Новости Норвегии", content: "Норвегия планирует увеличить использование солнечной энергии.", image: "https://via.placeholder.com/100"}
+            {
+                title: "Интересный факт о Норвегии",
+                content: "В Норвегии находится самый длинный туннель в мире - Лэрдалский туннель, длиной 24,5 км.",
+                image: "images/fact1.jpg"
+            },
+            {
+                title: "Погода в Осло",
+                content: "Сегодня в Осло ясно, температура около 5°C.",
+                image: "images/weather.jpg"
+            },
+            {
+                title: "Норвежский ландшафт",
+                content: "Фьорды Норвегии привлекают миллионы туристов ежегодно.",
+                image: "images/landscape.jpg"
+            }
         ];
 
-        // Функция для автоматической генерации контента
         function generateAIContent() {
             const randomContent = contentExamples[Math.floor(Math.random() * contentExamples.length)];
             const aiContentContainer = document.getElementById('ai-content');
@@ -79,12 +76,8 @@
                 <h2>${randomContent.title}</h2>
                 <p>${randomContent.content}</p>
                 <picture>
-                    <!-- Для телефонов с маленьким экраном -->
-                    <source srcset="${randomContent.image}?text=MobileImage" media="(max-width: 600px)">
-                    <!-- Для планшетов -->
-                    <source srcset="${randomContent.image}?text=TabletImage" media="(max-width: 1024px)">
-                    <!-- Для десктопов -->
-                    <img src="${randomContent.image}?text=DesktopImage" alt="${randomContent.title}" class="ai-image">
+                    <source srcset="${randomContent.image}" media="(max-width: 768px)">
+                    <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image">
                 </picture>
             `;
             
@@ -92,29 +85,17 @@
             aiContentContainer.appendChild(newContent);
         }
 
-        // Функция для старта обновления контента
         function startContentUpdate() {
-            contentInterval = setInterval(generateAIContent, 15000); // Обновление каждые 15 секунд
+            contentInterval = setInterval(generateAIContent, 15000);
         }
 
-        // Функция для остановки обновления
-        function stopContentUpdate() {clearInterval(contentInterval);
+        function stopContentUpdate() {
+            clearInterval(contentInterval);
         }
 
-        // Слушатели событий для остановки и возобновления обновления при касании экрана
-        document.body.addEventListener('touchstart', () => {
-            isTouching = true;
-            stopContentUpdate();
-        });
+        document.body.addEventListener('touchstart', stopContentUpdate);
+        document.body.addEventListener('touchend', startContentUpdate);
 
-        document.body.addEventListener('touchend', () => {
-            isTouching = false;
-            if (!isTouching) {
-                startContentUpdate();
-            }
-        });
-
-        // Инициализация контента и запуск таймера
         generateAIContent();
         startContentUpdate();
     </script>
