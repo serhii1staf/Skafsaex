@@ -6,14 +6,109 @@
     <title>Вторая Страница</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <style>
+        /* Фон страницы */
+        body {
+            background-color: #003366; /* Темно-синий фон */
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Центрирование контента */
+        .content {
+            text-align: center;
+            padding: 50px;
+        }
+
+        /* Заголовок */
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Фото */
+        .content .image {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            margin-top: 20px;
+        }
+
+        /* Иконка Telegram */
+        .content a {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 30px;
+            color: #0088cc;
+            text-decoration: none;
+        }
+
+        /* Иконка домика */
+        .home {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 30px;
+            color: white;
+        }
+
+        /* Иконка перехода на третью страницу */
+        .next-page {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 30px;
+            color: white;
+        }
+
+        /* Три точки (кнопка связи) */
+        .three-dots {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* Форма обратной связи */
+        .feedback-form {
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .feedback-form input,
+        .feedback-form textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .feedback-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Фотография и текст (Telegram канал) -->
+    <!-- Контент страницы: Telegram канал -->
     <div class="content">
         <h1>Telegram канал</h1>
-        <!-- Ссылка на изображение -->
-        <img src="https://i.postimg.cc/1tZD1ZLy/IMG-4451.png" alt="Телеграм" class="image">
+        <img src="https://i.postimg.cc/1tZD1ZLy/IMG-4451.png" alt="Telegram канал" class="image">
         <a href="https://t.me/your_channel" target="_blank">
             <i class="fa-brands fa-telegram"></i>
         </a>
@@ -47,8 +142,7 @@
     <script>
         function toggleFeedbackForm() {
             const feedbackForm = document.getElementById('feedbackForm');
-            // Если форма скрыта, показываем её
-            if (feedbackForm.style.display === 'none' || feedbackForm.style.display === '') {
+            // Если форма скрыта, показываем еёif (feedbackForm.style.display === 'none' || feedbackForm.style.display === '') {
                 feedbackForm.style.display = 'block';
 
                 // Скрыть форму через 5 секунд
@@ -61,74 +155,6 @@
             }
         }
     </script>
-
-    <style>
-        /* Стиль для главной иконки */
-        .home {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            font-size: 30px;
-        }
-
-        /* Стиль для иконки перехода на третью страницу */
-        .next-page {
-            position: fixed;
-            bottom: 20px;
-            right: 20px; /* Помещаем в нижний правый угол */
-            font-size: 30px;
-        }
-
-        /* Стиль для фото и текста */
-        .content {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .image {
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            margin-top: 20px; /* Убедитесь, что фото не перекрывает текст */
-        }
-
-        .three-dots {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            font-size: 30px;
-            cursor: pointer;
-        }
-
-        /* Стиль для формы обратной связи */
-        .feedback-form {
-            display: none;
-            position: fixed;
-            bottom: 100px;
-            left: 20px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 20px;
-            border-radius: 5px;
-        }
-
-        .feedback-form input,
-        .feedback-form textarea {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .feedback-form button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-    </style>
 
 </body>
 </html>
