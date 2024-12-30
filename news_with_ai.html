@@ -43,13 +43,6 @@
             margin: 10px 0;
         }
 
-        .ai-image {
-            width: 100%;
-            max-width: 500px;
-            height: auto;
-            display: block;
-            margin: 10px 0;
-        }
     </style>
 </head>
 <body>
@@ -69,18 +62,15 @@
         const contentExamples = [
             {
                 title: 'Фьорды Норвегии',
-                content: 'Норвегия известна своими величественными фьордами, которые считаются одними из самых красивых природных явлений в мире.',
-                image: 'https://via.placeholder.com/500x300?text=%D0%A4%D1%8C%D0%BE%D1%80%D0%B4%D1%8B+%D0%9D%D0%BE%D1%80%D0%B2%D0%B5%D0%B3%D0%B8'
+                content: 'Норвегия известна своими величественными фьордами, которые считаются одними из самых красивых природных явлений в мире.'
             },
             {
                 title: 'Горы Швейцарии',
-                content: 'Швейцария славится своими горными пейзажами, особенно в Альпах, которые привлекают туристов со всего мира.',
-                image: 'https://via.placeholder.com/500x300?text=%D0%93%D0%BE%D1%80%D1%8B+%D0%A8%D0%B2%D0%B5%D0%B9%D1%86%D0%B0%D1%80%D0%B8%D0%B8'
+                content: 'Швейцария славится своими горными пейзажами, особенно в Альпах, которые привлекают туристов со всего мира.'
             },
             {
                 title: 'Мачу-Пикчу',
-                content: 'Мачу-Пикчу — древний город инков в Перу, расположенный на высоте более 2400 метров над уровнем моря, является одним из семи новых чудес света.',
-                image: 'https://via.placeholder.com/500x300?text=%D0%9C%D0%B0%D1%87%D1%83-%D0%9F%D0%B8%D0%BA%D1%87%D1%83'
+                content: 'Мачу-Пикчу — древний город инков в Перу, расположенный на высоте более 2400 метров над уровнем моря, является одним из семи новых чудес света.'
             }
         ];
 
@@ -96,7 +86,6 @@
             newContent.innerHTML = `
                 <h2>${randomContent.title}</h2>
                 <p>${randomContent.content}</p>
-                <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image">
             `;
             
             aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
@@ -115,7 +104,8 @@
         }
 
         // Слушатели событий для остановки и возобновления обновления при касании экрана
-        document.body.addEventListener('touchstart', () => {isTouching = true; // Если экран удерживается
+        document.body.addEventListener('touchstart', () => {
+            isTouching = true; // Если экран удерживается
             stopContentUpdate(); // Останавливаем обновление
         });
 
