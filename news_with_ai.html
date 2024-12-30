@@ -37,17 +37,20 @@
             bottom: 20px;
             right: 20px;
             font-size: 30px;
-            background-color: #ffffff;
+            background-color: #ffffff; /* Белый фон */
+            color: #000000; /* Черный цвет домика */
             padding: 10px;
             border-radius: 50%;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             transition: background-color 0.3s;
+            text-align: center; /* Центрируем иконку */
         }
 
         .home-icon:hover {
             background-color: #f0f0f0;
         }
+
     </style>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
@@ -115,11 +118,11 @@
         // Слушатели событий для остановки и возобновления обновления при касании экрана
         document.body.addEventListener('touchstart', () => {
             isTouching = true; // Если экран удерживается
-            stopContentUpdate(); // Останавливаем обновление
-        });
+            stopContentUpdate(); // Останавливаем обновление});
 
         document.body.addEventListener('touchend', () => {
-            isTouching = false; // Если палец убранif (!isTouching) {
+            isTouching = false; // Если палец убран
+            if (!isTouching) {
                 startContentUpdate(); // Возобновляем обновление
             }
         });
