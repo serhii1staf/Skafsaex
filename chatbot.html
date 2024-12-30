@@ -5,137 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBot</title>
     <style>
-        /* Стиль для иконки */
+        /* CSS стили для чата */
         #chatbot-icon {
             position: fixed;
-            bottom: 10px;
-            right: 10px;
+            bottom: 20px;
+            right: 20px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 50%;
+            padding: 10px;
+            font-size: 24px;
         }
 
-        /* Стиль для иконки на мобильных устройствах */
-        @media (max-width: 768px) {
-            #chatbot-icon {
-                width: 50px;
-                height: 50px;
-            }
-        }
-
-        /* Стиль для иконки на десктопах */
-        @media (min-width: 769px) {
-            #chatbot-icon {
-                width: 80px;
-                height: 80px;
-            }
-        }
-
-        /* Стиль для модального окна чата */
-        #chat-window {
-            display: none;
+        #chatbox {
             position: fixed;
-            bottom: 10px;
-            right: 10px;
-            width: 350px;
-            height: 450px;
+            bottom: 60px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-            padding: 20px;
+            border: 1px solid #ccc;
+            display: none;
+            flex-direction: column;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* Стиль для области сообщений */
-        #messages {
-            height: 80%;
+        #chat-history {
+            flex-grow: 1;
             overflow-y: auto;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
-        /* Стиль для поля ввода сообщений */
-        #input-message {
+        #chat-input {
             width: 100%;
             padding: 10px;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            border: 1px solid #ddd;
         }
-
     </style>
 </head>
 <body>
 
-<!-- Иконка ChatBot -->
-<img id="chatbot-icon" src="chatbot-icon.png" alt="ChatBot" onclick="toggleChat()">
+    <!-- Иконка ChatBot -->
+    <div id="chatbot-icon" onclick="toggleChatbox()">ChatBot</div>
 
-<!-- Модальное окно чата -->
-<div id="chat-window">
-    <div id="messages"></div>
-    <input type="text" id="input-message" placeholder="Напишите сообщение..." onkeydown="sendMessage(event)">
-</div>
+    <!-- Окно чата -->
+    <div id="chatbox">
+        <div id="chat-history"></div>
+        <input id="chat-input" type="text" placeholder="Напишите сообщение...">
+    </div>
 
-<script>
-// Инициализация переменных
-let chatWindow = document.getElementById('chat-window');
-let messages = document.getElementById('messages');
-let inputMessage = document.getElementById('input-message');
+    <script>
+        const API_KEY = "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";  // Замените на ваш ключ API
 
-// API-ключ от OpenAI
-const apiKey = "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";
-
-// Функция для отображения и скрытия чата
-function toggleChat() {
-    chatWindow.style.display = chatWindow.style.display === 'none' ? 'block' : 'none';
-}
-
-// Функция для отправки сообщений
-function sendMessage(event) {
-    if (event.key === 'Enter') {
-        let userMessage = inputMessage.value.trim();
-        if (userMessage) {
-            appendMessage("Вы: " + userMessage);
-            inputMessage.value = '';
-            getChatbotResponse(userMessage);
+        // Функция для переключения окна чата
+        function toggleChatbox() {
+            const chatbox = document.getElementById("chatbox");
+            if (chatbox.style.display === "none") {
+                chatbox.style.display = "flex";
+            } else {
+                chatbox.style.display = "none";
+            }
         }
-    }
-}
 
-// Функция для получения ответа от ChatGPT
-function getChatbotResponse(userMessage) {
-    fetch('https://api.openai.com/v1/completions', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': Bearer ${apiKey}
-        },
-        body: JSON.stringify({
-            model: 'gpt-3.5-turbo',
-            messages: [{ role: 'user', content: userMessage }],
-            max_tokens: 150
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        let botMessage = data.choices[0].message.content.trim();
-        appendMessage("ChatBot: " + botMessage);
-    })
-    .catch(error => {
-        console.error('Ошибка:', error);
-    });
-}
+        // Инициализация и обработка сообщений
+        document.getElementById("chat-input").addEventListener("keypress", function (e) {
+            if (e.key === 'Enter') {
+                const message = e.target.value;
+                sendMessageToBot(message);
+                e.target.value = '';  // Очищаем поле
+            }
+        });
 
-// Функция для добавления сообщений в окно чата
-function appendMessage(message) {
-    let messageElement = document.createElement('div');
-    messageElement.textContent = message;
-    messages.appendChild(messageElement);
-    messages.scrollTop = messages.scrollHeight;
-}
+        function sendMessageToBot(message) {
+            // Запрос к API
+            fetch("https://api.openai.com/v1/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": Bearer ${API_KEY},
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",  // Используйте необходимую модель
+                    prompt: message,
+                    max_tokens: 150
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const reply = data.choices[0].text.trim();
+                displayMessage(reply);
+            })
+            .catch(error => {
+                console.error("Ошибка:", error);
+                alert("Произошла ошибка. Попробуйте позже.");
+            });
+        }
 
-// Инициализация иконки и окна чата
-window.onload = () => {
-    chatWindow.style.display = 'none';
-};
-</script>
+        function displayMessage(message) {
+            const chatHistory = document.getElementById("chat-history");
+            const newMessage = document.createElement("div");
+            newMessage.textContent = message;
+            chatHistory.appendChild(newMessage);
+        }
+    </script>
 
 </body>
 </html>
