@@ -15,10 +15,13 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            justify-content: center; /* Центрирование по вертикали */
+            align-items: center; /* Центрирование по горизонтали */
         }
         header {
             text-align: center;
-            padding: 50px 0;
+            padding: 30px 0;
+            margin-bottom: 30px; /* Убираем надпись "Добро пожаловать" */
         }
         .container {
             padding: 20px;
@@ -52,7 +55,7 @@
             color: #001f3d;
         }
         .social-icons {
-            margin-top: 20px;
+            margin-top: 40px; /* Увеличиваем отступ между кнопкой и иконками */
         }
         .social-icons a {
             color: white;
@@ -82,6 +85,8 @@
             cursor: pointer;
             color: lightblue;
         }
+
+        /* Мобильные стили */
         @media screen and (max-width: 600px) {
             .photo {
                 width: 90%;
@@ -89,10 +94,10 @@
             .social-icons {
                 display: flex;
                 justify-content: center;
-                margin-top: 10px;
+                margin-top: 20px; /* Увеличиваем отступ для мобильных устройств */
             }
             .social-icons a {
-                margin: 0 8px;
+                margin: 0 10px;
                 font-size: 25px;
             }
             .next-page a {
@@ -103,9 +108,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>Добро пожаловать</h1>
-    </header>
+
     <div class="container">
         <img src="https://i.postimg.cc/wjFM9bW8/IMG-4456.jpg" alt="Владелец сайта" class="photo">
         <div class="owner"></div>
@@ -129,11 +132,10 @@
     </div>
 
     <div class="bottom-info">
-        <p>Все права защищены | <span class="show-details" onclick="toggleDetails()">Подробные</span></p>
-        <div class="details">
+        <p>Все права защищены | <span class="show-details" onclick="toggleDetails()">Подробные</span></p><div class="details">
             <p>Мы не требуем входа или регистрации ваших данных.</p>
         </div>
-    </div>
+    </div> 
 
     <script>
         function toggleDetails() {
