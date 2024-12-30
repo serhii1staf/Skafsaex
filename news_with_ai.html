@@ -3,11 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Новости с AI</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>AI Контент</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #001f3d; /* Темно-синий фон */
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            color: #ffcc00; /* Желтый цвет для заголовков */
+        }
+
+        #ai-content {
+            padding: 20px;
+            margin: 20px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background-color: #002a53; /* Темный синий для блока с контентом */
+        }
+
+        .ai-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
         }
 
         /* Стиль для иконки домика */
@@ -27,38 +48,13 @@
         .home-icon:hover {
             background-color: #f0f0f0;
         }
-
-        /* Стиль для блока новостей */
-        #news {
-            margin: 20px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .news-item {
-            margin-bottom: 10px;
-        }
-
-        /* Адаптивность для разных экранов */
-        @media (max-width: 768px) {
-            .home-icon {
-                font-size: 25px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .home-icon {
-                font-size: 20px;
-            }
-        }
     </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 
-    <div id="news">
-        <h2>Актуальные новости</h2>
-        <div id="newsContent"></div>
+    <div id="ai-content">
+        <!-- Здесь будет отображаться контент от AI -->
     </div>
 
     <!-- Иконка для перехода на главную страницу -->
@@ -67,50 +63,70 @@
     </a>
 
     <script>
-        // Функция для обновления новостей
-        function fetchNews() {
-            const news = [
-                "ВОСЛО сегодня +5.",
-                "Норвегия планирует развитие искусственного интеллекта.",
-                "Новые технологии в области экологии начали активно развиваться.",
-                "Исследования показывают, что AI может повысить качество жизни.",
-            ];
+        let contentInterval;
+        let isTouching = false; // Статус, удерживается ли палец на экране
+
+        // Пример массива контента, который будет генерироваться
+        const contentExamples = [
+            {
+                title: "Новости о Норвегии",
+                content: "ВОСФА сегодня: температура воздуха в Тронхейме +5 градусов.",
+                image: "https://example.com/image1.jpg"
+            },
+            {
+                title: "ИИ и будущее",
+                content: "Норвегия планирует развивать искусственный интеллект в образовательных учреждениях.",
+                image: "https://example.com/image2.jpg"
+            },
+            {
+                title: "Температура в Норвегии",
+                content: "Сегодня в Осло +5 градусов, ожидаются дожди.",
+                image: "https://example.com/image3.jpg"
+            }
+        ];
+
+        // Функция для автоматической генерации контента
+        function generateAIContent() {
+            const randomContent = contentExamples[Math.floor(Math.random() * contentExamples.length)];
+            const aiContentContainer = document.getElementById('ai-content');
             
-            // Выбираем случайную новость
-            const randomNews = news[Math.floor(Math.random() * news.length)];
+            const newContent = document.createElement('div');
+            newContent.innerHTML = `
+                <h2>${randomContent.title}</h2>
+                <p>${randomContent.content}</p>
+                <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image">
+            `;
             
-            // Вставляем новость в блок на странице
-            document.getElementById("newsContent").innerHTML = <div class="news-item">${randomNews}</div>;
+            aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
+            aiContentContainer.appendChild(newContent);
         }
 
-        // Обновляем новость каждые 15 секунд
-        let newsInterval = setInterval(fetchNews, 15000);
+        // Функция для старта обновления контента
+        function startContentUpdate() {
+            // Обновление контента каждые 15 секунд
+            contentInterval = setInterval(generateAIContent, 15000);
+        }
 
-        // Загружаем первую новость сразу
-        fetchNews();
+        // Функция для остановки обновления
+        function stopContentUpdate() {
+            clearInterval(contentInterval);
+        }
 
-        // Функция для остановки обновления новости при нажатии
-        let isPressing = false;
-
-        document.getElementById("newsContent").addEventListener("touchstart", function() {
-            isPressing = true;
-            clearInterval(newsInterval); // Останавливаем обновление
+        // Слушатели событий для остановки и возобновления обновления при касании экрана
+        document.body.addEventListener('touchstart', () => {
+            isTouching = true; // Если экран удерживается
+            stopContentUpdate(); // Останавливаем обновление
         });
 
-        document.getElementById("newsContent").addEventListener("touchend", function() {
-            isPressing = false;
-            newsInterval = setInterval(fetchNews, 15000); // Возобновляем обновление
+        document.body.addEventListener('touchend', () => {
+            isTouching = false; // Если палец убранif (!isTouching) {
+                startContentUpdate(); // Возобновляем обновление
+            }
         });
 
-        document.getElementById("newsContent").addEventListener("mousedown", function() {
-            isPressing = true;
-            clearInterval(newsInterval); // Останавливаем обновление
-        });
-
-        document.getElementById("newsContent").addEventListener("mouseup", function() {
-            isPressing = false;
-            newsInterval = setInterval(fetchNews, 15000); // Возобновляем обновление
-        });
+        // Инициализация контента и запуск таймера
+        generateAIContent();
+        startContentUpdate();
     </script>
 
 </body>
