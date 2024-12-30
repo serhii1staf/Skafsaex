@@ -1,101 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Content Update</title>
+    <title>Random AI Content</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #1e2a47; /* Темно-синий фон */
+            background-color: #001f3d; /* Темно-синий фон */
             color: white;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
         }
-
-        #header {
-            background-color: #2c3e50;
-            padding: 10px;
+        .content-container {
             text-align: center;
         }
-
-        #ai-content {
-            padding: 20px;
-            text-align: center;
+        .ai-image {
+            width: 100px;
+            height: auto;
         }
-
         #home-icon {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #1e2a47;
-            border-radius: 50%;
-            padding: 15px;
-            font-size: 24px;
+            font-size: 2em;
             color: white;
+            background-color: #001f3d;
+            border-radius: 50%;
+            padding: 10px;
             cursor: pointer;
         }
-
-        .ai-image {
-            max-width: 100%;
-            height: auto;
+        #ai-content {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div id="header">
-        <h1>Random AI Content</h1>
+    <div id="ai-content" class="content-container">
+        <h2>Заголовок контента</h2>
+        <p>Текст контента...</p>
+        <img src="https://via.placeholder.com/100" alt="AI Image" class="ai-image">
     </div>
 
-    <div id="ai-content">
-        <!-- Dynamic content will appear here -->
-    </div>
+    <!-- Иконка домика для перехода на главную страницу -->
+    <i id="home-icon" class="fas fa-home" onclick="window.location.href='index.html';"></i>
 
-    <div id="home-icon">
-        <i class="fa-solid fa-house"></i>
-    </div>
-
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script>
         let contentInterval;
-        let isTouching = false;
+        let isTouching = false; // Статус, удерживается ли палец на экране
 
-        // Replace this with your actual API URL
-        const apiUrl = 'https://api.adviceslip.com/advice'; // Пример API для советов
+        // Пример контента
+        const contentExamples = [
+            {title: "Норвегия и искусственный интеллект", content: "Норвегия рассматривает использование ИИ в различных областях.", image: "https://via.placeholder.com/100"},
+            {title: "Погода в Осло", content: "В Осло сегодня +5°C и дождливо.", image: "https://via.placeholder.com/100"},
+            {title: "Новости Норвегии", content: "Норвегия планирует увеличить использование солнечной энергии.", image: "https://via.placeholder.com/100"}
+        ];
 
-        // Function to fetch and display content from API
-        function fetchContent() {
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    const randomContent = data.slip;
-                    const aiContentContainer = document.getElementById('ai-content');
-
-                    const newContent = document.createElement('div');
-                    newContent.innerHTML = `
-                        <h2>Random Advice</h2>
-                        <p>${randomContent.advice}</p>
-                    `;
-
-                    aiContentContainer.innerHTML = ''; // Clear previous content
-                    aiContentContainer.appendChild(newContent);
-                })
-                .catch(error => {
-                    console.error('Error fetching content:', error);
-                });
+        // Функция для автоматической генерации контента
+        function generateAIContent() {
+            const randomContent = contentExamples[Math.floor(Math.random() * contentExamples.length)];
+            const aiContentContainer = document.getElementById('ai-content');
+            
+            const newContent = document.createElement('div');
+            newContent.innerHTML = `
+                <h2>${randomContent.title}</h2>
+                <p>${randomContent.content}</p>
+                <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image">
+            `;
+            
+            aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
+            aiContentContainer.appendChild(newContent);
         }
 
-        // Start auto-updating content every 15 seconds
+        // Функция для старта обновления контента
         function startContentUpdate() {
-            contentInterval = setInterval(fetchContent, 15000);
+            contentInterval = setInterval(generateAIContent, 15000); // Обновление каждые 15 секунд
         }
 
-        // Stop auto-updating content
+        // Функция для остановки обновления
         function stopContentUpdate() {
             clearInterval(contentInterval);
         }
 
-        // Event listeners for touch start and end (for pausing and resuming content updates)
+        // Слушатели событий для остановки и возобновления обновления при касании экрана
         document.body.addEventListener('touchstart', () => {
             isTouching = true;
             stopContentUpdate();
@@ -108,13 +101,8 @@
             }
         });
 
-        // Event listener for the home icon
-        document.getElementById('home-icon').addEventListener('click', () => {
-            window.location.href = '/'; // Replace with your homepage URL
-        });
-
-        // Initial content fetch and start auto-updating
-        fetchContent();
+        // Инициализация контента и запуск таймера
+        generateAIContent();
         startContentUpdate();
     </script>
 </body>
