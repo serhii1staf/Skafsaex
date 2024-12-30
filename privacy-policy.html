@@ -13,29 +13,36 @@
             margin: 0;
             padding: 0;
         }
+        header {
+            text-align: center;
+            padding: 50px 0;
+        }
         .container {
             padding: 20px;
             text-align: center;
         }
-        .back-button {
-            margin-top: 20px;
-            font-size: 18px;
+        .settings-links {
+            margin-top: 30px;
         }
-        .back-button a {
+        .settings-links a {
+            color: white;
+            font-size: 24px;
+            margin: 15px;
             text-decoration: none;
+        }
+        .settings-links a:hover {
             color: lightblue;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <header>
         <h1>Настройки</h1>
-        <ul>
-            <li><a href="support.html">Поддержка</a></li>
-            <li><a href="privacy-policy.html">Политика конфиденциальности</a></li>
-        </ul>
-        <div class="back-button">
-            <a href="index.html">Вернуться на главную страничку</a>
+    </header>
+    <div class="container">
+        <div class="settings-links">
+            <a href="support.html">Поддержка</a>
+            <a href="privacy-policy.html">Политика конфиденциальности</a>
         </div>
     </div>
 </body>
