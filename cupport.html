@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Политика конфиденциальности</title>
+    <title>Поддержка</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,33 +11,36 @@
             color: white;
             margin: 0;
             padding: 0;
-        }
-        header {
-            text-align: center;
-            padding: 50px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         .container {
-            padding: 20px;
             text-align: center;
+            padding: 20px;
         }
-        .container p {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-        .return-home {
-            color: lightblue;
-            font-size: 20px;
+        .home {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 30px;
             text-decoration: none;
+            color: white;
+        }
+        .home:hover {
+            color: lightblue;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Политика конфиденциальности</h1>
-    </header>
     <div class="container">
-        <p>Мы не требуем входа и регистрации ваших данных. Ваши личные данные не собираются и не хранятся на сайте.</p>
-        <a href="index.html" class="return-home">Вернуться на главную страничку</a>
+        <h1>Поддержка</h1>
+        <p>Если у вас есть вопросы, пожалуйста, свяжитесь со мной через Telegram:</p>
+        <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">Перейти в Telegram</a>
     </div>
+    <a href="index.html" class="home">
+        <i class="fa-solid fa-house"></i>
+    </a>
 </body>
 </html>
