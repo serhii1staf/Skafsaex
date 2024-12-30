@@ -73,16 +73,21 @@
         async function generateAIContent() {
             const aiContentContainer = document.getElementById('ai-content');
             
-            // Подключение к API для получения данных о погоде, новостях и фактах о Норвегии
-            const weatherResponse = await fetch('https://api.openweathermap.org/data/2.5/weather?q=Oslo&appid=your_api_key&units=metric&lang=ru');
+            // API для погоды в Норвегии
+            const weatherResponse = await fetch('https://api.openweathermap.org/data/2.5/weather?q=Oslo&appid=your_weather_api_key&units=metric&lang=ru');
             const weatherData = await weatherResponse.json();
             const weather = Температура в Осло: ${weatherData.main.temp}°C, ${weatherData.weather[0].description};
 
+            // API для новостей из Норвегии
             const newsResponse = await fetch('https://newsapi.org/v2/top-headlines?country=no&apiKey=your_news_api_key');
             const newsData = await newsResponse.json();
             const news = newsData.articles[0].title;  // Выводим только заголовок первой новости
 
+            // Факты о Норвегии
             const facts = "Норвегия — одна из самых устойчивых и развитых стран в мире, и лидер в области экологических технологий."; // Пример факта
+
+            // Получаем еще одну информацию о Норвегии с API (например, о спорте или культуре)
+            const randomFact = "Норвегия — родина всемирно известных лыжных курортов.";
 
             const newContent = document.createElement('div');
             newContent.innerHTML = `
@@ -92,6 +97,8 @@
                 <p>${weather}</p>
                 <h2>Интересный факт</h2>
                 <p>${facts}</p>
+                <h2>Дополнительный факт</h2>
+                <p>${randomFact}</p>
             `;
             
             aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
@@ -105,14 +112,14 @@
         }
 
         // Функция для остановки обновления
-        function stopContentUpdate() {
-            clearInterval(contentInterval);
+        function stopContentUpdate() {clearInterval(contentInterval);
         }
 
         // Слушатели событий для остановки и возобновления обновления при касании экрана
         document.body.addEventListener('touchstart', () => {
             isTouching = true; // Если экран удерживается
-            stopContentUpdate(); // Останавливаем обновление});
+            stopContentUpdate(); // Останавливаем обновление
+        });
 
         document.body.addEventListener('touchend', () => {
             isTouching = false; // Если палец убран
