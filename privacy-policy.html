@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Настройки</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Политика конфиденциальности</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,38 +11,35 @@
             color: white;
             margin: 0;
             padding: 0;
-        }
-        header {
-            text-align: center;
-            padding: 50px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         .container {
-            padding: 20px;
             text-align: center;
+            padding: 20px;
         }
-        .settings-links {
-            margin-top: 30px;
-        }
-        .settings-links a {
-            color: white;
-            font-size: 24px;
-            margin: 15px;
+        .home {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 30px;
             text-decoration: none;
+            color: white;
         }
-        .settings-links a:hover {
+        .home:hover {
             color: lightblue;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Настройки</h1>
-    </header>
     <div class="container">
-        <div class="settings-links">
-            <a href="support.html">Поддержка</a>
-            <a href="privacy-policy.html">Политика конфиденциальности</a>
-        </div>
+        <h1>Политика конфиденциальности</h1>
+        <p>Мы не требуем входа и регистрации ваших данных. Ваши личные данные не собираются и не хранятся на сайте.</p>
     </div>
+    <a href="index.html" class="home">
+        <i class="fa-solid fa-house"></i>
+    </a>
 </body>
 </html>
