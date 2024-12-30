@@ -22,26 +22,8 @@
             max-width: 800px;
         }
         .ai-image {
-            width: 100%;
-            height: auto;
             border-radius: 10px;
             margin-top: 20px;
-        }
-        .button-home {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 24px;
         }
     </style>
 </head>
@@ -52,63 +34,52 @@
         <img src="" alt="Изображение" class="ai-image">
     </div>
 
-    <button class="button-home" onclick="goHome()">🏠</button>
-
     <script>
         let contentInterval;
-        let isTouching = false; // Статус удержания пальца на экране
+        let isTouching = false; // Статус, удерживается ли палец на экране
 
         // Дефолтные данные
-        const fallbackImage = 'https://via.placeholder.com/600x400?text=Нет+изображения';
-
-        // Ваш API-ключи (замените на реальные)
-        const apiKeyNews = 'd828e3d2a1ac4e6a8761608f669ca58f'; // Пример вашего ключа
-        const apiKeyImages = 'ВАШ_API_KEY_IMAGES'; // Укажите ключ Unsplash
-
-        // Функция загрузки данных из API
-        async function fetchAIContent() {
-            try {
-                const response = await fetch(`https://newsapi.org/v2/top-headlines?country=no&apiKey=${apiKeyNews}`);
-                const data = await response.json();
-                if (data.articles && data.articles.length > 0) {
-                    const randomArticle = data.articles[Math.floor(Math.random() * data.articles.length)];
-                    return {
-                        title: randomArticle.title || 'Новость',
-                        content: randomArticle.description || 'Описание отсутствует.',
-                        image: randomArticle.urlToImage || fallbackImage,
-                    };
-                } else {
-                    throw new Error('Нет данных.');
-                }
-            } catch (error) {
-                console.error('Ошибка загрузки данных:', error);
-                return {
-                    title: 'Ошибка',
-                    content: 'Не удалось загрузить данные.',
-                    image: fallbackImage,
-                };
+        const contentExamples = [
+            {
+                title: 'Пример 1',
+                content: 'Это описание первого примера.',
+                image: 'https://via.placeholder.com/800x600'
+            },
+            {
+                title: 'Пример 2',
+                content: 'Это описание второго примера.',
+                image: 'https://via.placeholder.com/600x400'
             }
+        ];
+
+        // Функция определения устройства
+        function isMobileDevice() {
+            return window.innerWidth <= 768; // Условие для определения мобильного устройства
         }
 
-        // Функция для генерации контента
-        async function generateAIContent() {
+        // Функция для автоматической генерации контента
+        function generateAIContent() {
+            const randomContent = contentExamples[Math.floor(Math.random() * contentExamples.length)];
             const aiContentContainer = document.getElementById('ai-content');
-            const content = await fetchAIContent();
-
+            
             const newContent = document.createElement('div');
+            
+            // Определяем размеры изображений
+            const imageSize = isMobileDevice() ? '100%' : '80%'; // 100% для мобильного, 80% для ноутбука
             newContent.innerHTML = `
-                <h2>${content.title}</h2>
-                <p>${content.content}</p>
-                <img src="${content.image}" alt="${content.title}" class="ai-image">
+                <h2>${randomContent.title}</h2>
+                <p>${randomContent.content}</p>
+                <img src="${randomContent.image}" alt="${randomContent.title}" class="ai-image" style="width: ${imageSize}; height: auto;">
             `;
-
+            
             aiContentContainer.innerHTML = ''; // Очищаем предыдущий контент
             aiContentContainer.appendChild(newContent);
         }
 
         // Функция для старта обновления контента
         function startContentUpdate() {
-            contentInterval = setInterval(generateAIContent, 15000); // Обновление каждые 15 секунд
+            // Обновление контента каждые 15 секунд
+            contentInterval = setInterval(generateAIContent, 15000);
         }
 
         // Функция для остановки обновления
@@ -116,25 +87,20 @@
             clearInterval(contentInterval);
         }
 
-        // Обработка событий для остановки/возобновления
+        // Слушатели событий для остановки и возобновления обновления при касании экрана
         document.body.addEventListener('touchstart', () => {
-            isTouching = true;
-            stopContentUpdate();
+            isTouching = true; // Если экран удерживается
+            stopContentUpdate(); // Останавливаем обновление
         });
 
         document.body.addEventListener('touchend', () => {
-            isTouching = false;
+            isTouching = false; // Если палец убран
             if (!isTouching) {
-                startContentUpdate();
+                startContentUpdate(); // Возобновляем обновление
             }
         });
 
-        // Функция возврата на главную страницу
-        function goHome() {
-            window.location.href = 'index.html'; // Укажите путь к главной странице
-        }
-
-        // Инициализация контента
+        // Инициализация контента и запуск таймера
         generateAIContent();
         startContentUpdate();
     </script>
