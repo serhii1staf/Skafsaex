@@ -23,15 +23,25 @@
 <body>
     <h1>Добро пожаловать в наше приложение!</h1>
     <p>Это веб-приложение внутри Telegram.</p>
+
+    <!-- Код для кнопки Open -->
     <script>
         // Инициализация Telegram Web App
         window.Telegram.WebApp.init();
+        window.Telegram.WebApp.MainButton.text = "Открыть приложение";
+        window.Telegram.WebApp.MainButton.show();
+
+        // Обработчик для кнопки Open
         window.Telegram.WebApp.onEvent("mainButtonClicked", function() {
-            alert("Вы нажали кнопку!");
+            // Вставь сюда нужный API ключ или ссылку на приложение
+            const apiKey = "7905507634:AAFNT_tZ0rv0oew7_8e9N-O36DEYoLwuL28";  // Твой API ключ
+
+            // Пример, как можно вызвать приложение, если оно поддерживает интеграцию
+            alert("Вы нажали кнопку 'Открыть приложение'! Теперь оно откроется.");
         });
     </script>
+
+    <!-- Ссылка на политику конфиденциальности (не трогаем) -->
+    <a href="https://serhii1staf.github.io/Skafsaex/news_with_ai.html" target="_blank">Политика конфиденциальности</a>
 </body>
 </html>
-<script>
-    window.Telegram.WebApp.init();
-</script>
