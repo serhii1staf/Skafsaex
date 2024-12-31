@@ -18,29 +18,43 @@
         p {
             font-size: 1.5em;
         }
+        button {
+            background-color: #00aaff;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0077aa;
+        }
     </style>
 </head>
 <body>
-    <h1>Добро пожаловать в наше приложение!</h1>
+    <h1>Добро пожаловать в приложение!</h1>
     <p>Это веб-приложение внутри Telegram.</p>
+
+    <!-- Кнопка для политики конфиденциальности -->
+    <a href="https://serhii1staf.github.io/Skafsaex/chatbot.html" target="_blank">
+        <button>Политика конфиденциальности</button>
+    </a>
+
+    <!-- Кнопка для открытия приложения внутри Telegram -->
+    <button id="openAppButton">Open</button>
 
     <script>
         // Инициализация Telegram Web App
         window.Telegram.WebApp.init();
 
-        // Слушаем события нажатия кнопки
-        window.Telegram.WebApp.onEvent('mainButtonClicked', function() {
-            alert("Вы нажали кнопку!");
-        });
-
-        // Настройка главной кнопки
-        window.Telegram.WebApp.MainButton.setParams({
-            text: "Перейти к приложению"
-        });
-
-        // Поведение при нажатии кнопки
-        window.Telegram.WebApp.MainButton.onClick(function() {
-            alert('Вы нажали на кнопку Open');
+        // Обработчик нажатия на кнопку Open
+        document.getElementById('openAppButton').addEventListener('click', function() {
+            // Закрываем текущее окно Telegram Web App, чтобы открыть приложение
+            window.Telegram.WebApp.close();
+            
+            // Открываем приложение внутри Telegram (это будет фактически запуск вашего веб-приложения)
+            alert('Открываю приложение внутри Telegram!');
         });
     </script>
 </body>
