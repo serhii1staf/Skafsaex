@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,44 +18,39 @@
         p {
             font-size: 1.5em;
         }
-        button {
-            background-color: #00aaff;
+        .button {
+            background-color: #4CAF50; 
             color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1em;
+            padding: 10px 24px;
+            font-size: 16px;
             cursor: pointer;
+            border: none;
+            margin-top: 20px;
         }
-        button:hover {
-            background-color: #0077aa;
+        .button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <h1>Добро пожаловать в приложение!</h1>
+    <h1>Добро пожаловать в наше приложение!</h1>
     <p>Это веб-приложение внутри Telegram.</p>
 
-    <!-- Кнопка для политики конфиденциальности -->
-    <a href="https://serhii1staf.github.io/Skafsaex/chatbot.html" target="_blank">
-        <button>Политика конфиденциальности</button>
-    </a>
-
-    <!-- Кнопка для открытия приложения внутри Telegram -->
-    <button id="openAppButton">Open</button>
+    <!-- Кнопка Политики конфиденциальности -->
+    <button class="button" onclick="window.location.href='https://serhii1staf.github.io/Skafsaex/privacy-policy.html'">Политика конфиденциальности</button>
+    
+    <!-- Кнопка для открытия приложения в Telegram -->
+    <button class="button" onclick="openAppInTelegram()">Открыть приложение</button>
 
     <script>
         // Инициализация Telegram Web App
         window.Telegram.WebApp.init();
 
-        // Обработчик нажатия на кнопку Open
-        document.getElementById('openAppButton').addEventListener('click', function() {
-            // Закрываем текущее окно Telegram Web App, чтобы открыть приложение
-            window.Telegram.WebApp.close();
-            
-            // Открываем приложение внутри Telegram (это будет фактически запуск вашего веб-приложения)
-            alert('Открываю приложение внутри Telegram!');
-        });
+        // Функция для открытия приложения внутри Telegram
+        function openAppInTelegram() {
+            window.Telegram.WebApp.close();  // Закрываем текущий интерфейс Telegram
+            window.location.href = "https://serhii1staf.github.io/Skafsaex/news_with_ai.html"; // Открытие приложения внутри Telegram
+        }
     </script>
 </body>
 </html>
