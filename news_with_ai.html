@@ -1,25 +1,33 @@
-];
-        let contentInterval;
-
-        // Функция для автоматической генерации контента
-        function generateAIContent() {
-            const randomContent = contentExamples[Math.floor(Math.random() * contentExamples.length)];
-            const aiContentContainer = document.getElementById('ai-content');
-            
-            aiContentContainer.innerHTML = `
-                <h2>${randomContent.title}</h2>
-                <p>${randomContent.content}</p>
-            `;
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добро пожаловать в Klyo</title>
+    <style>
+        body {
+            background-color: #003366; /* Темно-синий фон */
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
         }
-
-        // Функция для старта обновления контента
-        function startContentUpdate() {
-            contentInterval = setInterval(generateAIContent, 10000); // Каждые 10 секунд
+        h1 {
+            font-size: 48px;
         }
-
-        // Инициализация контента и запуск таймера
-        generateAIContent(); // Генерируем первый контент
-        startContentUpdate(); // Запускаем обновление контента
-    </script>
+        p {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Добро пожаловать в Klyo</h1>
+        <p>Это приложение внутри Telegram</p>
+    </div>
 </body>
 </html>
