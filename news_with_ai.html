@@ -37,19 +37,25 @@
     <p>Это веб-приложение внутри Telegram.</p>
 
     <!-- Кнопка Политики конфиденциальности -->
-    <button class="button" onclick="window.location.href='https://serhii1staf.github.io/Skafsaex/privacy-policy.html'">Политика конфиденциальности</button>
+    <button class="button" onclick="openPrivacyPolicy()">Политика конфиденциальности</button>
     
     <!-- Кнопка для открытия Telegram-бота -->
-    <button class="button" onclick="openAppInTelegram()">Открыть приложение</button>
+    <button class="button" onclick="openTelegramBot()">Открыть приложение</button>
 
     <script>
         // Инициализация Telegram Web App
-        window.Telegram.WebApp.init();
+        if (window.Telegram.WebApp) {
+            window.Telegram.WebApp.init();
+        }
 
-        // Функция для открытия приложения внутри Telegram
-        function openAppInTelegram() {
-            window.Telegram.WebApp.close();  // Закрываем текущий интерфейс Telegram
-            window.location.href = "http://t.me/klyo_offi_bot/qqq"; // Открытие Telegram-бота
+        // Функция для открытия страницы Политики конфиденциальности
+        function openPrivacyPolicy() {
+            window.location.href = 'https://serhii1staf.github.io/Skafsaex/privacy-policy.html';
+        }
+
+        // Функция для открытия Telegram-бота
+        function openTelegramBot() {
+            window.location.href = "http://t.me/klyo_offi_bot/qqq"; // Перенаправление на Telegram-бота
         }
     </script>
 </body>
