@@ -40,8 +40,9 @@
         }
 
         .user2 {
-            right: 5%;
-            text-align: right;
+            left: 5%;
+            text-align: left;
+            margin-top: 2mm; /* Slightly move User2 message lower */
         }
 
         /* Snowflake styles */
@@ -73,7 +74,7 @@
     <script>
         // Function to generate snowflakes
         function createSnowflakes() {
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 300; i++) { // Increased number of snowflakes
                 const snowflake = document.createElement('div');
                 snowflake.classList.add('snowflake');
                 snowflake.innerHTML = '❄';  // Snowflake symbol
@@ -91,6 +92,11 @@
 
         // Call the function to create snowflakes
         createSnowflakes();
+
+        // Set timer for the animation duration and redirect to main page
+        setTimeout(function() {
+            window.location.href = 'https://serhii1staf.github.io/Skafsaex/main.html'; // Redirect after animation
+        }, 5000); // Duration of the splash screen in milliseconds (5000 ms = 5 seconds)
     </script>
 </body>
 </html>
