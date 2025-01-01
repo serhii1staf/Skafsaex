@@ -1,1 +1,91 @@
-hjj
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Web App</title>
+    <style>
+        body {
+            background-color: #181818;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 15px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #00AFFF;
+            font-size: 36px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #00AFFF;
+            color: #fff;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #0077c2;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            gap: 15px;
+        }
+
+        .chat-message {
+            background-color: #333;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 75%;
+            margin-left: auto;
+        }
+
+        .chat-message p {
+            margin: 0;
+        }
+
+        .chat-message .sender {
+            color: #00AFFF;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Main Web App</h1>
+        <div class="chat-container">
+            <div class="chat-message">
+                <p class="sender">User1:</p>
+                <p>Hello, how are you?</p>
+            </div>
+            <div class="chat-message">
+                <p class="sender">User2:</p>
+                <p>I'm good, thanks! How about you?</p>
+            </div>
+        </div>
+        <div class="button" onclick="alert('New message sent!')">Send Message</div>
+    </div>
+</body>
+</html>
