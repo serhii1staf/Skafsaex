@@ -45,6 +45,9 @@
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s;
             padding: 20px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .screen.active {
@@ -54,13 +57,18 @@
 
         #homeScreen {
             background-image: url('https://i.postimg.cc/XqGB50nY/IMG-4501.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+        }
+
+        #leftScreen {
+            background-image: url('https://i.postimg.cc/g2CdDX3p/IMG-4502.png');
+        }
+
+        #rightScreen {
+            background-image: url('https://i.postimg.cc/cCBMDnvb/IMG-4503.png');
         }
 
         .message {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.3);
             padding: 24px;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -68,20 +76,22 @@
             max-width: 90%;
             width: 100%;
             margin: 0 auto;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
 
         h1 {
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 16px;
-            color: var(--tg-theme-button-color, #2196F3);
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
         p {
-            font-size: 16px;
+            font-size: 18px;
             line-height: 1.5;
             margin-bottom: 8px;
-            color: var(--tg-theme-text-color, #333);
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .nav-buttons {
@@ -92,9 +102,10 @@
             display: flex;
             justify-content: space-between;
             padding: 16px;
-            background: var(--tg-theme-bg-color, #fff);
-            border-top: 1px solid var(--tg-theme-hint-color, #eee);
+            background: var(--tg-theme-bg-color, rgba(255, 255, 255, 0.9));
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
             z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
         .nav-btn {
@@ -104,7 +115,6 @@
             border: none;
             background: var(--tg-theme-button-color, #2196F3);
             color: var(--tg-theme-button-text-color, #fff);
-            font-size: 24px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -114,29 +124,20 @@
             background-position: center;
         }
 
-        #leftBtn {
-            background-image: url('https://i.postimg.cc/g2CdDX3p/IMG-4502.png');
-        }
-
-        #rightBtn {
-            background-image: url('https://i.postimg.cc/cCBMDnvb/IMG-4503.png');
-        }
-
         #homeBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 3L4 11v8h16v-8l-8-8zm0 2.5L18 12v5H6v-5l6-6.5z"/></svg>');
-            background-size: 60%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2.1L1 12h3v9h7v-6h2v6h7v-9h3L12 2.1zm0 2.691l6 5.4V19h-3v-6H9v6H6v-8.809l6-5.4z"/></svg>');
+            background-size: 65%;
             background-repeat: no-repeat;
             background-position: center;
         }
 
-        .nav-btn:active {
-            transform: scale(0.95);
+        #leftBtn, #rightBtn {
+            font-size: 24px;
+            font-weight: bold;
         }
 
-        .screen-content {
-            max-width: 600px;
-            width: 100%;
-            padding: 20px;
+        .nav-btn:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
@@ -168,9 +169,9 @@
 
         <!-- Кнопки навигации -->
         <div class="nav-buttons">
-            <button id="leftBtn" class="nav-btn" aria-label="Налево"></button>
+            <button id="leftBtn" class="nav-btn" aria-label="Налево">←</button>
             <button id="homeBtn" class="nav-btn" aria-label="Домой"></button>
-            <button id="rightBtn" class="nav-btn" aria-label="Направо"></button>
+            <button id="rightBtn" class="nav-btn" aria-label="Направо">→</button>
         </div>
     </div>
 
@@ -252,11 +253,9 @@
                 if (Math.abs(diff) < threshold) return;
 
                 if (diff > 0) {
-                    // Свайп влево
                     if (currentScreen === 'home') showScreen('left');
                     else if (currentScreen === 'right') showScreen('home');
                 } else {
-                    // Свайп вправо
                     if (currentScreen === 'home') showScreen('right');
                     else if (currentScreen === 'left') showScreen('home');
                 }
