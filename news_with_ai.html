@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram-like Web App - Splash Screen</title>
+    <title>Loading Screen</title>
     <style>
-        /* Основной стиль для заставки */
         body {
-            background-color: #181818;
-            color: #fff;
-            font-family: 'Arial', sans-serif;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
@@ -17,86 +16,100 @@
             align-items: center;
             height: 100vh;
             overflow: hidden;
-        }
-
-        /* Контейнер для чата */
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-            width: 100%;
-            max-width: 1000px;
-            height: 100%;
-            padding: 30px;
-            box-sizing: border-box;
-            overflow-y: auto;
-            gap: 15px;
-        }
-
-        /* Сообщения в чате */
-        .chat-message {
-            background-color: #333;
-            padding: 15px;
-            border-radius: 10px;
-            max-width: 80%;
-            margin: 10px 0;
             position: relative;
         }
 
-        /* Псевдо-элементы для имени пользователя */
-        .chat-message .sender {
-            font-weight: bold;
-            color: #00AFFF;
-            margin-bottom: 5px;
+        /* Стиль для сообщения */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 80%;
+            max-width: 600px;
         }
 
-        /* Стили для текстов сообщений */
-        .chat-message p {
-            margin: 0;
+        .message {
+            display: flex;
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 18px;
         }
 
-        /* Сообщения от User1 */
         .user1 {
-            margin-left: auto;
-            background-color: #4d4d4d; /* Более светлый цвет */
+            justify-content: flex-start;
+            background-color: #444;
+            color: white;
+            border-radius: 10px 10px 10px 0;
         }
 
-        /* Сообщения от User2 */
         .user2 {
-            margin-right: auto;
-            background-color: #2c2c2c; /* Более темный цвет */
+            justify-content: flex-end;
+            background-color: #0078D4;
+            color: white;
+            border-radius: 10px 10px 0 10px;
         }
 
-        /* Плавный переход на основную страницу */
-        .fade {
+        /* Анимация снежинок */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            z-index: 999;
+            font-size: 20px;
+            color: white;
+            pointer-events: none;
+            user-select: none;
+            animation: fall 5s linear infinite;
+        }
+
+        @keyframes fall {
+            from {
+                top: -10px;
+                opacity: 1;
+            }
+            to {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
+
+        /* Переход на основную страницу */
+        .fade-out {
             opacity: 0;
-            transition: opacity 2s;
+            animation: fadeOut 2s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Контейнер для чата -->
     <div class="chat-container">
-        <div class="chat-message user1">
-            <p class="sender">User1:</p>
-            <p>Hello, how are you?</p>
-        </div>
-        <div class="chat-message user2">
-            <p class="sender">User2:</p>
-            <p>I'm good, thanks! How about you?</p>
-        </div>
+        <div class="message user1">User1: Hi, how are you?</div>
+        <div class="message user2">User2: Hi, I'm fine, thanks! How about you?</div>
     </div>
 
-    <script>
-        // Функция для перехода на основную страницу
-        setTimeout(function() {
-            document.body.classList.add("fade"); // Добавляем эффект исчезновения
+    <!-- Снежинки -->
+    <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄</div>
+    <div class="snowflake" style="left: 30%; animation-delay: 1s;">❄</div>
+    <div class="snowflake" style="left: 50%; animation-delay: 2s;">❄</div>
+    <div class="snowflake" style="left: 70%; animation-delay: 3s;">❄</div>
+    <div class="snowflake" style="left: 90%; animation-delay: 4s;">❄</div>
 
-            // Переход на основную страницу через 2 секунды
-            setTimeout(function() {
-                window.location.href = "https://serhii1staf.github.io/Skafsaex/main.html"; // Основная страница
-            }, 2000); // 2000 миллисекунд = 2 секунды
-        }, 2000); // Появление и задержка на 2 секунды
+    <script>
+        // Задержка для исчезновения заставки и перехода
+        setTimeout(() => {
+            document.body.classList.add('fade-out');
+            // Переход на основную страницу после исчезновения заставки
+            setTimeout(() => {
+                window.location.href = "https://serhii1staf.github.io/Skafsaex/main.html";
+            }, 2000);  // Задержка 2 секунды для плавного исчезновения
+        }, 4000); // Задержка заставки 4 секунды
     </script>
 </body>
 </html>
