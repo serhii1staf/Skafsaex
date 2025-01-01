@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snowfall Animation with Messages</title>
+    <title>Loading Screen with Animation</title>
     <style>
         body {
             margin: 0;
@@ -14,112 +14,80 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f0f0f0;
-        }
-        
-        .message-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .message {
-            padding: 10px 20px;
-            border-radius: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            font-size: 20px;
-            margin: 5px;
-        }
-
-        .message-left {
-            align-self: flex-start;
-        }
-
-        .message-right {
-            align-self: flex-end;
-            margin-top: 20px;
-        }
-
-        .snowflake {
-            position: absolute;
-            top: -10px;
-            background-color: #fff;
-            border-radius: 50%;
-            opacity: 0.8;
-            animation: snow 5s linear infinite;
-        }
-
-        @keyframes snow {
-            to {
-                transform: translateY(100vh);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .message {
-                font-size: 18px;
-                padding: 8px 15px;
-            }
+            background-color: #001f3f;
+            transition: opacity 1s ease-in-out;
         }
 
         .fade-out {
-            animation: fadeOut 1s forwards;
+            opacity: 0;
         }
 
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-            }
+        .message-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            z-index: 2;
+        }
+
+        .message {
+            padding: 15px 25px;
+            border-radius: 20px;
+            margin: 10px;
+            max-width: 70%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .message-left {
+            float: left;
+            background-color: #e9ecef;
+            color: black;
+            clear: both;
+        }
+
+        .message-right {
+            float: right;
+            background-color: #007bff;
+            color: white;
+            clear: both;
+        }
+
+        .loading-circle {
+            position: fixed;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 4px solid #ffffff33;
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
     </style>
 </head>
 <body>
-
-<div class="message-container">
-    <div class="message message-left">
-        Hi, how are you?
+    <div class="message-container">
+        <div class="message message-left">
+            Hi, how are you?
+        </div>
+        <div class="message message-right">
+            Hello, thank you, good. <br> How are you?
+        </div>
     </div>
-    <div class="message message-right">
-        Hello, thank you, good. <br> How are you?
-    </div>
-</div>
-
-<script>
-    // Function to generate snowflakes
-    function createSnowflakes() {
-        const snowflakeCount = 50; // Decreased number of snowflakes
-        for (let i = 0; i < snowflakeCount; i++) {
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-            const size = Math.random() * 5 + 3; // Snowflake size
-            snowflake.style.width = ${size}px;
-            snowflake.style.height = ${size}px;
-            snowflake.style.left = ${Math.random() * window.innerWidth}px;
-            snowflake.style.animationDuration = ${Math.random() * 3 + 2}s; // Random duration for each snowflake
-            snowflake.style.animationDelay = ${Math.random() * 3}s; // Random delay for each snowflake
-            document.body.appendChild(snowflake);
-        }
-    }
-
-    // Trigger snowflakes
-    createSnowflakes();
-
-    // After 5 seconds, apply fade out and redirect to the main page
-    setTimeout(() => {
-        document.body.classList.add('fade-out');
+    <div class="loading-circle"></div>
+    <script>
+        // Переход на главную страницу через 3.5 секунды
         setTimeout(() => {
-            window.location.href = 'https://serhii1staf.github.io/Skafsaex/main.html'; // Link to your main page
-        }, 1000); // Delay for fade-out animation
-    }, 5000); // 5 seconds delay before the transition
-</script>
-
+            document.body.classList.add('fade-out');
+            setTimeout(() => {
+                window.location.href = 'https://serhii1staf.github.io/Skafsaex/main.html';
+            }, 1000);
+        }, 3500);
+    </script>
 </body>
 </html>
