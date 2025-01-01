@@ -38,10 +38,11 @@
 </head>
 <body>
     <div class="lang-buttons">
-        <button onclick="translate('en')">English</button>
-        <button onclick="translate('ru')">Русский</button>
-        <button onclick="translate('ua')">Українська</button>
-        <button onclick="translate('no')">Norsk</button>
+        <!-- Кнопки выбора языка с текстом на английском -->
+        <button onclick="translate('en')">Language</button>
+        <button onclick="translate('ru')">Language</button>
+        <button onclick="translate('ua')">Language</button>
+        <button onclick="translate('no')">Language</button>
     </div>
 
     <div id="content">
@@ -55,6 +56,7 @@
     </div>
 
     <script>
+        // Объект с переводами для разных языков
         const translations = {
             en: {
                 goal: "This is an all-in-one app that combines everything: dating, messaging, AI interaction, and much more. Users can find everything they need for seamless communication in one place.",
@@ -77,16 +79,21 @@
             no: {
                 goal: "Dette er en alt-i-ett-app som kombinerer alt: dating, meldinger, AI-interaksjon og mye mer. Brukeren kan finne alt de trenger for sømløs kommunikasjon på ett sted.",
                 features: "Funksjoner: Dating-system, AI-interaksjon, alt i én plattform.",
-                development: "Hver 2-3 månedene vil appen motta oppdateringer med nye funksjoner, utvidelser og forbedringer.",
-                potential: "Kontinuerlig utvikling og unike funksjoner gjør denne appen til et verktøy som kan endre måten vi samhandler på i den digitale verden."
+                development: "Hver 2-3 månedene vil appen motta oppdateringer med nye funksjoner, utvidelser og forbedringer.",potential: "Hver utvikling og unike funksjoner gjør denne appen til et verktøy som kan endre måten vi samhandler på i den digitale verden."
             }
-        };function translate(language) {
-            const data = translations[language];
+        };
+
+        // Функция перевода
+        function translate(language) {
+            const data = translations[language]; // Получаем данные для выбранного языка
             document.getElementById("goal").textContent = data.goal;
             document.getElementById("features").textContent = data.features;
             document.getElementById("development").textContent = data.development;
             document.getElementById("potential").textContent = data.potential;
         }
+
+        // Устанавливаем текст по умолчанию на английском
+        translate('en');
     </script>
 </body>
 </html>
