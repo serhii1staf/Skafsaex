@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading Screen with Animation</title>
+    <title>Loading Screen with Snowfall</title>
     <style>
         body {
             margin: 0;
@@ -51,22 +51,23 @@
             clear: both;
         }
 
-        .loading-circle {
+        .snowflake {
             position: fixed;
-            top: 70%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 40px;
-            height: 40px;
-            border: 4px solid #ffffff33;
-            border-top: 4px solid #fff;
+            top: -10px;  /* Начинаем чуть выше верхней границы экрана */
+            background-color: white;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            pointer-events: none;
+            opacity: 0.8;
+            animation: snowfall linear infinite;
         }
 
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        @keyframes snowfall {
+            from {
+                transform: translateY(-10px);
+            }
+            to {
+                transform: translateY(105vh);  /* Падаем чуть ниже нижней границы экрана */
+            }
         }
     </style>
 </head>
@@ -79,8 +80,45 @@
             Hello, thank you, good. <br> How are you?
         </div>
     </div>
-    <div class="loading-circle"></div>
     <script>
+        function createSnowflakes() {
+            const snowflakeCount = 30;
+            
+            function createSnowflake() {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                
+                // Размер снежинки от 5 до 10px
+                const size = Math.random() * 5 + 5;
+                // Случайная позиция по горизонтали
+                const startPositionLeft = Math.random() * 100;
+                // Случайная скорость падения
+                const duration = Math.random() * 2 + 3; // от 3 до 5 секунд
+                
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                snowflake.style.left = `${startPositionLeft}%`;
+                snowflake.style.animationDuration = `${duration}s`;
+                
+                document.body.appendChild(snowflake);
+                
+                // Удаляем снежинку после падения и создаем новую
+                snowflake.addEventListener('animationend', () => {
+                    snowflake.remove();
+                    createSnowflake();
+                });
+            }
+            
+            // Создаем начальные снежинки с разной задержкой
+            for (let i = 0; i < snowflakeCount; i++) {
+                setTimeout(() => {
+                    createSnowflake();
+                }, Math.random() * 2000); // Разная задержка появления до 2 секунд
+            }
+        }
+
+        createSnowflakes();
+
         // Переход на главную страницу через 3.5 секунды
         setTimeout(() => {
             document.body.classList.add('fade-out');
