@@ -19,58 +19,97 @@
             position: relative;
         }
 
-        /* Стиль для сообщения */
+        /* Контейнер для сообщений */
         .chat-container {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            width: 80%;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            text-align: center;
+            width: 100%;
             max-width: 600px;
+            position: relative;
         }
 
+        /* Сообщения */
         .message {
-            display: flex;
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 18px;
+            display: inline-block;
+            padding: 20px;
+            font-size: 24px;
+            max-width: 80%;
+            border-radius: 15px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
         }
 
         .user1 {
-            justify-content: flex-start;
             background-color: #444;
             color: white;
-            border-radius: 10px 10px 10px 0;
         }
 
         .user2 {
-            justify-content: flex-end;
             background-color: #0078D4;
             color: white;
-            border-radius: 10px 10px 0 10px;
         }
 
-        /* Анимация снежинок */
+        /* Анимация для появления сообщений */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Снежинки */
         .snowflake {
             position: absolute;
-            top: -10px;
             z-index: 999;
-            font-size: 20px;
+            font-size: 30px;
             color: white;
             pointer-events: none;
             user-select: none;
-            animation: fall 5s linear infinite;
+            animation: fall 6s linear infinite;
         }
 
         @keyframes fall {
             from {
-                top: -10px;
+                top: -50px;
                 opacity: 1;
             }
             to {
                 top: 100vh;
                 opacity: 0;
             }
+        }
+
+        /* Лавина снега */
+        .snow-fall {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100vh;
+            z-index: 998;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .snow-fall .snow {
+            position: absolute;
+            top: -10px;
+            width: 100%;
+            height: 100%;
+            animation: snowFall 5s infinite linear;
+        }
+
+        @keyframes snowFall {
+            0% { top: -10px; }
+            100% { top: 100vh; }
         }
 
         /* Переход на основную страницу */
@@ -88,13 +127,19 @@
     </style>
 </head>
 <body>
-    <!-- Контейнер для чата -->
+    <!-- Снежинки сверху экрана -->
+    <div class="snow-fall">
+        <div class="snow"></div>
+        <div class="snow"></div>
+    </div>
+
+    <!-- Контейнер для сообщений -->
     <div class="chat-container">
         <div class="message user1">User1: Hi, how are you?</div>
         <div class="message user2">User2: Hi, I'm fine, thanks! How about you?</div>
     </div>
 
-    <!-- Снежинки -->
+    <!-- Снежинки для эффекта падения -->
     <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄</div>
     <div class="snowflake" style="left: 30%; animation-delay: 1s;">❄</div>
     <div class="snowflake" style="left: 50%; animation-delay: 2s;">❄</div>
@@ -109,7 +154,7 @@
             setTimeout(() => {
                 window.location.href = "https://serhii1staf.github.io/Skafsaex/main.html";
             }, 2000);  // Задержка 2 секунды для плавного исчезновения
-        }, 4000); // Задержка заставки 4 секунды
+        }, 5000); // Задержка заставки 5 секунд
     </script>
 </body>
 </html>
