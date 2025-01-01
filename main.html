@@ -286,12 +286,14 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация Telegram WebApp
             const tg = window.Telegram?.WebApp;
             if (tg) {
                 tg.ready();
                 tg.expand();
             }
 
+            // Получаем все элементы
             const screens = {
                 home: document.getElementById('homeScreen'),
                 left: document.getElementById('leftScreen'),
@@ -311,29 +313,36 @@
             let currentScreen = 'home';
             let isAnimating = false;
 
+            // Функция для показа экрана
             function showScreen(screenName) {
                 if (isAnimating) return;
                 isAnimating = true;
 
+                // Скрываем текущий экран
                 screens[currentScreen].classList.remove('active');
+                // Показываем новый экран
                 screens[screenName].classList.add('active');
-
+                
+                // Вибрация при переключении
                 if (tg?.HapticFeedback) {
                     tg.HapticFeedback.impactOccurred('medium');
                 }
 
                 currentScreen = screenName;
+                
                 setTimeout(() => {
                     isAnimating = false;
                 }, 300);
             }
 
+            // Добавляем обработчики для кнопок
             buttons.home.addEventListener('click', () => showScreen('home'));
             buttons.left.addEventListener('click', () => showScreen('left'));
             buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
             buttons.bot.addEventListener('click', () => showScreen('bot'));
 
+            // Логика чат-бота
             const chatMessages = document.getElementById('chat-messages');
             const chatInput = document.getElementById('chat-input');
             const sendBtn = document.getElementById('send-btn');
@@ -348,59 +357,23 @@
 
             function sendMessage() {
                 const message = chatInput.value.trim();
-                if (message)
-            function sendMessage() {
-                const message = chatInput.value.trim();
                 if (message) {
+                    // Сообщение пользователя
                     addMessage(message, 'user-message');
-                    chatInput.value = '';
+                    
+                    // Простой ответ бота
                     setTimeout(() => {
-                        addMessage('Спасибо за ваше сообщение! С Новым Годом!', 'bot-message');
-                    }, 1500);
+                        addMessage('Привет! Я Пяе, твой виртуальный помощник.', 'bot-message');
+                    }, 500);
+
+                    chatInput.value = '';
                 }
             }
 
             sendBtn.addEventListener('click', sendMessage);
             chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
+                if (e.key === 'Enter') sendMessage();
             });
-
-            // Функция для переключения экрана и анимации
-            function switchScreen(current, next) {
-                current.classList.remove('active');
-                next.classList.add('active');
-            }
-
-            // Обработчики для навигации между экранами
-            buttons.home.addEventListener('click', function() {
-                switchScreen(screens[currentScreen], screens.home);
-                currentScreen = 'home';
-            });
-
-            buttons.left.addEventListener('click', function() {
-                switchScreen(screens[currentScreen], screens.left);
-                currentScreen = 'left';
-            });
-
-            buttons.right.addEventListener('click', function() {
-                switchScreen(screens[currentScreen], screens.right);
-                currentScreen = 'right';
-            });
-
-            buttons.profile.addEventListener('click', function() {
-                switchScreen(screens[currentScreen], screens.profile);
-                currentScreen = 'profile';
-            });
-
-            buttons.bot.addEventListener('click', function() {
-                switchScreen(screens[currentScreen], screens.bot);
-                currentScreen = 'bot';
-            });
-
-            // Инициализация начального экрана
-            showScreen('home');
         });
     </script>
 </body>
