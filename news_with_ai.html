@@ -1,62 +1,165 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Web App</title>
+    <title>Web App</title>
     <style>
+        /* Основные стили */
         body {
-            background-color: #1a73e8;
-            color: white;
             font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
         }
-        h1 {
-            font-size: 3em;
-        }
-        p {
-            font-size: 1.5em;
-        }
-        .button {
-            background-color: #4CAF50; 
+
+        header {
+            background-color: #333;
             color: white;
-            padding: 10px 24px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            margin-top: 20px;
+            padding: 20px;
         }
-        .button:hover {
-            background-color: #45a049;
+
+        header nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        header nav ul li {
+            display: inline;
+            margin-right: 15px;
+        }
+
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        section {
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+        }
+
+        /* Оставляем стили для анимаций */
+        [data-aos="fade-down"] {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        [data-aos="zoom-in"] {
+            opacity: 0;
+            transform: scale(0.6);
+        }
+
+        [data-aos="zoom-in"].aos-animate {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Стили для кнопок */
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Оформление форм */
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #007bff;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Адаптивные стили */
+        @media (max-width: 768px) {
+            header nav ul li {
+                display: block;
+                margin: 5px 0;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Добро пожаловать в наше приложение!</h1>
-    <p>Это веб-приложение внутри Telegram.</p>
 
-    <!-- Кнопка Политики конфиденциальности -->
-    <button class="button" onclick="openPrivacyPolicy()">Политика конфиденциальности</button>
-    
-    <!-- Кнопка для открытия Telegram-бота -->
-    <button class="button" onclick="openTelegramBot()">Открыть приложение</button>
+    <header>
+        <!-- Логотип и навигация -->
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home">
+        <h1>Welcome to Our Web App</h1>
+        <p>Here is a description of what the app does...</p>
+    </section>
+
+    <section id="about">
+        <h2>About Us</h2>
+        <p>Information about the application, its features, and benefits...</p>
+    </section>
+
+    <section id="services">
+        <h2>Our Services</h2>
+        <ul>
+            <li>Service 1</li>
+            <li>Service 2</li>
+            <li>Service 3</li>
+        </ul>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <form>
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name">
+
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" name="email">
+
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 My Web App</p>
+    </footer>
 
     <script>
-        // Инициализация Telegram Web App
-        if (window.Telegram.WebApp) {
-            window.Telegram.WebApp.init();
-        }
-
-        // Функция для открытия страницы Политики конфиденциальности
-        function openPrivacyPolicy() {
-            window.location.href = 'https://serhii1staf.github.io/Skafsaex/privacy-policy.html';
-        }
-
-        // Функция для открытия Telegram-бота
-        function openTelegramBot() {
-            window.location.href = "http://t.me/klyo_offi_bot/qqq"; // Перенаправление на Telegram-бота
-        }
+        // Добавьте здесь JavaScript для функционала, если нужно
     </script>
+
 </body>
 </html>
