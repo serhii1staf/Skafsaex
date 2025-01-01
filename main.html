@@ -1,97 +1,242 @@
-import React, { useState } from 'react';
-import { Home, ChevronLeft, ChevronRight } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>Новогоднее поздравление</title>
+    
+    <!-- Telegram WebApp API -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-const NewYearApp = () => {
-  const [currentWindow, setCurrentWindow] = useState('home');
-  const [isAnimating, setIsAnimating] = useState(false);
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  const handleWindowChange = (window) => {
-    setIsAnimating(true);
-    setCurrentWindow(window);
-    setTimeout(() => setIsAnimating(false), 300);
-  };
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--tg-theme-bg-color, #fff);
+            color: var(--tg-theme-text-color, #000);
+        }
 
-  const Windows = {
-    home: (
-      <div className="flex items-center justify-center h-full">
-        <h1 className="text-3xl font-bold text-center text-blue-600">
-          С Новым 2025 Годом!
-        </h1>
-      </div>
-    ),
-    right: (
-      <div className="flex flex-col items-center justify-center space-y-6 p-4">
-        <div className="w-64 h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-          <img 
-            src="/api/placeholder/256/256" 
-            alt="Дед Мороз" 
-            className="rounded-lg"
-          />
-        </div>
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-600 mb-2">2025</h2>
-          <p className="text-lg text-gray-700">
-            Пусть Новый Год принесет счастье и радость в каждый дом!
-          </p>
-        </div>
-      </div>
-    ),
-    left: (
-      <div className="flex flex-col items-center justify-center space-y-6 p-4">
-        <div className="w-64 h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-          <img 
-            src="/api/placeholder/256/256" 
-            alt="Снегурочка" 
-            className="rounded-lg"
-          />
-        </div>
-        <div className="text-center">
-          <p className="text-lg text-gray-700 bg-blue-100 p-4 rounded-lg">
-            "Старый 2024 ушел и никогда не вернется"
-          </p>
-        </div>
-      </div>
-    )
-  };
+        #app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+        }
 
-  return (
-    <div className="h-screen flex flex-col bg-gray-50">
-      {/* Main Content */}
-      <div className="flex-1 relative overflow-hidden">
-        <div
-          className={`absolute w-full h-full transition-transform duration-300 ease-in-out ${
-            isAnimating ? 'opacity-0' : 'opacity-100'
-          }`}
-        >
-          {Windows[currentWindow]}
-        </div>
-      </div>
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+            padding: 20px;
+        }
 
-      {/* Navigation Buttons */}
-      <div className="flex justify-between items-center p-4 bg-white border-t border-gray-200">
-        <button
-          onClick={() => handleWindowChange('left')}
-          className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors"
-        >
-          <ChevronLeft size={24} />
-        </button>
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .message {
+            background: var(--tg-theme-secondary-bg-color, #f5f5f5);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 90%;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: var(--tg-theme-button-color, #2196F3);
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            color: var(--tg-theme-text-color, #333);
+        }
+
+        .nav-buttons {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--tg-theme-bg-color, #fff);
+            border-top: 1px solid var(--tg-theme-hint-color, #eee);
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            background: var(--tg-theme-button-color, #2196F3);
+            color: var(--tg-theme-button-text-color, #fff);
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Главный экран -->
+        <div id="homeScreen" class="screen active">
+            <div class="message">
+                <h1>С Новым 2025 Годом!</h1>
+                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
+            </div>
+        </div>
         
-        <button
-          onClick={() => handleWindowChange('home')}
-          className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors"
-        >
-          <Home size={24} />
-        </button>
+        <!-- Экран с текстом про 2024 -->
+        <div id="leftScreen" class="screen">
+            <div class="message">
+                <p>Старый 2024 год ушел и никогда не вернется.</p>
+                <p>Время для новых начинаний!</p>
+            </div>
+        </div>
         
-        <button
-          onClick={() => handleWindowChange('right')}
-          className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors"
-        >
-          <ChevronRight size={24} />
-        </button>
-      </div>
+        <!-- Экран с поздравлением 2025 -->
+        <div id="rightScreen" class="screen">
+            <div class="message">
+                <h1>С 2025 Годом!</h1>
+                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
+                <p>С Новым Годом!</p>
+            </div>
+        </div>
+
+        <!-- Кнопки навигации -->
+        <div class="nav-buttons">
+            <button id="leftBtn" class="nav-btn" aria-label="Налево">←</button>
+            <button id="homeBtn" class="nav-btn" aria-label="Домой">🏠</button>
+            <button id="rightBtn" class="nav-btn" aria-label="Направо">→</button>
+        </div>
     </div>
-  );
-};
 
-export default NewYearApp;
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация Telegram WebApp
+            const tg = window.Telegram?.WebApp;
+            
+            if (tg) {
+                tg.ready();
+                tg.expand();
+                
+                // Применяем цветовую схему Telegram
+                document.documentElement.style.setProperty('--tg-theme-bg-color', tg.backgroundColor);
+                document.documentElement.style.setProperty('--tg-theme-text-color', tg.textColor);
+                document.documentElement.style.setProperty('--tg-theme-button-color', tg.buttonColor);
+                document.documentElement.style.setProperty('--tg-theme-button-text-color', tg.buttonTextColor);
+            }
+
+            // Элементы управления
+            const screens = {
+                home: document.getElementById('homeScreen'),
+                left: document.getElementById('leftScreen'),
+                right: document.getElementById('rightScreen')
+            };
+
+            const buttons = {
+                home: document.getElementById('homeBtn'),
+                left: document.getElementById('leftBtn'),
+                right: document.getElementById('rightBtn')
+            };
+
+            let currentScreen = 'home';
+            let isAnimating = false;
+
+            // Функция смены экрана
+            function showScreen(screenName) {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                // Убираем активный класс у текущего экрана
+                screens[currentScreen].classList.remove('active');
+                
+                // Добавляем активный класс новому экрану
+                screens[screenName].classList.add('active');
+                
+                // Тактильный отклик
+                if (tg?.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('medium');
+                }
+
+                currentScreen = screenName;
+                
+                // Сброс флага анимации
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 300);
+            }
+
+            // Обработчики нажатий
+            buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.left.addEventListener('click', () => showScreen('left'));
+            buttons.right.addEventListener('click', () => showScreen('right'));
+
+            // Обработка свайпов
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            document.addEventListener('touchstart', function(event) {
+                touchStartX = event.changedTouches[0].screenX;
+            }, false);
+
+            document.addEventListener('touchend', function(event) {
+                touchEndX = event.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+
+            function handleSwipe() {
+                if (isAnimating) return;
+                
+                const diff = touchStartX - touchEndX;
+                const threshold = 50;
+
+                if (Math.abs(diff) < threshold) return;
+
+                if (diff > 0) {
+                    // Свайп влево
+                    if (currentScreen === 'home') showScreen('left');
+                    else if (currentScreen === 'right') showScreen('home');
+                } else {
+                    // Свайп вправо
+                    if (currentScreen === 'home') showScreen('right');
+                    else if (currentScreen === 'left') showScreen('home');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
