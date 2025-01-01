@@ -310,7 +310,7 @@
             </div>
         </div>
 
-        <!-- Экран чат-бота -->
+        <!-- Экран чат-бота Пяе -->
         <div id="botScreen" class="screen">
             <div class="message">
                 <h1>Пяе</h1>
@@ -395,10 +395,7 @@
             buttons.left.addEventListener('click', () => showScreen('left'));
             buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
-            buttons.bot.addEventListener('click', () => {
-                showScreen('bot');
-                initBotChat();
-            });
+            buttons.bot.addEventListener('click', () => showScreen('bot'));
 
             // Функция создания снежинок
             function createSnowflakes() {
@@ -412,3 +409,4 @@
                     const snowflake = document.createElement('div');
                     snowflake.classList.add('snowflake');
                     snowflake.style.left = Math.random() * 100 + '%';
+                    snowfl
