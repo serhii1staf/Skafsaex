@@ -69,6 +69,10 @@
             background-position: center;
         }
 
+        #datingScreen {
+            background: linear-gradient(135deg, #ff4081, #f50057);
+        }
+
         .message {
             background: rgba(255, 255, 255, 0.2);
             padding: 24px;
@@ -226,39 +230,26 @@
             align-self: flex-end;
         }
 
-        .language-switcher {
-            position: absolute;
+        .language-selector {
+            position: fixed;
             top: 10px;
             right: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: 8px;
             display: flex;
-            gap: 8px;
+            gap: 10px;
+        }
+
+        .language-selector button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
         }
 
-        .language-switcher img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-        }
-
-        #datingScreen {
-            background: linear-gradient(135deg, #ff4081, #f50057);
-        }
-
-        .dating-message {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 24px;
-            border-radius: 12px;
-            text-align: center;
-            max-width: 90%;
+        .language-selector button img {
             width: 100%;
-            backdrop-filter: blur(8px);
-            margin: 20px;
-            position: relative;
-            z-index: 2;
+            border-radius: 50%;
         }
     </style>
 </head>
@@ -307,26 +298,31 @@
         <div id="botScreen" class="screen">
             <div class="message">
                 <h1>Пяе</h1>
+                <div class="language-selector">
+                    <button id="lang-en"><img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="English"></button>
+                    <button id="lang-no"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Norway.svg" alt="Norsk"></button>
+                    <button id="lang-ru"><img src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" alt="Русский"></button>
+                    <button id="lang-ua"><img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" alt="Український"></button>
+                </div>
                 <div class="chat-container" id="chat-messages"></div>
                 <div style="display: flex; margin-top: 10px;">
                     <input type="text" id="chat-input" style="flex-grow: 1; padding: 10px; border-radius: 8px; border: none; background: rgba(255,255,255,0.2);" placeholder="Введите сообщение">
                     <button id="send-btn" style="margin-left: 10px; padding: 10px; border-radius: 8px; background: rgba(0,153,255,0.8); color: white; border: none;">Отправить</button>
                 </div>
             </div>
-            <div class="language-switcher">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Flag_of_Norway.svg/32px-Flag_of_Norway.svg.png" alt="Norwegian" data-lang="no">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/32px-Flag_of_the_United_States.svg.png" alt="English" data-lang="en">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Russia.svg/32px-Flag_of_Russia.svg.png" alt="Russian" data-lang="ru">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/32px-Flag_of_Ukraine.svg.png" alt="Ukrainian" data-lang="ua">
-            </div>
         </div>
 
         <!-- Экран знакомств -->
         <div id="datingScreen" class="screen">
-            <div class="dating-message">
+            <div class="message">
                 <h1>Знакомства</h1>
-                <p>Редактирование профиля и поиск новых друзей</p>
-                <!-- Функционал знакомств будет добавлен здесь -->
+                <p>Заполните анкету для начала знакомства:</p>
+                <form id="dating-form">
+                    <input type="text" placeholder="Имя" required>
+                    <input type="number" placeholder="Возраст" required>
+                    <input type="text" placeholder="Город" required>
+                    <button type="submit">Отправить</button>
+                </form>
             </div>
         </div>
 
@@ -409,6 +405,8 @@
             const chatInput = document.getElementById('chat-input');
             const sendBtn = document.getElementById('send-btn');
 
+            let language = 'en'; // Язык по умолчанию
+
             function addMessage(message, type) {
                 const messageEl = document.createElement('div');
                 messageEl.classList.add('chat-message', type);
@@ -423,9 +421,24 @@
                     // Сообщение пользователя
                     addMessage(message, 'user-message');
                     
-                    // Простой ответ бота
+                    // Простой ответ бота в зависимости от языка
                     setTimeout(() => {
-                        addMessage('Привет! Я Пяе, твой виртуальный помощник.', 'bot-message');
+                        let reply = '';
+                        switch(language) {
+                            case 'en':
+                                reply = 'Hello! I am Pyae, your virtual assistant.';
+                                break;
+                            case 'no':
+                                reply = 'Hei! Jeg er Pyae, din virtuelle assistent.';
+                                break;
+                            case 'ru':
+                                reply = 'Привет! Я Пяе, ваш виртуальный помощник.';
+                                break;
+                            case 'ua':
+                                reply = 'Привіт! Я Пяе, ваш віртуальний помічник.';
+                                break;
+                        }
+                        addMessage(reply, 'bot-message');
                     }, 500);
 
                     chatInput.value = '';
@@ -434,4 +447,4 @@
 
             sendBtn.addEventListener('click', sendMessage);
             chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter')
+                if (e.key === 'Enter') send
