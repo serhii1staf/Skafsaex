@@ -69,10 +69,6 @@
             background-position: center;
         }
 
-        #datingScreen {
-            background: linear-gradient(135deg, #ff6f61, #ff8a65);
-        }
-
         .message {
             background: rgba(255, 255, 255, 0.2);
             padding: 24px;
@@ -161,14 +157,6 @@
 
         #botBtn {
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 6h16v12H4V6zm10 3h-2V7h2v2zm0 2h-2v2h2v-2zm2-2h2v2h-2V9zm2 4h-2v2h2v-2z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        #heartBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
@@ -284,19 +272,6 @@
             </div>
         </div>
 
-        <!-- Экран знакомства -->
-        <div id="datingScreen" class="screen">
-            <div class="message">
-                <h1>Регистрация для знакомства</h1>
-                <form id="dating-form">
-                    <input type="text" id="name" placeholder="Имя" required><br>
-                    <input type="text" id="age" placeholder="Возраст" required><br>
-                    <input type="text" id="interests" placeholder="Интересы" required><br>
-                    <button type="submit">Зарегистрироваться</button>
-                </form>
-            </div>
-        </div>
-
         <!-- Навигационные кнопки -->
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
@@ -304,7 +279,6 @@
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
                 <button id="botBtn" class="nav-btn"></button>
-                <button id="heartBtn" class="nav-btn"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
@@ -312,21 +286,18 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Инициализация Telegram WebApp
             const tg = window.Telegram?.WebApp;
             if (tg) {
                 tg.ready();
                 tg.expand();
             }
 
-            // Получаем все элементы
             const screens = {
                 home: document.getElementById('homeScreen'),
                 left: document.getElementById('leftScreen'),
                 right: document.getElementById('rightScreen'),
                 profile: document.getElementById('profileScreen'),
-                bot: document.getElementById('botScreen'),
-                dating: document.getElementById('datingScreen')
+                bot: document.getElementById('botScreen')
             };
 
             const buttons = {
@@ -334,54 +305,38 @@
                 left: document.getElementById('leftBtn'),
                 right: document.getElementById('rightBtn'),
                 profile: document.getElementById('profileBtn'),
-                bot: document.getElementById('botBtn'),
-                heart: document.getElementById('heartBtn')
+                bot: document.getElementById('botBtn')
             };
 
             let currentScreen = 'home';
             let isAnimating = false;
 
-            // Функция для показа экрана
             function showScreen(screenName) {
                 if (isAnimating) return;
                 isAnimating = true;
 
-                // Скрываем текущий экран
                 screens[currentScreen].classList.remove('active');
-                // Показываем новый экран
                 screens[screenName].classList.add('active');
-                
-                // Вибрация при переключении
+
                 if (tg?.HapticFeedback) {
                     tg.HapticFeedback.impactOccurred('medium');
                 }
 
                 currentScreen = screenName;
-                
                 setTimeout(() => {
                     isAnimating = false;
                 }, 300);
             }
 
-            // Добавляем обработчики для кнопок
             buttons.home.addEventListener('click', () => showScreen('home'));
             buttons.left.addEventListener('click', () => showScreen('left'));
             buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
             buttons.bot.addEventListener('click', () => showScreen('bot'));
-            buttons.heart.addEventListener('click', () => showScreen('dating'));
 
-            // Логика чат-бота
             const chatMessages = document.getElementById('chat-messages');
             const chatInput = document.getElementById('chat-input');
             const sendBtn = document.getElementById('send-btn');
-
-            const responses = {
-                "как дела": "Спасибо, хорошо! Как у тебя?",
-                "что ты умеешь": "Я могу отвечать на вопросы и помогать тебе!",
-                "сколько тебе лет": "Я - виртуальный помощник, у меня нет возраста.",
-                "какая сегодня дата": `Сегодня ${new Date().toLocaleDateString()}.`
-            };
 
             function addMessage(message, type) {
                 const messageEl = document.createElement('div');
@@ -392,49 +347,61 @@
             }
 
             function sendMessage() {
-                const message = chatInput.value.trim().toLowerCase();
+                const message = chatInput.value.trim();
+                if (message)
+            function sendMessage() {
+                const message = chatInput.value.trim();
                 if (message) {
-                    // Сообщение пользователя
                     addMessage(message, 'user-message');
-                    
-                    // Ответ бота
-                    setTimeout(() => {
-                        const response = responses[message] || "Извините, я не понимаю вас.";
-                        addMessage(response, 'bot-message');
-                    }, 500);
-
                     chatInput.value = '';
+                    setTimeout(() => {
+                        addMessage('Спасибо за ваше сообщение! С Новым Годом!', 'bot-message');
+                    }, 1500);
                 }
             }
 
             sendBtn.addEventListener('click', sendMessage);
             chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sendMessage();
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
             });
 
-            // Переводчик
-            const languageButton = document.createElement('button');
-            languageButton.textContent = "Language";
-            languageButton.style.position = "absolute";
-            languageButton.style.top = "10px";
-            languageButton.style.right = "10px";
-            languageButton.style.padding = "10px";
-            languageButton.style.borderRadius = "8px";
-            languageButton.style.background = "rgba(0,153,255,0.8)";
-            languageButton.style.color = "white";
-            document.body.appendChild(languageButton);
+            // Функция для переключения экрана и анимации
+            function switchScreen(current, next) {
+                current.classList.remove('active');
+                next.classList.add('active');
+            }
 
-            const languages = ["Норвежский", "Английский", "Русский", "Украинский"];
-            const languageMenu = document.createElement('div');
-            languageMenu.style.display = "none";
-            languageMenu.style.position = "absolute";
-            languageMenu.style.top = "50px";
-            languageMenu.style.right = "10px";
-            languageMenu.style.background = "white";
-            languageMenu.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.2)";
-            languageMenu.style.borderRadius = "8px";
-            languageMenu.style.padding = "10px";
-            languages.forEach((lang) => {
-                const langButton = document.createElement('button');
-                langButton.textContent = lang;
-                langButton.style.display = "block";
+            // Обработчики для навигации между экранами
+            buttons.home.addEventListener('click', function() {
+                switchScreen(screens[currentScreen], screens.home);
+                currentScreen = 'home';
+            });
+
+            buttons.left.addEventListener('click', function() {
+                switchScreen(screens[currentScreen], screens.left);
+                currentScreen = 'left';
+            });
+
+            buttons.right.addEventListener('click', function() {
+                switchScreen(screens[currentScreen], screens.right);
+                currentScreen = 'right';
+            });
+
+            buttons.profile.addEventListener('click', function() {
+                switchScreen(screens[currentScreen], screens.profile);
+                currentScreen = 'profile';
+            });
+
+            buttons.bot.addEventListener('click', function() {
+                switchScreen(screens[currentScreen], screens.bot);
+                currentScreen = 'bot';
+            });
+
+            // Инициализация начального экрана
+            showScreen('home');
+        });
+    </script>
+</body>
+</html>
