@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading...</title>
+    <title>Telegram-like Web App - Splash Screen</title>
     <style>
         body {
             background-color: #181818;
@@ -11,63 +11,72 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
             overflow: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #00AFFF;
+            font-size: 36px;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            gap: 15px;
         }
 
         .chat-message {
             background-color: #333;
             padding: 15px;
             border-radius: 10px;
-            margin: 10px;
-            max-width: 80%;
-            color: #fff;
+            max-width: 75%;
+            margin-left: auto;
         }
 
+        .chat-message p {
+            margin: 0;
+        }
+        
         .chat-message .sender {
             color: #00AFFF;
             font-weight: bold;
-        }
-
-        /* Анимация исчезновения */
-        .fade-out {
-            animation: fadeOut 2s forwards;
-        }
-
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="chat-message">
-            <p class="sender">User1:</p>
-            <p>Hello, how are you?</p>
-        </div>
-        <div class="chat-message">
-            <p class="sender">User2:</p>
-            <p>I'm good, thanks! How about you?</p>
+        <h1>Loading...</h1>
+        <div class="chat-container">
+            <div class="chat-message">
+                <p class="sender">User1:</p>
+                <p>Hello, how are you?</p>
+            </div>
+            <div class="chat-message">
+                <p class="sender">User2:</p>
+                <p>I'm good, thanks! How about you?</p>
+            </div>
         </div>
     </div>
 
     <script>
-        // Задержка на 2 секунды, после чего происходит редирект
+        // Переход на основную страницу через 2 секунды
         setTimeout(function() {
-            // Добавление анимации исчезновения для сообщений
-            document.querySelectorAll('.chat-message').forEach(message => {
-                message.classList.add('fade-out');
-            });
-
-            // После 2 секунд редирект на основную страницу
-            setTimeout(function() {
-                window.location.href = 'mine.html'; // Основной файл для приложения
-            }, 2000); // Задержка для исчезновения 2 секунды
-        }, 1000); // Задержка перед началом анимации
+            window.location.href = "https://serhii1staf.github.io/Skafsaex/main.html"; // Ссылка на основную страницу
+        }, 2000); // 2000 миллисекунд = 2 секунды
     </script>
 </body>
 </html>
