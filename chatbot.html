@@ -12,66 +12,55 @@
             color: white; /* Белый текст */
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Позиционируем всё с самого верха */
+            align-items: center;
             height: 100vh;
             text-align: center;
             overflow: hidden;
-            position: relative;
         }
-
         .container {
             max-width: 600px;
             padding: 20px;
-            z-index: 1;
-            overflow-y: auto; /* Добавляем прокрутку, если текст длинный */
-            max-height: 80vh; /* Ограничение высоты блока */
             position: relative;
+            z-index: 2;
+            overflow-y: auto;
+            max-height: 80vh;
         }
-
         h1 {
             margin-bottom: 20px;
         }
-
         p {
             line-height: 1.6;
-            margin-bottom: 10px;
+            font-size: 1.1em;
         }
 
-        /* Стиль для мобильных устройств */
-        @media screen and (max-width: 768px) {
+        /* Стили для снежинок */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            background-color: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.8;
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            from {
+                transform: translateY(-10px);
+            }
+            to {
+                transform: translateY(105vh);
+            }
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            p {
+                font-size: 1em;
+            }
+
             .container {
                 max-width: 90%;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            .snowflake {
-                font-size: 5px; /* Уменьшаем размер снежинок на мобильных */
-            }
-        }
-
-        /* Стиль для компьютеров */
-        @media screen and (min-width: 769px) {
-            .snowflake {
-                font-size: 12px; /* Уменьшаем размер снежинок на компьютере */
-            }
-        }
-
-        /* Стили снежинок */
-        .snowflake {
-            position: absolute;
-            color: white;
-            font-size: 12px; /* Стандартный размер снежинок */
-            user-select: none;
-            pointer-events: none;
-            animation: fall linear infinite;
-        }
-
-        @keyframes fall {
-            100% {
-                transform: translateY(100vh) translateX(var(--x)); /* Снежинка будет падать вниз и двигаться в стороны */
             }
         }
     </style>
@@ -79,49 +68,50 @@
 <body>
     <div class="container">
         <h1>Политика конфиденциальности</h1>
-        <p>Мы уважаем вашу конфиденциальность и гарантируем, что ваши данные будут защищены. Мы не требуем регистрации и не сохраняем ваши персональные данные.</p>
-        <p>Мы не используем ваши данные в коммерческих целях, и вся информация, предоставленная вами в процессе общения с ботом, остается конфиденциальной.</p>
-        <p>Данный бот является нейтральным и предназначен исключительно для взаимодействия с пользователями. Мы не сохраняем, не передаем и не обрабатываем персональную информацию без вашего ведома.</p>
-        <p>Использование бота абсолютно безопасно и соответствует международным стандартам безопасности данных. Ваши действия в рамках общения с ботом не будут записываться или сохраняться для дальнейшей обработки.</p>
-        <p>Мы стремимся предоставить вам лучший опыт с учетом ваших интересов и конфиденциальности. Ваши данные не используются в коммерческих целях, и вы можете прекратить использование бота в любое время без последствий.</p>
-        <p>Политика конфиденциальности может быть обновлена без предварительного уведомления, и изменения вступают в силу с момента их публикации на сайте.</p>
+        <p>Мы не требуем регистрацию, а также не сохраняем и не используем ваши персональные данные.</p>
+        <p>Данный бот является нейтральным и не собирает никакой информации о пользователях.</p>
+        <p>Вы можете пользоваться ботом абсолютно безопасно и конфиденциально.</p>
+        <p>Ваши данные не используются в рекламных целях, и вся информация, которую вы предоставляете, сохраняется исключительно для работы бота. Мы не передаем ваши данные третьим лицам и не храним информацию о ваших действиях в боте. Политика конфиденциальности может изменяться, но всегда будет соответствовать стандартам безопасности и конфиденциальности.</p>
+        <p>Если у вас возникнут вопросы или предложения, вы можете связаться с нами через службу поддержки. Мы всегда готовы помочь!</p>
     </div>
 
-    <!-- Добавление снежинок -->
     <script>
-        // Функция для генерации снежинок
         function createSnowflakes() {
-            const snowflakeCount = 50; // Количество снежинок
-            const snowflakesContainer = document.body;
-
-            for (let i = 0; i < snowflakeCount; i++) {
-                let snowflake = document.createElement("div");
-                snowflake.textContent = "❄"; // Символ снежинки
-                snowflake.classList.add("snowflake");
-
-                // Устанавливаем начальную позицию и движение снежинок
-                let xPos = Math.random() * 100 - 50 + "vw"; // Рандомное начальное положение по горизонтали
-                let animationDuration = Math.random() * 3 + 5 + "s"; // Рандомная скорость падения
-                let animationDelay = Math.random() * 5 + "s"; // Рандомная задержка
-
-                // Устанавливаем значения CSS переменных для случайного бокового движения
-                snowflake.style.setProperty('--x', (Math.random() * 10 - 5) + "vw");
-
-                snowflake.style.left = Math.random() * 100 + "vw"; // Рандомное положение по горизонтали
-                snowflake.style.animationDuration = animationDuration;
-                snowflake.style.animationDelay = animationDelay;
-
-                snowflakesContainer.appendChild(snowflake);
-
-                // Удаляем снежинку после окончания анимации
-                snowflake.addEventListener("animationend", () => {
+            const snowflakeCount = 30;
+            
+            function createSnowflake() {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                
+                // Размер снежинки от 5 до 10px
+                const size = Math.random() * 5 + 5;
+                // Случайная позиция по горизонтали
+                const startPositionLeft = Math.random() * 100;
+                // Случайная скорость падения
+                const duration = Math.random() * 2 + 3; // от 3 до 5 секунд
+                
+                snowflake.style.width = ${size}px;
+                snowflake.style.height = ${size}px;
+                snowflake.style.left = ${startPositionLeft}%;
+                snowflake.style.animationDuration = ${duration}s;
+                
+                document.body.appendChild(snowflake);
+                
+                // Удаляем снежинку после падения и создаем новую
+                snowflake.addEventListener('animationend', () => {
                     snowflake.remove();
+                    createSnowflake();
                 });
+            }
+            
+            // Создаем начальные снежинки с разной задержкой
+            for (let i = 0; i < snowflakeCount; i++) {
+                setTimeout(() => {
+                    createSnowflake();
+                }, Math.random() * 2000); // Разная задержка появления до 2 секунд
             }
         }
 
-        // Запуск генерации снежинок
-        createSnowflakes();
-    </script>
+        createSnowflakes();</script>
 </body>
 </html>
