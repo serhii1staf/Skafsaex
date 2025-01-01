@@ -52,8 +52,15 @@
             visibility: visible;
         }
 
+        #homeScreen {
+            background-image: url('https://i.postimg.cc/XqGB50nY/IMG-4501.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
         .message {
-            background: var(--tg-theme-secondary-bg-color, #f5f5f5);
+            background: rgba(255, 255, 255, 0.9);
             padding: 24px;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -61,6 +68,7 @@
             max-width: 90%;
             width: 100%;
             margin: 0 auto;
+            backdrop-filter: blur(5px);
         }
 
         h1 {
@@ -102,10 +110,33 @@
             align-items: center;
             justify-content: center;
             transition: transform 0.2s ease;
+            background-size: cover;
+            background-position: center;
+        }
+
+        #leftBtn {
+            background-image: url('https://i.postimg.cc/g2CdDX3p/IMG-4502.png');
+        }
+
+        #rightBtn {
+            background-image: url('https://i.postimg.cc/cCBMDnvb/IMG-4503.png');
+        }
+
+        #homeBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 3L4 11v8h16v-8l-8-8zm0 2.5L18 12v5H6v-5l6-6.5z"/></svg>');
+            background-size: 60%;
+            background-repeat: no-repeat;
+            background-position: center;
         }
 
         .nav-btn:active {
             transform: scale(0.95);
+        }
+
+        .screen-content {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
         }
     </style>
 </head>
@@ -132,15 +163,14 @@
             <div class="message">
                 <h1>С 2025 Годом!</h1>
                 <p>Пусть этот год принесет много радости, счастья и успехов!</p>
-                <p>С Новым Годом!</p>
             </div>
         </div>
 
         <!-- Кнопки навигации -->
         <div class="nav-buttons">
-            <button id="leftBtn" class="nav-btn" aria-label="Налево">←</button>
-            <button id="homeBtn" class="nav-btn" aria-label="Домой">🏠</button>
-            <button id="rightBtn" class="nav-btn" aria-label="Направо">→</button>
+            <button id="leftBtn" class="nav-btn" aria-label="Налево"></button>
+            <button id="homeBtn" class="nav-btn" aria-label="Домой"></button>
+            <button id="rightBtn" class="nav-btn" aria-label="Направо"></button>
         </div>
     </div>
 
@@ -181,20 +211,15 @@
                 if (isAnimating) return;
                 isAnimating = true;
 
-                // Убираем активный класс у текущего экрана
                 screens[currentScreen].classList.remove('active');
-                
-                // Добавляем активный класс новому экрану
                 screens[screenName].classList.add('active');
                 
-                // Тактильный отклик
                 if (tg?.HapticFeedback) {
                     tg.HapticFeedback.impactOccurred('medium');
                 }
 
                 currentScreen = screenName;
                 
-                // Сброс флага анимации
                 setTimeout(() => {
                     isAnimating = false;
                 }, 300);
@@ -236,6 +261,18 @@
                     else if (currentScreen === 'left') showScreen('home');
                 }
             }
+
+            // Предзагрузка изображений
+            const preloadImages = [
+                'https://i.postimg.cc/XqGB50nY/IMG-4501.jpg',
+                'https://i.postimg.cc/g2CdDX3p/IMG-4502.png',
+                'https://i.postimg.cc/cCBMDnvb/IMG-4503.png'
+            ];
+
+            preloadImages.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
         });
     </script>
 </body>
