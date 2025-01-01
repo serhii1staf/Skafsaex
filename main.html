@@ -193,7 +193,6 @@
             margin-top: 20px;
         }
 
-        /* Стили для чат-бота */
         #chatbot-container {
             width: 100%;
             height: 100%;
@@ -278,7 +277,6 @@
             background-color: rgba(255, 255, 255, 0.3);
         }
 
-        /* Стили для снежинок */
         .snowflake {
             position: absolute;
             color: white;
@@ -349,7 +347,9 @@
                 <button class="language-btn" data-lang="uk">🇺🇦</button>
             </div>
             <div id="chatbot-container">
-                <div id="chat-messages"></div>
+                <div id="chat-messages">
+                    <div class="message-bubble bot-message">Привет! Я Пяе, твой искусственный помощник. Чем могу помочь?</div>
+                </div>
                 <div id="chat-input-container">
                     <input type="text" id="chat-input" placeholder="Введите сообщение...">
                     <button id="send-btn">Отправить</button>
@@ -401,4 +401,10 @@
 
             // Функция для показа экрана
             function showScreen(screenName) {
-                if
+                if (isAnimating) return;
+                isAnimating = true;
+
+                // Скрываем текущий экран
+                screens[currentScreen].classList.remove('active');
+                // Показываем новый экран
+                screens[screenName].classList.add('active');
