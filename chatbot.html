@@ -14,28 +14,29 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            text-align: center;
             overflow: hidden;
+            flex-direction: column;
         }
+
         .container {
             max-width: 600px;
             padding: 20px;
-            position: relative;
-            z-index: 2;
-            overflow-y: auto;
-            max-height: 80vh;
+            z-index: 1;
+            overflow-y: auto; /* Добавлен скролл */
+            height: 80vh; /* Установим максимальную высоту для контейнера */
         }
+
         h1 {
             margin-bottom: 20px;
         }
+
         p {
             line-height: 1.6;
-            font-size: 1.1em;
         }
 
-        /* Стили для снежинок */
+        /* Логика снежинок */
         .snowflake {
-            position: fixed;
+            position: absolute;
             top: -10px;
             background-color: white;
             border-radius: 50%;
@@ -52,17 +53,6 @@
                 transform: translateY(105vh);
             }
         }
-
-        /* Адаптивность для мобильных устройств */
-        @media (max-width: 768px) {
-            p {
-                font-size: 1em;
-            }
-
-            .container {
-                max-width: 90%;
-            }
-        }
     </style>
 </head>
 <body>
@@ -71,39 +61,40 @@
         <p>Мы не требуем регистрацию, а также не сохраняем и не используем ваши персональные данные.</p>
         <p>Данный бот является нейтральным и не собирает никакой информации о пользователях.</p>
         <p>Вы можете пользоваться ботом абсолютно безопасно и конфиденциально.</p>
-        <p>Ваши данные не используются в рекламных целях, и вся информация, которую вы предоставляете, сохраняется исключительно для работы бота. Мы не передаем ваши данные третьим лицам и не храним информацию о ваших действиях в боте. Политика конфиденциальности может изменяться, но всегда будет соответствовать стандартам безопасности и конфиденциальности.</p>
-        <p>Если у вас возникнут вопросы или предложения, вы можете связаться с нами через службу поддержки. Мы всегда готовы помочь!</p>
+        <p>Кроме того, мы не храним и не передаем ваши данные третьим лицам. Все действия происходят с соблюдением максимальной конфиденциальности.</p>
+        <p>Все запросы и взаимодействия с сервисом проходят через зашифрованные каналы связи, что гарантирует защиту ваших данных.</p>
+        <p>Мы ценим вашу безопасность и конфиденциальность, и всегда готовы предоставить вам необходимую информацию по этому вопросу.</p>
     </div>
 
     <script>
         function createSnowflakes() {
             const snowflakeCount = 30;
-            
+
             function createSnowflake() {
                 const snowflake = document.createElement('div');
                 snowflake.classList.add('snowflake');
-                
+
                 // Размер снежинки от 5 до 10px
                 const size = Math.random() * 5 + 5;
                 // Случайная позиция по горизонтали
                 const startPositionLeft = Math.random() * 100;
                 // Случайная скорость падения
                 const duration = Math.random() * 2 + 3; // от 3 до 5 секунд
-                
+
                 snowflake.style.width = ${size}px;
                 snowflake.style.height = ${size}px;
                 snowflake.style.left = ${startPositionLeft}%;
                 snowflake.style.animationDuration = ${duration}s;
-                
+
                 document.body.appendChild(snowflake);
-                
+
                 // Удаляем снежинку после падения и создаем новую
                 snowflake.addEventListener('animationend', () => {
                     snowflake.remove();
                     createSnowflake();
                 });
             }
-            
+
             // Создаем начальные снежинки с разной задержкой
             for (let i = 0; i < snowflakeCount; i++) {
                 setTimeout(() => {
@@ -112,6 +103,7 @@
             }
         }
 
-        createSnowflakes();</script>
+        createSnowflakes();
+    </script>
 </body>
 </html>
