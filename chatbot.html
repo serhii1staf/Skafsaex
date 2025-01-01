@@ -48,7 +48,7 @@
             }
 
             .snowflake {
-                font-size: 8px; /* Уменьшаем размер снежинок на мобильных */
+                font-size: 5px; /* Уменьшаем размер снежинок на мобильных */
             }
         }
 
@@ -70,11 +70,10 @@
         }
 
         @keyframes fall {
-            to {
-                transform: translateY(100vh); /* Снежинки падают с верха страницы */
+            100% {
+                transform: translateY(100vh) translateX(var(--x)); /* Снежинка будет падать вниз и двигаться в стороны */
             }
         }
-
     </style>
 </head>
 <body>
@@ -99,9 +98,18 @@
                 let snowflake = document.createElement("div");
                 snowflake.textContent = "❄"; // Символ снежинки
                 snowflake.classList.add("snowflake");
-                snowflake.style.left = Math.random() * 100 + "vw"; // Рандомное начальное положение по горизонтали
-                snowflake.style.animationDuration = Math.random() * 3 + 3 + "s"; // Рандомная скорость падения
-                snowflake.style.animationDelay = Math.random() * 5 + "s"; // Рандомная задержка
+
+                // Устанавливаем начальную позицию и движение снежинок
+                let xPos = Math.random() * 100 - 50 + "vw"; // Рандомное начальное положение по горизонтали
+                let animationDuration = Math.random() * 3 + 5 + "s"; // Рандомная скорость падения
+                let animationDelay = Math.random() * 5 + "s"; // Рандомная задержка
+
+                // Устанавливаем значения CSS переменных для случайного бокового движения
+                snowflake.style.setProperty('--x', (Math.random() * 10 - 5) + "vw");
+
+                snowflake.style.left = Math.random() * 100 + "vw"; // Рандомное положение по горизонтали
+                snowflake.style.animationDuration = animationDuration;
+                snowflake.style.animationDelay = animationDelay;
 
                 snowflakesContainer.appendChild(snowflake);
 
