@@ -163,6 +163,14 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
+        #datingBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
         .social-links {
             display: flex;
             flex-direction: column;
@@ -217,6 +225,41 @@
             color: white;
             align-self: flex-end;
         }
+
+        .language-switcher {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px;
+            display: flex;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .language-switcher img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        #datingScreen {
+            background: linear-gradient(135deg, #ff4081, #f50057);
+        }
+
+        .dating-message {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 90%;
+            width: 100%;
+            backdrop-filter: blur(8px);
+            margin: 20px;
+            position: relative;
+            z-index: 2;
+        }
     </style>
 </head>
 <body>
@@ -270,6 +313,21 @@
                     <button id="send-btn" style="margin-left: 10px; padding: 10px; border-radius: 8px; background: rgba(0,153,255,0.8); color: white; border: none;">Отправить</button>
                 </div>
             </div>
+            <div class="language-switcher">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Flag_of_Norway.svg/32px-Flag_of_Norway.svg.png" alt="Norwegian" data-lang="no">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/32px-Flag_of_the_United_States.svg.png" alt="English" data-lang="en">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Russia.svg/32px-Flag_of_Russia.svg.png" alt="Russian" data-lang="ru">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/32px-Flag_of_Ukraine.svg.png" alt="Ukrainian" data-lang="ua">
+            </div>
+        </div>
+
+        <!-- Экран знакомств -->
+        <div id="datingScreen" class="screen">
+            <div class="dating-message">
+                <h1>Знакомства</h1>
+                <p>Редактирование профиля и поиск новых друзей</p>
+                <!-- Функционал знакомств будет добавлен здесь -->
+            </div>
         </div>
 
         <!-- Навигационные кнопки -->
@@ -279,6 +337,7 @@
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
                 <button id="botBtn" class="nav-btn"></button>
+                <button id="datingBtn" class="nav-btn"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
@@ -299,7 +358,8 @@
                 left: document.getElementById('leftScreen'),
                 right: document.getElementById('rightScreen'),
                 profile: document.getElementById('profileScreen'),
-                bot: document.getElementById('botScreen')
+                bot: document.getElementById('botScreen'),
+                dating: document.getElementById('datingScreen')
             };
 
             const buttons = {
@@ -307,7 +367,8 @@
                 left: document.getElementById('leftBtn'),
                 right: document.getElementById('rightBtn'),
                 profile: document.getElementById('profileBtn'),
-                bot: document.getElementById('botBtn')
+                bot: document.getElementById('botBtn'),
+                dating: document.getElementById('datingBtn')
             };
 
             let currentScreen = 'home';
@@ -341,6 +402,7 @@
             buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
             buttons.bot.addEventListener('click', () => showScreen('bot'));
+            buttons.dating.addEventListener('click', () => showScreen('dating'));
 
             // Логика чат-бота
             const chatMessages = document.getElementById('chat-messages');
@@ -372,9 +434,4 @@
 
             sendBtn.addEventListener('click', sendMessage);
             chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sendMessage();
-            });
-        });
-    </script>
-</body>
-</html>
+                if (e.key === 'Enter')
