@@ -69,6 +69,10 @@
             background-position: center;
         }
 
+        #datingScreen {
+            background: linear-gradient(135deg, #ff6f61, #ff8a65);
+        }
+
         .message {
             background: rgba(255, 255, 255, 0.2);
             padding: 24px;
@@ -434,11 +438,3 @@
                 const langButton = document.createElement('button');
                 langButton.textContent = lang;
                 langButton.style.display = "block";
-                langButton.style.width = "100%";
-                langButton.style.padding = "10px";
-                langButton.style.border = "none";
-                langButton.style.background = "white";
-                langButton.style.cursor = "pointer";
-                langButton.addEventListener('click', () => {
-                    languageMenu.style.display = "none";
-                    alert(`Выбран язык: ${lang}`);
