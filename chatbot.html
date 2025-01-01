@@ -12,18 +12,19 @@
             color: white; /* Белый текст */
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             height: 100vh;
-            overflow: hidden;
-            flex-direction: column;
+            text-align: center;
+            overflow-x: hidden; /* Убираем горизонтальный скроллинг */
         }
 
         .container {
             max-width: 600px;
             padding: 20px;
-            z-index: 1;
-            overflow-y: auto; /* Добавлен скролл */
-            height: 80vh; /* Установим максимальную высоту для контейнера */
+            overflow-y: auto;
+            max-height: 80vh; /* Ограничение по высоте */
+            text-align: left;
+            position: relative;
         }
 
         h1 {
@@ -32,25 +33,27 @@
 
         p {
             line-height: 1.6;
+            margin-bottom: 10px;
         }
 
-        /* Логика снежинок */
+        /* Стиль для снежинок */
         .snowflake {
-            position: absolute;
+            position: fixed;
             top: -10px;
             background-color: white;
             border-radius: 50%;
-            pointer-events: none;
             opacity: 0.8;
+            pointer-events: none;
             animation: snowfall linear infinite;
         }
 
+        /* Анимация падения снежинок */
         @keyframes snowfall {
             from {
-                transform: translateY(-10px);
+                transform: translateY(-10px) translateX(0);
             }
             to {
-                transform: translateY(105vh);
+                transform: translateY(100vh) translateX(50vw);
             }
         }
     </style>
@@ -61,9 +64,8 @@
         <p>Мы не требуем регистрацию, а также не сохраняем и не используем ваши персональные данные.</p>
         <p>Данный бот является нейтральным и не собирает никакой информации о пользователях.</p>
         <p>Вы можете пользоваться ботом абсолютно безопасно и конфиденциально.</p>
-        <p>Кроме того, мы не храним и не передаем ваши данные третьим лицам. Все действия происходят с соблюдением максимальной конфиденциальности.</p>
-        <p>Все запросы и взаимодействия с сервисом проходят через зашифрованные каналы связи, что гарантирует защиту ваших данных.</p>
-        <p>Мы ценим вашу безопасность и конфиденциальность, и всегда готовы предоставить вам необходимую информацию по этому вопросу.</p>
+        <p>Мы уверены, что ваше личное пространство должно быть защищено, и предоставляем вам все возможности для безопасного использования наших сервисов.</p>
+        <p>Если у вас есть вопросы по поводу нашей политики, пожалуйста, свяжитесь с нами.</p>
     </div>
 
     <script>
@@ -73,25 +75,30 @@
             function createSnowflake() {
                 const snowflake = document.createElement('div');
                 snowflake.classList.add('snowflake');
-
+                
                 // Размер снежинки от 5 до 10px
                 const size = Math.random() * 5 + 5;
                 // Случайная позиция по горизонтали
                 const startPositionLeft = Math.random() * 100;
                 // Случайная скорость падения
                 const duration = Math.random() * 2 + 3; // от 3 до 5 секунд
-
+                const translateX = (Math.random() - 0.5) * 100;  // движение влево/вправ
+                
                 snowflake.style.width = ${size}px;
                 snowflake.style.height = ${size}px;
                 snowflake.style.left = ${startPositionLeft}%;
                 snowflake.style.animationDuration = ${duration}s;
+                snowflake.style.animationTimingFunction = 'linear';
+                snowflake.style.animationName = 'snowfall';
+                snowflake.style.animationDirection = 'normal';
+                snowflake.style.animationDelay = '0s';
 
                 document.body.appendChild(snowflake);
 
-                // Удаляем снежинку после падения и создаем новую
+                // Удаляем снежинку после падения
                 snowflake.addEventListener('animationend', () => {
                     snowflake.remove();
-                    createSnowflake();
+                    createSnowflake();  // Создаём новую снежинку
                 });
             }
 
