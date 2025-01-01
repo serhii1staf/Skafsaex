@@ -1,0 +1,28 @@
+"Artificial Intelligence: A text-based bot that not only answers questions but can become a full-fledged conversational partner. Hint: In the future, users may not even need to talk to people, as AI can do it for them.",
+                    "Unified platform: Everything needed for communication and interaction is gathered in one application."
+                ],
+                development: "3. Future development:",
+                developmentContent: "Every 2-3 months, the application will receive updates, including new features, expansions, and improvements. Plans include adding image generation, new programs, and functions to make the app more universal and convenient.",
+                potential: "4. Potential:",
+                potentialContent: "Constant development and the addition of unique features make this application not just a platform for dating or communication but a tool that can change the approach to interaction in the digital world."
+            },
+            // Add other translations (no, ru, ua) similar to above
+        };
+
+        function translate(lang) {
+            const data = translations[lang];
+            document.getElementById("content").innerHTML = `
+                <h1>${data.title}</h1>
+                <h2>${data.goal}</h2>
+                <p>${data.goalContent}</p>
+                <h2>${data.features}</h2>
+                <ul>${data.featuresList.map(item => `<li>${item}</li>`).join("")}</ul>
+                <h2>${data.development}</h2>
+                <p>${data.developmentContent}</p>
+                <h2>${data.potential}</h2>
+                <p>${data.potentialContent}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
