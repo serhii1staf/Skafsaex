@@ -18,8 +18,9 @@
             height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             flex-direction: column;
+            padding-top: 20px;
         }
 
         .message {
@@ -35,22 +36,20 @@
             text-align: center;
         }
 
-        .user1 {
+        .left {
             left: 5%;
-            text-align: left;
         }
 
-        .user2 {
+        .right {
             right: 5%;
-            text-align: left;
-            margin-top: 2mm; /* Slightly move User2 message lower */
+            margin-top: 2mm; /* Second message slightly lower */
         }
 
         /* Snowflake styles */
         .snowflake {
             position: absolute;
             color: white;
-            font-size: 3px;  /* Snowflakes significantly smaller */
+            font-size: 2px;  /* Snowflakes smaller */
             animation: snow 10s linear infinite;
         }
 
@@ -75,14 +74,14 @@
 </head>
 <body>
     <div class="message-container">
-        <div class="message user1">User1: Hello, how are you?</div>
-        <div class="message user2">User2: Hi, I'm good, thanks! How about you?</div>
+        <div class="message left">Hello, how are you?</div>
+        <div class="message right">Hi, I'm good, thanks! How about you?</div>
     </div>
 
     <script>
         // Function to generate snowflakes
         function createSnowflakes() {
-            for (let i = 0; i < 200; i++) { // Reduced the number of snowflakes
+            for (let i = 0; i < 100; i++) { // Reduced the number of snowflakes
                 const snowflake = document.createElement('div');
                 snowflake.classList.add('snowflake');
                 snowflake.innerHTML = '❄';  // Snowflake symbol
