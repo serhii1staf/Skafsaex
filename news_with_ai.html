@@ -3,107 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Style App with Snowflakes</title>
+    <title>Snowfall Animation with Messages</title>
     <style>
         body {
-            background-color: black;
             margin: 0;
             padding: 0;
             overflow: hidden;
             font-family: Arial, sans-serif;
-        }
-
-        .message-container {
-            position: relative;
             height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        
+        .message-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             flex-direction: column;
-            padding-top: 20px;
         }
 
         .message {
-            position: absolute;
-            padding: 12px 20px;
-            margin: 0;
-            font-size: 14px;
-            color: white;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            width: 45%;
-            max-width: 300px;
-            text-align: center;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 20px;
+            margin: 5px;
         }
 
-        .left {
-            left: 5%;
+        .message-left {
+            align-self: flex-start;
         }
 
-        .right {
-            right: 5%;
-            margin-top: 2mm; /* Second message slightly lower */
+        .message-right {
+            align-self: flex-end;
+            margin-top: 20px;
         }
 
-        /* Snowflake styles */
         .snowflake {
             position: absolute;
-            color: white;
-            font-size: 2px;  /* Snowflakes smaller */
-            animation: snow 10s linear infinite;
+            top: -10px;
+            background-color: #fff;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: snow 5s linear infinite;
         }
 
         @keyframes snow {
-            0% {
-                top: -10px;
-                opacity: 1;
-            }
-            100% {
-                top: 100vh;
-                opacity: 0;
+            to {
+                transform: translateY(100vh);
             }
         }
 
         @media (max-width: 768px) {
             .message {
-                font-size: 16px;
-                padding: 10px 15px;
+                font-size: 18px;
+                padding: 8px 15px;
+            }
+        }
+
+        .fade-out {
+            animation: fadeOut 1s forwards;
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
             }
         }
     </style>
 </head>
 <body>
-    <div class="message-container">
-        <div class="message left">Hello, how are you?</div>
-        <div class="message right">Hi, I'm good, thanks! How about you?</div>
+
+<div class="message-container">
+    <div class="message message-left">
+        Hi, how are you?
     </div>
+    <div class="message message-right">
+        Hello, thank you, good. <br> How are you?
+    </div>
+</div>
 
-    <script>
-        // Function to generate snowflakes
-        function createSnowflakes() {
-            for (let i = 0; i < 100; i++) { // Reduced the number of snowflakes
-                const snowflake = document.createElement('div');
-                snowflake.classList.add('snowflake');
-                snowflake.innerHTML = '❄';  // Snowflake symbol
-                snowflake.style.left = Math.random() * 100 + 'vw';  // Random horizontal position
-                snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';  // Random speed
-                snowflake.style.animationDelay = Math.random() * 5 + 's';  // Random delay
-
-                // Random size of snowflakes
-                const size = Math.random() * 1.5 + 1.5; // Snowflake size between 1.5px and 3px
-                snowflake.style.fontSize = size + 'px';
-
-                document.body.appendChild(snowflake);
-            }
+<script>
+    // Function to generate snowflakes
+    function createSnowflakes() {
+        const snowflakeCount = 50; // Decreased number of snowflakes
+        for (let i = 0; i < snowflakeCount; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            const size = Math.random() * 5 + 3; // Snowflake size
+            snowflake.style.width = ${size}px;
+            snowflake.style.height = ${size}px;
+            snowflake.style.left = ${Math.random() * window.innerWidth}px;
+            snowflake.style.animationDuration = ${Math.random() * 3 + 2}s; // Random duration for each snowflake
+            snowflake.style.animationDelay = ${Math.random() * 3}s; // Random delay for each snowflake
+            document.body.appendChild(snowflake);
         }
+    }
 
-        // Call the function to create snowflakes
-        createSnowflakes();
+    // Trigger snowflakes
+    createSnowflakes();
 
-        // Set timer for the animation duration and redirect to main page
-        setTimeout(function() {
-            window.location.href = 'https://serhii1staf.github.io/Skafsaex/main.html'; // Redirect after animation
-        }, 5000); // Duration of the splash screen in milliseconds (5000 ms = 5 seconds)
-    </script>
+    // After 5 seconds, apply fade out and redirect to the main page
+    setTimeout(() => {
+        document.body.classList.add('fade-out');
+        setTimeout(() => {
+            window.location.href = 'https://serhii1staf.github.io/Skafsaex/main.html'; // Link to your main page
+        }, 1000); // Delay for fade-out animation
+    }, 5000); // 5 seconds delay before the transition
+</script>
+
 </body>
 </html>
