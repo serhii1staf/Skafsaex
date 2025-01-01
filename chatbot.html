@@ -12,7 +12,7 @@
             color: white; /* Белый текст */
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Позиционируем всё с самого верха */
             height: 100vh;
             text-align: center;
             overflow: hidden;
@@ -25,6 +25,7 @@
             z-index: 1;
             overflow-y: auto; /* Добавляем прокрутку, если текст длинный */
             max-height: 80vh; /* Ограничение высоты блока */
+            position: relative;
         }
 
         h1 {
@@ -45,13 +46,24 @@
             h1 {
                 font-size: 1.5rem;
             }
+
+            .snowflake {
+                font-size: 8px; /* Уменьшаем размер снежинок на мобильных */
+            }
+        }
+
+        /* Стиль для компьютеров */
+        @media screen and (min-width: 769px) {
+            .snowflake {
+                font-size: 12px; /* Уменьшаем размер снежинок на компьютере */
+            }
         }
 
         /* Стили снежинок */
         .snowflake {
             position: absolute;
             color: white;
-            font-size: 15px; /* Уменьшаем размер снежинок */
+            font-size: 12px; /* Стандартный размер снежинок */
             user-select: none;
             pointer-events: none;
             animation: fall linear infinite;
@@ -59,9 +71,10 @@
 
         @keyframes fall {
             to {
-                transform: translateY(100vh);
+                transform: translateY(100vh); /* Снежинки падают с верха страницы */
             }
         }
+
     </style>
 </head>
 <body>
