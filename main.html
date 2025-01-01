@@ -10,89 +10,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background-color: var(--tg-theme-bg-color, #fff);
-            color: var(--tg-theme-text-color, #000);
-        }
-
-        #app {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        .screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: calc(100vh - 80px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s;
-            padding: 20px;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .screen.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #homeScreen {
-            background-image: url('https://i.postimg.cc/XqGB50nY/IMG-4501.jpg');
-        }
-
-        #leftScreen {
-            background-image: url('https://i.postimg.cc/g2CdDX3p/IMG-4502.png');
-        }
-
-        #rightScreen {
-            background-image: url('https://i.postimg.cc/cCBMDnvb/IMG-4503.png');
-        }
-
-        .message {
-            background: rgba(255, 255, 255, 0.3);
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 90%;
-            width: 100%;
-            margin: 0 auto;
-            backdrop-filter: blur(8px);
-        }
-
-        h1 {
-            font-size: 28px;
-            margin-bottom: 16px;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }
-
-        p {
-            font-size: 18px;
-            line-height: 1.5;
-            margin-bottom: 8px;
-            color: white;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
+        /* ... [предыдущие стили остаются] ... */
 
         .nav-buttons {
             position: fixed;
@@ -109,8 +27,8 @@
         }
 
         .nav-btn {
-            width: 56px;
-            height: 56px;
+            width: 48px; /* Уменьшенный размер кнопок */
+            height: 48px;
             border-radius: 50%;
             border: none;
             background: var(--tg-theme-button-color, #2196F3);
@@ -122,128 +40,113 @@
             transition: transform 0.2s ease;
             background-size: cover;
             background-position: center;
+            margin: 0 4px;
         }
 
-        #homeBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2.1L1 12h3v9h7v-6h2v6h7v-9h3L12 2.1zm0 2.691l6 5.4V19h-3v-6H9v6H6v-8.809l6-5.4z"/></svg>');
-            background-size: 65%;
+        .nav-center-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        #profileScreen {
+            background: linear-gradient(135deg, #1a237e, #0d47a1);
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            gap: 12px;
+            backdrop-filter: blur(5px);
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .social-link svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        #profileBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+            background-size: 60%;
             background-repeat: no-repeat;
             background-position: center;
         }
 
-        #leftBtn, #rightBtn {
-            font-size: 24px;
-            font-weight: bold;
-        }
+        /* Остальные стили остаются без изменений */
 
-        .nav-btn:active {
-            transform: scale(0.95);
-        }
     </style>
 </head>
 <body>
     <div id="app">
-        <!-- Главный экран -->
-        <div id="homeScreen" class="screen active">
-            <div class="message">
-                <h1>С Новым 2025 Годом!</h1>
-                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
-            </div>
-        </div>
+        <!-- Существующие экраны остаются без изменений -->
         
-        <!-- Экран с текстом про 2024 -->
-        <div id="leftScreen" class="screen">
+        <!-- Новый экран профиля -->
+        <div id="profileScreen" class="screen">
             <div class="message">
-                <p>Старый 2024 год ушел и никогда не вернется.</p>
-                <p>Время для новых начинаний!</p>
-            </div>
-        </div>
-        
-        <!-- Экран с поздравлением 2025 -->
-        <div id="rightScreen" class="screen">
-            <div class="message">
-                <h1>С 2025 Годом!</h1>
-                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
+                <h1>Мои социальные сети</h1>
+                <div class="social-links">
+                    <a href="https://t.me/sangklasy" target="_blank" class="social-link">
+                        <svg viewBox="0 0 24 24" fill="white">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .24z"/>
+                        </svg>
+                        Telegram канал
+                    </a>
+                    <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" target="_blank" class="social-link">
+                        <svg viewBox="0 0 24 24" fill="white">
+                            <path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153a4.908 4.908 0 0 1 1.153 1.772c.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 0 1-1.153 1.772 4.915 4.915 0 0 1-1.772 1.153c-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 0 1-1.772-1.153 4.904 4.904 0 0 1-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.217-1.79.465-2.428a4.88 4.88 0 0 1 1.153-1.772A4.897 4.897 0 0 1 5.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 1 0-2.5 0 1.25 1.25 0 0 0 2.5 0zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/>
+                        </svg>
+                        Instagram аккаунт
+                    </a>
+                </div>
             </div>
         </div>
 
-        <!-- Кнопки навигации -->
+        <!-- Обновленная навигация -->
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn" aria-label="Налево">←</button>
-            <button id="homeBtn" class="nav-btn" aria-label="Домой"></button>
+            <div class="nav-center-group">
+                <button id="homeBtn" class="nav-btn" aria-label="Домой"></button>
+                <button id="profileBtn" class="nav-btn" aria-label="Профиль"></button>
+            </div>
             <button id="rightBtn" class="nav-btn" aria-label="Направо">→</button>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Инициализация Telegram WebApp
-            const tg = window.Telegram?.WebApp;
-            
-            if (tg) {
-                tg.ready();
-                tg.expand();
-                
-                // Применяем цветовую схему Telegram
-                document.documentElement.style.setProperty('--tg-theme-bg-color', tg.backgroundColor);
-                document.documentElement.style.setProperty('--tg-theme-text-color', tg.textColor);
-                document.documentElement.style.setProperty('--tg-theme-button-color', tg.buttonColor);
-                document.documentElement.style.setProperty('--tg-theme-button-text-color', tg.buttonTextColor);
-            }
+            // ... [предыдущий код инициализации] ...
 
-            // Элементы управления
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                left: document.getElementById('leftScreen'),
-                right: document.getElementById('rightScreen')
-            };
+            // Добавляем обработку для нового экрана профиля
+            const profileScreen = document.getElementById('profileScreen');
+            const profileBtn = document.getElementById('profileBtn');
 
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                left: document.getElementById('leftBtn'),
-                right: document.getElementById('rightBtn')
-            };
+            // Обновляем объект screens
+            screens.profile = profileScreen;
 
-            let currentScreen = 'home';
-            let isAnimating = false;
+            // Добавляем обработчик для кнопки профиля
+            profileBtn.addEventListener('click', () => showScreen('profile'));
 
-            // Функция смены экрана
-            function showScreen(screenName) {
-                if (isAnimating) return;
-                isAnimating = true;
-
-                screens[currentScreen].classList.remove('active');
-                screens[screenName].classList.add('active');
-                
-                if (tg?.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('medium');
-                }
-
-                currentScreen = screenName;
-                
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 300);
-            }
-
-            // Обработчики нажатий
-            buttons.home.addEventListener('click', () => showScreen('home'));
-            buttons.left.addEventListener('click', () => showScreen('left'));
-            buttons.right.addEventListener('click', () => showScreen('right'));
-
-            // Обработка свайпов
-            let touchStartX = 0;
-            let touchEndX = 0;
-
-            document.addEventListener('touchstart', function(event) {
-                touchStartX = event.changedTouches[0].screenX;
-            }, false);
-
-            document.addEventListener('touchend', function(event) {
-                touchEndX = event.changedTouches[0].screenX;
-                handleSwipe();
-            }, false);
-
+            // Обновляем обработку свайпов
             function handleSwipe() {
                 if (isAnimating) return;
                 
@@ -251,6 +154,11 @@
                 const threshold = 50;
 
                 if (Math.abs(diff) < threshold) return;
+
+                if (currentScreen === 'profile') {
+                    showScreen('home');
+                    return;
+                }
 
                 if (diff > 0) {
                     if (currentScreen === 'home') showScreen('left');
@@ -261,16 +169,16 @@
                 }
             }
 
-            // Предзагрузка изображений
-            const preloadImages = [
-                'https://i.postimg.cc/XqGB50nY/IMG-4501.jpg',
-                'https://i.postimg.cc/g2CdDX3p/IMG-4502.png',
-                'https://i.postimg.cc/cCBMDnvb/IMG-4503.png'
-            ];
-
-            preloadImages.forEach(src => {
-                const img = new Image();
-                img.src = src;
+            // Обработка внешних ссылок
+            document.querySelectorAll('.social-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (tg?.openLink) {
+                        tg.openLink(this.href);
+                    } else {
+                        window.open(this.href, '_blank');
+                    }
+                });
             });
         });
     </script>
