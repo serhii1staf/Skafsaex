@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram-like Web App - Splash Screen</title>
     <style>
+        /* Основной стиль для заставки */
         body {
             background-color: #181818;
             color: #fff;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
@@ -17,66 +18,85 @@
             height: 100vh;
             overflow: hidden;
         }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            padding: 20px;
-            background-color: #222;
-            border-radius: 15px;
-            text-align: center;
-        }
 
-        h1 {
-            color: #00AFFF;
-            font-size: 36px;
-        }
-
+        /* Контейнер для чата */
         .chat-container {
             display: flex;
             flex-direction: column;
-            margin-top: 20px;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 1000px;
+            height: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            overflow-y: auto;
             gap: 15px;
         }
 
+        /* Сообщения в чате */
         .chat-message {
             background-color: #333;
             padding: 15px;
             border-radius: 10px;
-            max-width: 75%;
-            margin-left: auto;
+            max-width: 80%;
+            margin: 10px 0;
+            position: relative;
         }
 
+        /* Псевдо-элементы для имени пользователя */
+        .chat-message .sender {
+            font-weight: bold;
+            color: #00AFFF;
+            margin-bottom: 5px;
+        }
+
+        /* Стили для текстов сообщений */
         .chat-message p {
             margin: 0;
         }
-        
-        .chat-message .sender {
-            color: #00AFFF;
-            font-weight: bold;
+
+        /* Сообщения от User1 */
+        .user1 {
+            margin-left: auto;
+            background-color: #4d4d4d; /* Более светлый цвет */
+        }
+
+        /* Сообщения от User2 */
+        .user2 {
+            margin-right: auto;
+            background-color: #2c2c2c; /* Более темный цвет */
+        }
+
+        /* Плавный переход на основную страницу */
+        .fade {
+            opacity: 0;
+            transition: opacity 2s;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Loading...</h1>
-        <div class="chat-container">
-            <div class="chat-message">
-                <p class="sender">User1:</p>
-                <p>Hello, how are you?</p>
-            </div>
-            <div class="chat-message">
-                <p class="sender">User2:</p>
-                <p>I'm good, thanks! How about you?</p>
-            </div>
+    <div class="chat-container">
+        <div class="chat-message user1">
+            <p class="sender">User1:</p>
+            <p>Hello, how are you?</p>
+        </div>
+        <div class="chat-message user2">
+            <p class="sender">User2:</p>
+            <p>I'm good, thanks! How about you?</p>
         </div>
     </div>
 
     <script>
-        // Переход на основную страницу через 2 секунды
+        // Функция для перехода на основную страницу
         setTimeout(function() {
-            window.location.href = "https://serhii1staf.github.io/Skafsaex/main.html"; // Ссылка на основную страницу
-        }, 2000); // 2000 миллисекунд = 2 секунды
+            document.body.classList.add("fade"); // Добавляем эффект исчезновения
+
+            // Переход на основную страницу через 2 секунды
+            setTimeout(function() {
+                window.location.href = "https://serhii1staf.github.io/Skafsaex/main.html"; // Основная страница
+            }, 2000); // 2000 миллисекунд = 2 секунды
+        }, 2000); // Появление и задержка на 2 секунды
     </script>
 </body>
 </html>
