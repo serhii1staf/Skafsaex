@@ -15,10 +15,13 @@
             align-items: center;
             height: 100vh;
             text-align: center;
+            overflow: hidden;
+            position: relative;
         }
         .container {
             max-width: 600px;
             padding: 20px;
+            z-index: 1;
         }
         h1 {
             margin-bottom: 20px;
@@ -26,14 +29,58 @@
         p {
             line-height: 1.6;
         }
+        .snowflake {
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Политика конфиденциальности</h1>
-        <p>Мы не требуем регистрацию, а также не сохраняем и не используем ваши персональные данные.</p>
-        <p>Данный бот является нейтральным и не собирает никакой информации о пользователях.</p>
-        <p>Вы можете пользоваться ботом абсолютно безопасно и конфиденциально.</p>
+        <p>Мы уважаем вашу конфиденциальность и гарантируем, что ваши данные будут защищены. Мы не требуем регистрации и не сохраняем ваши персональные данные.</p>
+        <p>Мы не используем ваши данные в коммерческих целях, и вся информация, предоставленная вами в процессе общения с ботом, остается конфиденциальной.</p>
+        <p>Данный бот является нейтральным и предназначен исключительно для взаимодействия с пользователями. Мы не сохраняем, не передаем и не обрабатываем персональную информацию без вашего ведома.</p>
+        <p>Использование бота абсолютно безопасно и соответствует международным стандартам безопасности данных. Ваши действия в рамках общения с ботом не будут записываться или сохраняться для дальнейшей обработки.</p>
+        <p>Мы стремимся предоставить вам лучший опыт с учетом ваших интересов и конфиденциальности. Ваши данные не используются в коммерческих целях, и вы можете прекратить использование бота в любое время без последствий.</p>
     </div>
+
+    <!-- Добавление снежинок -->
+    <script>
+        // Функция для генерации снежинок
+        function createSnowflakes() {
+            const snowflakeCount = 50; // Количество снежинок
+            const snowflakesContainer = document.body;
+
+            for (let i = 0; i < snowflakeCount; i++) {
+                let snowflake = document.createElement("div");
+                snowflake.textContent = "❄"; // Символ снежинки
+                snowflake.classList.add("snowflake");
+                snowflake.style.left = Math.random() * 100 + "vw"; // Рандомное начальное положение по горизонтали
+                snowflake.style.animationDuration = Math.random() * 3 + 3 + "s"; // Рандомная скорость падения
+                snowflake.style.animationDelay = Math.random() * 5 + "s"; // Рандомная задержка
+
+                snowflakesContainer.appendChild(snowflake);
+
+                // Удаляем снежинку после окончания анимации
+                snowflake.addEventListener("animationend", () => {
+                    snowflake.remove();
+                });
+            }
+        }
+
+        // Запуск генерации снежинок
+        createSnowflakes();
+    </script>
 </body>
 </html>
