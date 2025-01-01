@@ -3,152 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Заставка</title>
+    <title>Telegram App with Snowflakes</title>
     <style>
         body {
+            background-color: black;
             margin: 0;
             padding: 0;
-            height: 100vh;
-            background-color: #000; /* Черный фон */
             overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        
+        .message-container {
+            position: relative;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
-        }
-
-        .message-container {
-            width: 80%;
-            height: 80%;
-            position: relative;
-            display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
 
         .message {
-            position: relative;
+            position: absolute;
             padding: 20px;
-            border-radius: 10px;
-            color: #fff;
+            margin: 0;
             font-size: 20px;
-            background-color: transparent;
-            border: 2px solid white;
-            width: 80%;
-            margin: 10px;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            width: 40%;
+            text-align: center;
         }
 
         .user1 {
-            align-self: flex-start;
-            background-color: rgba(255, 255, 255, 0.1);
+            left: 5%;
+            text-align: left;
         }
 
         .user2 {
-            align-self: flex-end;
-            background-color: rgba(255, 255, 255, 0.1);
+            right: 5%;
+            text-align: right;
         }
 
-        .user1:before {
-            content: "User1";
-            position: absolute;
-            top: -30px;
-            left: 0;
-            color: white;
-            font-size: 14px;
-        }
-
-        .user2:before {
-            content: "User2";
-            position: absolute;
-            top: -30px;
-            right: 0;
-            color: white;
-            font-size: 14px;
-        }
-
-        /* Анимация снежинок */
+        /* Snowflake styles */
         .snowflake {
             position: absolute;
-            top: -10px;
             color: white;
-            font-size: 1rem;
-            user-select: none;
-            z-index: 999;
-            animation: fall 10s linear infinite;
+            font-size: 10px;
+            animation: snow 10s linear infinite;
         }
 
-        @keyframes fall {
+        @keyframes snow {
             0% {
                 top: -10px;
-            }
-            100% {
-                top: 100vh;
-            }
-        }
-
-        /* Разные скорости для снежинок */
-        .snowflake:nth-child(odd) {
-            animation-duration: 15s;
-            animation-delay: 1s;
-        }
-
-        .snowflake:nth-child(even) {
-            animation-duration: 12s;
-            animation-delay: 2s;
-        }
-
-        /* Анимация перехода */
-        .fadeout {
-            animation: fadeout 2s forwards;
-        }
-
-        @keyframes fadeout {
-            0% {
                 opacity: 1;
             }
             100% {
+                top: 100vh;
                 opacity: 0;
             }
         }
-
     </style>
 </head>
 <body>
-
     <div class="message-container">
-        <div class="message user1">
-            <p>Привет, как дела?</p>
-        </div>
-        <div class="message user2">
-            <p>Привет, спасибо, все в порядке. А у тебя?</p>
-        </div>
+        <div class="message user1">User1: Hello, how are you?</div>
+        <div class="message user2">User2: Hi, I'm good, thanks! How about you?</div>
     </div>
 
-    <div id="snowflakes"></div>
-
     <script>
-        // Создание снежинок
-        const snowflakesContainer = document.getElementById('snowflakes');
-
-        function createSnowflakes(num) {
-            for (let i = 0; i < num; i++) {
-                let snowflake = document.createElement('div');
+        // Function to generate snowflakes
+        function createSnowflakes() {
+            for (let i = 0; i < 100; i++) {
+                const snowflake = document.createElement('div');
                 snowflake.classList.add('snowflake');
-                snowflake.textContent = '❄'; // Символ снежинки
-                snowflake.style.left = Math.random() * 100 + '%'; // Случайное положение по горизонтали
-                snowflake.style.animationDuration = Math.random() * 5 + 5 + 's'; // Разная скорость падения
-                snowflakesContainer.appendChild(snowflake);
+                snowflake.innerHTML = '❄';  // Snowflake symbol
+                snowflake.style.left = Math.random() * 100 + 'vw';  // Random horizontal position
+                snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';  // Random speed
+                snowflake.style.animationDelay = Math.random() * 5 + 's';  // Random delay
+
+                // Random size of snowflakes
+                const size = Math.random() * 3 + 2; // Snowflake size between 2px and 5px
+                snowflake.style.fontSize = size + 'px';
+
+                document.body.appendChild(snowflake);
             }
         }
 
-        createSnowflakes(50); // Создаем 50 снежинок
-
-        // Переход на другую страницу через 10 секунд
-        setTimeout(function() {
-            window.location.href = 'https://serhii1staf.github.io/Skafsaex/main.html'; // Указываешь здесь ссылку на основной файл
-        }, 10000); // Через 10 секунд
-
+        // Call the function to create snowflakes
+        createSnowflakes();
     </script>
-
 </body>
 </html>
