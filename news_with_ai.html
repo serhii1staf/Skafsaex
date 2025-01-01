@@ -11,80 +11,63 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             overflow: hidden;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            padding: 20px;
-            background-color: #222;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            margin-top: 20px;
-            gap: 15px;
         }
 
         .chat-message {
             background-color: #333;
             padding: 15px;
             border-radius: 10px;
-            max-width: 75%;
-            margin-left: auto;
-            opacity: 1;
-            transition: opacity 1s ease;
+            margin: 10px;
+            max-width: 80%;
+            color: #fff;
         }
 
-        .chat-message p {
-            margin: 0;
-        }
-        
         .chat-message .sender {
             color: #00AFFF;
             font-weight: bold;
         }
 
+        /* Анимация исчезновения */
         .fade-out {
-            opacity: 0;
+            animation: fadeOut 2s forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome!</h1>
-        <div class="chat-container">
-            <div class="chat-message">
-                <p class="sender">User:</p>
-                <p>Hello, how are you?</p>
-            </div>
-            <div class="chat-message">
-                <p class="sender">User2:</p>
-                <p>I'm good, thanks! How about you?</p>
-            </div>
+        <div class="chat-message">
+            <p class="sender">User1:</p>
+            <p>Hello, how are you?</p>
+        </div>
+        <div class="chat-message">
+            <p class="sender">User2:</p>
+            <p>I'm good, thanks! How about you?</p>
         </div>
     </div>
 
     <script>
+        // Задержка на 2 секунды, после чего происходит редирект
         setTimeout(function() {
-            // Fade out the messages (simulate the disappearing effect)
+            // Добавление анимации исчезновения для сообщений
             document.querySelectorAll('.chat-message').forEach(message => {
                 message.classList.add('fade-out');
             });
 
-            // After 2 seconds (duration of fade-out), redirect to main page
+            // После 2 секунд редирект на основную страницу
             setTimeout(function() {
-                window.location.href = 'mine.html'; // Redirect to the main page
-            }, 2000); // 2 seconds delay before redirect
-        }, 1000); // Wait 1 second before starting the fade-out effect
+                window.location.href = 'mine.html'; // Основной файл для приложения
+            }, 2000); // Задержка для исчезновения 2 секунды
+        }, 1000); // Задержка перед началом анимации
     </script>
 </body>
 </html>
