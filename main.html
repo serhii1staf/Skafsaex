@@ -1,125 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snowfall Animation with Messages</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #0a1c2d; /* Очень тёмно-синий или тёмно-черный фон */
-        }
+import React, { useState } from 'react';
+import { Home, ChevronLeft, ChevronRight } from 'lucide-react';
+
+const NewYearApp = () => {
+  const [currentWindow, setCurrentWindow] = useState('home');
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const handleWindowChange = (window) => {
+    setIsAnimating(true);
+    setCurrentWindow(window);
+    setTimeout(() => setIsAnimating(false), 300);
+  };
+
+  const Windows = {
+    home: (
+      <div className="flex items-center justify-center h-full">
+        <h1 className="text-3xl font-bold text-center text-blue-600">
+          С Новым 2025 Годом!
+        </h1>
+      </div>
+    ),
+    right: (
+      <div className="flex flex-col items-center justify-center space-y-6 p-4">
+        <div className="w-64 h-64 bg-gray-200 rounded-lg flex items-center justify-center">
+          <img 
+            src="/api/placeholder/256/256" 
+            alt="Дед Мороз" 
+            className="rounded-lg"
+          />
+        </div>
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-2">2025</h2>
+          <p className="text-lg text-gray-700">
+            Пусть Новый Год принесет счастье и радость в каждый дом!
+          </p>
+        </div>
+      </div>
+    ),
+    left: (
+      <div className="flex flex-col items-center justify-center space-y-6 p-4">
+        <div className="w-64 h-64 bg-gray-200 rounded-lg flex items-center justify-center">
+          <img 
+            src="/api/placeholder/256/256" 
+            alt="Снегурочка" 
+            className="rounded-lg"
+          />
+        </div>
+        <div className="text-center">
+          <p className="text-lg text-gray-700 bg-blue-100 p-4 rounded-lg">
+            "Старый 2024 ушел и никогда не вернется"
+          </p>
+        </div>
+      </div>
+    )
+  };
+
+  return (
+    <div className="h-screen flex flex-col bg-gray-50">
+      {/* Main Content */}
+      <div className="flex-1 relative overflow-hidden">
+        <div
+          className={`absolute w-full h-full transition-transform duration-300 ease-in-out ${
+            isAnimating ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          {Windows[currentWindow]}
+        </div>
+      </div>
+
+      {/* Navigation Buttons */}
+      <div className="flex justify-between items-center p-4 bg-white border-t border-gray-200">
+        <button
+          onClick={() => handleWindowChange('left')}
+          className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+        >
+          <ChevronLeft size={24} />
+        </button>
         
-        .message-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .message {
-            padding: 10px 20px;
-            border-radius: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            font-size: 20px;
-            margin: 5px;
-        }
-
-        .message-left {
-            align-self: flex-start;
-        }
-
-        .message-right {
-            align-self: flex-end;
-            margin-top: 20px;
-        }
-
-        .snowflake {
-            position: absolute;
-            top: -10px;
-            background-color: #fff;
-            border-radius: 50%;
-            opacity: 0.8;
-            animation: snow 5s linear infinite;
-        }
-
-        @keyframes snow {
-            to {
-                transform: translateY(100vh);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .message {
-                font-size: 18px;
-                padding: 8px 15px;
-            }
-        }
-
-        .fade-out {
-            animation: fadeOut 1s forwards;
-        }
-
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-            }
-        }
-    </style>
-</head>
-<body>
-
-<div class="message-container">
-    <div class="message message-left">
-        Hi, how are you?
+        <button
+          onClick={() => handleWindowChange('home')}
+          className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+        >
+          <Home size={24} />
+        </button>
+        
+        <button
+          onClick={() => handleWindowChange('right')}
+          className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+        >
+          <ChevronRight size={24} />
+        </button>
+      </div>
     </div>
-    <div class="message message-right">
-        Hello, thank you, good. <br> How are you?
-    </div>
-</div>
+  );
+};
 
-<script>
-    // Function to generate snowflakes
-    function createSnowflakes() {
-        const snowflakeCount = 30; // Decreased number of snowflakes for smoother performance
-        for (let i = 0; i < snowflakeCount; i++) {
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-            const size = Math.random() * 5 + 3; // Snowflake size
-            snowflake.style.width = ${size}px;
-            snowflake.style.height = ${size}px;
-            snowflake.style.left = ${Math.random() * window.innerWidth}px;
-            snowflake.style.animationDuration = ${Math.random() * 3 + 2}s; // Random duration for each snowflake
-            snowflake.style.animationDelay = ${Math.random() * 3}s; // Random delay for each snowflake
-            document.body.appendChild(snowflake);
-        }
-    }
-
-    // Trigger snowflakes
-    createSnowflakes();
-
-    // After 3-4 seconds, apply fade out and redirect to the main page
-    setTimeout(() => {
-        document.body.classList.add('fade-out');
-        setTimeout(() => {
-            window.location.href = 'https://serhii1staf.github.io/Skafsaex/main.html'; // Link to your main page
-        }, 1000); // Delay for fade-out animation
-    }, Math.random() * 1000 + 3000); // Random delay between 3 and 4 seconds before transition
-</script>
-
-</body>
-</html>
+export default NewYearApp;
