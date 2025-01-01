@@ -3,97 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Description</title>
+    <title>Описание приложения</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #333;
-            color: white;
             margin: 0;
             padding: 0;
-        }
-        #content {
-            padding: 20px;
-            background-color: #2c3e50;
-            border-radius: 5px;
-        }
-        .lang-buttons {
-            text-align: right;
-            padding: 20px;
-        }
-        .lang-buttons button {
-            background-color: #3498db;
+            background-color: #00274d;
             color: white;
-            border: none;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        .translate-buttons {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #004080;
+            border-radius: 5px;
+            z-index: 1;
+            margin-top: 5px;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown button {
             padding: 10px 20px;
+            background-color: #004080;
+            border: none;
+            color: white;
             cursor: pointer;
-            font-size: 16px;
-            margin: 0 5px;
             border-radius: 5px;
         }
-        .lang-buttons button:hover {
-            background-color: #2980b9;
+        .dropdown-content button {
+            display: block;
+            padding: 10px 20px;
+            background-color: #004080;
+            border: none;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            width: 100%;
+        }
+        .dropdown-content button:hover {
+            background-color: #0059b3;
+        }
+        h1, h2 {
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="lang-buttons">
-        <!-- Кнопки выбора языка с текстом на английском -->
-        <button onclick="translate('en')">Language</button>
-        <button onclick="translate('ru')">Language</button>
-        <button onclick="translate('ua')">Language</button>
-        <button onclick="translate('no')">Language</button>
-    </div>
-
-    <div id="content">
-        <h2 id="title">App Description</h2>
-        <div id="description">
-            <p id="goal"></p>
-            <p id="features"></p>
-            <p id="development"></p>
-            <p id="potential"></p>
+    <div class="container">
+        <h1 id="title">Описание приложения</h1>
+        <div class="translate-buttons">
+            <div class="dropdown">
+                <button>Перевести</button>
+                <div class="dropdown-content">
+                    <button onclick="translate('ru')">Русский</button>
+                    <button onclick="translate('en')">English</button>
+                    <button onclick="translate('no')">Norsk</button>
+                    <button onclick="translate('ua')">Українська</button>
+                </div>
+            </div>
         </div>
-    </div>
+        <div id="content">
+            <h2>1. Цель приложения:</h2>
+            <p>Это универсальное приложение, которое объединяет в себе всё: знакомства, переписки, общение с искусственным интеллектом, и многое другое. Здесь пользователь сможет найти всё, что нужно для комфортного взаимодействия в одном месте, без необходимости переключаться между различными платформами.</p>
 
-    <script>
-        // Объект с переводами для разных языков
+            <h2>2. Функционал:</h2>
+            <ul>
+                <li>Система знакомств: поиск друзей или партнёров поблизости с использованием геолокации, возможность общения внутри приложения или перехода в Телеграм.</li>
+                <li>Искусственный интеллект: текстовый бот, который не только отвечает на вопросы, но и способен стать полноценным собеседником. Намёк: возможно, в будущем пользователю даже не придётся общаться с людьми, ведь искусственный интеллект сможет делать это вместо него.</li>
+                <li>Единая платформа: всё, что нужно для общения и взаимодействия, собрано в одном приложении.</li>
+            </ul>
+
+            <h2>3. Будущее развитие:</h2>
+            <p>Каждые 2-3 месяца приложение будет получать обновления, включая новые функции, расширения и улучшения. В планах добавить генерацию изображений, новые программы и функции, чтобы приложение становилось всё более универсальным и удобным.</p>
+
+            <h2>4. Потенциал:</h2>
+            <p>Постоянное развитие и добавление уникальных возможностей делает это приложение не просто платформой для знакомств или общения, а инструментом, который может изменить подход к взаимодействию в цифровом мире.</p>
+        </div>
+    </div><script>
         const translations = {
-            en: {
-                goal: "This is an all-in-one app that combines everything: dating, messaging, AI interaction, and much more. Users can find everything they need for seamless communication in one place.",
-                features: "Features: Dating system, AI interaction, all in one platform.",
-                development: "Every 2-3 months, updates will be released with new features, expansions, and improvements.",
-                potential: "Constant development and unique features make this app a tool that can change the way we interact in the digital world."
-            },
             ru: {
-                goal: "Это универсальное приложение, которое объединяет в себе все: знакомства, переписки, общение с искусственным интеллектом и многое другое. Пользователь может найти всё, что нужно для комфортного общения в одном месте.",
-                features: "Функционал: Система знакомств, общение с ИИ, всё в одном приложении.",
-                development: "Каждые 2-3 месяца приложение будет обновляться, включая новые функции и улучшения.",
-                potential: "Постоянное развитие и уникальные функции делают это приложение инструментом, который может изменить подход к взаимодействию в цифровом мире."
+                title: "Описание приложения",
+                content: `
+                    <h2>1. Цель приложения:</h2><p>Это универсальное приложение, которое объединяет в себе всё: знакомства, переписки, общение с искусственным интеллектом, и многое другое. Здесь пользователь сможет найти всё, что нужно для комфортного взаимодействия в одном месте, без необходимости переключаться между различными платформами.</p>
+                    <h2>2. Функционал:</h2>
+                    <ul>
+                        <li>Система знакомств: поиск друзей или партнёров поблизости с использованием геолокации, возможность общения внутри приложения или перехода в Телеграм.</li>
+                        <li>Искусственный интеллект: текстовый бот, который не только отвечает на вопросы, но и способен стать полноценным собеседником. Намёк: возможно, в будущем пользователю даже не придётся общаться с людьми, ведь искусственный интеллект сможет делать это вместо него.</li>
+                        <li>Единая платформа: всё, что нужно для общения и взаимодействия, собрано в одном приложении.</li>
+                    </ul>
+                    <h2>3. Будущее развитие:</h2>
+                    <p>Каждые 2-3 месяца приложение будет получать обновления, включая новые функции, расширения и улучшения. В планах добавить генерацию изображений, новые программы и функции, чтобы приложение становилось всё более универсальным и удобным.</p>
+                    <h2>4. Потенциал:</h2>
+                    <p>Постоянное развитие и добавление уникальных возможностей делает это приложение не просто платформой для знакомств или общения, а инструментом, который может изменить подход к взаимодействию в цифровом мире.</p>
+                `,
             },
-            ua: {
-                goal: "Це універсальний додаток, що об'єднує все: знайомства, переписки, спілкування з ШІ і багато іншого. Користувач може знайти все необхідне для комфортного спілкування в одному місці.",
-                features: "Функціонал: Система знайомств, спілкування з ШІ, все в одному додатку.",
-                development: "Кожні 2-3 місяці додаток буде отримувати оновлення з новими функціями та поліпшеннями.",
-                potential: "Постійний розвиток та унікальні функції роблять цей додаток інструментом, який може змінити підхід до взаємодії в цифровому світі."
+            en: {
+                title: "Application Description",
+                content: `
+                    <h2>1. Purpose of the application:</h2>
+                    <p>This is a universal application that combines everything: dating, chatting, AI communication, and more. Users can find everything they need for comfortable interaction in one place, without switching between platforms.</p>
+                    <h2>2. Features:</h2>
+                    <ul>
+                        <li>Dating system: Search for friends or partners nearby using geolocation, communicate within the app, or transition to Telegram.</li>
+                        <li>Artificial Intelligence: A text-based bot that not only answers questions but can become a full-fledged conversational partner. Hint: In the future, users may not even need to talk to people, as AI can do it for them.</li>
+                        <li>Unified platform: Everything needed for communication and interaction is gathered in one application.</li>
+                    </ul>
+                    <h2>3. Future development:</h2>
+                    <p>Every 2-3 months, the application will receive updates, including new features, expansions, and improvements. Plans include adding image generation, new programs, and functions to make the app more universal and convenient.</p>
+                    <h2>4. Potential:</h2>
+                    <p>Constant development and the addition of unique features make this application not just a platform for dating or communication but a tool that can change the approach to interaction in the digital world.</p>
+                `,
             },
             no: {
-                goal: "Dette er en alt-i-ett-app som kombinerer alt: dating, meldinger, AI-interaksjon og mye mer. Brukeren kan finne alt de trenger for sømløs kommunikasjon på ett sted.",
-                features: "Funksjoner: Dating-system, AI-interaksjon, alt i én plattform.",
-                development: "Hver 2-3 månedene vil appen motta oppdateringer med nye funksjoner, utvidelser og forbedringer.",potential: "Hver utvikling og unike funksjoner gjør denne appen til et verktøy som kan endre måten vi samhandler på i den digitale verden."
-            }
+                title: "Beskrivelse av applikasjonen",
+                content: `
+                    <h2>1. Formålet med applikasjonen:</h2>
+                    <p>Dette er en universell applikasjon som kombinerer alt: dating, chatting, AI-kommunikasjon og mer. Brukere kan finne alt de trenger for komfortabel interaksjon på ett sted, uten å bytte mellom plattformer.</p>
+                    <h2>2. Funksjoner:</h2>
+                    <ul>
+                        <li>Datingsystem: Søk etter venner eller partnere i nærheten ved hjelp av geolokasjon, kommuniser innen appen eller overgang til Telegram.</li><li>Kunstig intelligens: En tekstbasert bot som ikke bare svarer på spørsmål, men kan bli en fullverdig samtalepartner.Hint: I fremtiden trenger brukere kanskje ikke engang å snakke med folk, siden AI kan gjøre det for dem.</li>
+                        <li>Enhetlig plattform: Alt som trengs for kommunikasjon og interaksjon er samlet i en applikasjon.</li>
+                    </ul>
+                    <h2>3. Fremtidig utvikling:</h2>
+                    <p>Hver 2-3 måned vil applikasjonen motta oppdateringer, inkludert nye funksjoner, utvidelser og forbedringer. Planene inkluderer å legge til bildegenerering, nye programmer og funksjoner for å gjøre appen mer universell og praktisk.</p>
+                    <h2>4. Potensial:</h2>
+                    <p>Konstant utvikling og tilførsel av unike funksjoner gjør denne applikasjonen ikke bare til en plattform for dating eller kommunikasjon, men et verktøy som kan endre tilnærmingen til interaksjon i den digitale verden.</p>
+                `,
+            },
+            ua: {
+                title: "Опис додатку",
+                content: `
+                    <h2>1. Мета додатку:</h2>
+                    <p>Це універсальний додаток, який об<h2>1. Мета додатку:</h2>
+                    <p>Це універсальний додаток, який об'єднує в собі все: знайомства, переписки, спілкування з штучним інтелектом і багато іншого. Користувач зможе знайти все, що потрібно для комфортного взаємодії в одному місці, без необхідності перемикатися між різними платформами.</p>
+
+                    <h2>2. Функціонал:</h2>
+                    <ul>
+                        <li>Система знайомств: пошук друзів або партнерів поруч з використанням геолокації, можливість спілкування всередині додатка або перехід до Telegram.</li>
+                        <li>Штучний інтелект: текстовий бот, який не тільки відповідає на питання, але й може стати повноцінним співрозмовником. Підказка: можливо, в майбутньому користувачеві навіть не доведеться спілкуватися з людьми, адже штучний інтелект зможе це робити за нього.</li>
+                        <li>Єдина платформа: все, що потрібно для спілкування та взаємодії, зібрано в одному додатку.</li>
+                    </ul>
+
+                    <h2>3. Майбутній розвиток:</h2>
+                    <p>Кожні 2-3 місяці додаток отримуватиме оновлення, що включають нові функції, розширення та покращення. В планах додати генерацію зображень, нові програми та функції, щоб додаток ставав все більш універсальним і зручним.</p>
+
+                    <h2>4. Потенціал:</h2>
+                    <p>Постійний розвиток і додавання унікальних можливостей робить цей додаток не просто платформою для знайомств чи спілкування, а інструментом, який може змінити підхід до взаємодії в цифровому світі.</p>
+                `,
+            },
         };
 
-        // Функция перевода
         function translate(language) {
-            const data = translations[language]; // Получаем данные для выбранного языка
-            document.getElementById("goal").textContent = data.goal;
-            document.getElementById("features").textContent = data.features;
-            document.getElementById("development").textContent = data.development;
-            document.getElementById("potential").textContent = data.potential;
+            document.getElementById("title").innerText = translations[language].title;
+            document.getElementById("content").innerHTML = translations[language].content;
         }
-
-        // Устанавливаем текст по умолчанию на английском
-        translate('en');
     </script>
 </body>
 </html>
