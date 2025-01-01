@@ -63,6 +63,12 @@
             background: linear-gradient(135deg, #0d47a1, #1565c0);
         }
 
+        #botScreen {
+            background-image: url('https://i.postimg.cc/tTr7QdRH/background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
         .message {
             background: rgba(255, 255, 255, 0.2);
             padding: 24px;
@@ -149,6 +155,14 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
+        #botBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 6h16v12H4V6zm10 3h-2V7h2v2zm0 2h-2v2h2v-2zm2-2h2v2h-2V9zm2 4h-2v2h2v-2z"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
         .social-links {
             display: flex;
             flex-direction: column;
@@ -177,6 +191,61 @@
             font-size: 14px;
             color: rgba(255, 255, 255, 0.7);
             margin-top: 20px;
+        }
+
+        #botScreen .message {
+            max-width: 95%;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chat-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .bot-message {
+            background: white;
+            align-self: flex-start;
+        }
+
+        .user-message {
+            background: rgba(0,153,255,0.8);
+            color: white;
+            align-self: flex-end;
+        }
+
+        #chat-input-area {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        #chat-input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255,255,255,0.2);
+        }
+
+        #send-btn {
+            margin-left: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(0,153,255,0.8);
+            color: white;
+            border: none;
         }
 
         /* Стили для снежинок */
@@ -241,12 +310,25 @@
             </div>
         </div>
 
+        <!-- Экран чат-бота -->
+        <div id="botScreen" class="screen">
+            <div class="message">
+                <h1>Пяе</h1>
+                <div id="chat-container"></div>
+                <div id="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Введите сообщение...">
+                    <button id="send-btn">Отправить</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Навигационные кнопки -->
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
+                <button id="botBtn" class="nav-btn"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
@@ -266,14 +348,16 @@
                 home: document.getElementById('homeScreen'),
                 left: document.getElementById('leftScreen'),
                 right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen')
+                profile: document.getElementById('profileScreen'),
+                bot: document.getElementById('botScreen')
             };
 
             const buttons = {
                 home: document.getElementById('homeBtn'),
                 left: document.getElementById('leftBtn'),
                 right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn')
+                profile: document.getElementById('profileBtn'),
+                bot: document.getElementById('botBtn')
             };
 
             let currentScreen = 'home';
@@ -311,6 +395,10 @@
             buttons.left.addEventListener('click', () => showScreen('left'));
             buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
+            buttons.bot.addEventListener('click', () => {
+                showScreen('bot');
+                initBotChat();
+            });
 
             // Функция создания снежинок
             function createSnowflakes() {
@@ -324,53 +412,3 @@
                     const snowflake = document.createElement('div');
                     snowflake.classList.add('snowflake');
                     snowflake.style.left = Math.random() * 100 + '%';
-                    snowflake.style.opacity = Math.random();
-                    snowflake.style.fontSize = (Math.random() * 10 + 5) + 'px';
-                    snowflake.innerHTML = '❄';
-                    
-                    // Случайная длительность анимации
-                    const animationDuration = Math.random() * 3 + 2;
-                    snowflake.style.animation = `fall ${animationDuration}s linear infinite`;
-                    
-                    profileScreen.appendChild(snowflake);
-                }
-
-                // Создаем начальные снежинки
-                for (let i = 0; i < 30; i++) {
-                    setTimeout(createSnowflake, i * 100);
-                }
-
-                // Продолжаем создавать новые снежинки
-                const interval = setInterval(createSnowflake, 500);
-
-                // Очищаем интервал, когда уходим с экрана профиля
-                const observer = new MutationObserver((mutations) => {
-                    mutations.forEach((mutation) => {
-                        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                            if (!profileScreen.classList.contains('active')) {
-                                clearInterval(interval);
-                            }
-                        }
-                    });
-                });
-
-                observer.observe(profileScreen, {
-                    attributes: true
-                });
-            }
-
-            // Обработка внешних ссылок
-            document.querySelectorAll('.social-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    if (tg?.openLink) {
-                        tg.openLink(link.href);
-                    } else {
-                        window.open(link.href, '_blank');
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>
