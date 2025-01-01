@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram-like Web App</title>
+    <title>Loading...</title>
     <style>
         body {
             background-color: #181818;
@@ -15,6 +15,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
         
         .container {
@@ -23,28 +24,7 @@
             padding: 20px;
             background-color: #222;
             border-radius: 15px;
-        }
-
-        h1 {
             text-align: center;
-            color: #00AFFF;
-            font-size: 36px;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            margin-top: 20px;
-            background-color: #00AFFF;
-            color: #fff;
-            border-radius: 5px;
-            text-align: center;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .button:hover {
-            background-color: #0077c2;
         }
 
         .chat-container {
@@ -60,6 +40,8 @@
             border-radius: 10px;
             max-width: 75%;
             margin-left: auto;
+            opacity: 1;
+            transition: opacity 1s ease;
         }
 
         .chat-message p {
@@ -70,14 +52,18 @@
             color: #00AFFF;
             font-weight: bold;
         }
+
+        .fade-out {
+            opacity: 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Telegram-like Web App</h1>
+        <h1>Welcome!</h1>
         <div class="chat-container">
             <div class="chat-message">
-                <p class="sender">User1:</p>
+                <p class="sender">User:</p>
                 <p>Hello, how are you?</p>
             </div>
             <div class="chat-message">
@@ -85,7 +71,20 @@
                 <p>I'm good, thanks! How about you?</p>
             </div>
         </div>
-        <div class="button" onclick="alert('New message sent!')">Send Message</div>
     </div>
+
+    <script>
+        setTimeout(function() {
+            // Fade out the messages (simulate the disappearing effect)
+            document.querySelectorAll('.chat-message').forEach(message => {
+                message.classList.add('fade-out');
+            });
+
+            // After 2 seconds (duration of fade-out), redirect to main page
+            setTimeout(function() {
+                window.location.href = 'mine.html'; // Redirect to the main page
+            }, 2000); // 2 seconds delay before redirect
+        }, 1000); // Wait 1 second before starting the fade-out effect
+    </script>
 </body>
 </html>
