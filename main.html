@@ -14,7 +14,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #0b1d2b; /* Тёмно-синий, как ты хотел */
+            background-color: #0a1c2d; /* Очень тёмно-синий или тёмно-черный фон */
         }
         
         .message-container {
@@ -95,7 +95,7 @@
 <script>
     // Function to generate snowflakes
     function createSnowflakes() {
-        const snowflakeCount = 50; // Decreased number of snowflakes
+        const snowflakeCount = 30; // Decreased number of snowflakes for smoother performance
         for (let i = 0; i < snowflakeCount; i++) {
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
