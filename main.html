@@ -9,184 +9,243 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <style>
-        /* Предыдущие стили остаются без изменений */
-        /* ... */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        /* Добавляем стили для чат-бота */
-        #chatbotScreen {
-            background-image: url('https://i.postimg.cc/N0DFQKbR/IMG-4504.png');
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        #app {
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
-            display: flex;
-            flex-direction: column;
         }
 
-        .lang-switcher {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
         }
 
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            color: white;
-            font-size: 14px;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
+        #homeScreen {
+            background-image: url('https://i.postimg.cc/XqGB50nY/IMG-4501.jpg');
         }
 
-        .lang-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 8px;
-            padding: 8px;
-            display: none;
-            margin-top: 5px;
+        #leftScreen {
+            background-image: url('https://i.postimg.cc/g2CdDX3p/IMG-4502.png');
         }
 
-        .lang-menu.active {
-            display: block;
+        #rightScreen {
+            background-image: url('https://i.postimg.cc/cCBMDnvb/IMG-4503.png');
         }
 
-        .lang-option {
-            padding: 8px 16px;
-            cursor: pointer;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: white;
-        }
-
-        .lang-option:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-
-        .chat-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            margin-bottom: 60px;
-            overflow-y: auto;
+        #profileScreen {
+            background: linear-gradient(135deg, #0d47a1, #1565c0);
         }
 
         .message {
-            max-width: 80%;
-            margin: 4px 0;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 16px;
-            line-height: 1.4;
-        }
-
-        .user-message {
             background: rgba(255, 255, 255, 0.2);
-            color: white;
-            margin-left: auto;
-            border-bottom-right-radius: 4px;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 90%;
+            width: 100%;
+            backdrop-filter: blur(8px);
+            margin: 20px;
+            position: relative;
+            z-index: 2;
         }
 
-        .bot-message {
-            background: rgba(255, 255, 255, 0.3);
+        h1 {
             color: white;
-            margin-right: auto;
-            border-bottom-left-radius: 4px;
+            font-size: 28px;
+            margin-bottom: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
-        .input-area {
+        p {
+            color: white;
+            font-size: 18px;
+            line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-buttons {
             position: fixed;
-            bottom: 80px;
+            bottom: 20px;
             left: 0;
             right: 0;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
             display: flex;
-            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            z-index: 1000;
         }
 
-        .message-input {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            padding: 12px;
-            border-radius: 20px;
-            color: white;
-            font-size: 16px;
+        .nav-center-group {
+            display: flex;
+            gap: 16px;
         }
 
-        .message-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .send-btn {
-            background: rgba(255, 255, 255, 0.3);
-            border: none;
-            width: 40px;
-            height: 40px;
+        .nav-btn {
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
+            font-size: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
-        #chatbotBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>');
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        #homeBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
             background-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* Стили для снежинок остаются теми же */
+        #profileBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .voluntary-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 20px;
+        }
+
+        /* Стили для снежинок */
+        .snowflake {
+            position: absolute;
+            color: white;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            text-shadow: 0 0 5px #000;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) translateX(-20px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) translateX(20px) rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
     <div id="app">
-        <!-- Существующие экраны остаются без изменений -->
-        <!-- ... -->
-
-        <!-- Экран чат-бота -->
-        <div id="chatbotScreen" class="screen">
-            <!-- Переключатель языка -->
-            <div class="lang-switcher">
-                <button class="lang-btn">Lang</button>
-                <div class="lang-menu">
-                    <div class="lang-option" data-lang="ru">🇷🇺 RU</div>
-                    <div class="lang-option" data-lang="ua">🇺🇦 UA</div>
-                    <div class="lang-option" data-lang="no">🇳🇴 NO</div>
-                    <div class="lang-option" data-lang="en">🇬🇧 EN</div>
-                </div>
-            </div>
-
-            <div class="chat-container" id="chatMessages">
-                <!-- Сообщения будут добавляться здесь -->
-            </div>
-
-            <div class="input-area">
-                <input type="text" class="message-input" placeholder="Введите сообщение..." id="messageInput">
-                <button class="send-btn">➤</button>
+        <!-- Главный экран -->
+        <div id="homeScreen" class="screen active">
+            <div class="message">
+                <h1>С Новым 2025 Годом!</h1>
+                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
             </div>
         </div>
 
-        <!-- Обновленная навигация -->
+        <!-- Экран слева -->
+        <div id="leftScreen" class="screen">
+            <div class="message">
+                <p>Старый 2024 год ушел и никогда не вернется.</p>
+                <p>Время для новых начинаний!</p>
+            </div>
+        </div>
+
+        <!-- Экран справа -->
+        <div id="rightScreen" class="screen">
+            <div class="message">
+                <h1>С 2025 Годом!</h1>
+                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
+            </div>
+        </div>
+
+        <!-- Экран профиля -->
+        <div id="profileScreen" class="screen">
+            <div class="message">
+                <div class="social-links">
+                    <a href="https://t.me/sangklasy" class="social-link" target="_blank">
+                        📱 Telegram канал
+                    </a>
+                    <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" class="social-link" target="_blank">
+                        📷 Instagram аккаунт
+                    </a>
+                </div>
+                <p class="voluntary-text">* Подписка является полностью добровольной</p>
+            </div>
+        </div>
+
+        <!-- Навигационные кнопки -->
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">
                 <button id="homeBtn" class="nav-btn"></button>
-                <button id="chatbotBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
@@ -194,88 +253,123 @@
     </div>
 
     <script>
-        // Предыдущий код остается без изменений
-        // ...
-
-        // Добавляем функционал чат-бота
         document.addEventListener('DOMContentLoaded', function() {
-            // Инициализация переключателя языков
-            const langBtn = document.querySelector('.lang-btn');
-            const langMenu = document.querySelector('.lang-menu');
-            const langOptions = document.querySelectorAll('.lang-option');
+            // Инициализация Telegram WebApp
+            const tg = window.Telegram?.WebApp;
+            if (tg) {
+                tg.ready();
+                tg.expand();
+            }
 
-            langBtn.addEventListener('click', () => {
-                langMenu.classList.toggle('active');
-            });
+            // Получаем все элементы
+            const screens = {
+                home: document.getElementById('homeScreen'),
+                left: document.getElementById('leftScreen'),
+                right: document.getElementById('rightScreen'),
+                profile: document.getElementById('profileScreen')
+            };
 
-            // Закрытие меню при клике вне него
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.lang-switcher')) {
-                    langMenu.classList.remove('active');
+            const buttons = {
+                home: document.getElementById('homeBtn'),
+                left: document.getElementById('leftBtn'),
+                right: document.getElementById('rightBtn'),
+                profile: document.getElementById('profileBtn')
+            };
+
+            let currentScreen = 'home';
+            let isAnimating = false;
+
+            // Функция для показа экрана
+            function showScreen(screenName) {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                // Скрываем текущий экран
+                screens[currentScreen].classList.remove('active');
+                // Показываем новый экран
+                screens[screenName].classList.add('active');
+                
+                // Вибрация при переключении
+                if (tg?.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('medium');
                 }
-            });
 
-            // Переключение языков
-            let currentLang = 'ru';
-            langOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    currentLang = option.dataset.lang;
-                    langBtn.textContent = option.textContent.slice(-2);
-                    langMenu.classList.remove('active');
-                    updatePlaceholder();
+                currentScreen = screenName;
+                
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 300);
+
+                // Создаем снежинки только на экране профиля
+                if (screenName === 'profile') {
+                    createSnowflakes();
+                }
+            }
+
+            // Добавляем обработчики для кнопок
+            buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.left.addEventListener('click', () => showScreen('left'));
+            buttons.right.addEventListener('click', () => showScreen('right'));
+            buttons.profile.addEventListener('click', () => showScreen('profile'));
+
+            // Функция создания снежинок
+            function createSnowflakes() {
+                const profileScreen = document.getElementById('profileScreen');
+                
+                // Очищаем существующие снежинки
+                const existingSnowflakes = profileScreen.querySelectorAll('.snowflake');
+                existingSnowflakes.forEach(snowflake => snowflake.remove());
+
+                function createSnowflake() {
+                    const snowflake = document.createElement('div');
+                    snowflake.classList.add('snowflake');
+                    snowflake.style.left = Math.random() * 100 + '%';
+                    snowflake.style.opacity = Math.random();
+                    snowflake.style.fontSize = (Math.random() * 10 + 5) + 'px';
+                    snowflake.innerHTML = '❄';
+                    
+                    // Случайная длительность анимации
+                    const animationDuration = Math.random() * 3 + 2;
+                    snowflake.style.animation = `fall ${animationDuration}s linear infinite`;
+                    
+                    profileScreen.appendChild(snowflake);
+                }
+
+                // Создаем начальные снежинки
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(createSnowflake, i * 100);
+                }
+
+                // Продолжаем создавать новые снежинки
+                const interval = setInterval(createSnowflake, 500);
+
+                // Очищаем интервал, когда уходим с экрана профиля
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                            if (!profileScreen.classList.contains('active')) {
+                                clearInterval(interval);
+                            }
+                        }
+                    });
+                });
+
+                observer.observe(profileScreen, {
+                    attributes: true
+                });
+            }
+
+            // Обработка внешних ссылок
+            document.querySelectorAll('.social-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (tg?.openLink) {
+                        tg.openLink(link.href);
+                    } else {
+                        window.open(link.href, '_blank');
+                    }
                 });
             });
-
-            // Обработка сообщений
-            const messageInput = document.getElementById('messageInput');
-            const sendButton = document.querySelector('.send-btn');
-            const chatMessages = document.getElementById('chatMessages');
-
-            function addMessage(type, text) {
-                const messageDiv = document.createElement('div');
-                messageDiv.classList.add('message', `${type}-message`);
-                messageDiv.textContent = text;
-                chatMessages.appendChild(messageDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            function sendMessage() {
-                const message = messageInput.value.trim();
-                if (!message) return;
-
-                addMessage('user', message);
-                messageInput.value = '';
-
-                // Здесь будет логика обработки сообщений
-                setTimeout(() => {
-                    const response = getBotResponse(message, currentLang);
-                    addMessage('bot', response);
-                }, 500);
-            }
-
-            sendButton.addEventListener('click', sendMessage);
-            messageInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sendMessage();
-            });
-
-            // Функционал снежинок для чат-бота
-            function createSnowflakes() {
-                // ... код создания снежинок ...
-            }
-
-            // Добавляем обработчик для кнопки чат-бота
-            const chatbotBtn = document.getElementById('chatbotBtn');
-            screens.chatbot = document.getElementById('chatbotScreen');
-
-            chatbotBtn.addEventListener('click', () => {
-                showScreen('chatbot');
-                if (!chatMessages.children.length) {
-                    addMessage('bot', getBotResponse('greeting', currentLang));
-                }
-                createSnowflakes();
-            });
-
-            // Остальной код...
         });
     </script>
 </body>
