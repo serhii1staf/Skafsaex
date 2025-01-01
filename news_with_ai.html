@@ -3,178 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading Screen</title>
+    <title>Заставка</title>
     <style>
         body {
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            height: 100vh;
+            background-color: #000; /* Черный фон */
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
             position: relative;
         }
 
-        /* Контейнер для сообщений */
-        .chat-container {
+        .message-container {
+            width: 80%;
+            height: 80%;
+            position: relative;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            text-align: center;
-            width: 100%;
-            max-width: 600px;
-            position: relative;
         }
 
-        /* Сообщения */
         .message {
-            display: inline-block;
-            padding: 20px;
-            font-size: 24px;
-            max-width: 80%;
-            border-radius: 15px;
-            opacity: 0;
-            animation: fadeIn 1s forwards;
             position: relative;
-        }
-
-        /* Для отображения имени пользователя */
-        .username {
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
             font-size: 20px;
-            margin-bottom: 10px;
-            font-weight: bold;
+            background-color: transparent;
+            border: 2px solid white;
+            width: 80%;
+            margin: 10px;
         }
 
         .user1 {
-            background-color: #444;
-            color: white;
-            margin-left: 10px;
-            text-align: left;
+            align-self: flex-start;
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         .user2 {
-            background-color: #0078D4;
+            align-self: flex-end;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .user1:before {
+            content: "User1";
+            position: absolute;
+            top: -30px;
+            left: 0;
             color: white;
-            margin-right: 10px;
-            text-align: right;
+            font-size: 14px;
         }
 
-        /* Анимация для появления сообщений */
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .user2:before {
+            content: "User2";
+            position: absolute;
+            top: -30px;
+            right: 0;
+            color: white;
+            font-size: 14px;
         }
 
-        /* Снежинки */
+        /* Анимация снежинок */
         .snowflake {
             position: absolute;
-            font-size: 12px; /* Сделаем снежинки маленькими */
+            top: -10px;
             color: white;
-            pointer-events: none;
+            font-size: 1rem;
             user-select: none;
+            z-index: 999;
             animation: fall 10s linear infinite;
-            opacity: 0.8;
         }
 
         @keyframes fall {
-            from {
-                top: -20px;
+            0% {
+                top: -10px;
+            }
+            100% {
+                top: 100vh;
+            }
+        }
+
+        /* Разные скорости для снежинок */
+        .snowflake:nth-child(odd) {
+            animation-duration: 15s;
+            animation-delay: 1s;
+        }
+
+        .snowflake:nth-child(even) {
+            animation-duration: 12s;
+            animation-delay: 2s;
+        }
+
+        /* Анимация перехода */
+        .fadeout {
+            animation: fadeout 2s forwards;
+        }
+
+        @keyframes fadeout {
+            0% {
                 opacity: 1;
             }
-            to {
-                top: 100vh;
+            100% {
                 opacity: 0;
             }
         }
 
-        /* Лавина снега, свисающая сверху */
-        .snow-fall {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 100vh;
-            z-index: 998;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .snow-fall .snow {
-            position: absolute;
-            top: -10px;
-            width: 100%;
-            height: 100%;
-            animation: snowFall 8s infinite linear;
-            opacity: 0.8;
-        }
-
-        @keyframes snowFall {
-            0% { top: -10px; }
-            100% { top: 100vh; }
-        }
-
-        /* Переход на основную страницу */
-        .fade-out {
-            opacity: 0;
-            animation: fadeOut 2s forwards;
-        }
-
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                visibility: hidden;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Лавина снега -->
-    <div class="snow-fall">
-        <div class="snow"></div>
-        <div class="snow"></div>
-    </div>
 
-    <!-- Контейнер для сообщений -->
-    <div class="chat-container">
-        <div class="user1">
-            <div class="username">User1</div>
-            <div class="message">Hi, how are you?</div>
+    <div class="message-container">
+        <div class="message user1">
+            <p>Привет, как дела?</p>
         </div>
-        <div class="user2">
-            <div class="username">User2</div>
-            <div class="message">Hi, I'm fine, thanks! How about you?</div>
+        <div class="message user2">
+            <p>Привет, спасибо, все в порядке. А у тебя?</p>
         </div>
     </div>
 
-    <!-- Снежинки для эффекта -->
-    <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄</div><div class="snowflake" style="left: 20%; animation-delay: 2s;">❄</div>
-    <div class="snowflake" style="left: 30%; animation-delay: 1s;">❄</div>
-    <div class="snowflake" style="left: 40%; animation-delay: 3s;">❄</div>
-    <div class="snowflake" style="left: 50%; animation-delay: 4s;">❄</div>
-    <div class="snowflake" style="left: 60%; animation-delay: 5s;">❄</div>
-    <div class="snowflake" style="left: 70%; animation-delay: 6s;">❄</div>
-    <div class="snowflake" style="left: 80%; animation-delay: 7s;">❄</div>
+    <div id="snowflakes"></div>
 
     <script>
-        // Задержка для исчезновения заставки и перехода
-        setTimeout(() => {
-            document.body.classList.add('fade-out');
-            // Переход на основную страницу после исчезновения заставки
-            setTimeout(() => {
-                window.location.href = "https://serhii1staf.github.io/Skafsaex/main.html";
-            }, 2000);  // Задержка 2 секунды для плавного исчезновения
-        }, 5000); // Задержка заставки 5 секунд
+        // Создание снежинок
+        const snowflakesContainer = document.getElementById('snowflakes');
+
+        function createSnowflakes(num) {
+            for (let i = 0; i < num; i++) {
+                let snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.textContent = '❄'; // Символ снежинки
+                snowflake.style.left = Math.random() * 100 + '%'; // Случайное положение по горизонтали
+                snowflake.style.animationDuration = Math.random() * 5 + 5 + 's'; // Разная скорость падения
+                snowflakesContainer.appendChild(snowflake);
+            }
+        }
+
+        createSnowflakes(50); // Создаем 50 снежинок
+
+        // Переход на другую страницу через 10 секунд
+        setTimeout(function() {
+            window.location.href = 'https://serhii1staf.github.io/Skafsaex/main.html'; // Указываешь здесь ссылку на основной файл
+        }, 10000); // Через 10 секунд
+
     </script>
+
 </body>
 </html>
