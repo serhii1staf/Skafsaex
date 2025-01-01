@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ru">
-<!-- Head остается прежним -->
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -10,7 +9,6 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <style>
-        /* Предыдущие базовые стили остаются */
         * {
             margin: 0;
             padding: 0;
@@ -33,7 +31,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100vh; /* Увеличиваем высоту до полного экрана */
+            height: 100vh;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease;
@@ -49,7 +47,6 @@
             visibility: visible;
         }
 
-        /* Фоновые изображения для экранов */
         #homeScreen {
             background-image: url('https://i.postimg.cc/XqGB50nY/IMG-4501.jpg');
         }
@@ -79,17 +76,29 @@
             z-index: 2;
         }
 
-        /* Обновленные стили навигации */
+        h1 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        p {
+            color: white;
+            font-size: 18px;
+            line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
         .nav-buttons {
             position: fixed;
-            bottom: 20px; /* Отступ снизу */
+            bottom: 20px;
             left: 0;
             right: 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 16px;
-            background: none; /* Убираем фон */
             z-index: 1000;
         }
 
@@ -103,7 +112,7 @@
             height: 48px;
             border-radius: 50%;
             border: none;
-            background: rgba(33, 150, 243, 0.9); /* Полупрозрачный синий */
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             font-size: 24px;
             display: flex;
@@ -115,9 +124,13 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
         .nav-btn:active {
             transform: scale(0.95);
-            background: rgba(33, 150, 243, 1);
+            background: rgba(255, 255, 255, 0.4);
         }
 
         #homeBtn {
@@ -125,7 +138,7 @@
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
-            background-color: rgba(33, 150, 243, 0.9);
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         #profileBtn {
@@ -133,20 +146,61 @@
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
-            background-color: rgba(33, 150, 243, 0.9);
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* Стили для стрелок влево/вправо */
-        #leftBtn, #rightBtn {
-            font-weight: bold;
-            background-color: rgba(33, 150, 243, 0.9);
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
-        /* Остальные стили остаются прежними */
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .voluntary-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 20px;
+        }
+
+        /* Стили для снежинок */
+        .snowflake {
+            position: absolute;
+            color: white;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            text-shadow: 0 0 5px #000;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) translateX(-20px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) translateX(20px) rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Содержимое body остается прежним -->
     <div id="app">
         <!-- Главный экран -->
         <div id="homeScreen" class="screen active">
@@ -156,7 +210,7 @@
             </div>
         </div>
 
-        <!-- Остальные экраны -->
+        <!-- Экран слева -->
         <div id="leftScreen" class="screen">
             <div class="message">
                 <p>Старый 2024 год ушел и никогда не вернется.</p>
@@ -164,6 +218,7 @@
             </div>
         </div>
 
+        <!-- Экран справа -->
         <div id="rightScreen" class="screen">
             <div class="message">
                 <h1>С 2025 Годом!</h1>
@@ -171,6 +226,7 @@
             </div>
         </div>
 
+        <!-- Экран профиля -->
         <div id="profileScreen" class="screen">
             <div class="message">
                 <div class="social-links">
@@ -196,17 +252,124 @@
         </div>
     </div>
 
-    <!-- JavaScript остается прежним -->
     <script>
-        // Весь предыдущий JavaScript код остается без изменений
         document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация Telegram WebApp
             const tg = window.Telegram?.WebApp;
             if (tg) {
                 tg.ready();
                 tg.expand();
             }
 
-            // ... (остальной код без изменений)
+            // Получаем все элементы
+            const screens = {
+                home: document.getElementById('homeScreen'),
+                left: document.getElementById('leftScreen'),
+                right: document.getElementById('rightScreen'),
+                profile: document.getElementById('profileScreen')
+            };
+
+            const buttons = {
+                home: document.getElementById('homeBtn'),
+                left: document.getElementById('leftBtn'),
+                right: document.getElementById('rightBtn'),
+                profile: document.getElementById('profileBtn')
+            };
+
+            let currentScreen = 'home';
+            let isAnimating = false;
+
+            // Функция для показа экрана
+            function showScreen(screenName) {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                // Скрываем текущий экран
+                screens[currentScreen].classList.remove('active');
+                // Показываем новый экран
+                screens[screenName].classList.add('active');
+                
+                // Вибрация при переключении
+                if (tg?.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('medium');
+                }
+
+                currentScreen = screenName;
+                
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 300);
+
+                // Создаем снежинки только на экране профиля
+                if (screenName === 'profile') {
+                    createSnowflakes();
+                }
+            }
+
+            // Добавляем обработчики для кнопок
+            buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.left.addEventListener('click', () => showScreen('left'));
+            buttons.right.addEventListener('click', () => showScreen('right'));
+            buttons.profile.addEventListener('click', () => showScreen('profile'));
+
+            // Функция создания снежинок
+            function createSnowflakes() {
+                const profileScreen = document.getElementById('profileScreen');
+                
+                // Очищаем существующие снежинки
+                const existingSnowflakes = profileScreen.querySelectorAll('.snowflake');
+                existingSnowflakes.forEach(snowflake => snowflake.remove());
+
+                function createSnowflake() {
+                    const snowflake = document.createElement('div');
+                    snowflake.classList.add('snowflake');
+                    snowflake.style.left = Math.random() * 100 + '%';
+                    snowflake.style.opacity = Math.random();
+                    snowflake.style.fontSize = (Math.random() * 10 + 5) + 'px';
+                    snowflake.innerHTML = '❄';
+                    
+                    // Случайная длительность анимации
+                    const animationDuration = Math.random() * 3 + 2;
+                    snowflake.style.animation = `fall ${animationDuration}s linear infinite`;
+                    
+                    profileScreen.appendChild(snowflake);
+                }
+
+                // Создаем начальные снежинки
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(createSnowflake, i * 100);
+                }
+
+                // Продолжаем создавать новые снежинки
+                const interval = setInterval(createSnowflake, 500);
+
+                // Очищаем интервал, когда уходим с экрана профиля
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                            if (!profileScreen.classList.contains('active')) {
+                                clearInterval(interval);
+                            }
+                        }
+                    });
+                });
+
+                observer.observe(profileScreen, {
+                    attributes: true
+                });
+            }
+
+            // Обработка внешних ссылок
+            document.querySelectorAll('.social-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (tg?.openLink) {
+                        tg.openLink(link.href);
+                    } else {
+                        window.open(link.href, '_blank');
+                    }
+                });
+            });
         });
     </script>
 </body>
