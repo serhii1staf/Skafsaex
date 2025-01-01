@@ -3,163 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web App</title>
+    <title>Telegram-like Web App</title>
     <style>
-        /* Основные стили */
         body {
+            background-color: #181818;
+            color: #fff;
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-
-        header {
-            background-color: #333;
-            color: white;
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
             padding: 20px;
+            background-color: #222;
+            border-radius: 15px;
         }
 
-        header nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+        h1 {
+            text-align: center;
+            color: #00AFFF;
+            font-size: 36px;
         }
 
-        header nav ul li {
-            display: inline;
-            margin-right: 15px;
-        }
-
-        header nav ul li a {
-            color: white;
-            text-decoration: none;
-        }
-
-        section {
-            padding: 20px;
-        }
-
-        h1, h2 {
-            color: #333;
-        }
-
-        p {
-            color: #666;
-        }
-
-        /* Оставляем стили для анимаций */
-        [data-aos="fade-down"] {
-            transition: transform 0.3s ease-in-out;
-        }
-
-        [data-aos="zoom-in"] {
-            opacity: 0;
-            transform: scale(0.6);
-        }
-
-        [data-aos="zoom-in"].aos-animate {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* Стили для кнопок */
-        button {
-            background-color: #007bff;
-            color: white;
+        .button {
+            display: inline-block;
             padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
+            margin-top: 20px;
+            background-color: #00AFFF;
+            color: #fff;
+            border-radius: 5px;
+            text-align: center;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        .button:hover {
+            background-color: #0077c2;
         }
 
-        /* Оформление форм */
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            margin-bottom: 10px;
-            font-size: 16px;
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            gap: 15px;
         }
 
-        input:focus, textarea:focus {
-            border-color: #007bff;
-        }
-
-        footer {
+        .chat-message {
             background-color: #333;
-            color: white;
-            padding: 20px;
-            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 75%;
+            margin-left: auto;
         }
 
-        /* Адаптивные стили */
-        @media (max-width: 768px) {
-            header nav ul li {
-                display: block;
-                margin: 5px 0;
-            }
+        .chat-message p {
+            margin: 0;
+        }
+        
+        .chat-message .sender {
+            color: #00AFFF;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-
-    <header>
-        <!-- Логотип и навигация -->
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section id="home">
-        <h1>Welcome to Our Web App</h1>
-        <p>Here is a description of what the app does...</p>
-    </section>
-
-    <section id="about">
-        <h2>About Us</h2>
-        <p>Information about the application, its features, and benefits...</p>
-    </section>
-
-    <section id="services">
-        <h2>Our Services</h2>
-        <ul>
-            <li>Service 1</li>
-            <li>Service 2</li>
-            <li>Service 3</li>
-        </ul>
-    </section>
-
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <form>
-            <label for="name">Your Name:</label>
-            <input type="text" id="name" name="name">
-
-            <label for="email">Your Email:</label>
-            <input type="email" id="email" name="email">
-
-            <button type="submit">Submit</button>
-        </form>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 My Web App</p>
-    </footer>
-
-    <script>
-        // Добавьте здесь JavaScript для функционала, если нужно
-    </script>
-
+    <div class="container">
+        <h1>Telegram-like Web App</h1>
+        <div class="chat-container">
+            <div class="chat-message">
+                <p class="sender">User1:</p>
+                <p>Hello, how are you?</p>
+            </div>
+            <div class="chat-message">
+                <p class="sender">User2:</p>
+                <p>I'm good, thanks! How about you?</p>
+            </div>
+        </div>
+        <div class="button" onclick="alert('New message sent!')">Send Message</div>
+    </div>
 </body>
 </html>
