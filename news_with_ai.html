@@ -43,10 +43,18 @@
             position: relative;
         }
 
+        /* Для отображения имени пользователя */
+        .username {
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
         .user1 {
             background-color: #444;
             color: white;
             margin-left: 10px;
+            text-align: left;
         }
 
         .user2 {
@@ -71,7 +79,7 @@
         /* Снежинки */
         .snowflake {
             position: absolute;
-            font-size: 15px; /* Маленькие снежинки */
+            font-size: 12px; /* Сделаем снежинки маленькими */
             color: white;
             pointer-events: none;
             user-select: none;
@@ -139,51 +147,25 @@
 
     <!-- Контейнер для сообщений -->
     <div class="chat-container">
-        <div class="message user1">User1: Hi, how are you?</div>
-        <div class="message user2">User2: Hi, I'm fine, thanks! How about you?</div>
+        <div class="user1">
+            <div class="username">User1</div>
+            <div class="message">Hi, how are you?</div>
+        </div>
+        <div class="user2">
+            <div class="username">User2</div>
+            <div class="message">Hi, I'm fine, thanks! How about you?</div>
+        </div>
     </div>
 
     <!-- Снежинки для эффекта -->
-    <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄</div>
-    <div class="snowflake" style="left: 20%; animation-delay: 2s;">❄</div>
+    <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄</div><div class="snowflake" style="left: 20%; animation-delay: 2s;">❄</div>
     <div class="snowflake" style="left: 30%; animation-delay: 1s;">❄</div>
     <div class="snowflake" style="left: 40%; animation-delay: 3s;">❄</div>
     <div class="snowflake" style="left: 50%; animation-delay: 4s;">❄</div>
-    <div class="snowflake" style="left: 60%; animation-delay: 5s;">❄</div><div class="snowflake" style="left: 70%; animation-delay: 6s;">❄</div>
+    <div class="snowflake" style="left: 60%; animation-delay: 5s;">❄</div>
+    <div class="snowflake" style="left: 70%; animation-delay: 6s;">❄</div>
     <div class="snowflake" style="left: 80%; animation-delay: 7s;">❄</div>
-    <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄</div>
-    <div class="snowflake" style="left: 20%; animation-delay: 2s;">❄</div>
-    <div class="snowflake" style="left: 30%; animation-delay: 1s;">❄</div>
-    <div class="snowflake" style="left: 40%; animation-delay: 3s;">❄</div>
-    <div class="snowflake" style="left: 50%; animation-delay: 4s;">❄</div> <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄</div>
-    <div class="snowflake" style="left: 20%; animation-delay: 2s;">❄</div>
-    <div class="snowflake" style="left: 30%; animation-delay: 1s;">❄</div>
-    <div class="snowflake" style="left: 40%; animation-delay: 3s;">❄</div>
-    <div class="snowflake" style="left: 50%; animation-delay: 4s;">❄</div> <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄</div>
-    <div class="snowflake" style="left: 20%; animation-delay: 2s;">❄</div>
-    <div class="snowflake" style="left: 30%; animation-delay: 1s;">❄</div>
-    <div class="snowflake" style="left: 40%; animation-delay: 3s;">❄</div>
-    <div class="snowflake" style="left: 50%; animation-delay: 4s;">❄</div> <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄</div>
-    <div class="snowflake" style="left: 20%; animation-delay: 2s;">❄</div>
-    <div class="snowflake" style="left: 30%; animation-delay: 1s;">❄</div>
-    <div class="snowflake" style="left: 40%; animation-delay: 3s;">❄</div>
-    <div class="snowflake" style="left: 50%; animation-delay: 4s;">❄</div> <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄</div>
-    <div class="snowflake" style="left: 20%; animation-delay: 2s;">❄</div>
-    <div class="snowflake" style="left: 30%; animation-delay: 1s;">❄</div>
-    <div class="snowflake" style="left: 40%; animation-delay: 3s;">❄</div>
-    <div class="snowflake" style="left: 50%; animation-delay: 4s;">❄</div> <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄</div>
-    <div class="snowflake" style="left: 20%; animation-delay: 2s;">❄</div>
-    <div class="snowflake" style="left: 30%; animation-delay: 1s;">❄</div>
-    <div class="snowflake" style="left: 40%; animation-delay: 3s;">❄</div>
-    <div class="snowflake" style="left: 50%; animation-delay: 4s;">❄</div> <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄</div>
-    <div class="snowflake" style="left: 20%; animation-delay: 2s;">❄</div>
-    <div class="snowflake" style="left: 30%; animation-delay: 1s;">❄</div>
-    <div class="snowflake" style="left: 40%; animation-delay: 3s;">❄</div>
-    <div class="snowflake" style="left: 50%; animation-delay: 4s;">❄</div> <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄</div>
-    <div class="snowflake" style="left: 20%; animation-delay: 2s;">❄</div>
-    <div class="snowflake" style="left: 30%; animation-delay: 1s;">❄</div>
-    <div class="snowflake" style="left: 40%; animation-delay: 3s;">❄</div>
-    <div class="snowflake" style="left: 50%; animation-delay: 4s;">❄</div>
+
     <script>
         // Задержка для исчезновения заставки и перехода
         setTimeout(() => {
