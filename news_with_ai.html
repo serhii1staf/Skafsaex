@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram App with Snowflakes</title>
+    <title>Telegram Style App with Snowflakes</title>
     <style>
         body {
             background-color: black;
@@ -12,7 +12,7 @@
             overflow: hidden;
             font-family: Arial, sans-serif;
         }
-        
+
         .message-container {
             position: relative;
             height: 100vh;
@@ -24,13 +24,14 @@
 
         .message {
             position: absolute;
-            padding: 20px;
+            padding: 12px 20px;
             margin: 0;
-            font-size: 20px;
+            font-size: 14px;
             color: white;
             background-color: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            width: 40%;
+            width: 45%;
+            max-width: 300px;
             text-align: center;
         }
 
@@ -40,7 +41,7 @@
         }
 
         .user2 {
-            left: 5%;
+            right: 5%;
             text-align: left;
             margin-top: 2mm; /* Slightly move User2 message lower */
         }
@@ -49,7 +50,7 @@
         .snowflake {
             position: absolute;
             color: white;
-            font-size: 10px;
+            font-size: 3px;  /* Snowflakes significantly smaller */
             animation: snow 10s linear infinite;
         }
 
@@ -63,6 +64,13 @@
                 opacity: 0;
             }
         }
+
+        @media (max-width: 768px) {
+            .message {
+                font-size: 16px;
+                padding: 10px 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -74,7 +82,7 @@
     <script>
         // Function to generate snowflakes
         function createSnowflakes() {
-            for (let i = 0; i < 300; i++) { // Increased number of snowflakes
+            for (let i = 0; i < 200; i++) { // Reduced the number of snowflakes
                 const snowflake = document.createElement('div');
                 snowflake.classList.add('snowflake');
                 snowflake.innerHTML = '❄';  // Snowflake symbol
@@ -83,7 +91,7 @@
                 snowflake.style.animationDelay = Math.random() * 5 + 's';  // Random delay
 
                 // Random size of snowflakes
-                const size = Math.random() * 3 + 2; // Snowflake size between 2px and 5px
+                const size = Math.random() * 1.5 + 1.5; // Snowflake size between 1.5px and 3px
                 snowflake.style.fontSize = size + 'px';
 
                 document.body.appendChild(snowflake);
