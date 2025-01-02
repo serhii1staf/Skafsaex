@@ -291,28 +291,8 @@
             if (tg) {
                 tg.ready();
                 tg.expand();
-            }
-
-            // Получаем все элементы
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                left: document.getElementById('leftScreen'),
-                right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen'),
-                bot: document.getElementById('botScreen')
-            };
-
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                left: document.getElementById('leftBtn'),
-                right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn'),
-                bot: document.getElementById('botBtn')
-            };
-
-            let currentScreen = 'home';
-            let isAnimating = false;
-
+            })
+            
             // Функция для показа экрана
             function showScreen(screenName) {
                 if (isAnimating) return;
