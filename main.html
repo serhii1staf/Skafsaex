@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Навигация и генерация</title>
     <style>
-        /* Общий стиль для кнопок */
+        /* Оставляем стиль без изменений */
         .nav-btn {
-            background-color: #4CAF50; /* Зеленый цвет (или твой стандартный) */
+            background-color: #4CAF50; /* Зеленый цвет */
             border: none;
             color: white;
             padding: 15px 32px;
@@ -20,12 +20,10 @@
             border-radius: 8px;
         }
 
-        /* При наведении на кнопку */
         .nav-btn:hover {
             background-color: #45a049;
         }
 
-        /* Стиль для экранов */
         .screen {
             display: none;
         }
@@ -34,35 +32,75 @@
             display: block;
         }
 
-        /* Стиль для контейнера */
+        /* Оставляем текущие стили для экрана и контента */
         .message {
             padding: 20px;
         }
     </style>
 </head>
 <body>
-    <!-- Кнопки на панели навигации -->
+    <!-- Здесь будет главная панель с кнопками -->
     <button id="homeBtn" class="nav-btn">Главная</button>
     <button id="leftBtn" class="nav-btn">Левая</button>
     <button id="rightBtn" class="nav-btn">Правая</button>
     <button id="profileBtn" class="nav-btn">Профиль</button>
     <button id="botBtn" class="nav-btn">Бот</button>
 
-    <!-- Добавляем кнопки для генерации текста и стихов -->
-    <button id="textGenBtn" class="nav-btn">Текст</button>
-    <button id="poemGenBtn" class="nav-btn">Стихи</button>
+    <!-- Новые кнопки для генерации текста и стихов -->
+    <button id="textGenBtn" class="nav-btn">Генерация текста</button>
+    <button id="poemGenBtn" class="nav-btn">Генерация стихов</button>
 
-    <!-- Экран для генерации текста -->
+    <!-- Экран главной страницы -->
+    <div id="homeScreen" class="screen active">
+        <div class="message">
+            <h1>Главная страница</h1>
+            <p>Контент главной страницы</p>
+        </div>
+    </div>
+
+    <!-- Экран левой страницы -->
+    <div id="leftScreen" class="screen">
+        <div class="message">
+            <h1>Левая страница</h1>
+            <p>Контент левой страницы</p>
+        </div>
+    </div>
+
+    <!-- Экран правой страницы -->
+    <div id="rightScreen" class="screen">
+        <div class="message">
+            <h1>Правая страница</h1>
+            <p>Контент правой страницы</p>
+        </div>
+    </div>
+
+    <!-- Экран профиля -->
+    <div id="profileScreen" class="screen">
+        <div class="message">
+            <h1>Профиль</h1>
+            <p>Контент профиля</p>
+        </div>
+    </div>
+
+    <!-- Экран бота -->
+    <div id="botScreen" class="screen">
+        <div class="message">
+            <h1>Бот</h1>
+            <p>Контент бота</p>
+        </div>
+    </div>
+
+    <!-- Экран генерации текста -->
     <div id="textGenScreen" class="screen">
         <div class="message">
             <h1>Генерация текста</h1>
-            <textarea id="textInput" placeholder="Введите параметры для генерации..." style="width: 100%; height: 100px;"></textarea>
-            <button id="generateTextBtn">Сгенерировать</button>
+            <textarea id="textInput" placeholder="Введите запрос для генерации..." style="width: 100%; height: 100px;"></textarea>
+            <button id="generateTextBtn">Сгенерировать текст</button>
             <p id="generatedText"></p>
         </div>
     </div>
 
-    <!-- Экран для генерации стихов -->
+    <!-- Экран генерации стихов -->
     <div id="poemGenScreen" class="screen">
         <div class="message">
             <h1>Генерация стихов</h1>
@@ -72,92 +110,55 @@
         </div>
     </div>
 
-    <!-- Остальные экраны (оставляем как есть) -->
-    <div id="homeScreen" class="screen">
-        <div class="message">
-            <h1>Главная</h1>
-            <!-- Контент главной страницы -->
-        </div>
-    </div>
-
-    <div id="leftScreen" class="screen">
-        <div class="message">
-            <h1>Левая страница</h1>
-            <!-- Контент левой страницы -->
-        </div>
-    </div>
-
-    <div id="rightScreen" class="screen">
-        <div class="message">
-            <h1>Правая страница</h1>
-            <!-- Контент правой страницы -->
-        </div>
-    </div>
-
-    <div id="profileScreen" class="screen">
-        <div class="message">
-            <h1>Профиль</h1>
-            <!-- Контент профиля -->
-        </div>
-    </div>
-
-    <div id="botScreen" class="screen">
-        <div class="message">
-            <h1>Бот</h1>
-            <!-- Контент бота -->
-        </div>
-    </div>
-
     <script>
-        // Получаем кнопки и экраны
+        // Навигация
         const buttons = {
             home: document.getElementById('homeBtn'),
             left: document.getElementById('leftBtn'),
             right: document.getElementById('rightBtn'),
             profile: document.getElementById('profileBtn'),
             bot: document.getElementById('botBtn'),
-            textGen: document.getElementById('textGenBtn'),  // новая кнопка
-            poemGen: document.getElementById('poemGenBtn')   // новая кнопка
+            textGen: document.getElementById('textGenBtn'),  // кнопка для генерации текста
+            poemGen: document.getElementById('poemGenBtn')   // кнопка для генерации стихов
         };
 
         const screens = {
             home: document.getElementById('homeScreen'),
             left: document.getElementById('leftScreen'),
-            right: document.getElementById('rightScreen'),
-            profile: document.getElementById('profileScreen'),
+            right: document.getElementById('rightScreen'),profile: document.getElementById('profileScreen'),
             bot: document.getElementById('botScreen'),
-            textGen: document.getElementById('textGenScreen'),  // новый экран
-            poemGen: document.getElementById('poemGenScreen')   // новый экран
+            textGen: document.getElementById('textGenScreen'),  // экран генерации текста
+            poemGen: document.getElementById('poemGenScreen')   // экран генерации стихов
         };
 
-        let currentScreen = 'home';  // Текущий экран
-        let isAnimating = false;  // Флаг для анимации
+        let currentScreen = 'home';  // по умолчанию показывается главная страница
+        let isAnimating = false;  // флаг анимации
 
         // Функция для показа экрана
         function showScreen(screenName) {
             if (isAnimating) return;
             isAnimating = true;
 
-            // Скрываем текущий экран
+            // Скрытие текущего экрана
             screens[currentScreen].classList.remove('active');
             // Показываем новый экран
             screens[screenName].classList.add('active');
-            
+
             currentScreen = screenName;
-            
+
             setTimeout(() => {
                 isAnimating = false;
             }, 300);
         }
 
-        // Обработчики для кнопок навигации
+        // Обработчики для навигации
         buttons.home.addEventListener('click', () => showScreen('home'));
         buttons.left.addEventListener('click', () => showScreen('left'));
         buttons.right.addEventListener('click', () => showScreen('right'));
         buttons.profile.addEventListener('click', () => showScreen('profile'));
         buttons.bot.addEventListener('click', () => showScreen('bot'));
 
-        // Обработчики для новых кнопок генерации
+        // Обработчики для новых кнопок
         buttons.textGen.addEventListener('click', () => showScreen('textGen'));
         buttons.poemGen.addEventListener('click', () => showScreen('poemGen'));
 
@@ -165,8 +166,6 @@
         function generateText() {
             const input = document.getElementById('textInput').value;
             const output = document.getElementById('generatedText');
-            
-            // Простой пример генерации текста
             output.textContent = Сгенерированный текст по запросу: "${input}";
         }
 
@@ -174,8 +173,6 @@
         function generatePoem() {
             const input = document.getElementById('poemInput').value;
             const output = document.getElementById('generatedPoem');
-            
-            // Простой пример стихов
             output.textContent = Стихотворение на тему "${input}":\n\nТема: ${input}\nТвои мечты, как звезды в ночи,\nСветят нам, как чудеса...;
         }
 
