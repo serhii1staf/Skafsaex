@@ -4,11 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
-    <title>Новогоднее поздравление</title>
+    <title>Телеграм-приложение</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <style>
+        /* Основные стили */
         * {
             margin: 0;
             padding: 0;
@@ -26,6 +27,7 @@
             position: relative;
         }
 
+        /* Экраны */
         .screen {
             position: fixed;
             top: 0;
@@ -36,8 +38,7 @@
             visibility: hidden;
             transition: opacity 0.3s ease;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             background-size: cover;
             background-position: center;
         }
@@ -47,55 +48,121 @@
             visibility: visible;
         }
 
-        #homeScreen {
-            background-image: url('https://i.postimg.cc/XqGB50nY/IMG-4501.jpg');
-        }
+        /* Фоны экранов */
+        #homeScreen { background-image: url('https://i.postimg.cc/XqGB50nY/IMG-4501.jpg'); }
+        #leftScreen { background-image: url('https://i.postimg.cc/g2CdDX3p/IMG-4502.png'); }
+        #rightScreen { background-image: url('https://i.postimg.cc/cCBMDnvb/IMG-4503.png'); }
+        #profileScreen { background: linear-gradient(135deg, #0d47a1, #1565c0); }
+        #botScreen { background-image: url('https://i.postimg.cc/N0DFQKbR/IMG-4504.png'); }
+        #datingScreen { background: linear-gradient(135deg, #1a237e, #0d47a1); }
 
-        #leftScreen {
-            background-image: url('https://i.postimg.cc/g2CdDX3p/IMG-4502.png');
-        }
-
-        #rightScreen {
-            background-image: url('https://i.postimg.cc/cCBMDnvb/IMG-4503.png');
-        }
-
-        #profileScreen {
-            background: linear-gradient(135deg, #0d47a1, #1565c0);
-        }
-
-        #botScreen {
-            background-image: url('https://i.postimg.cc/tTr7QdRH/background.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-
+        /* Сообщения */
         .message {
             background: rgba(255, 255, 255, 0.2);
             padding: 24px;
             border-radius: 12px;
-            text-align: center;
-            max-width: 90%;
-            width: 100%;
             backdrop-filter: blur(8px);
             margin: 20px;
             position: relative;
             z-index: 2;
-        }
-
-        h1 {
             color: white;
-            font-size: 28px;
-            margin-bottom: 16px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
-        p {
+        /* Чат */
+        .chat-container {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 60px;
+        }
+
+        .chat-message {
+            max-width: 80%;
+            margin: 8px;
+            padding: 12px;
+            border-radius: 16px;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.3);
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot-message {
+            margin-right: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom-left-radius: 4px;
+        }
+
+        /* Ввод сообщений */
+        .input-area {
+            position: fixed;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            gap: 10px;
+            margin: 0 10px;
+            border-radius: 12px;
+        }
+
+        .message-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 12px;
+            border-radius: 20px;
             color: white;
-            font-size: 18px;
-            line-height: 1.5;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            font-size: 16px;
         }
 
+        /* Языковое меню */
+        .lang-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            color: white;
+            backdrop-filter: blur(5px);
+        }
+
+        .lang-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .lang-menu.active {
+            display: block;
+        }
+
+        .lang-option {
+            padding: 8px 16px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Навигация */
         .nav-buttons {
             position: fixed;
             bottom: 20px;
@@ -120,31 +187,19 @@
             border: none;
             background: rgba(255, 255, 255, 0.2);
             color: white;
-            font-size: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
             backdrop-filter: blur(5px);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .nav-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.4);
-        }
-
+        /* Иконки */
         #homeBtn {
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
         }
 
         #profileBtn {
@@ -152,71 +207,52 @@
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
         }
 
         #botBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 6h16v12H4V6zm10 3h-2V7h2v2zm0 2h-2v2h2v-2zm2-2h2v2h-2V9zm2 4h-2v2h2v-2z"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
         }
 
-        .social-links {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 20px;
+        #datingBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
         }
 
-        .social-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .social-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .voluntary-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 20px;
-        }
-
-        #botScreen .chat-container {
-            background: rgba(255,255,255,0.1);
-            height: 60vh;
+        /* Раздел знакомств */
+        .dating-container {
+            padding: 20px;
+            height: calc(100vh - 100px);
             overflow-y: auto;
-            padding: 10px;
-            border-radius: 8px;
         }
 
-        .chat-message {
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 8px;
+        .profile-card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(8px);
         }
 
-        .bot-message {
-            background: white;
-            color: black;
+        .profile-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
         }
 
-        .user-message {
-            background: rgba(0,153,255,0.8);
+        .profile-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            background: rgba(255, 255, 255, 0.3);
             color: white;
-            align-self: flex-end;
+            cursor: pointer;
         }
+
     </style>
 </head>
 <body>
@@ -260,25 +296,44 @@
             </div>
         </div>
 
-        <!-- Экран чат-бота Пяе -->
+        <!-- Экран бота -->
         <div id="botScreen" class="screen">
-            <div class="message">
-                <h1>Пяе</h1>
-                <div class="chat-container" id="chat-messages"></div>
-                <div style="display: flex; margin-top: 10px;">
-                    <input type="text" id="chat-input" style="flex-grow: 1; padding: 10px; border-radius: 8px; border: none; background: rgba(255,255,255,0.2);" placeholder="Введите сообщение">
-                    <button id="send-btn" style="margin-left: 10px; padding: 10px; border-radius: 8px; background: rgba(0,153,255,0.8); color: white; border: none;">Отправить</button>
+            <div class="lang-switcher">
+                <button class="lang-btn">Lang</button>
+                <div class="lang-menu">
+                    <div class="lang-option" data-lang="ru">🇷🇺 RU</div>
+                    <div class="lang-option" data-lang="ua">🇺🇦 UA</div>
+                    <div class="lang-option" data-lang="no">🇳🇴 NO</div>
+                    <div class="lang-option" data-lang="en">🇬🇧 EN</div>
+                </div>
+            </div>
+            
+            <div class="chat-container" id="chatMessages"></div>
+            
+            <div class="input-area">
+                <input type="text" class="message-input" id="messageInput" placeholder="Введите сообщение...">
+                <button class="nav-btn" id="sendMessage">➤</button>
+            </div>
+        </div>
+
+        <!-- Экран знакомств -->
+        <div id="datingScreen" class="screen">
+            <div class="dating-container">
+                <div class="profile-card">
+                    <h2>Регистрация</h2>
+                    <p>Нажмите для создания профиля</p>
                 </div>
             </div>
         </div>
 
-        <!-- Навигационные кнопки -->
+        <!-- Навигация -->
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
                 <button id="botBtn" class="nav-btn"></button>
+                <button id="datingBtn" class="nav-btn"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
@@ -293,88 +348,19 @@
                 tg.expand();
             }
 
-            // Получаем все элементы
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                left: document.getElementById('leftScreen'),
-                right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen'),
-                bot: document.getElementById('botScreen')
-            };
-
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                left: document.getElementById('leftBtn'),
-                right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn'),
-                bot: document.getElementById('botBtn')
-            };
-
-            let currentScreen = 'home';
-            let isAnimating = false;
-
-            // Функция для показа экрана
-            function showScreen(screenName) {
-                if (isAnimating) return;
-                isAnimating = true;
-
-                // Скрываем текущий экран
-                screens[currentScreen].classList.remove('active');
-                // Показываем новый экран
-                screens[screenName].classList.add('active');
-                
-                // Вибрация при переключении
-                if (tg?.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('medium');
-                }
-
-                currentScreen = screenName;
-                
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 300);
-            }
-
-            // Добавляем обработчики для кнопок
-            buttons.home.addEventListener('click', () => showScreen('home'));
-            buttons.left.addEventListener('click', () => showScreen('left'));
-            buttons.right.addEventListener('click', () => showScreen('right'));
-            buttons.profile.addEventListener('click', () => showScreen('profile'));
-            buttons.bot.addEventListener('click', () => showScreen('bot'));
-
-            // Логика чат-бота
-            const chatMessages = document.getElementById('chat-messages');
-            const chatInput = document.getElementById('chat-input');
-            const sendBtn = document.getElementById('send-btn');
-
-            function addMessage(message, type) {
-                const messageEl = document.createElement('div');
-                messageEl.classList.add('chat-message', type);
-                messageEl.textContent = message;
-                chatMessages.appendChild(messageEl);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            function sendMessage() {
-                const message = chatInput.value.trim();
-                if (message) {
-                    // Сообщение пользователя
-                    addMessage(message, 'user-message');
-                    
-                    // Простой ответ бота
-                    setTimeout(() => {
-                        addMessage('Привет! Я Пяе, твой виртуальный помощник.', 'bot-message');
-                    }, 500);
-
-                    chatInput.value = '';
-                }
-            }
-
-            sendBtn.addEventListener('click', sendMessage);
-            chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sendMessage();
-            });
-        });
-    </script>
-</body>
-</html>
+            // Базовые ответы бота на разных языках
+            const botResponses = {
+                ru: {
+                    greeting: "Привет! Я Пяе, чем могу помочь?",
+                    help: "Я могу ответить на ваши вопросы.",
+                    thanks: "Пожалуйста!",
+                    unknown: "Извините, я не совсем понял вопрос."
+                },
+                ua: {
+                    greeting: "Привіт! Я П'яе, чим можу допомогти?",
+                    help: "Я можу відповісти на ваші запитання.",
+                    thanks: "Будь ласка!",
+                    unknown: "Вибачте, я не зовсім зрозумів питання."
+                },
+                no: {
+                    greeting: "Hei! Jeg er Piae, hvordan
