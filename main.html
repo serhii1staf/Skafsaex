@@ -1,292 +1,187 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <title>Новогоднее поздравление</title>
-    
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Навигация и генерация</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Общий стиль для кнопок */
+        .nav-btn {
+            background-color: #4CAF50; /* Зеленый цвет (или твой стандартный) */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            min-height: 100vh;
-            overflow: hidden;
+        /* При наведении на кнопку */
+        .nav-btn:hover {
+            background-color: #45a049;
         }
 
-        #app {
-            min-height: 100vh;
-            position: relative;
-        }
-
+        /* Стиль для экранов */
         .screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-size: cover;
-            background-position: center;
+            display: none;
         }
 
         .screen.active {
-            opacity: 1;
-            visibility: visible;
+            display: block;
         }
 
-        #homeScreen {
-            background-image: url('https://i.postimg.cc/XqGB50nY/IMG-4501.jpg');
-        }
-
-        #leftScreen {
-            background-image: url('https://i.postimg.cc/g2CdDX3p/IMG-4502.png');
-        }
-
-        #rightScreen {
-            background-image: url('https://i.postimg.cc/cCBMDnvb/IMG-4503.png');
-        }
-
-        #profileScreen {
-            background: linear-gradient(135deg, #0d47a1, #1565c0);
-        }
-
+        /* Стиль для контейнера */
         .message {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 24px;
-            border-radius: 12px;
-            text-align: center;
-            max-width: 90%;
-            width: 100%;
-            backdrop-filter: blur(8px);
-            margin: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        h1 {
-            color: white;
-            font-size: 28px;
-            margin-bottom: 16px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }
-
-        p {
-            color: white;
-            font-size: 18px;
-            line-height: 1.5;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
-        .nav-buttons {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            z-index: 1000;
-        }
-
-        .nav-center-group {
-            display: flex;
-            gap: 16px;
-        }
-
-        .nav-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .nav-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        #homeBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        #profileBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .social-links {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .social-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .voluntary-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 20px;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
-    <div id="app">
-        <!-- Главный экран -->
-        <div id="homeScreen" class="screen active">
-            <div class="message">
-                <h1>С Новым 2025 Годом!</h1>
-                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
-            </div>
-        </div>
+    <!-- Кнопки на панели навигации -->
+    <button id="homeBtn" class="nav-btn">Главная</button>
+    <button id="leftBtn" class="nav-btn">Левая</button>
+    <button id="rightBtn" class="nav-btn">Правая</button>
+    <button id="profileBtn" class="nav-btn">Профиль</button>
+    <button id="botBtn" class="nav-btn">Бот</button>
 
-        <!-- Экран слева -->
-        <div id="leftScreen" class="screen">
-            <div class="message">
-                <p>Старый 2024 год ушел и никогда не вернется.</p>
-                <p>Время для новых начинаний!</p>
-            </div>
-        </div>
+    <!-- Добавляем кнопки для генерации текста и стихов -->
+    <button id="textGenBtn" class="nav-btn">Текст</button>
+    <button id="poemGenBtn" class="nav-btn">Стихи</button>
 
-        <!-- Экран справа -->
-        <div id="rightScreen" class="screen">
-            <div class="message">
-                <h1>С 2025 Годом!</h1>
-                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
-            </div>
+    <!-- Экран для генерации текста -->
+    <div id="textGenScreen" class="screen">
+        <div class="message">
+            <h1>Генерация текста</h1>
+            <textarea id="textInput" placeholder="Введите параметры для генерации..." style="width: 100%; height: 100px;"></textarea>
+            <button id="generateTextBtn">Сгенерировать</button>
+            <p id="generatedText"></p>
         </div>
+    </div>
 
-        <!-- Экран профиля -->
-        <div id="profileScreen" class="screen">
-            <div class="message">
-                <div class="social-links">
-                    <a href="https://t.me/sangklasy" class="social-link" target="_blank">
-                        📱 Telegram канал
-                    </a>
-                    <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" class="social-link" target="_blank">
-                        📷 Instagram аккаунт
-                    </a>
-                </div>
-                <p class="voluntary-text">* Подписка является полностью добровольной</p>
-            </div>
+    <!-- Экран для генерации стихов -->
+    <div id="poemGenScreen" class="screen">
+        <div class="message">
+            <h1>Генерация стихов</h1>
+            <textarea id="poemInput" placeholder="Введите тему стихов..." style="width: 100%; height: 100px;"></textarea>
+            <button id="generatePoemBtn">Сгенерировать стих</button>
+            <p id="generatedPoem"></p>
         </div>
+    </div>
 
-        <!-- Навигационные кнопки -->
-        <div class="nav-buttons">
-            <button id="leftBtn" class="nav-btn">←</button>
-            <div class="nav-center-group">
-                <button id="homeBtn" class="nav-btn"></button>
-                <button id="profileBtn" class="nav-btn"></button>
-            </div>
-            <button id="rightBtn" class="nav-btn">→</button>
+    <!-- Остальные экраны (оставляем как есть) -->
+    <div id="homeScreen" class="screen">
+        <div class="message">
+            <h1>Главная</h1>
+            <!-- Контент главной страницы -->
+        </div>
+    </div>
+
+    <div id="leftScreen" class="screen">
+        <div class="message">
+            <h1>Левая страница</h1>
+            <!-- Контент левой страницы -->
+        </div>
+    </div>
+
+    <div id="rightScreen" class="screen">
+        <div class="message">
+            <h1>Правая страница</h1>
+            <!-- Контент правой страницы -->
+        </div>
+    </div>
+
+    <div id="profileScreen" class="screen">
+        <div class="message">
+            <h1>Профиль</h1>
+            <!-- Контент профиля -->
+        </div>
+    </div>
+
+    <div id="botScreen" class="screen">
+        <div class="message">
+            <h1>Бот</h1>
+            <!-- Контент бота -->
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Инициализация Telegram WebApp
-            const tg = window.Telegram?.WebApp;
-            if (tg) {
-                tg.ready();
-                tg.expand();
-            }
+        // Получаем кнопки и экраны
+        const buttons = {
+            home: document.getElementById('homeBtn'),
+            left: document.getElementById('leftBtn'),
+            right: document.getElementById('rightBtn'),
+            profile: document.getElementById('profileBtn'),
+            bot: document.getElementById('botBtn'),
+            textGen: document.getElementById('textGenBtn'),  // новая кнопка
+            poemGen: document.getElementById('poemGenBtn')   // новая кнопка
+        };
 
-            // Получаем все элементы
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                left: document.getElementById('leftScreen'),
-                right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen')
-            };
+        const screens = {
+            home: document.getElementById('homeScreen'),
+            left: document.getElementById('leftScreen'),
+            right: document.getElementById('rightScreen'),
+            profile: document.getElementById('profileScreen'),
+            bot: document.getElementById('botScreen'),
+            textGen: document.getElementById('textGenScreen'),  // новый экран
+            poemGen: document.getElementById('poemGenScreen')   // новый экран
+        };
 
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                left: document.getElementById('leftBtn'),
-                right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn')
-            };
+        let currentScreen = 'home';  // Текущий экран
+        let isAnimating = false;  // Флаг для анимации
 
-            let currentScreen = 'home';
-            let isAnimating = false;
+        // Функция для показа экрана
+        function showScreen(screenName) {
+            if (isAnimating) return;
+            isAnimating = true;
 
-            // Функция для показа экрана
-            function showScreen(screenName) {
-                if (isAnimating) return;
-                isAnimating = true;
+            // Скрываем текущий экран
+            screens[currentScreen].classList.remove('active');
+            // Показываем новый экран
+            screens[screenName].classList.add('active');
+            
+            currentScreen = screenName;
+            
+            setTimeout(() => {
+                isAnimating = false;
+            }, 300);
+        }
 
-                // Скрываем текущий экран
-                screens[currentScreen].classList.remove('active');
-                // Показываем новый экран
-                screens[screenName].classList.add('active');
-                
-                // Вибрация при переключении
-                if (tg?.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('medium');
-                }
+        // Обработчики для кнопок навигации
+        buttons.home.addEventListener('click', () => showScreen('home'));
+        buttons.left.addEventListener('click', () => showScreen('left'));
+        buttons.right.addEventListener('click', () => showScreen('right'));
+        buttons.profile.addEventListener('click', () => showScreen('profile'));
+        buttons.bot.addEventListener('click', () => showScreen('bot'));
 
-                currentScreen = screenName;
-                
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 300);
-            }
+        // Обработчики для новых кнопок генерации
+        buttons.textGen.addEventListener('click', () => showScreen('textGen'));
+        buttons.poemGen.addEventListener('click', () => showScreen('poemGen'));
 
-            // Добавляем обработчики для кнопок
-            buttons.home.addEventListener('click', () => showScreen('home'));
-            buttons.left.addEventListener('click', () => showScreen('left'));
-            buttons.right.addEventListener('click', () => showScreen('right'));
-            buttons.profile.addEventListener('click', () => showScreen('profile'));
-        });
+        // Логика генерации текста
+        function generateText() {
+            const input = document.getElementById('textInput').value;
+            const output = document.getElementById('generatedText');
+            
+            // Простой пример генерации текста
+            output.textContent = Сгенерированный текст по запросу: "${input}";
+        }
+
+        // Логика генерации стихов
+        function generatePoem() {
+            const input = document.getElementById('poemInput').value;
+            const output = document.getElementById('generatedPoem');
+            
+            // Простой пример стихов
+            output.textContent = Стихотворение на тему "${input}":\n\nТема: ${input}\nТвои мечты, как звезды в ночи,\nСветят нам, как чудеса...;
+        }
+
+        // Обработчики для кнопок генерации
+        document.getElementById('generateTextBtn').addEventListener('click', generateText);
+        document.getElementById('generatePoemBtn').addEventListener('click', generatePoem);
     </script>
 </body>
 </html>
