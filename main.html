@@ -11,68 +11,65 @@
             background-position: center;
             background-color: rgba(255, 255, 255, 0.2);
         }
+        #messagesBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M20,16H5.2L4,17.2V4h16V16z"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
 
-        #registerScreen, #matchScreen, #chatScreen {
-            /* стили для экранов */
-        } 
+        #registerScreen, #editProfileScreen, #matchScreen, #chatListScreen, #chatScreen {
+            /* стили для экранов знакомств, редактирования профиля, списка чатов и чата */
+        }
+
+        form input, form select {
+            /* стили для полей ввода в формах регистрации и редактирования */
+        }
+
+        .chat-list {
+            /* стили для списка чатов */
+        }
+
+        /* другие стили */
     </style>
 </head>
 <body>
     <div id="app">
         <!-- ... -->
         
-        <!-- Экран регистрации -->
+        <!-- Экраны регистрации и редактирования профиля -->
         <div id="registerScreen" class="screen">
-            <div class="message">
-                <h1>Регистрация</h1>
-                <form id="registerForm">
-                    <input type="text" placeholder="Имя" required>
-                    <input type="number" placeholder="Возраст" required>
-                    <select required>
-                        <option value="" disabled selected>Пол</option>
-                        <option value="male">Мужчина</option>
-                        <option value="female">Женщина</option>
-                    </select>
-                    <input type="text" placeholder="Интересы" required>
-                    <button type="submit">Сохранить</button>
-                </form>
-            </div>
+            <!-- форма регистрации -->
+        </div>
+        <div id="editProfileScreen" class="screen">
+            <!-- форма редактирования профиля -->  
         </div>
 
         <!-- Экран подбора пары -->
-        <div id="matchScreen" class="screen"> 
-            <div class="message">
-                <div id="profile">
-                    <img src="" alt="Фото">
-                    <h2></h2>
-                    <p></p>
-                </div>
-                <div class="buttons">
-                    <button id="rejectBtn">←</button>
-                    <button id="likeBtn">→</button>
-                </div>
+        <div id="matchScreen" class="screen">
+            <!-- профиль потенциального совпадения, кнопки лайка/дизлайка -->
+        </div>
+
+        <!-- Экран со списком чатов -->
+        <div id="chatListScreen" class="screen">
+            <div class="chat-list">
+                <!-- список диалогов -->
             </div>
         </div>
 
-        <!-- Экран чата -->  
+        <!-- Экран чата -->
         <div id="chatScreen" class="screen">
-            <div class="message">
-                <div id="chat">
-                    <!-- сообщения -->
-                </div>
-                <form id="messageForm">
-                    <input type="text" placeholder="Сообщение..." required>
-                    <button type="submit">Отправить</button>
-                </form>
-                <button id="openTelegramBtn">Перейти в Telegram</button>
-            </div>
+            <!-- диалог с юзером -->
         </div>
 
         <!-- Навигационные кнопки -->
         <div class="nav-buttons">
             <!-- ... -->
-            <div class="nav-center-group">
-                <!-- ... -->
+            <div class="nav-center-group">  
+                <button id="homeBtn" class="nav-btn"></button>
+                <button id="profileBtn" class="nav-btn"></button>
+                <button id="messagesBtn" class="nav-btn"></button>
                 <button id="heartBtn" class="nav-btn"></button>
             </div>
             <!-- ... -->
@@ -83,84 +80,77 @@
         // ...
 
         const registerForm = document.getElementById('registerForm');
+        const editProfileForm = document.getElementById('editProfileForm');
         const matchScreen = document.getElementById('matchScreen');
-        const profile = document.getElementById('profile');  
-        const rejectBtn = document.getElementById('rejectBtn');
-        const likeBtn = document.getElementById('likeBtn');
+        const chatListScreen = document.getElementById('chatListScreen'); 
         const chatScreen = document.getElementById('chatScreen');
-        const chat = document.getElementById('chat');
-        const messageForm = document.getElementById('messageForm');
-        const openTelegramBtn = document.getElementById('openTelegramBtn');
 
         let user = {};
         let currentMatch = null;
         let matches = [];
-
-        registerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const data = new FormData(registerForm);
-            user = Object.fromEntries(data);
-            
-            tg?.MainButton.setText('Искать пару');
-            tg?.MainButton.show();
-
-            showScreen('home');
-        });
-
-        function getRandomMatch() {
-            // Логика подбора профиля...
-            return {
-                name: 'Алиса', 
-                age: 25,
-                interests: 'Путешествия, музыка',  
-                photo: 'https://i.postimg.cc/0xDjNbsK/alice.jpg'
-            };
-        }
+        let chats = [];
         
-        function showMatch() {
-            currentMatch = getRandomMatch();
-            profile.querySelector('img').src = currentMatch.photo;
-            profile.querySelector('h2').textContent = currentMatch.name + ', ' + currentMatch.age;
-            profile.querySelector('p').textContent = currentMatch.interests;
+        registerForm.addEventListener('submit', registerUser);
+        
+        function registerUser(e) {
+            e.preventDefault();
+            
+            // сбор данных из формы, создание объекта пользователя
+            user = { ... };
+
             showScreen('match');
         }
 
-        rejectBtn.addEventListener('click', showMatch);
+        // функции редактирования профиля 
+        editProfileForm.addEventListener('submit', updateProfile);
 
-        likeBtn.addEventListener('click', () => {
+        function updateProfile(e) { 
+            e.preventDefault();
+
+            // обновление данных юзера
+            user = { ...user, ... };
+
+            showScreen('chatList');
+        }
+
+        // функции подбора пары (like, dislike) 
+        function like() {
             matches.push(currentMatch);
-            showMatch();
-        });
+            nextMatch();
+        }
 
-        function showChat(match) {
-            chat.innerHTML = ''; // очистить чат
-            currentMatch = match;
-            showScreen('chat');
+        function dislike() {  
+            nextMatch();
+        }
+
+        // отображение списка чатов
+        function showChatList() {
+            // рендер списка диалогов
         }  
 
-        messageForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const message = messageForm.querySelector('input').value;
-            // Отправить сообщение...
-            messageForm.reset();
-        });
+        // открытие чата по клику
+        function openChat(chatId) {
+            const chat = chats.find(c => c.id === chatId);
+            // показать интерфейс чата
+        }
 
-        openTelegramBtn.addEventListener('click', () => {
-            const telegramLink = `https://t.me/${currentMatch.username}`;
-            tg?.openLink(telegramLink);
-        });
+        // отправка сообщения в чате
+        function sendMessage(chatId, message) {
+            const chat = chats.find(c => c.id === chatId);
+            // логика отправки сообщения
+        }
 
         buttons.heart.addEventListener('click', () => {
             if (!user.name) {
-                showScreen('register');
-            } else if (matches.length > 0) {
-                showChat(matches[0]);  
+                showScreen('register');  
             } else {
-                showMatch();
+                showScreen('chatList');
             }
         });
 
-        tg?.onEvent('mainButtonClicked', showMatch);
+        buttons.messages.addEventListener('click', () => { 
+            showScreen('chatList');
+        });
     </script>
 </body>
 </html>
