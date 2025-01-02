@@ -48,7 +48,7 @@
 
         <!-- Экран чата -->
         <div id="chatScreen" class="screen">
-            <!-- интерфейс чата, похожий на Telegram -->
+            <!-- интерфейс чата в реальном времени, подобный Telegram -->
         </div>
 
         <!-- Навигационные кнопки -->
@@ -66,6 +66,7 @@
 
     <script>
         // ...
+        
         buttons.heart.addEventListener('click', () => {
             if (!user.id) {
                 showScreen('register');  
@@ -77,6 +78,8 @@
         buttons.chat.addEventListener('click', () => { 
             showScreen('chatList');
         });
+
+        // ... реализация функций регистрации, редактирования профиля, чата и знакомств
     </script>
 </body>
 </html>
