@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <title>Новогоднее поздравление</title>
-    
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
     <style>
         * {
             margin: 0;
@@ -23,50 +20,21 @@
 
         #app {
             min-height: 100vh;
-            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
-        .screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease;
-            display: flex;
+        .view {
+            flex: 1;
+            display: none;
             justify-content: center;
             align-items: center;
             background-size: cover;
             background-position: center;
         }
 
-        .screen.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #homeScreen {
-            background-image: url('https://i.postimg.cc/XqGB50nY/IMG-4501.jpg');
-        }
-
-        #leftScreen {
-            background-image: url('https://i.postimg.cc/g2CdDX3p/IMG-4502.png');
-        }
-
-        #rightScreen {
-            background-image: url('https://i.postimg.cc/cCBMDnvb/IMG-4503.png');
-        }
-
-        #profileScreen {
-            background: linear-gradient(135deg, #0d47a1, #1565c0);
-        }
-
-        #botScreen {
-            background-image: url('https://i.postimg.cc/tTr7QdRH/background.jpg');
-            background-size: cover;
-            background-position: center;
+        .view.active {
+            display: flex;
         }
 
         .message {
@@ -75,11 +43,7 @@
             border-radius: 12px;
             text-align: center;
             max-width: 90%;
-            width: 100%;
             backdrop-filter: blur(8px);
-            margin: 20px;
-            position: relative;
-            z-index: 2;
         }
 
         h1 {
@@ -96,154 +60,110 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
-        .nav-buttons {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            right: 0;
+        .tabbar {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            z-index: 1000;
+            height: 60px;
+            background: white;
+            border-top: 1px solid #ccc;
         }
 
-        .nav-center-group {
-            display: flex;
-            gap: 16px;
-        }
-
-        .nav-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .nav-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        #homeBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        #profileBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        #botBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 6h16v12H4V6zm10 3h-2V7h2v2zm0 2h-2v2h2v-2zm2-2h2v2h-2V9zm2 4h-2v2h2v-2z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .social-links {
+        .tabbar button {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .social-link {
-            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s;
+            background: none;
+            border: none;
+            font-size: 12px;
+            color: #888;
+            padding: 4px;
         }
 
-        .social-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+        .tabbar button.active {
+            color: #000;
         }
 
-        .voluntary-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 20px;
-        }
-
-        #botScreen .chat-container {
-            background: rgba(255,255,255,0.1);
-            height: 60vh;
-            overflow-y: auto;
-            padding: 10px;
-            border-radius: 8px;
-        }
-
-        .chat-message {
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 8px;
-        }
-
-        .bot-message {
-            background: white;
-            color: black;
-        }
-
-        .user-message {
-            background: rgba(0,153,255,0.8);
-            color: white;
-            align-self: flex-end;
+        .tabbar button img {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
         }
     </style>
 </head>
 <body>
     <div id="app">
         <!-- Главный экран -->
-        <div id="homeScreen" class="screen active">
+        <div class="view active" id="main" style="background-image: url('https://i.postimg.cc/XqGB50nY/IMG-4501.jpg');">
             <div class="message">
                 <h1>С Новым 2025 Годом!</h1>
-                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
-            </div>
-        </div>
-
-        <!-- Экран слева -->
-        <div id="leftScreen" class="screen">
-            <div class="message">
-                <p>Старый 2024 год ушел и никогда не вернется.</p>
-                <p>Время для новых начинаний!</p>
-            </div>
-        </div>
-
-        <!-- Экран справа -->
-        <div id="rightScreen" class="screen">
-            <div class="message">
-                <h1>С 2025 Годом!</h1>
                 <p>Пусть этот год принесет много радости, счастья и успехов!</p>
             </div>
         </div>
 
-        <!-- Экран профиля -->
-        <div id="profileScreen"
+        <!-- Левый экран -->
+        <div class="view" id="left" style="background-image: url('https://i.postimg.cc/8s5X1Jmh/snow2.jpg');">
+            <div class="message">
+                <h1>Левый экран</h1>
+                <p>Добро пожаловать на левую страницу!</p>
+            </div>
+        </div>
+
+        <!-- Правый экран -->
+        <div class="view" id="right" style="background-image: url('https://i.postimg.cc/9Qbt5jrd/snow3.jpg');">
+            <div class="message">
+                <h1>Правый экран</h1>
+                <p>Это правая страница вашего приложения.</p>
+            </div>
+        </div>
+
+        <!-- Профиль -->
+        <div class="view" id="profile" style="background-image: url('https://i.postimg.cc/kX2kgD92/snow4.jpg');">
+            <div class="message">
+                <h1>Профиль</h1>
+                <p>Это ваш профиль, где отображается ваша информация.</p>
+            </div>
+        </div>
+
+        <!-- Панель навигации -->
+        <div class="tabbar">
+            <button class="active" data-target="main">
+                <img src="https://i.postimg.cc/gjLrMxsf/home.png" alt="Главная">
+                Главная
+            </button>
+            <button data-target="left">
+                <img src="https://i.postimg.cc/nrNmDSqb/left.png" alt="Лево">
+                Лево
+            </button>
+            <button data-target="right">
+                <img src="https://i.postimg.cc/NFRDZLqv/right.png" alt="Право">
+                Право
+            </button>
+            <button data-target="profile">
+                <img src="https://i.postimg.cc/SNqvH1zH/profile.png" alt="Профиль">
+                Профиль
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const buttons = document.querySelectorAll('.tabbar button');
+        const views = document.querySelectorAll('.view');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Удаляем активный класс со всех кнопок
+                buttons.forEach(btn => btn.classList.remove('active'));
+                // Добавляем активный класс на текущую кнопку
+                button.classList.add('active');
+
+                // Скрываем все экраны
+                views.forEach(view => view.classList.remove('active'));
+                // Показываем экран, связанный с текущей кнопкой
+                const target = button.getAttribute('data-target');
+                document.getElementById(target).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
