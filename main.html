@@ -1,380 +1,111 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <title>Новогоднее поздравление</title>
+document.addEventListener('DOMContentLoaded', function() {
+    // Telegram WebApp initialization
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+        tg.ready();
+        tg.expand();
+    }
+
+    // Screen and button elements
+    const screens = {
+        home: document.getElementById('homeScreen'),
+        left: document.getElementById('leftScreen'),
+        right: document.getElementById('rightScreen'),
+        profile: document.getElementById('profileScreen'),
+        bot: document.getElementById('botScreen'),
+        chat: document.getElementById('chatScreen'),
+        dating: document.getElementById('datingScreen')
+    };
+
+    const buttons = {
+        home: document.getElementById('homeBtn'),
+        left: document.getElementById('leftBtn'),
+        right: document.getElementById('rightBtn'),
+        profile: document.getElementById('profileBtn'),
+        bot: document.getElementById('botBtn'),
+        chat: document.getElementById('chatBtn'),
+        dating: document.getElementById('datingBtn')
+    };
+
+    let currentScreen = 'home';
+    let isAnimating = false;
+
+    // Screen navigation function
+    function showScreen(screenName) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        // Hide current screen
+        screens[currentScreen].classList.remove('active');
+        // Show new screen
+        screens[screenName].classList.add('active');
+        
+        // Vibration on screen change
+        if (tg?.HapticFeedback) {
+            tg.HapticFeedback.impactOccurred('medium');
+        }
+
+        currentScreen = screenName;
+        
+        setTimeout(() => {
+            isAnimating = false;
+        }, 300);
+    }
+
+    // Add event listeners for all navigation buttons
+    Object.keys(buttons).forEach(key => {
+        buttons[key].addEventListener('click', () => showScreen(key));
+    });
+
+    // Global Chat functionality
+    const globalChatMessages = document.getElementById('global-chat-messages');
+    const globalChatInput = document.getElementById('global-chat-input');
+    const globalSendBtn = document.getElementById('global-send-btn');
+
+    function addGlobalChatMessage(message, type) {
+        const messageEl = document.createElement('div');
+        messageEl.classList.add('chat-message', type);
+        messageEl.textContent = message;
+        globalChatMessages.appendChild(messageEl);
+        globalChatMessages.scrollTop = globalChatMessages.scrollHeight;
+    }
+
+    function sendGlobalMessage() {
+        const message = globalChatInput.value.trim();
+        if (message) {
+            // User message
+            addGlobalChatMessage(message, 'user-message');
+            
+            // Simple bot response
+            setTimeout(() => {
+                addGlobalChatMessage('Привет! Это глобальный чат.', 'bot-message');
+            }, 500);
+
+            globalChatInput.value = '';
+        }
+    }
+
+    globalSendBtn.addEventListener('click', sendGlobalMessage);
+    globalChatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendGlobalMessage();
+    });
+
+    // Dating Profile Form
+    const datingProfileForm = document.getElementById('dating-profile-form');
     
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-
-        #app {
-            min-height: 100vh;
-            position: relative;
-        }
-
-        .screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .screen.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #homeScreen {
-            background-image: url('https://i.postimg.cc/XqGB50nY/IMG-4501.jpg');
-        }
-
-        #leftScreen {
-            background-image: url('https://i.postimg.cc/g2CdDX3p/IMG-4502.png');
-        }
-
-        #rightScreen {
-            background-image: url('https://i.postimg.cc/cCBMDnvb/IMG-4503.png');
-        }
-
-        #profileScreen {
-            background: linear-gradient(135deg, #0d47a1, #1565c0);
-        }
-
-        #botScreen {
-            background-image: url('https://i.postimg.cc/tTr7QdRH/background.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .message {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 24px;
-            border-radius: 12px;
-            text-align: center;
-            max-width: 90%;
-            width: 100%;
-            backdrop-filter: blur(8px);
-            margin: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        h1 {
-            color: white;
-            font-size: 28px;
-            margin-bottom: 16px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }
-
-        p {
-            color: white;
-            font-size: 18px;
-            line-height: 1.5;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
-        .nav-buttons {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            z-index: 1000;
-        }
-
-        .nav-center-group {
-            display: flex;
-            gap: 16px;
-        }
-
-        .nav-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .nav-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        #homeBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        #profileBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        #botBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 6h16v12H4V6zm10 3h-2V7h2v2zm0 2h-2v2h2v-2zm2-2h2v2h-2V9zm2 4h-2v2h2v-2z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .social-links {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .social-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .voluntary-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 20px;
-        }
-
-        #botScreen .chat-container {
-            background: rgba(255,255,255,0.1);
-            height: 60vh;
-            overflow-y: auto;
-            padding: 10px;
-            border-radius: 8px;
-        }
-
-        .chat-message {
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 8px;
-        }
-
-        .bot-message {
-            background: white;
-            color: black;
-        }
-
-        .user-message {
-            background: rgba(0,153,255,0.8);
-            color: white;
-            align-self: flex-end;
-        }
-    </style>
-</head>
-<body>
-    <div id="app">
-        <!-- Главный экран -->
-        <div id="homeScreen" class="screen active">
-            <div class="message">
-                <h1>С Новым 2025 Годом!</h1>
-                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
-            </div>
-        </div>
-
-        <!-- Экран слева -->
-        <div id="leftScreen" class="screen">
-            <div class="message">
-                <p>Старый 2024 год ушел и никогда не вернется.</p>
-                <p>Время для новых начинаний!</p>
-            </div>
-        </div>
-
-        <!-- Экран справа -->
-        <div id="rightScreen" class="screen">
-            <div class="message">
-                <h1>С 2025 Годом!</h1>
-                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
-            </div>
-        </div>
-
-        <!-- Экран профиля -->
-        <div id="profileScreen" class="screen">
-            <div class="message">
-                <div class="social-links">
-                    <a href="https://t.me/sangklasy" class="social-link" target="_blank">
-                        📱 Telegram канал
-                    </a>
-                    <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" class="social-link" target="_blank">
-                        📷 Instagram аккаунт
-                    </a>
-                </div>
-                <p class="voluntary-text">* Подписка является полностью добровольной</p>
-            </div>
-        </div>
-
-        <!-- Экран чат-бота Пяе -->
-        <div id="botScreen" class="screen">
-            <div class="message">
-                <h1>Пяе</h1>
-                <div class="chat-container" id="chat-messages"></div>
-                <div style="display: flex; margin-top: 10px;">
-                    <input type="text" id="chat-input" style="flex-grow: 1; padding: 10px; border-radius: 8px; border: none; background: rgba(255,255,255,0.2);" placeholder="Введите сообщение">
-                    <button id="send-btn" style="margin-left: 10px; padding: 10px; border-radius: 8px; background: rgba(0,153,255,0.8); color: white; border: none;">Отправить</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Навигационные кнопки -->
-        <div class="nav-buttons">
-            <button id="leftBtn" class="nav-btn">←</button>
-            <div class="nav-center-group">
-                <button id="homeBtn" class="nav-btn"></button>
-                <button id="profileBtn" class="nav-btn"></button>
-                <button id="botBtn" class="nav-btn"></button>
-            </div>
-            <button id="rightBtn" class="nav-btn">→</button>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Инициализация Telegram WebApp
-            const tg = window.Telegram?.WebApp;
-            if (tg) {
-                tg.ready();
-                tg.expand();
-            }
-
-            // Получаем все элементы
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                left: document.getElementById('leftScreen'),
-                right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen'),
-                bot: document.getElementById('botScreen')
-            };
-
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                left: document.getElementById('leftBtn'),
-                right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn'),
-                bot: document.getElementById('botBtn')
-            };
-
-            let currentScreen = 'home';
-            let isAnimating = false;
-
-            // Функция для показа экрана
-            function showScreen(screenName) {
-                if (isAnimating) return;
-                isAnimating = true;
-
-                // Скрываем текущий экран
-                screens[currentScreen].classList.remove('active');
-                // Показываем новый экран
-                screens[screenName].classList.add('active');
-                
-                // Вибрация при переключении
-                if (tg?.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('medium');
-                }
-
-                currentScreen = screenName;
-                
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 300);
-            }
-
-            // Добавляем обработчики для кнопок
-            buttons.home.addEventListener('click', () => showScreen('home'));
-            buttons.left.addEventListener('click', () => showScreen('left'));
-            buttons.right.addEventListener('click', () => showScreen('right'));
-            buttons.profile.addEventListener('click', () => showScreen('profile'));
-            buttons.bot.addEventListener('click', () => showScreen('bot'));
-
-            // Логика чат-бота
-            const chatMessages = document.getElementById('chat-messages');
-            const chatInput = document.getElementById('chat-input');
-            const sendBtn = document.getElementById('send-btn');
-
-            function addMessage(message, type) {
-                const messageEl = document.createElement('div');
-                messageEl.classList.add('chat-message', type);
-                messageEl.textContent = message;
-                chatMessages.appendChild(messageEl);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            function sendMessage() {
-                const message = chatInput.value.trim();
-                if (message) {
-                    // Сообщение пользователя
-                    addMessage(message, 'user-message');
-                    
-                    // Простой ответ бота
-                    setTimeout(() => {
-                        addMessage('Привет! Я Пяе, твой виртуальный помощник.', 'bot-message');
-                    }, 500);
-
-                    chatInput.value = '';
-                }
-            }
-
-            sendBtn.addEventListener('click', sendMessage);
-            chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sendMessage();
-            });
-        });
-    </script>
-</body>
-</html>
+    datingProfileForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Collect profile data
+        const profileData = {
+            name: document.getElementById('name-input').value,
+            age: document.getElementById('age-input').value,
+            city: document.getElementById('city-input').value,
+            about: document.getElementById('about-input').value
+        };
+        
+        // Here you would typically send this data to a backend
+        // For now, we'll just show an alert
+        alert('Профиль сохранен: ' + JSON.stringify(profileData, null, 2));
+    });
+});
