@@ -1,366 +1,166 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <title>Телеграм-приложение</title>
-    
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
+    <!-- ... -->
     <style>
-        /* Основные стили */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-
-        #app {
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* Экраны */
-        .screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .screen.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Фоны экранов */
-        #homeScreen { background-image: url('https://i.postimg.cc/XqGB50nY/IMG-4501.jpg'); }
-        #leftScreen { background-image: url('https://i.postimg.cc/g2CdDX3p/IMG-4502.png'); }
-        #rightScreen { background-image: url('https://i.postimg.cc/cCBMDnvb/IMG-4503.png'); }
-        #profileScreen { background: linear-gradient(135deg, #0d47a1, #1565c0); }
-        #botScreen { background-image: url('https://i.postimg.cc/N0DFQKbR/IMG-4504.png'); }
-        #datingScreen { background: linear-gradient(135deg, #1a237e, #0d47a1); }
-
-        /* Сообщения */
-        .message {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 24px;
-            border-radius: 12px;
-            backdrop-filter: blur(8px);
-            margin: 20px;
-            position: relative;
-            z-index: 2;
-            color: white;
-        }
-
-        /* Чат */
-        .chat-container {
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-            margin-bottom: 60px;
-        }
-
-        .chat-message {
-            max-width: 80%;
-            margin: 8px;
-            padding: 12px;
-            border-radius: 16px;
-            word-wrap: break-word;
-        }
-
-        .user-message {
-            margin-left: auto;
-            background: rgba(255, 255, 255, 0.3);
-            border-bottom-right-radius: 4px;
-        }
-
-        .bot-message {
-            margin-right: auto;
-            background: rgba(0, 0, 0, 0.3);
-            border-bottom-left-radius: 4px;
-        }
-
-        /* Ввод сообщений */
-        .input-area {
-            position: fixed;
-            bottom: 80px;
-            left: 0;
-            right: 0;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            display: flex;
-            gap: 10px;
-            margin: 0 10px;
-            border-radius: 12px;
-        }
-
-        .message-input {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            padding: 12px;
-            border-radius: 20px;
-            color: white;
-            font-size: 16px;
-        }
-
-        /* Языковое меню */
-        .lang-switcher {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            padding: 8px;
-            border-radius: 8px;
-            color: white;
-            backdrop-filter: blur(5px);
-        }
-
-        .lang-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 5px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 8px;
-            display: none;
-        }
-
-        .lang-menu.active {
-            display: block;
-        }
-
-        .lang-option {
-            padding: 8px 16px;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Навигация */
-        .nav-buttons {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            z-index: 1000;
-        }
-
-        .nav-center-group {
-            display: flex;
-            gap: 16px;
-        }
-
-        .nav-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Иконки */
-        #homeBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        #profileBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        #botBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        #datingBtn {
+        /* ... */
+        #heartBtn {
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* Раздел знакомств */
-        .dating-container {
-            padding: 20px;
-            height: calc(100vh - 100px);
-            overflow-y: auto;
-        }
-
-        .profile-card {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(8px);
-        }
-
-        .profile-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-
-        .profile-btn {
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: none;
-            background: rgba(255, 255, 255, 0.3);
-            color: white;
-            cursor: pointer;
-        }
-
+        #registerScreen, #matchScreen, #chatScreen {
+            /* стили для экранов */
+        } 
     </style>
 </head>
 <body>
     <div id="app">
-        <!-- Главный экран -->
-        <div id="homeScreen" class="screen active">
+        <!-- ... -->
+        
+        <!-- Экран регистрации -->
+        <div id="registerScreen" class="screen">
             <div class="message">
-                <h1>С Новым 2025 Годом!</h1>
-                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
+                <h1>Регистрация</h1>
+                <form id="registerForm">
+                    <input type="text" placeholder="Имя" required>
+                    <input type="number" placeholder="Возраст" required>
+                    <select required>
+                        <option value="" disabled selected>Пол</option>
+                        <option value="male">Мужчина</option>
+                        <option value="female">Женщина</option>
+                    </select>
+                    <input type="text" placeholder="Интересы" required>
+                    <button type="submit">Сохранить</button>
+                </form>
             </div>
         </div>
 
-        <!-- Экран слева -->
-        <div id="leftScreen" class="screen">
+        <!-- Экран подбора пары -->
+        <div id="matchScreen" class="screen"> 
             <div class="message">
-                <p>Старый 2024 год ушел и никогда не вернется.</p>
-                <p>Время для новых начинаний!</p>
-            </div>
-        </div>
-
-        <!-- Экран справа -->
-        <div id="rightScreen" class="screen">
-            <div class="message">
-                <h1>С 2025 Годом!</h1>
-                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
-            </div>
-        </div>
-
-        <!-- Экран профиля -->
-        <div id="profileScreen" class="screen">
-            <div class="message">
-                <div class="social-links">
-                    <a href="https://t.me/sangklasy" class="social-link" target="_blank">
-                        📱 Telegram канал
-                    </a>
-                    <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" class="social-link" target="_blank">
-                        📷 Instagram аккаунт
-                    </a>
+                <div id="profile">
+                    <img src="" alt="Фото">
+                    <h2></h2>
+                    <p></p>
                 </div>
-                <p class="voluntary-text">* Подписка является полностью добровольной</p>
-            </div>
-        </div>
-
-        <!-- Экран бота -->
-        <div id="botScreen" class="screen">
-            <div class="lang-switcher">
-                <button class="lang-btn">Lang</button>
-                <div class="lang-menu">
-                    <div class="lang-option" data-lang="ru">🇷🇺 RU</div>
-                    <div class="lang-option" data-lang="ua">🇺🇦 UA</div>
-                    <div class="lang-option" data-lang="no">🇳🇴 NO</div>
-                    <div class="lang-option" data-lang="en">🇬🇧 EN</div>
-                </div>
-            </div>
-            
-            <div class="chat-container" id="chatMessages"></div>
-            
-            <div class="input-area">
-                <input type="text" class="message-input" id="messageInput" placeholder="Введите сообщение...">
-                <button class="nav-btn" id="sendMessage">➤</button>
-            </div>
-        </div>
-
-        <!-- Экран знакомств -->
-        <div id="datingScreen" class="screen">
-            <div class="dating-container">
-                <div class="profile-card">
-                    <h2>Регистрация</h2>
-                    <p>Нажмите для создания профиля</p>
+                <div class="buttons">
+                    <button id="rejectBtn">←</button>
+                    <button id="likeBtn">→</button>
                 </div>
             </div>
         </div>
 
-        <!-- Навигация -->
+        <!-- Экран чата -->  
+        <div id="chatScreen" class="screen">
+            <div class="message">
+                <div id="chat">
+                    <!-- сообщения -->
+                </div>
+                <form id="messageForm">
+                    <input type="text" placeholder="Сообщение..." required>
+                    <button type="submit">Отправить</button>
+                </form>
+                <button id="openTelegramBtn">Перейти в Telegram</button>
+            </div>
+        </div>
+
+        <!-- Навигационные кнопки -->
         <div class="nav-buttons">
-            <button id="leftBtn" class="nav-btn">←</button>
+            <!-- ... -->
             <div class="nav-center-group">
-                <button id="homeBtn" class="nav-btn"></button>
-                <button id="profileBtn" class="nav-btn"></button>
-                <button id="botBtn" class="nav-btn"></button>
-                <button id="datingBtn" class="nav-btn"></button>
+                <!-- ... -->
+                <button id="heartBtn" class="nav-btn"></button>
             </div>
-            <button id="rightBtn" class="nav-btn">→</button>
+            <!-- ... -->
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Инициализация Telegram WebApp
-            const tg = window.Telegram?.WebApp;
-            if (tg) {
-                tg.ready();
-                tg.expand();
-            }
+        // ...
 
-            // Базовые ответы бота на разных языках
-            const botResponses = {
-                ru: {
-                    greeting: "Привет! Я Пяе, чем могу помочь?",
-                    help: "Я могу ответить на ваши вопросы.",
-                    thanks: "Пожалуйста!",
-                    unknown: "Извините, я не совсем понял вопрос."
-                },
-                ua: {
-                    greeting: "Привіт! Я П'яе, чим можу допомогти?",
-                    help: "Я можу відповісти на ваші запитання.",
-                    thanks: "Будь ласка!",
-                    unknown: "Вибачте, я не зовсім зрозумів питання."
-                },
-                no: {
-                    greeting: "Hei! Jeg er Piae, hvordan
+        const registerForm = document.getElementById('registerForm');
+        const matchScreen = document.getElementById('matchScreen');
+        const profile = document.getElementById('profile');  
+        const rejectBtn = document.getElementById('rejectBtn');
+        const likeBtn = document.getElementById('likeBtn');
+        const chatScreen = document.getElementById('chatScreen');
+        const chat = document.getElementById('chat');
+        const messageForm = document.getElementById('messageForm');
+        const openTelegramBtn = document.getElementById('openTelegramBtn');
+
+        let user = {};
+        let currentMatch = null;
+        let matches = [];
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const data = new FormData(registerForm);
+            user = Object.fromEntries(data);
+            
+            tg?.MainButton.setText('Искать пару');
+            tg?.MainButton.show();
+
+            showScreen('home');
+        });
+
+        function getRandomMatch() {
+            // Логика подбора профиля...
+            return {
+                name: 'Алиса', 
+                age: 25,
+                interests: 'Путешествия, музыка',  
+                photo: 'https://i.postimg.cc/0xDjNbsK/alice.jpg'
+            };
+        }
+        
+        function showMatch() {
+            currentMatch = getRandomMatch();
+            profile.querySelector('img').src = currentMatch.photo;
+            profile.querySelector('h2').textContent = currentMatch.name + ', ' + currentMatch.age;
+            profile.querySelector('p').textContent = currentMatch.interests;
+            showScreen('match');
+        }
+
+        rejectBtn.addEventListener('click', showMatch);
+
+        likeBtn.addEventListener('click', () => {
+            matches.push(currentMatch);
+            showMatch();
+        });
+
+        function showChat(match) {
+            chat.innerHTML = ''; // очистить чат
+            currentMatch = match;
+            showScreen('chat');
+        }  
+
+        messageForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const message = messageForm.querySelector('input').value;
+            // Отправить сообщение...
+            messageForm.reset();
+        });
+
+        openTelegramBtn.addEventListener('click', () => {
+            const telegramLink = `https://t.me/${currentMatch.username}`;
+            tg?.openLink(telegramLink);
+        });
+
+        buttons.heart.addEventListener('click', () => {
+            if (!user.name) {
+                showScreen('register');
+            } else if (matches.length > 0) {
+                showChat(matches[0]);  
+            } else {
+                showMatch();
+            }
+        });
+
+        tg?.onEvent('mainButtonClicked', showMatch);
+    </script>
+</body>
+</html>
