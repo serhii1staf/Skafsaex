@@ -11,8 +11,8 @@
             background-position: center;
             background-color: rgba(255, 255, 255, 0.2);
         }
-        #messagesBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M20,16H5.2L4,17.2V4h16V16z"/></svg>');
+        #chatBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
@@ -20,18 +20,8 @@
         }
 
         #registerScreen, #editProfileScreen, #matchScreen, #chatListScreen, #chatScreen {
-            /* стили для экранов знакомств, редактирования профиля, списка чатов и чата */
-        }
-
-        form input, form select {
-            /* стили для полей ввода в формах регистрации и редактирования */
-        }
-
-        .chat-list {
-            /* стили для списка чатов */
-        }
-
-        /* другие стили */
+            /* стили для экранов */
+        } 
     </style>
 </head>
 <body>
@@ -48,107 +38,43 @@
 
         <!-- Экран подбора пары -->
         <div id="matchScreen" class="screen">
-            <!-- профиль потенциального совпадения, кнопки лайка/дизлайка -->
+            <!-- профили для свайпа -->
         </div>
 
         <!-- Экран со списком чатов -->
         <div id="chatListScreen" class="screen">
-            <div class="chat-list">
-                <!-- список диалогов -->
-            </div>
+            <!-- список чатов -->
         </div>
 
         <!-- Экран чата -->
         <div id="chatScreen" class="screen">
-            <!-- диалог с юзером -->
+            <!-- интерфейс чата, похожий на Telegram -->
         </div>
 
         <!-- Навигационные кнопки -->
         <div class="nav-buttons">
-            <!-- ... -->
+            <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">  
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
-                <button id="messagesBtn" class="nav-btn"></button>
+                <button id="chatBtn" class="nav-btn"></button>
                 <button id="heartBtn" class="nav-btn"></button>
             </div>
-            <!-- ... -->
+            <button id="rightBtn" class="nav-btn">→</button>
         </div>
     </div>
 
     <script>
         // ...
-
-        const registerForm = document.getElementById('registerForm');
-        const editProfileForm = document.getElementById('editProfileForm');
-        const matchScreen = document.getElementById('matchScreen');
-        const chatListScreen = document.getElementById('chatListScreen'); 
-        const chatScreen = document.getElementById('chatScreen');
-
-        let user = {};
-        let currentMatch = null;
-        let matches = [];
-        let chats = [];
-        
-        registerForm.addEventListener('submit', registerUser);
-        
-        function registerUser(e) {
-            e.preventDefault();
-            
-            // сбор данных из формы, создание объекта пользователя
-            user = { ... };
-
-            showScreen('match');
-        }
-
-        // функции редактирования профиля 
-        editProfileForm.addEventListener('submit', updateProfile);
-
-        function updateProfile(e) { 
-            e.preventDefault();
-
-            // обновление данных юзера
-            user = { ...user, ... };
-
-            showScreen('chatList');
-        }
-
-        // функции подбора пары (like, dislike) 
-        function like() {
-            matches.push(currentMatch);
-            nextMatch();
-        }
-
-        function dislike() {  
-            nextMatch();
-        }
-
-        // отображение списка чатов
-        function showChatList() {
-            // рендер списка диалогов
-        }  
-
-        // открытие чата по клику
-        function openChat(chatId) {
-            const chat = chats.find(c => c.id === chatId);
-            // показать интерфейс чата
-        }
-
-        // отправка сообщения в чате
-        function sendMessage(chatId, message) {
-            const chat = chats.find(c => c.id === chatId);
-            // логика отправки сообщения
-        }
-
         buttons.heart.addEventListener('click', () => {
-            if (!user.name) {
+            if (!user.id) {
                 showScreen('register');  
             } else {
-                showScreen('chatList');
+                showScreen('match');
             }
         });
 
-        buttons.messages.addEventListener('click', () => { 
+        buttons.chat.addEventListener('click', () => { 
             showScreen('chatList');
         });
     </script>
