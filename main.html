@@ -275,10 +275,7 @@
         <!-- Навигационные кнопки -->
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
-            <div class="nav-center-group">
-                <button id="homeBtn" class="nav-btn"></button>
-                <button id="profileBtn" class="nav-btn"></button>
-                <button id="botBtn" class="nav-btn"></button>
+
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
@@ -291,8 +288,28 @@
             if (tg) {
                 tg.ready();
                 tg.expand();
-            })
-            
+            }
+
+            // Получаем все элементы
+            const screens = {
+                home: document.getElementById('homeScreen'),
+                left: document.getElementById('leftScreen'),
+                right: document.getElementById('rightScreen'),
+                profile: document.getElementById('profileScreen'),
+                bot: document.getElementById('botScreen')
+            };
+
+            const buttons = {
+                home: document.getElementById('homeBtn'),
+                left: document.getElementById('leftBtn'),
+                right: document.getElementById('rightBtn'),
+                profile: document.getElementById('profileBtn'),
+                bot: document.getElementById('botBtn')
+            };
+
+            let currentScreen = 'home';
+            let isAnimating = false;
+
             // Функция для показа экрана
             function showScreen(screenName) {
                 if (isAnimating) return;
@@ -322,11 +339,6 @@
             buttons.profile.addEventListener('click', () => showScreen('profile'));
             buttons.bot.addEventListener('click', () => showScreen('bot'));
 
-            // Логика чат-бота
-            const chatMessages = document.getElementById('chat-messages');
-            const chatInput = document.getElementById('chat-input');
-            const sendBtn = document.getElementById('send-btn');
-
             function addMessage(message, type) {
                 const messageEl = document.createElement('div');
                 messageEl.classList.add('chat-message', type);
@@ -340,11 +352,6 @@
                 if (message) {
                     // Сообщение пользователя
                     addMessage(message, 'user-message');
-                    
-                    // Простой ответ бота
-                    setTimeout(() => {
-                        addMessage('Привет! Я Пяе, твой виртуальный помощник.', 'bot-message');
-                    }, 500);
 
                     chatInput.value = '';
                 }
