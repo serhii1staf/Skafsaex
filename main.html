@@ -63,12 +63,6 @@
             background: linear-gradient(135deg, #0d47a1, #1565c0);
         }
 
-        #botScreen {
-            background-image: url('https://i.postimg.cc/tTr7QdRH/background.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-
         .message {
             background: rgba(255, 255, 255, 0.2);
             padding: 24px;
@@ -155,14 +149,6 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
-        #botBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 6h16v12H4V6zm10 3h-2V7h2v2zm0 2h-2v2h2v-2zm2-2h2v2h-2V9zm2 4h-2v2h2v-2z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
         .social-links {
             display: flex;
             flex-direction: column;
@@ -191,31 +177,6 @@
             font-size: 14px;
             color: rgba(255, 255, 255, 0.7);
             margin-top: 20px;
-        }
-
-        #botScreen .chat-container {
-            background: rgba(255,255,255,0.1);
-            height: 60vh;
-            overflow-y: auto;
-            padding: 10px;
-            border-radius: 8px;
-        }
-
-        .chat-message {
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 8px;
-        }
-
-        .bot-message {
-            background: white;
-            color: black;
-        }
-
-        .user-message {
-            background: rgba(0,153,255,0.8);
-            color: white;
-            align-self: flex-end;
         }
     </style>
 </head>
@@ -260,22 +221,12 @@
             </div>
         </div>
 
-        <!-- Экран чат-бота Пяе -->
-        <div id="botScreen" class="screen">
-            <div class="message">
-                <h1>Пяе</h1>
-                <div class="chat-container" id="chat-messages"></div>
-                <div style="display: flex; margin-top: 10px;">
-                    <input type="text" id="chat-input" style="flex-grow: 1; padding: 10px; border-radius: 8px; border: none; background: rgba(255,255,255,0.2);" placeholder="Введите сообщение">
-                    <button id="send-btn" style="margin-left: 10px; padding: 10px; border-radius: 8px; background: rgba(0,153,255,0.8); color: white; border: none;">Отправить</button>
-                </div>
-            </div>
-        </div>
-
         <!-- Навигационные кнопки -->
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
-
+            <div class="nav-center-group">
+                <button id="homeBtn" class="nav-btn"></button>
+                <button id="profileBtn" class="nav-btn"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
@@ -295,16 +246,14 @@
                 home: document.getElementById('homeScreen'),
                 left: document.getElementById('leftScreen'),
                 right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen'),
-                bot: document.getElementById('botScreen')
+                profile: document.getElementById('profileScreen')
             };
 
             const buttons = {
                 home: document.getElementById('homeBtn'),
                 left: document.getElementById('leftBtn'),
                 right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn'),
-                bot: document.getElementById('botBtn')
+                profile: document.getElementById('profileBtn')
             };
 
             let currentScreen = 'home';
@@ -337,30 +286,6 @@
             buttons.left.addEventListener('click', () => showScreen('left'));
             buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
-            buttons.bot.addEventListener('click', () => showScreen('bot'));
-
-            function addMessage(message, type) {
-                const messageEl = document.createElement('div');
-                messageEl.classList.add('chat-message', type);
-                messageEl.textContent = message;
-                chatMessages.appendChild(messageEl);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            function sendMessage() {
-                const message = chatInput.value.trim();
-                if (message) {
-                    // Сообщение пользователя
-                    addMessage(message, 'user-message');
-
-                    chatInput.value = '';
-                }
-            }
-
-            sendBtn.addEventListener('click', sendMessage);
-            chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sendMessage();
-            });
         });
     </script>
 </body>
