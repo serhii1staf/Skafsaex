@@ -64,7 +64,7 @@
             background: linear-gradient(135deg, #0d47a1, #1565c0);
         }
 
-        #settingsScreen {
+        #comicScreen {
             background: linear-gradient(135deg, #0d47a1, #1565c0);
         }
 
@@ -154,14 +154,6 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
-        #settingsBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm0 20.4c-4.6 0-8.4-3.8-8.4-8.4S7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.4-8.4 8.4zM12 6c-1.5 0-2.7 1.2-2.7 2.7S10.5 11.4 12 11.4s2.7-1.2 2.7-2.7S13.5 6 12 6z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
         #comicBtn {
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="3"/></svg>');
             background-size: 55%;
@@ -170,7 +162,7 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
-        .xkcd-comic {
+        .comic {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -180,7 +172,7 @@
             line-height: 1.5;
         }
 
-        .xkcd-comic img {
+        .comic img {
             max-width: 100%;
             height: auto;
         }
@@ -257,12 +249,12 @@
             </div>
         </div>
 
-        <!-- Экран настроек -->
-        <div id="settingsScreen" class="screen">
-            <div class="message xkcd-comic">
-                <h1 id="comicTitle">Loading...</h1>
-                <img id="comicImage" src="" alt="Loading...">
-                <p id="comicAlt">Please wait...</p>
+        <!-- Экран комиксов -->
+        <div id="comicScreen" class="screen">
+            <div class="message comic">
+                <h1 id="comicTitle">Загрузка...</h1>
+                <img id="comicImage" src="" alt="Загрузка...">
+                <p id="comicAlt">Пожалуйста, подождите...</p>
             </div>
         </div>
 
@@ -272,7 +264,6 @@
             <div class="nav-center-group">
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
-                <button id="settingsBtn" class="nav-btn"></button>
                 <button id="comicBtn" class="nav-btn"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
@@ -294,7 +285,7 @@
                 left: document.getElementById('leftScreen'),
                 right: document.getElementById('rightScreen'),
                 profile: document.getElementById('profileScreen'),
-                settings: document.getElementById('settingsScreen')
+                comic: document.getElementById('comicScreen')
             };
 
             const buttons = {
@@ -302,13 +293,12 @@
                 left: document.getElementById('leftBtn'),
                 right: document.getElementById('rightBtn'),
                 profile: document.getElementById('profileBtn'),
-                settings: document.getElementById('settingsBtn'),
                 comic: document.getElementById('comicBtn')
             };
 
             let currentScreen = 'home';
             let isAnimating = false;
-            let currentComic = 300138; // Initial comic titleNo
+            let currentComicNum = 3032; // Initial comic number from XKCD
 
             // Функция для показа экрана
             function showScreen(screenName) {
@@ -333,44 +323,39 @@
             }
 
             // Функция для загрузки комикса
-            function loadComic(titleNo) {
-                const url = `https://webtoon.p.rapidapi.com/canvas/titles/get-info?titleNo=${titleNo}&language=en`;
-                const headers = {
-                    'x-rapidapi-key': 'a58fbcfad2msh72c80bba07d5922p10a7a9jsnae64509b6a51',
-                    'x-rapidapi-host': 'webtoon.p.rapidapi.com'
-                };
+            function loadComic(comicNum) {
+                const url = `https://xkcd.com/${comicNum}/info.0.json`;
 
-                fetch(url, { headers })
+                fetch(url)
                     .then(response => response.json())
                     .then(data => {
                         document.getElementById('comicTitle').innerText = data.title || 'No Title';
-                        document.getElementById('comicImage').src = data.thumbnail || '';
-                        document.getElementById('comicAlt').innerText = data.description || 'No Description';
+                        document.getElementById('comicImage').src = data.img || '';
+                        document.getElementById('comicAlt').innerText = data.alt || 'No Description';
                     })
                     .catch(error => console.error('Error loading comic:', error));
             }
 
             // Перелистывание комиксов
             buttons.left.addEventListener('click', () => {
-                currentComic = Math.max(currentComic - 1, 1); // Decrease titleNo
-                loadComic(currentComic);
+                currentComicNum = Math.max(currentComicNum - 1, 1); // Decrease comic number
+                loadComic(currentComicNum);
             });
 
             buttons.right.addEventListener('click', () => {
-                currentComic += 1; // Increase titleNo
-                loadComic(currentComic);
+                currentComicNum += 1; // Increase comic number
+                loadComic(currentComicNum);
             });
 
             // Показываем комикс при нажатии на кнопку
             buttons.comic.addEventListener('click', () => {
-                showScreen('settings');
-                loadComic(currentComic);
+                showScreen('comic');
+                loadComic(currentComicNum);
             });
 
             // Добавляем обработчики для кнопок
             buttons.home.addEventListener('click', () => showScreen('home'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
-            buttons.settings.addEventListener('click', () => showScreen('settings'));
         });
     </script>
 </body>
