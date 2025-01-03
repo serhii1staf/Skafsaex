@@ -162,6 +162,14 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
+        #comicBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="3"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
         .xkcd-comic {
             display: flex;
             flex-direction: column;
@@ -252,9 +260,9 @@
         <!-- Экран настроек -->
         <div id="settingsScreen" class="screen">
             <div class="message xkcd-comic">
-                <h1>Skew-T Log-P</h1>
-                <img src="https://imgs.xkcd.com/comics/skew_t_log_p.png" alt="Skew-T Log-P">
-                <p>The most important quantity for meteorologists is of course the product of latent pressure and temperostrophic enthalpy, though 'how nice the weather is' is a close second.</p>
+                <h1 id="comicTitle">Loading...</h1>
+                <img id="comicImage" src="" alt="Loading...">
+                <p id="comicAlt">Please wait...</p>
             </div>
         </div>
 
@@ -265,6 +273,7 @@
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
                 <button id="settingsBtn" class="nav-btn"></button>
+                <button id="comicBtn" class="nav-btn"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
@@ -293,11 +302,13 @@
                 left: document.getElementById('leftBtn'),
                 right: document.getElementById('rightBtn'),
                 profile: document.getElementById('profileBtn'),
-                settings: document.getElementById('settingsBtn')
+                settings: document.getElementById('settingsBtn'),
+                comic: document.getElementById('comicBtn')
             };
 
             let currentScreen = 'home';
             let isAnimating = false;
+            let currentComic = 300138; // Initial comic titleNo
 
             // Функция для показа экрана
             function showScreen(screenName) {
@@ -321,10 +332,43 @@
                 }, 300);
             }
 
+            // Функция для загрузки комикса
+            function loadComic(titleNo) {
+                const url = `https://webtoon.p.rapidapi.com/canvas/titles/get-info?titleNo=${titleNo}&language=en`;
+                const headers = {
+                    'x-rapidapi-key': 'a58fbcfad2msh72c80bba07d5922p10a7a9jsnae64509b6a51',
+                    'x-rapidapi-host': 'webtoon.p.rapidapi.com'
+                };
+
+                fetch(url, { headers })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('comicTitle').innerText = data.title || 'No Title';
+                        document.getElementById('comicImage').src = data.thumbnail || '';
+                        document.getElementById('comicAlt').innerText = data.description || 'No Description';
+                    })
+                    .catch(error => console.error('Error loading comic:', error));
+            }
+
+            // Перелистывание комиксов
+            buttons.left.addEventListener('click', () => {
+                currentComic = Math.max(currentComic - 1, 1); // Decrease titleNo
+                loadComic(currentComic);
+            });
+
+            buttons.right.addEventListener('click', () => {
+                currentComic += 1; // Increase titleNo
+                loadComic(currentComic);
+            });
+
+            // Показываем комикс при нажатии на кнопку
+            buttons.comic.addEventListener('click', () => {
+                showScreen('settings');
+                loadComic(currentComic);
+            });
+
             // Добавляем обработчики для кнопок
             buttons.home.addEventListener('click', () => showScreen('home'));
-            buttons.left.addEventListener('click', () => showScreen('left'));
-            buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
             buttons.settings.addEventListener('click', () => showScreen('settings'));
         });
