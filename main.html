@@ -63,10 +63,6 @@
             background: linear-gradient(135deg, #0d47a1, #1565c0);
         }
 
-        #comicScreen {
-            background: linear-gradient(135deg, #0d47a1, #1565c0);
-        }
-
         .message {
             background: rgba(255, 255, 255, 0.2);
             padding: 24px;
@@ -153,29 +149,6 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
-        #comicBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M3 12l18 12V0L3 12z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .comic {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            color: white;
-            font-size: 18px;
-            line-height: 1.5;
-        }
-
-        .comic img {
-            max-width: 100%;
-            height: auto;
-        }
-
         .social-links {
             display: flex;
             flex-direction: column;
@@ -204,34 +177,6 @@
             font-size: 14px;
             color: rgba(255, 255, 255, 0.7);
             margin-top: 20px;
-        }
-
-        /* WebView styles */
-        .webview {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .spinner {
-            border: 8px solid rgba(255, 255, 255, 0.2);
-            border-top: 8px solid white;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -276,21 +221,12 @@
             </div>
         </div>
 
-        <!-- Экран комиксов -->
-        <div id="comicScreen" class="screen">
-            <div id="loading" class="loading">
-                <div class="spinner"></div>
-            </div>
-            <iframe id="comicWebView" class="webview"></iframe>
-        </div>
-
         <!-- Навигационные кнопки -->
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
-                <button id="comicBtn" class="nav-btn"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
@@ -310,21 +246,18 @@
                 home: document.getElementById('homeScreen'),
                 left: document.getElementById('leftScreen'),
                 right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen'),
-                comic: document.getElementById('comicScreen')
+                profile: document.getElementById('profileScreen')
             };
 
             const buttons = {
                 home: document.getElementById('homeBtn'),
                 left: document.getElementById('leftBtn'),
                 right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn'),
-                comic: document.getElementById('comicBtn')
+                profile: document.getElementById('profileBtn')
             };
 
             let currentScreen = 'home';
             let isAnimating = false;
-            let currentComicNum = 3032; // Initial comic number from XKCD
 
             // Функция для показа экрана
             function showScreen(screenName) {
@@ -348,47 +281,10 @@
                 }, 300);
             }
 
-            // Функция для загрузки комикса
-            function loadComic(comicNum) {
-                const url = `https://xkcd.com/${comicNum}/info.0.json`;
-                const loadingDiv = document.getElementById('loading');
-                const comicWebView = document.getElementById('comicWebView');
-
-                loadingDiv.style.display = 'flex';
-                comicWebView.style.display = 'none';
-
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        comicWebView.src = data.img || '';
-                        loadingDiv.style.display = 'none';
-                        comicWebView.style.display = 'block';
-                    })
-                    .catch(error => {
-                        console.error('Error loading comic:', error);
-                        loadingDiv.innerHTML = '<p style="color: white;">Ошибка загрузки комикса. Попробуйте позже.</p>';
-                    });
-            }
-
-            // Перелистывание комиксов
-            buttons.left.addEventListener('click', () => {
-                currentComicNum = Math.max(currentComicNum - 1, 1); // Decrease comic number
-                loadComic(currentComicNum);
-            });
-
-            buttons.right.addEventListener('click', () => {
-                currentComicNum += 1; // Increase comic number
-                loadComic(currentComicNum);
-            });
-
-            // Показываем комикс при нажатии на кнопку
-            buttons.comic.addEventListener('click', () => {
-                showScreen('comic');
-                loadComic(currentComicNum);
-            });
-
             // Добавляем обработчики для кнопок
             buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.left.addEventListener('click', () => showScreen('left'));
+            buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
         });
     </script>
