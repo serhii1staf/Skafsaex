@@ -64,6 +64,10 @@
             background: linear-gradient(135deg, #0d47a1, #1565c0);
         }
 
+        #settingsScreen {
+            background: linear-gradient(135deg, #0d47a1, #1565c0);
+        }
+
         .message {
             background: rgba(255, 255, 255, 0.2);
             padding: 24px;
@@ -150,6 +154,14 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
+        #settingsBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm0 20.4c-4.6 0-8.4-3.8-8.4-8.4S7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.4-8.4 8.4zM12 6c-1.5 0-2.7 1.2-2.7 2.7S10.5 11.4 12 11.4s2.7-1.2 2.7-2.7S13.5 6 12 6z"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
         .social-links {
             display: flex;
             flex-direction: column;
@@ -222,12 +234,25 @@
             </div>
         </div>
 
+        <!-- Экран настроек -->
+        <div id="settingsScreen" class="screen">
+            <div class="message">
+                <p>Выберите режим:</p>
+                <div class="social-links">
+                    <a href="#" class="social-link" id="normalMode">Обычный режим</a>
+                    <a href="#" class="social-link" id="standardMode">Стандартный режим</a>
+                    <a href="#" class="social-link" id="premiumMode">Премиум-режим</a>
+                </div>
+            </div>
+        </div>
+
         <!-- Навигационные кнопки -->
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
+                <button id="settingsBtn" class="nav-btn"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
@@ -247,14 +272,16 @@
                 home: document.getElementById('homeScreen'),
                 left: document.getElementById('leftScreen'),
                 right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen')
+                profile: document.getElementById('profileScreen'),
+                settings: document.getElementById('settingsScreen')
             };
 
             const buttons = {
                 home: document.getElementById('homeBtn'),
                 left: document.getElementById('leftBtn'),
                 right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn')
+                profile: document.getElementById('profileBtn'),
+                settings: document.getElementById('settingsBtn')
             };
 
             let currentScreen = 'home';
@@ -287,6 +314,7 @@
             buttons.left.addEventListener('click', () => showScreen('left'));
             buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
+            buttons.settings.addEventListener('click', () => showScreen('settings'));
         });
     </script>
 </body>
