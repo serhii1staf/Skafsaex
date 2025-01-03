@@ -162,6 +162,21 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
+        .xkcd-comic {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            color: white;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .xkcd-comic img {
+            max-width: 100%;
+            height: auto;
+        }
+
         .social-links {
             display: flex;
             flex-direction: column;
@@ -236,13 +251,10 @@
 
         <!-- Экран настроек -->
         <div id="settingsScreen" class="screen">
-            <div class="message">
-                <p>Выберите режим:</p>
-                <div class="social-links">
-                    <a href="#" class="social-link" id="normalMode">Обычный режим</a>
-                    <a href="#" class="social-link" id="standardMode">Стандартный режим</a>
-                    <a href="#" class="social-link" id="premiumMode">Премиум-режим</a>
-                </div>
+            <div class="message xkcd-comic">
+                <h1>Skew-T Log-P</h1>
+                <img src="https://imgs.xkcd.com/comics/skew_t_log_p.png" alt="Skew-T Log-P">
+                <p>The most important quantity for meteorologists is of course the product of latent pressure and temperostrophic enthalpy, though 'how nice the weather is' is a close second.</p>
             </div>
         </div>
 
