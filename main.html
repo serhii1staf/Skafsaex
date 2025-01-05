@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Klyo Telegram App</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -11,7 +11,7 @@
             font-family: Arial, sans-serif;
             background-color: #05161A;
             color: white;
-            overflow: hidden; /* Блокировка вертикальной прокрутки */
+            overflow: hidden; /* Блокировка прокрутки по умолчанию */
         }
         .header {
             display: flex;
@@ -49,6 +49,8 @@
         .content {
             padding: 20px;
             text-align: center;
+            height: 100%;
+            overflow: auto; /* Разрешение прокрутки на экране статьи */
         }
         .input-group {
             display: flex;
@@ -86,6 +88,28 @@
             border-bottom: 1px solid white;
             cursor: pointer;
         }
+        .color-scroll {
+            display: flex;
+            overflow-x: auto;
+            margin: 10px 0;
+            padding: 10px 0;
+        }
+        .color-box {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .slider {
+            width: 70%;
+        }
     </style>
 </head>
 <body>
@@ -119,10 +143,11 @@
                 <h2>Главная страница</h2>
                 <div id="articlesList"></div>
             `;
-            loadArticles();
+            loadArticles(); // Подгрузка статей
         }
 
         function showArticles() {
+            content.style.overflow = "auto"; // Включаем прокрутку только на странице статьи
             content.innerHTML = `
                 <h2>Добавить статью</h2>
                 <div class="input-group">
@@ -150,7 +175,7 @@
                 if (imageFile) {
                     const reader = new FileReader();
                     reader.onload = function (e) {
-                        previewDiv.innerHTML += `<img src="${e.target.result}" style="max-width: 100%; border-radius: 8px;">`;
+                        previewDiv.innerHTML += `<img src="${e.target.result}" style="max-width: 80%; height: auto; border-radius: 8px;">`;
                     };
                     reader.readAsDataURL(imageFile);
                 }
@@ -219,16 +244,20 @@
                     <div class="color-box" style="background-color: #294D61;"></div>
                 </div>
             `;
-            const colors = document.querySelectorAll('.color-box');
-            colors.forEach((box) => {
-                box.addEventListener('click', () => {
-                    document.body.style.backgroundColor = box.style.backgroundColor;
-                });
-            });
         }
 
         function showTextSize() {
-            alert("Функция изменения размера текста готова.");
+            content.innerHTML = `
+                <h2>Размер текста</h2>
+                <div class="slider-container">
+                    <input type="range" min="12" max="24" value="16" class="slider" oninput="updateTextSize(this.value)">
+                </div>
+                <p id="sampleText">Пример текста для изменения размера.</p>
+            `;
+        }
+
+        function updateTextSize(size) {
+            document.getElementById('sampleText').style.fontSize = size + "px";
         }
 
         function showProfile() {
