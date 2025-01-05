@@ -1,49 +1,98 @@
-import logging
-from aiogram import Bot, Dispatcher, types
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-from aiogram.utils import executor
-from aiogram.dispatcher.filters import Text
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klyo Telegram App</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #05161A;
+            color: white;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+        }
+        .profile {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .profile img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+        .nickname {
+            margin-left: 15px;
+            font-size: 24px;
+        }
+        .menu {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            background-color: #072E33;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .menu button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+        }
+        .color-scroll {
+            height: 200px;
+            overflow-y: auto;
+            margin: 30px;
+        }
+        .color-box {
+            height: 50px;
+            margin: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Главное меню</h1>
+    </div>
+    <div class="profile">
+        <img src="profile.jpg" alt="User Photo">
+        <div class="nickname">Никнейм Пользователя</div>
+    </div>
+    <div class="color-scroll" id="color-scroll">
+        <div class="color-box" style="background-color: #05161A;"></div>
+        <div class="color-box" style="background-color: #072E33;"></div>
+        <div class="color-box" style="background-color: #0C7075;"></div>
+        <div class="color-box" style="background-color: #0F969C;"></div>
+        <div class="color-box" style="background-color: #6DA5C0;"></div>
+        <div class="color-box" style="background-color: #294D61;"></div>
+    </div>
+    <div class="menu">
+        <button onclick="goToPage('home')">Домой</button>
+        <button onclick="goToPage('articles')">Статьи</button>
+        <button onclick="goToPage('settings')">Настройки</button>
+    </div>
 
-# Твой API-ключ
-API_TOKEN = "7905507634:AAFNT_tZ0rv0oew7_8e9N-O36DEYoLwuL28"
+    <script>
+        const colorScroll = document.getElementById('color-scroll');
+        const colors = document.querySelectorAll('.color-box');
 
-# Логирование ошибок
-logging.basicConfig(level=logging.INFO)
+        colors.forEach((box) => {
+            box.addEventListener('click', () => {
+                document.body.style.backgroundColor = box.style.backgroundColor;
+            });
+        });
 
-# Инициализация бота и диспетчера
-bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot)
-
-# Главная клавиатура
-main_menu = ReplyKeyboardMarkup(resize_keyboard=True)
-main_menu.add(KeyboardButton("Домой 🏠"), KeyboardButton("Настройки ⚙️"), KeyboardButton("Статьи 📖"))
-
-# Функция приветствия
-@dp.message_handler(commands=['start', 'help'])
-async def send_welcome(message: types.Message):
-    await message.reply("Добро пожаловать в приложение!", reply_markup=main_menu)
-
-# Обработчик для "Домой"
-@dp.message_handler(Text(equals="Домой 🏠"))
-async def home_screen(message: types.Message):
-    await message.reply("Это главная страница с описанием.")
-
-# Обработчик для "Настройки"
-@dp.message_handler(Text(equals="Настройки ⚙️"))
-async def settings_screen(message: types.Message):
-    await message.reply("Тут можно сменить цвет приложения, используя список цветов ниже:")
-
-    # Пример меню с цветами (прокрутка)
-    color_buttons = ReplyKeyboardMarkup(resize_keyboard=True)
-    color_buttons.add(KeyboardButton("Цвет 1 🔴"), KeyboardButton("Цвет 2 🟠"))
-    color_buttons.add(KeyboardButton("Цвет 3 🟡"), KeyboardButton("Цвет 4 🟢"))
-    await message.reply("Выбери цвет:", reply_markup=color_buttons)
-
-# Обработчик для статей
-@dp.message_handler(Text(equals="Статьи 📖"))
-async def articles_screen(message: types.Message):
-    await message.reply("Здесь админ может добавлять статьи с фотографиями и описаниями.")
-
-# Запуск бота
-if name == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+        function goToPage(page) {
+            alert(`Переход на страницу: ${page}`);
+        }
+    </script>
+</body>
+</html>
