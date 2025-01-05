@@ -1,189 +1,222 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Klyo Telegram App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klyo — Приложение</title>
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: var(--theme-background, #ffffff);
+            background-color: #1f2933;
+            color: white;
             overflow: hidden;
         }
 
-        .container {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            padding: 15px;
+        header {
             text-align: center;
-            background-color: var(--theme-header, #2b2b2b);
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        .article-card {
-            background-color: var(--theme-card, #f0f0f0);
-            border-radius: 10px;
             padding: 15px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .article-card:hover {
-            transform: scale(1.02);
-        }
-
-        .article-image {
-            max-width: 100%;
-            border-radius: 8px;
-        }
-
-        .article-title {
-            font-size: 18px;
-            margin: 10px 0 5px;
+            font-size: 20px;
             font-weight: bold;
+            background-color: #2d3748;
+        }
+
+        .welcome-message {
+            margin: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .container {
+            padding: 10px 20px;
+            overflow-y: scroll;
+            height: calc(100vh - 160px);
         }
 
         .article-preview {
-            font-size: 14px;
-            color: var(--theme-text, #555);
-        }
-
-        .footer-nav {
-            display: flex;
-            justify-content: space-around;
-            background-color: var(--theme-footer, #2b2b2b);
-            padding: 10px 0;
-        }
-
-        .footer-nav .nav-item {
-            flex-grow: 1;
-            text-align: center;
-        }
-
-        .footer-nav i {
-            font-size: 24px;
-            color: white;
-        }
-
-        .settings-window,
-        .profile-window,
-        .article-details-window {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            overflow-y: auto;
-        }
-
-        .window-content {
-            background-color: white;
-            border-radius: 15px;
-            margin: 50px auto;
-            padding: 20px;
-            max-width: 500px;
-            text-align: center;
-        }
-
-        .close-btn {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 10px;
+            background-color: #2b2f36;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
             cursor: pointer;
         }
 
-        .hidden {
-            display: none !important;
+        .article-preview h3 {
+            margin: 0 0 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            background-color: #2d3748;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .nav-item {
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .settings-page, .profile-page, .article-page, .edit-profile-page {
+            display: none;
+        }
+
+        .active {
+            display: block !important;
+        }
+
+        .edit-input {
+            margin-bottom: 15px;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button {
+            background-color: #4a5568;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #5a6780;
+        }
+
+        .form-section {
+            padding: 20px;
+        }
+
+        .color-selection {
+            display: flex;
+            overflow-x: auto;
+        }
+
+        .color-option {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
+        .preview-image {
+            width: 100%;
+            max-height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;
+            background: #4a5568;
+            outline: none;
         }
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <div class="header">
-            Добро пожаловать в Klyo!
-        </div>
-        <div class="content">
-            <div class="article-card" onclick="openArticle('article1')">
-                <img class="article-image" src="example1.jpg" alt="Article Image">
-                <div class="article-title">Статья 1: Важные моменты</div>
-                <div class="article-preview">Краткое описание статьи 1...</div>
-            </div>
+    <header>Klyo</header>
 
-            <div class="article-card" onclick="openArticle('article2')">
-                <img class="article-image" src="example2.jpg" alt="Article Image">
-                <div class="article-title">Статья 2: Новая информация</div>
-                <div class="article-preview">Краткое описание статьи 2...</div>
-            </div>
-        </div>
+    <div class="welcome-message">Добро пожаловать! Ваши настройки загружаются...</div>
 
-        <div class="footer-nav">
-            <div class="nav-item"><i class="fa-regular fa-house"></i></div>
-            <div class="nav-item"><i class="fa-regular fa-file"></i></div>
-            <div class="nav-item"><i class="fa-regular fa-cog"></i></div>
-            <div class="nav-item"><i class="fa-regular fa-user"></i></div>
+    <div class="container main-page active">
+        <div class="article-preview" onclick="openArticle('Важные моменты', 'Подробное описание важного')">
+            <h3>Статья 1: Важные моменты</h3>
+            <p>Краткое описание статьи...</p>
+        </div>
+        <div class="article-preview" onclick="openArticle('Новая информация', 'Подробное объяснение новой информации')">
+            <h3>Статья 2: Новая информация</h3>
+            <p>Что нового...</p>
         </div>
     </div>
 
-    <div id="settingsWindow" class="settings-window">
-        <div class="window-content">
-            <h2>Настройки</h2>
-            <button class="close-btn" onclick="closeWindow('settingsWindow')">Закрыть</button>
-            <h3>Выберите тему:</h3>
-            <div class="color-swatches">
-                <div class="color-swatch" style="background-color: #FF6347;"></div>
-                <div class="color-swatch" style="background-color: #4682B4;"></div>
-                <div class="color-swatch" style="background-color: #32CD32;"></div>
-            </div>
+    <div class="container article-page">
+        <h2 id="article-title"></h2>
+        <p id="article-content"></p>
+        <button class="button" onclick="closeArticle()">Назад</button>
+    </div>
+
+    <div class="container settings-page">
+        <h2>Настройки</h2>
+        <button class="button" onclick="openPage('appearance-settings')">Оформление</button>
+        <button class="button" onclick="openPage('text-size')">Размер текста</button>
+    </div>
+
+    <div class="container profile-page">
+        <h2>Ваш профиль</h2>
+        <button class="button" onclick="openPage('edit-profile')">Редактировать профиль</button>
+    </div>
+
+    <div class="container edit-profile-page">
+        <h2>Редактировать профиль</h2>
+        <input type="text" class="edit-input" placeholder="Никнейм">
+        <input type="text" class="edit-input" placeholder="Имя">
+        <input type="text" class="edit-input" placeholder="Телефон">
+        <button class="button" onclick="saveProfile()">Сохранить</button>
+    </div>
+
+    <div class="container appearance-settings">
+        <h2>Выбор темы</h2>
+        <div class="color-selection">
+            <div class="color-option" style="background-color: #1f2933;" onclick="setTheme('#1f2933')"></div>
+            <div class="color-option" style="background-color: #4a5568;" onclick="setTheme('#4a5568')"></div>
+            <div class="color-option" style="background-color: #2d3748;" onclick="setTheme('#2d3748')"></div>
         </div>
     </div>
 
-    <div id="profileWindow" class="profile-window">
-        <div class="window-content">
-            <h2>Редактировать профиль</h2>
-            <input type="text" placeholder="Введите имя">
-            <input type="text" placeholder="Введите номер телефона">
-            <textarea placeholder="О себе"></textarea>
-            <button class="close-btn" onclick="closeWindow('profileWindow')">Сохранить</button>
-        </div>
+    <div class="container text-size">
+        <h2>Настройка текста</h2>
+        <input type="range" class="slider" min="14" max="24" value="18" onchange="updateTextSize(event)">
+    </div>
+
+    <div class="navigation">
+        <span class="nav-item" onclick="openPage('main-page')">🏠</span>
+        <span class="nav-item" onclick="openPage('article-page')">📄</span>
+        <span class="nav-item" onclick="openPage('settings-page')">⚙️</span>
+        <span class="nav-item" onclick="openPage('profile-page')">👤</span>
     </div>
 
     <script>
-        function openArticle(id) {
-            const articleWindow = document.getElementById('articleDetailsWindow');
-            articleWindow.classList.remove('hidden');
+        function openPage(pageClass) {
+            document.querySelectorAll('.container').forEach(container => container.classList.remove('active'));
+            document.querySelector(`.${pageClass}`).classList.add('active');
         }
 
-        function closeWindow(id) {
-            document.getElementById(id).classList.add('hidden');
+        function openArticle(title, content) {
+            document.getElementById('article-title').innerText = title;
+            document.getElementById('article-content').innerText = content;
+            openPage('article-page');
         }
 
-        window.onload = function () {
-            setTimeout(() => {
-                document.querySelector('.header').style.display = 'none';
-            }, 7000);
+        function closeArticle() {
+            openPage('main-page');
+        }
+
+        function setTheme(color) {
+            document.body.style.backgroundColor = color;
+        }
+
+        function updateTextSize(event) {
+            document.body.style.fontSize = `${event.target.value}px`;
+        }
+
+        function saveProfile() {
+            alert('Профиль сохранён!');
         }
     </script>
 </body>
-
 </html>
