@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Web App</title>
+    <title>Blog App</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
             font-family: 'Roboto', Arial, sans-serif;
-            background: url('https://i.postimg.cc/qMd2txdk/IMG-4570.png') no-repeat center center fixed;
-            background-size: cover;
+            background: linear-gradient(to bottom, #87CEFA, #1A1F36);
             color: white;
             height: 100%;
             display: flex;
             flex-direction: column;
+            transition: background 0.5s;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(to bottom, #1A1F36, #000);
         }
 
         #app {
@@ -32,7 +36,7 @@
         #navbar {
             display: flex;
             justify-content: space-around;
-            background: none;
+            background: rgba(51, 51, 51, 0.8);
             padding: 10px 0;
             position: fixed;
             bottom: 0;
@@ -144,16 +148,6 @@
             margin: 10px;
             cursor: pointer;
         }
-
-        .dark-mode {
-            background-color: #1A1F36;
-            color: white;
-        }
-
-        .light-mode {
-            background-color: #FFFFFF;
-            color: black;
-        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -163,15 +157,17 @@
             <!-- Main content will be loaded here -->
         </div>
         <div id="navbar">
-            <button onclick="navigate('info')"><i class="fa-regular fa-house"></i></button>
-            <button onclick="navigate('ai')"><i class="fa-solid fa-robot"></i></button>
-            <button onclick="navigate('news')"><i class="fa-solid fa-newspaper"></i></button>
-            <button onclick="navigate('settings')"><i class="fa-solid fa-gear"></i></button>
+            <button onclick="navigate('home')"><i class="fa-regular fa-house"></i></button>
+            <button onclick="navigate('blog')"><i class="fa-solid fa-blog"></i></button>
+            <button onclick="navigate('articles')"><i class="fa-solid fa-newspaper"></i></button>
+            <button onclick="navigate('chat')"><i class="fa-solid fa-robot"></i></button>
+            <button onclick="navigate('profile')"><i class="fa-solid fa-user"></i></button>
         </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            navigate('info');
+            navigate('home');
+            setInterval(updateBackground, 60000); // Update background every minute
         });
 
         function navigate(screen) {
@@ -180,11 +176,24 @@
             content.innerHTML = '';
 
             switch (screen) {
-                case 'info':
+                case 'home':
                     content.innerHTML = '<h1>Главная страница</h1>';
                     navbar.classList.remove('hidden');
                     break;
-                case 'ai':
+                case 'blog':
+                    content.innerHTML = '<h1>Блог</h1>';
+                    loadArticles();
+                    break;
+                case 'articles':
+                    content.innerHTML = `
+                        <div id="articles">
+                            <button onclick="showArticleForm()">Добавить статью</button>
+                            <div id="articleList"></div>
+                        </div>
+                    `;
+                    loadArticles();
+                    break;
+                case 'chat':
                     content.innerHTML = `
                         <div id="chat">
                             <div id="messages"></div>
@@ -206,38 +215,13 @@
                     homeButton.style.fontSize = '24px';
                     homeButton.style.cursor = 'pointer';
                     homeButton.onclick = () => {
-                        navigate('info');
+                        navigate('home');
                         homeButton.remove();
                     };
                     document.body.appendChild(homeButton);
                     break;
-                case 'news':
-                    content.innerHTML = `
-                        <div id="articles">
-                            <button onclick="showArticleForm()">Добавить статью</button>
-                            <div id="articleList"></div>
-                        </div>
-                    `;
-                    loadArticles();
-                    break;
-                case 'settings':
-                    content.innerHTML = `
-                        <h2>Настройки</h2>
-                        <button onclick="showLoginForm()">Админ</button>
-                        <button onclick="changeBackground()">Изменить цвет фона</button>
-                        <div>
-                            <label>
-                                <input type="radio" name="background" value="dark" onclick="changeBackgroundColor('dark')"> Тёмный
-                            </label>
-                            <label>
-                                <input type="radio" name="background" value="black" onclick="changeBackgroundColor('black')"> Чёрный
-                            </label>
-                            <label>
-                                <input type="radio" name="background" value="gray" onclick="changeBackgroundColor('gray')"> Серый
-                            </label>
-                        </div>
-                        <button onclick="toggleTheme()">Переключить тему</button>
-                    `;
+                case 'profile':
+                    content.innerHTML = '<h1>Профиль</h1>';
                     break;
             }
         }
@@ -379,7 +363,7 @@
                 articles[articleIndex] = { title, text, image: e.target.result };
                 localStorage.setItem('articles', JSON.stringify(articles));
                 loadArticles();
-                navigate('news');
+                navigate('articles');
             };
             reader.readAsDataURL(image);
         }
@@ -389,123 +373,17 @@
             articles = articles.filter(a => a.title !== title);
             localStorage.setItem('articles', JSON.stringify(articles));
             loadArticles();
-            navigate('news');
+            navigate('articles');
         }
 
-        function changeBackgroundColor(color) {
-            switch (color) {
-                case 'dark':
-                    document.body.style.backgroundColor = '#1A1F36';
-                    break;
-                case 'black':
-                    document.body.style.backgroundColor = '#000';
-                    break;
-                case 'gray':
-                    document.body.style.backgroundColor = '#777';
-                    break;
-            }
-        }
-
-        function showLoginForm() {
-            const content = document.getElementById('content');
-            content.innerHTML = `
-                <div class="login-form">
-                    <input type="text" id="login" placeholder="Логин">
-                    <input type="password" id="password" placeholder="Пароль">
-                    <button onclick="login()">Войти</button>
-                </div>
-            `;
-        }
-
-        function login() {
-            const login = document.getElementById('login').value;
-            const password = document.getElementById('password').value;
-
-            if (login === 'admin' && password === 'Pa$$w0rd123') {
-                alert('Вход успешно выполнен');
-                showAdminPanel();
-            } else {
-                alert('Неверный логин или пароль');
-            }
-        }
-
-        function showAdminPanel() {
-            const content = document.getElementById('content');
-            content.innerHTML = `
-                <div class="admin-panel">
-                    <button onclick="showArticleForm()">Добавить статью</button>
-                    <button onclick="toggleTheme()">Переключить тему</button>
-                </div>
-            `;
-        }
-
-        function toggleTheme() {
+        function updateBackground() {
+            const hour = new Date().getHours();
             const body = document.body;
-            if (body.classList.contains('dark-mode')) {
+            if (hour >= 6 && hour < 18) {
                 body.classList.remove('dark-mode');
-                body.classList.add('light-mode');
             } else {
-                body.classList.remove('light-mode');
                 body.classList.add('dark-mode');
             }
-        }
-
-        document.addEventListener('swiped-left', () => {
-            const currentScreen = document.getElementById('content').innerHTML;
-            if (currentScreen.includes('Главная страница')) {
-                navigate('ai');
-            } else if (currentScreen.includes('Искусственный интеллект')) {
-                navigate('news');
-            } else if (currentScreen.includes('Новости/Статьи')) {
-                navigate('settings');
-            }
-        });
-
-        document.addEventListener('swiped-right', () => {
-            const currentScreen = document.getElementById('content').innerHTML;
-            if (currentScreen.includes('Настройки')) {
-                navigate('news');
-            } else if (currentScreen.includes('Новости/Статьи')) {
-                navigate('ai');
-            } else if (currentScreen.includes('Искусственный интеллект')) {
-                navigate('info');
-            }
-        });
-
-        // Swipe event listeners
-        document.addEventListener('touchstart', handleTouchStart, false);
-        document.addEventListener('touchmove', handleTouchMove, false);
-
-        let xDown = null;
-        let yDown = null;
-
-        function handleTouchStart(evt) {
-            const firstTouch = evt.touches[0];
-            xDown = firstTouch.clientX;
-            yDown = firstTouch.clientY;
-        }
-
-        function handleTouchMove(evt) {
-            if (!xDown || !yDown) {
-                return;
-            }
-
-            const xUp = evt.touches[0].clientX;
-            const yUp = evt.touches[0].clientY;
-
-            const xDiff = xDown - xUp;
-            const yDiff = yDown - yUp;
-
-            if (Math.abs(xDiff) > Math.abs(yDiff)) {
-                if (xDiff > 0) {
-                    document.dispatchEvent(new Event('swiped-left'));
-                } else {
-                    document.dispatchEvent(new Event('swiped-right'));
-                }
-            }
-
-            xDown = null;
-            yDown = null;
         }
     </script>
 </body>
