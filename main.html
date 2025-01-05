@@ -1,281 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Web App</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Roboto', Arial, sans-serif;
-            background: linear-gradient(to bottom, #05161A, #072E33);
-            color: white;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            transition: background 0.5s;
-        }
+import logging
+from aiogram import Bot, Dispatcher, types
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.utils import executor
+from aiogram.dispatcher.filters import Text
 
-        body.dark-mode {
-            background: linear-gradient(to bottom, #1A1F36, #000);
-        }
+# Твой API-ключ
+API_TOKEN = "7905507634:AAFNT_tZ0rv0oew7_8e9N-O36DEYoLwuL28"
 
-        #app {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
+# Логирование ошибок
+logging.basicConfig(level=logging.INFO)
 
-        #profile {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background: rgba(51, 51, 51, 0.8);
-        }
+# Инициализация бота и диспетчера
+bot = Bot(token=API_TOKEN)
+dp = Dispatcher(bot)
 
-        #profile img {
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-        }
+# Главная клавиатура
+main_menu = ReplyKeyboardMarkup(resize_keyboard=True)
+main_menu.add(KeyboardButton("Домой 🏠"), KeyboardButton("Настройки ⚙️"), KeyboardButton("Статьи 📖"))
 
-        #profile h2 {
-            margin: 0;
-        }
+# Функция приветствия
+@dp.message_handler(commands=['start', 'help'])
+async def send_welcome(message: types.Message):
+    await message.reply("Добро пожаловать в приложение!", reply_markup=main_menu)
 
-        #content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
+# Обработчик для "Домой"
+@dp.message_handler(Text(equals="Домой 🏠"))
+async def home_screen(message: types.Message):
+    await message.reply("Это главная страница с описанием.")
 
-        #navbar {
-            display: flex;
-            justify-content: space-around;
-            background: rgba(51, 51, 51, 0.8);
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
+# Обработчик для "Настройки"
+@dp.message_handler(Text(equals="Настройки ⚙️"))
+async def settings_screen(message: types.Message):
+    await message.reply("Тут можно сменить цвет приложения, используя список цветов ниже:")
 
-        #navbar button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            opacity: 0.7;
-        }
+    # Пример меню с цветами (прокрутка)
+    color_buttons = ReplyKeyboardMarkup(resize_keyboard=True)
+    color_buttons.add(KeyboardButton("Цвет 1 🔴"), KeyboardButton("Цвет 2 🟠"))
+    color_buttons.add(KeyboardButton("Цвет 3 🟡"), KeyboardButton("Цвет 4 🟢"))
+    await message.reply("Выбери цвет:", reply_markup=color_buttons)
 
-        #navbar button:hover {
-            opacity: 1;
-        }
+# Обработчик для статей
+@dp.message_handler(Text(equals="Статьи 📖"))
+async def articles_screen(message: types.Message):
+    await message.reply("Здесь админ может добавлять статьи с фотографиями и описаниями.")
 
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        .task, .media, .recommendation {
-            background: rgba(51, 51, 51, 0.8);
-            padding: 10px;
-            margin: 10px 0;
-        }
-
-        .task img, .media img, .recommendation img {
-            width: 100%;
-        }
-
-        .settings {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .settings button {
-            margin: 10px 0;
-            padding: 10px;
-            width: 200px;
-            cursor: pointer;
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <div id="app">
-        <div id="profile">
-            <img src="https://via.placeholder.com/50" alt="Profile Picture">
-            <h2>Username</h2>
-        </div>
-        <div id="content">
-            <div id="home" class="page active">
-                <h1>Главная страница</h1>
-                <button onclick="navigate('tasks')">Задачи</button>
-                <button onclick="navigate('media')">Медиа</button>
-                <button onclick="navigate('recommendations')">Рекомендации</button>
-            </div>
-            <div id="tasks" class="page">
-                <h1>Задачи</h1>
-                <button onclick="showTaskForm()">Добавить задачу</button>
-                <div id="taskList"></div>
-            </div>
-            <div id="media" class="page">
-                <h1>Медиа</h1>
-                <button onclick="showMediaForm()">Загрузить медиа</button>
-                <div id="mediaList"></div>
-            </div>
-            <div id="recommendations" class="page">
-                <h1>Рекомендации</h1>
-                <button onclick="showRecommendationForm()">Добавить интересы</button>
-                <div id="recommendationList"></div>
-            </div>
-            <div id="settings" class="page">
-                <h1>Настройки</h1>
-                <div class="settings">
-                    <button onclick="toggleTheme()">Переключить тему</button>
-                </div>
-            </div>
-        </div>
-        <div id="navbar">
-            <button onclick="navigate('home')"><i class="fa-solid fa-house"></i></button>
-            <button onclick="navigate('settings')"><i class="fa-solid fa-cog"></i></button>
-        </div>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            navigate('home');
-        });
-
-        function navigate(page) {
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(p => p.classList.remove('active'));
-            document.getElementById(page).classList.add('active');
-        }
-
-        function showTaskForm() {
-            const taskForm = `
-                <div id="taskForm">
-                    <input type="text" id="taskDescription" placeholder="Описание задачи">
-                    <input type="time" id="taskTime">
-                    <select id="taskCategory">
-                        <option value="Работа">Работа</option>
-                        <option value="Учёба">Учёба</option>
-                        <option value="Личное">Личное</option>
-                    </select>
-                    <button onclick="addTask()">Добавить</button>
-                </div>
-            `;
-            document.getElementById('tasks').innerHTML += taskForm;
-        }
-
-        function addTask() {
-            const description = document.getElementById('taskDescription').value;
-            const time = document.getElementById('taskTime').value;
-            const category = document.getElementById('taskCategory').value;
-
-            if (description.trim() === '' || time.trim() === '') return;
-
-            const task = { description, time, category };
-            const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-            tasks.push(task);
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            loadTasks();
-        }
-
-        function loadTasks() {
-            const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-            const taskList = document.getElementById('taskList');
-            taskList.innerHTML = '';
-            tasks.forEach(task => {
-                const taskElement = document.createElement('div');
-                taskElement.className = 'task';
-                taskElement.innerHTML = `<p>${task.description} - ${task.time} - ${task.category}</p>`;
-                taskList.appendChild(taskElement);
-            });
-        }
-
-        function showMediaForm() {
-            const mediaForm = `
-                <div id="mediaForm">
-                    <input type="file" id="mediaFile" accept="image/*,video/*">
-                    <button onclick="uploadMedia()">Загрузить</button>
-                </div>
-            `;
-            document.getElementById('media').innerHTML += mediaForm;
-        }
-
-        function uploadMedia() {
-            const file = document.getElementById('mediaFile').files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const media = { type: file.type.startsWith('image') ? 'image' : 'video', src: e.target.result };
-                const mediaList = JSON.parse(localStorage.getItem('media') || '[]');
-                mediaList.push(media);
-                localStorage.setItem('media', JSON.stringify(mediaList));
-                loadMedia();
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function loadMedia() {
-            const mediaList = JSON.parse(localStorage.getItem('media') || '[]');
-            const mediaContainer = document.getElementById('mediaList');
-            mediaContainer.innerHTML = '';
-            mediaList.forEach(media => {
-                const mediaElement = document.createElement('div');
-                mediaElement.className = 'media';
-                if (media.type === 'image') {
-                    mediaElement.innerHTML = `<img src="${media.src}" alt="Media Image">`;
-                } else {
-                    mediaElement.innerHTML = `<video src="${media.src}" controls></video>`;
-                }
-                mediaContainer.appendChild(mediaElement);
-            });
-        }
-
-        function showRecommendationForm() {
-            const recommendationForm = `
-                <div id="recommendationForm">
-                    <input type="text" id="interest" placeholder="Ваши интересы (книги, фильмы, музыка)">
-                    <button onclick="addRecommendation()">Добавить</button>
-                </div>
-            `;
-            document.getElementById('recommendations').innerHTML += recommendationForm;
-        }
-
-        function addRecommendation() {
-            const interest = document.getElementById('interest').value;
-            if (interest.trim() === '') return;
-
-            const recommendations = JSON.parse(localStorage.getItem('recommendations') || '[]');
-            recommendations.push(interest);
-            localStorage.setItem('recommendations', JSON.stringify(recommendations));
-            loadRecommendations();
-        }
-
-        function loadRecommendations() {
-            const recommendations = JSON.parse(localStorage.getItem('recommendations') || '[]');
-            const recommendationList = document.getElementById('recommendationList');
-            recommendationList.innerHTML = '';
-            recommendations.forEach(interest => {
-                const recommendationElement = document.createElement('div');
-                recommendationElement.className = 'recommendation';
-                recommendationElement.innerHTML = `<p>${interest}</p>`;
-                recommendationList.appendChild(recommendationElement);
-            });
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-        }
-    </script>
-</body>
-</html>
+# Запуск бота
+if name == '__main__':
+    executor.start_polling(dp, skip_updates=True)
