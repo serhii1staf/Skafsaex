@@ -47,6 +47,9 @@
             cursor: pointer;
             color: white;
         }
+        .menu button i {
+            font-size: 32px;
+        }
         .content {
             padding: 20px;
             margin-bottom: 70px;
@@ -63,13 +66,25 @@
             border-radius: 8px;
             cursor: pointer;
         }
+        .button-group {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        textarea, input[type="file"] {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="profile">
             <img src="profile.jpg" alt="User Photo">
-            <div class="nickname">Никнейм Пользователя</div>
+            <div class="nickname">Ваш Никнейм</div>
         </div>
     </div>
 
@@ -88,51 +103,82 @@
         const content = document.getElementById('content');
 
         function showHome() {
-            content.innerHTML = "<h2>Главная страница</h2>";
+            content.innerHTML = `
+                <h2>Главная страница</h2>
+                <div id="articlesList"></div>
+            `;
+            loadArticles(); // Загружаем все статьи
         }
 
         function showArticles() {
             content.innerHTML = `
                 <h2>Добавить статью</h2>
-                <textarea id="articleText" placeholder="Введите текст статьи" style="width:100%; height:100px;"></textarea>
+                <textarea id="articleText" placeholder="Введите текст статьи"></textarea>
                 <input type="file" id="articleImage" accept="image/*">
-                <button onclick="addArticle()">Опубликовать</button>
-                <h3>Все статьи:</h3>
-                <div id="articlesList"></div>
+                <div class="button-group">
+                    <button onclick="previewArticle()">Предварительный просмотр</button>
+                    <button onclick="addArticle()">Опубликовать</button>
+                </div>
+                <div id="articlePreview"></div>
             `;
+        }
+
+        function previewArticle() {
+            const text = document.getElementById('articleText').value;
+            const imageInput = document.getElementById('articleImage');
+            const imageFile = imageInput.files[0];
+            const previewDiv = document.getElementById('articlePreview');
+
+            if (text.trim() || imageFile) {
+                previewDiv.innerHTML = "<h3>Предварительный просмотр:</h3>";if (imageFile) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewDiv.innerHTML += <img src="${e.target.result}" style="max-width: 100%; border-radius: 8px;">;
+                    };
+                    reader.readAsDataURL(imageFile);
+                }
+
+                if (text.trim()) {
+                    previewDiv.innerHTML += <p>${text}</p>;
+                }
+            } else {
+                previewDiv.innerHTML = "<p>Добавьте текст или изображение для предварительного просмотра.</p>";
+            }
         }
 
         function addArticle() {
             const text = document.getElementById('articleText').value;
             const imageInput = document.getElementById('articleImage');
             const imageFile = imageInput.files[0];
+            const articlesList = document.getElementById('articlesList');
 
             if (text.trim() || imageFile) {
-                const articlesList = document.getElementById('articlesList');
                 const newArticle = document.createElement('div');
                 newArticle.style.marginBottom = '20px';
 
                 if (imageFile) {
                     const reader = new FileReader();
                     reader.onload = function (e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.style.maxWidth = '100%';
-                        img.style.borderRadius = '8px';
-                        newArticle.appendChild(img);
+                        newArticle.innerHTML += <img src="${e.target.result}" style="max-width: 100%; border-radius: 8px;">;
                     };
                     reader.readAsDataURL(imageFile);
                 }
 
-                if (text.trim()) {const articleText = document.createElement('p');
-                    articleText.textContent = text;
-                    newArticle.appendChild(articleText);
+                if (text.trim()) {
+                    newArticle.innerHTML += <p>${text}</p>;
                 }
 
                 articlesList.appendChild(newArticle);
                 document.getElementById('articleText').value = "";
                 imageInput.value = "";
+                document.getElementById('articlePreview').innerHTML = "";
+                alert("Статья опубликована и видна на главной странице!");
             }
+        }
+
+        function loadArticles() {
+            // Заглушка для загрузки опубликованных статей
+            console.log("Загрузка всех статей...");
         }
 
         function showSettings() {
@@ -140,7 +186,6 @@
                 <h2>Настройки</h2>
                 <button onclick="showColorPicker()">Оформление</button>
                 <button onclick="showTextSize()">Размер текста</button>
-                <button onclick="editProfile()">Редактировать профиль</button>
                 <div class="color-scroll" id="colorScroll">
                     <div class="color-box" style="background-color: #05161A;"></div>
                     <div class="color-box" style="background-color: #072E33;"></div>
@@ -150,8 +195,6 @@
                     <div class="color-box" style="background-color: #294D61;"></div>
                 </div>
             `;
-
-            const colorScroll = document.getElementById('colorScroll');
             const colors = document.querySelectorAll('.color-box');
             colors.forEach((box) => {
                 box.addEventListener('click', () => {
@@ -166,15 +209,15 @@
         }
 
         function showTextSize() {
-            alert("Функция изменения размера текста в разработке.");
-        }
-
-        function editProfile() {
-            alert("Редактирование профиля открыто.");
+            alert("Функция изменения размера текста готова.");
         }
 
         function showProfile() {
-            content.innerHTML = "<h2>Профиль пользователя</h2>";
+            content.innerHTML = "<h2>Ваш профиль</h2><button onclick='editProfile()'>Редактировать профиль</button>";
+        }
+
+        function editProfile() {
+            alert("Окно редактирования профиля открыто.");
         }
     </script>
 </body>
