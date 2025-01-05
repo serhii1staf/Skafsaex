@@ -1,156 +1,147 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Klyo - Ваш Путеводитель</title>
     <style>
-        body {
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
             font-family: 'Arial', sans-serif;
-            background-color: #F3EFE9;
-            overflow: hidden;
+            background-color: #fff4e6;
+            color: #3d3d3d;
         }
 
         .container {
             padding: 20px;
         }
 
-        .section {
-            background-color: #fff;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
         .header {
-            text-align: center;
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #f26456;
+            color: white;
+            border-bottom-left-radius: 40px;
         }
 
-        .header-title {
-            font-size: 26px;
+        .header h1 {
+            font-size: 24px;
             font-weight: bold;
-            color: #D94C3D;
         }
 
-        .content-block {
-            text-align: left;
-        }
-
-        .content-block p {
-            margin: 10px 0;
-            font-size: 18px;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 18px;
-            background-color: #D94C3D;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .circles {
+        .circle-background {
             position: absolute;
             top: 20px;
-            right: 20px;
+            right: -40px;
             width: 100px;
             height: 100px;
+            background-color: rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            background-color: rgba(217, 76, 61, 0.3);
+            z-index: 1;
         }
 
-        .footer {
+        .card {
+            background-color: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 16px;
+        }
+
+        .read-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #f26456;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .read-btn i {
+            margin-left: 5px;
+        }
+
+        .footer-nav {
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
-            background-color: #D94C3D;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+            padding: 15px 0;
+            background-color: #f26456;
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
         }
 
-        .footer button {
-            background: none;
-            border: none;
+        .footer-nav a {
             color: white;
+            font-size: 20px;
+            text-decoration: none;
+        }
+
+        .footer-nav a.active {
+            font-weight: bold;
+        }
+
+        .footer-icon {
             font-size: 24px;
-            cursor: pointer;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .visible {
-            display: block;
-        }
-
-        .arrow {
-            font-size: 30px;
-            color: #D94C3D;
         }
     </style>
 </head>
+
 <body>
-    <div class="circles"></div>
+    <div class="circle-background"></div>
+
+    <div class="header">
+        <h1>Klyo - Ваш Путеводитель</h1>
+        <span>Меню</span>
+    </div>
 
     <div class="container">
-        <div class="header">
-            <div class="header-title">Познакомьтесь с Европейской историей</div>
-        </div>
-
-        <div class="content-block section">
-            <h3>История Римской империи</h3>
+        <div class="card">
+            <h2>История Римской империи</h2>
             <p>Познакомьтесь с событиями великой империи, от ее становления до падения.</p>
-            <div class="button" onclick="goToNextPage(1)">Читать &rarr;</div>
+            <a href="#" class="read-btn">Читать <i>→</i></a>
         </div>
 
-        <div class="content-block section">
-            <h3>История Средневековья</h3>
+        <div class="card">
+            <h2>История Средневековья</h2>
             <p>Узнайте о рыцарях, замках и великих битвах.</p>
-            <div class="button" onclick="goToNextPage(2)">Читать &rarr;</div>
+            <a href="#" class="read-btn">Читать <i>→</i></a>
         </div>
 
-        <div id="chapter1" class="hidden">
-            <h2>Глава 1: Восхождение Рима</h2>
-            <p>Изучите ключевые моменты истории, когда маленький город стал империей.</p>
-            <div class="button" onclick="goBack()">Назад</div>
-        </div>
-
-        <div id="chapter2" class="hidden">
-            <h2>Глава 2: Рыцарские битвы</h2>
-            <p>Погружение в эпоху рыцарей и сражений.</p>
-            <div class="button" onclick="goBack()">Назад</div>
+        <div class="card">
+            <h2>Эпоха Возрождения</h2>
+            <p>Погрузитесь в культурное и научное развитие, которое изменило мир.</p>
+            <a href="#" class="read-btn">Читать <i>→</i></a>
         </div>
     </div>
 
-    <div class="footer">
-        <button onclick="goToPage('home')">&#8962;</button>
-        <button onclick="goToPage('articles')">&#128196;</button>
-        <button onclick="goToPage('profile')">&#128100;</button>
-    </div>
-
-    <script>
-        function goToNextPage(page) {
-            document.querySelector('.container').classList.add('hidden');
-            document.getElementById(`chapter${page}`).classList.remove('hidden');
-        }
-
-        function goBack() {
-            document.querySelector('.container').classList.remove('hidden');
-            document.querySelectorAll('.hidden').forEach((el) => el.classList.add('hidden'));
-        }
-
-        function goToPage(page) {
-            alert(`Переход к странице: ${page}`);
-        }
-    </script>
+    <nav class="footer-nav">
+        <a href="#" class="footer-icon active">🏠</a>
+        <a href="#" class="footer-icon">📜</a>
+        <a href="#" class="footer-icon">👤</a>
+    </nav>
 </body>
+
 </html>
