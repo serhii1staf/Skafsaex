@@ -1,137 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Klyo Telegram App</title>
+    <title>Klyo - Ваш Путеводитель</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #0C7075; /* Новый фон */
-            color: white;
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f4f1;
         }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-        }
-        .location-select {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .search-bar {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background-color: white;
-            border-radius: 10px;
-            width: 100%;
-        }
-        .search-bar input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-        }
-        .search-bar input:focus {
-            outline: none;
-        }
-        .search-suggestions {
-            background-color: white;
-            color: black;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            z-index: 10;
-            max-height: 150px;
-            overflow-y: auto;
+
+        .screen {
             display: none;
-        }
-        .search-suggestion {
-            padding: 10px;
-            cursor: pointer;
-        }
-        .search-suggestion:hover {
-            background-color: #f0f0f0;
-        }
-        .content {
             padding: 20px;
-        }
-        .content h2 {
             text-align: center;
         }
-        .info-card {
-            background-color: #05161A;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
+
+        .active {
+            display: block;
+        }
+
+        .header {
+            padding: 20px;
+            background-color: #d33a2c;
             color: white;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            background-color: #d33a2c;
+            padding: 10px 0;
+        }
+
+        .footer button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .section-title {
+            font-size: 22px;
+            margin: 20px 0;
+        }
+
+        .article {
+            background-color: #eae8e3;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            background-color: #d33a2c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .button:hover {
+            background-color: #b12d21;
+        }
+
+        .icon {
+            font-size: 50px;
+            margin: 20px 0;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
         }
     </style>
 </head>
+
 <body>
-    <div class="header">
-        <div class="location-select">
-            <i class="fa-solid fa-location-dot"></i>
-            <div class="search-bar">
-                <input type="text" id="locationInput" placeholder="Введите местоположение">
-                <div class="search-suggestions" id="suggestionsList"></div>
-            </div>
+    <div class="header">Klyo - Ваш Путеводитель</div>
+
+    <div class="screen active" id="screen1">
+        <div class="section-title">Добро пожаловать в приложение "Klyo"!</div>
+        <p>Ваш помощник для изучения интересных фактов и истории. Исследуйте удивительные статьи!</p>
+        <a class="button" onclick="showScreen(2)">Начать</a>
+    </div>
+
+    <div class="screen" id="screen2">
+        <div class="section-title">Выберите интересующую вас тему</div>
+        <div class="article">
+            <p><strong>История Римской империи</strong></p>
+            <p>Познакомьтесь с фактами и событиями о великой империи.</p>
+            <a class="button" onclick="showScreen(3)">Читать</a>
+        </div>
+        <div class="article">
+            <p><strong>История Средневековья</strong></p>
+            <p>Узнайте о рыцарях, замках и великих битвах.</p>
+            <a class="button" onclick="showScreen(3)">Читать</a>
         </div>
     </div>
 
-    <div class="content">
-        <h2>Совет дня</h2>
-        <div class="info-card">
-            <p>Полезный совет для пользователей вашего приложения.</p>
-        </div>
-        <h2>Новости</h2>
-        <div class="info-card">
-            <p>Здесь будут выводиться последние статьи.</p>
-        </div>
+    <div class="screen" id="screen3">
+        <div class="section-title">История Римской империи</div>
+        <p>Глава 1: Золотой век</p>
+        <p>Рассказ о великом времени расцвета Римской цивилизации.</p>
+        <p><i class="fa-solid fa-play icon"></i></p>
+        <a class="button" onclick="showScreen(4)">Продолжить</a>
+    </div>
+
+    <div class="screen" id="screen4">
+        <div class="section-title">Ваш прогресс</div>
+        <p>Прогресс чтения: Глава 1 пройдена!</p>
+        <a class="button" onclick="showScreen(5)">Профиль</a>
+    </div>
+
+    <div class="screen" id="screen5">
+        <div class="section-title">Профиль пользователя</div>
+        <img src="https://via.placeholder.com/100" class="profile-avatar">
+        <p>Ваше имя: Игорь</p>
+        <p>Ваш прогресс: 3 из 10 глав</p>
+        <a class="button" onclick="showScreen(6)">Редактировать профиль</a>
+    </div>
+
+    <div class="screen" id="screen6">
+        <div class="section-title">Редактирование профиля</div>
+        <p>Выберите аватар:</p>
+        <input type="file" accept="image/*">
+        <p>Измените имя:</p>
+        <input type="text" placeholder="Введите имя">
+        <a class="button" onclick="showScreen(1)">Сохранить</a>
+    </div>
+
+    <div class="footer">
+        <button onclick="showScreen(1)"><i class="fa-solid fa-house"></i></button>
+        <button onclick="showScreen(2)"><i class="fa-solid fa-book"></i></button>
+        <button onclick="showScreen(5)"><i class="fa-solid fa-user"></i></button>
     </div>
 
     <script>
-        const locationInput = document.getElementById("locationInput");
-        const suggestionsList = document.getElementById("suggestionsList");
-        const suggestions = ["Осло, Норвегия", "Берген, Норвегия", "Тронхейм, Норвегия", "Ставангер, Норвегия"];
-
-        locationInput.addEventListener("input", function () {
-            const inputText = locationInput.value.toLowerCase();
-            suggestionsList.innerHTML = "";
-
-            if (inputText.trim()) {
-                suggestionsList.style.display = "block";
-                const filteredSuggestions = suggestions.filter((item) =>
-                    item.toLowerCase().includes(inputText)
-                );
-
-                filteredSuggestions.forEach((suggestion) => {
-                    const suggestionElement = document.createElement("div");
-                    suggestionElement.classList.add("search-suggestion");
-                    suggestionElement.textContent = suggestion;
-
-                    suggestionElement.addEventListener("click", () => {
-                        locationInput.value = suggestion;
-                        suggestionsList.style.display = "none";
-                    });
-
-                    suggestionsList.appendChild(suggestionElement);
-                });
-            } else {
-                suggestionsList.style.display = "none";
-            }
-        });
-
-        // Убираем клавиатуру по двойному нажатию на экран
-        document.body.addEventListener("dblclick", () => {
-            locationInput.blur();
-        });
+        function showScreen(screenId) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            document.getElementById(`screen${screenId}`).classList.add('active');
+        }
     </script>
 </body>
+
 </html>
