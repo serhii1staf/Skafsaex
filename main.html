@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Klyo Telegram App</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -14,6 +15,7 @@
         .header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 20px;
         }
         .profile {
@@ -33,7 +35,7 @@
             display: flex;
             justify-content: space-around;
             padding: 15px;
-            background-color: #072E33;
+            background-color: var(--theme-color, #05161A);
             position: fixed;
             bottom: 0;
             width: 100%;
@@ -41,11 +43,13 @@
         .menu button {
             background: none;
             border: none;
+            font-size: 24px;
+            cursor: pointer;
             color: white;
-            font-size: 18px;
         }
         .content {
             padding: 20px;
+            margin-bottom: 70px;
         }
         .color-scroll {
             display: none;
@@ -74,9 +78,10 @@
     </div>
 
     <div class="menu">
-        <button onclick="showHome()">Домой</button>
-        <button onclick="showArticles()">Статьи</button>
-        <button onclick="showSettings()">Настройки</button>
+        <button onclick="showHome()"><i class="fa-regular fa-house"></i></button>
+        <button onclick="showArticles()"><i class="fa-regular fa-file-lines"></i></button>
+        <button onclick="showSettings()"><i class="fa-regular fa-gear"></i></button>
+        <button onclick="showProfile()"><i class="fa-regular fa-user"></i></button>
     </div>
 
     <script>
@@ -90,6 +95,7 @@
             content.innerHTML = `
                 <h2>Добавить статью</h2>
                 <textarea id="articleText" placeholder="Введите текст статьи" style="width:100%; height:100px;"></textarea>
+                <input type="file" id="articleImage" accept="image/*">
                 <button onclick="addArticle()">Опубликовать</button>
                 <h3>Все статьи:</h3>
                 <div id="articlesList"></div>
@@ -98,12 +104,34 @@
 
         function addArticle() {
             const text = document.getElementById('articleText').value;
-            if (text.trim()) {
+            const imageInput = document.getElementById('articleImage');
+            const imageFile = imageInput.files[0];
+
+            if (text.trim() || imageFile) {
                 const articlesList = document.getElementById('articlesList');
-                const newArticle = document.createElement('p');
-                newArticle.textContent = text;
+                const newArticle = document.createElement('div');
+                newArticle.style.marginBottom = '20px';
+
+                if (imageFile) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.maxWidth = '100%';
+                        img.style.borderRadius = '8px';
+                        newArticle.appendChild(img);
+                    };
+                    reader.readAsDataURL(imageFile);
+                }
+
+                if (text.trim()) {const articleText = document.createElement('p');
+                    articleText.textContent = text;
+                    newArticle.appendChild(articleText);
+                }
+
                 articlesList.appendChild(newArticle);
                 document.getElementById('articleText').value = "";
+                imageInput.value = "";
             }
         }
 
@@ -111,6 +139,8 @@
             content.innerHTML = `
                 <h2>Настройки</h2>
                 <button onclick="showColorPicker()">Оформление</button>
+                <button onclick="showTextSize()">Размер текста</button>
+                <button onclick="editProfile()">Редактировать профиль</button>
                 <div class="color-scroll" id="colorScroll">
                     <div class="color-box" style="background-color: #05161A;"></div>
                     <div class="color-box" style="background-color: #072E33;"></div>
@@ -124,7 +154,8 @@
             const colorScroll = document.getElementById('colorScroll');
             const colors = document.querySelectorAll('.color-box');
             colors.forEach((box) => {
-                box.addEventListener('click', () => {document.body.style.backgroundColor = box.style.backgroundColor;
+                box.addEventListener('click', () => {
+                    document.body.style.backgroundColor = box.style.backgroundColor;
                 });
             });
         }
@@ -132,6 +163,18 @@
         function showColorPicker() {
             const colorScroll = document.getElementById('colorScroll');
             colorScroll.style.display = 'block';
+        }
+
+        function showTextSize() {
+            alert("Функция изменения размера текста в разработке.");
+        }
+
+        function editProfile() {
+            alert("Редактирование профиля открыто.");
+        }
+
+        function showProfile() {
+            content.innerHTML = "<h2>Профиль пользователя</h2>";
         }
     </script>
 </body>
