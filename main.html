@@ -3,341 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Klyo Telegram App</title>
+    <title>Klyo Главная страница</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #05161A;
-            color: white;
-            overflow: hidden; /* Блокировка прокрутки по умолчанию */
+            background-color: #f7f7f7;
+            color: black;
         }
         .header {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .location {
+            font-size: 16px;
+        }
+        .search-bar {
             padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: calc(100% - 60px);
         }
-        .welcome-message {
-            text-align: center;
-            font-size: 18px;
-            margin-top: 10px;
+        .section {
+            margin: 20px 0;
         }
-        .menu {
+        .articles-scroll {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+            gap: 10px;
+        }
+        .article-card {
+            width: 200px;
+            height: 250px;
+            border-radius: 12px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .article-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+        }
+        .article-card p {
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .bottom-nav {
             display: flex;
             justify-content: space-around;
             padding: 10px;
-            background-color: var(--theme-color, #05161A);
+            background-color: #ffffff;
             position: fixed;
             bottom: 0;
             width: 100%;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
         }
-        .menu button {
+        .bottom-nav button {
             background: none;
             border: none;
-            font-size: 20px;
             cursor: pointer;
-            color: white;
+            font-size: 24px;
         }
-        .menu button i {
-            font-size: 28px;
-        }
-        .menu button:nth-child(3) {
-            transform: translateX(-10px); /* Сдвиг для выравнивания по центру */
-        }
-        .content {
-            padding: 20px;
-            text-align: center;
-            height: 100%;
-            overflow: auto; /* Разрешение прокрутки на экране статьи */
-        }
-        .input-group {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        .input-group input {
-            padding: 10px;
-            width: 80%;
-            border-radius: 8px;
-            border: none;
-        }
-        .input-group button {
-            background-color: white;
+        .profile-pic {
             border-radius: 50%;
-            padding: 10px;
-            margin-left: 10px;
-            cursor: pointer;
-        }
-        .button-group {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 10px;
-        }
-        .settings-list {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-        .settings-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 15px;
-            border-bottom: 1px solid white;
-            cursor: pointer;
-        }
-        .color-scroll {
-            display: flex;
-            overflow-x: auto;
-            margin: 10px 0;
-            padding: 10px 0;
-        }
-        .color-box {
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .slider-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .slider {
-            width: 70%;
-        }
-        .profile-container {
-            text-align: center;
-            padding-top: 20px;
-        }
-        .profile-picture {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: white;
-            display: inline-block;
-            position: relative;
-        }
-        .profile-picture input[type="file"] {
-            display: none;
-        }
-        .edit-icon {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            background-color: #0F969C;
-            border-radius: 50%;
-            padding: 5px;
-            cursor: pointer;
-        }
-        .form-group {
-            margin: 10px 0;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
-        }
-        .save-button {
-            background-color: #0F969C;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
         }
     </style>
 </head>
 <body>
+
     <div class="header">
-        <div class="welcome-message" id="welcomeMessage">Добро пожаловать!</div>
+        <div class="location">New York, USA</div>
+        <input class="search-bar" type="text" placeholder="Search...">
+        <img class="profile-pic" src="https://via.placeholder.com/30" alt="Profile">
     </div>
 
-    <div class="content" id="content">
-        <h2>Главная страница</h2>
-        <div id="articlesList"></div>
+    <div class="section">
+        <h3>Ближайшие статьи</h3>
+        <div class="articles-scroll" id="articles">
+            <!-- Карточки статей появятся здесь -->
+        </div>
     </div>
 
-    <div class="menu">
-        <button onclick="showHome()"><i class="fa-regular fa-house"></i></button>
-        <button onclick="showArticles()"><i class="fa-regular fa-file-lines"></i></button>
-        <button onclick="showSettings()"><i class="fa-regular fa-gear"></i></button>
-        <button onclick="showProfile()"><i class="fa-regular fa-user"></i></button>
+    <div class="section">
+        <h3>Лучшие авторы</h3>
+        <div class="articles-scroll">
+            <div class="article-card">
+                <img src="https://via.placeholder.com/200x140" alt="Author">
+                <p>Автор 1</p>
+            </div>
+            <div class="article-card">
+                <img src="https://via.placeholder.com/200x140" alt="Author">
+                <p>Автор 2</p>
+            </div>
+            <div class="article-card">
+                <img src="https://via.placeholder.com/200x140" alt="Author">
+                <p>Автор 3</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <button onclick="showHome()"><i class="fa-solid fa-house"></i></button>
+        <button><i class="fa-solid fa-heart"></i></button>
+        <button onclick="showAddArticle()"><i class="fa-solid fa-plus"></i></button>
+        <button><i class="fa-solid fa-map-marker-alt"></i></button>
+        <button onclick="showProfile()"><i class="fa-solid fa-user"></i></button>
     </div>
 
     <script>
-        const content = document.getElementById('content');
-        const welcomeMessage = document.getElementById('welcomeMessage');
-
-        // Таймер на скрытие приветственного сообщения
-        setTimeout(() => {
-            welcomeMessage.style.display = 'none';
-        }, 7000);
-
-        function showHome() {
-            content.innerHTML = `
-                <h2>Главная страница</h2>
-                <div id="articlesList"></div>
-            `;
-            loadArticles(); // Подгрузка статей
-        }
-
-        function showArticles() {
-            content.style.overflow = "auto"; // Включаем прокрутку только на странице статьи
-            content.innerHTML = `
-                <h2>Добавить статью</h2>
-                <div class="input-group">
-                    <input id="articleText" type="text" placeholder="Введите текст статьи">
-                    <button onclick="document.getElementById('articleImage').click()"><i class="fa-solid fa-plus"></i></button>
-                </div>
-                <input type="file" id="articleImage" accept="image/*" style="display: none;">
-                <div class="button-group">
-                    <button onclick="previewArticle()">Предварительный просмотр</button>
-                    <button onclick="addArticle()">Опубликовать</button>
-                </div>
-                <div id="articlePreview"></div>
-            `;
-        }
-
-        function previewArticle() {
-            const text = document.getElementById('articleText').value;
-            const imageInput = document.getElementById('articleImage');
-            const imageFile = imageInput.files[0];
-            const previewDiv = document.getElementById('articlePreview');
-
-            if (text.trim() || imageFile) {
-                previewDiv.innerHTML = "<h3>Предварительный просмотр:</h3>";
-
-                if (imageFile) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        previewDiv.innerHTML += `<img src="${e.target.result}" style="max-width: 80%; height: auto; border-radius: 8px;">`;
-                    };
-                    reader.readAsDataURL(imageFile);
-                }
-
-                if (text.trim()) {
-                    previewDiv.innerHTML += `<p>${text}</p>`;
-                }
-            } else {
-                previewDiv.innerHTML = "<p>Добавьте текст или изображение для предварительного просмотра.</p>";
+        const articles = [
+            {
+                title: "Совет дня",
+                image: "https://via.placeholder.com/200x140",
+                text: "Занимайтесь спортом каждый день!"
+            },
+            {
+                title: "Новость",
+                image: "https://via.placeholder.com/200x140",
+                text: "Обновление функций!"
             }
-        }
-
-        function addArticle() {
-            const text = document.getElementById('articleText').value;
-            const imageInput = document.getElementById('articleImage');
-            const imageFile = imageInput.files[0];
-            const articlesList = document.getElementById('articlesList');
-
-            if (text.trim() || imageFile) {
-                const newArticle = document.createElement('div');
-                newArticle.style.marginBottom = '20px';
-
-                if (imageFile) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        newArticle.innerHTML += `<img src="${e.target.result}" style="max-width: 100%; border-radius: 8px;">`;
-                    };
-                    reader.readAsDataURL(imageFile);
-                }
-
-                if (text.trim()) {
-                    newArticle.innerHTML += `<p>${text}</p>`;
-                }
-
-                articlesList.appendChild(newArticle);
-                document.getElementById('articleText').value = "";
-                imageInput.value = "";
-                document.getElementById('articlePreview').innerHTML = "";
-                alert("Статья опубликована!");
-            }
-        }
+        ];
 
         function loadArticles() {
-            console.log("Загрузка статей...");
+            const articlesContainer = document.getElementById("articles");
+            articles.forEach(article => {
+                const articleDiv = document.createElement("div");
+                articleDiv.className = "article-card";
+                articleDiv.innerHTML = `
+                    <img src="${article.image}" alt="Article Image">
+                    <p>${article.title}</p>
+                `;
+                articlesContainer.appendChild(articleDiv);
+            });
         }
 
-        function showSettings() {
-            content.innerHTML = `
-                <h2>Настройки</h2>
-                <ul class="settings-list">
-                    <li class="settings-item" onclick="showColorPicker()">Оформление <i class="fa-regular fa-chevron-right"></i></li>
-                    <li class="settings-item" onclick="showTextSize()">Размер текста <i class="fa-regular fa-chevron-right"></i></li>
-                </ul>
-            `;
-        }
+        window.onload = loadArticles;
 
-        function showColorPicker() {
-            content.innerHTML = `
-                <h2>Оформление</h2>
-                <div class="color-scroll">
-                    <div class="color-box" style="background-color: #05161A;"></div>
-                    <div class="color-box" style="background-color: #072E33;"></div>
-                    <div class="color-box" style="background-color: #0C7075;"></div>
-                    <div class="color-box" style="background-color: #0F969C;"></div>
-                    <div class="color-box" style="background-color: #6DA5C0;"></div>
-                    <div class="color-box" style="background-color: #294D61;"></div>
-                </div>
-            `;
-        }
-
-        function showTextSize() {
-            content.innerHTML = `
-                <h2>Размер текста</h2>
-                <div class="slider-container">
-                    <input type="range" min="12" max="24" value="16" class="slider" oninput="updateTextSize(this.value)">
-                </div>
-                <p id="sampleText">Пример текста для изменения размера.</p>
-                <button class="save-button" onclick="alert('Размер текста сохранен!')">Сохранить</button>
-            `;
-        }
-
-        function updateTextSize(size) {
-            document.getElementById('sampleText').style.fontSize = size + "px";
-            document.body.style.fontSize = size + "px"; // Глобальное изменение текста
+        function showAddArticle() {
+            alert("Переход на экран добавления статьи...");
         }
 
         function showProfile() {
-            content.innerHTML = `
-                <div class="profile-container">
-                    <div class="profile-picture">
-                        <img src="" alt="" style="width: 100%; height: 100%; border-radius: 50%;">
-                        <div class="edit-icon" onclick="document.getElementById('profileImage').click()">
-                            <i class="fa-solid fa-camera"></i>
-                        </div>
-                        <input type="file" id="profileImage" accept="image/*">
-                    </div>
-                    <div class="form-group">
-                        <label>Имя:</label>
-                        <input type="text" placeholder="Введите имя">
-                    </div>
-                    <div class="form-group">
-                        <label>Никнейм:</label>
-                        <input type="text" placeholder="Введите никнейм">
-                    </div>
-                    <div class="form-group">
-                        <label>Номер телефона:</label>
-                        <input type="text" placeholder="Введите номер телефона">
-                    </div>
-                    <div class="form-group">
-                        <label>О себе:</label>
-                        <textarea placeholder="Расскажите о себе"></textarea>
-                    </div>
-                    <button class="save-button">Сохранить изменения</button>
-                </div>
-            `;
+            alert("Профиль открыт");
+        }
+
+        function showHome() {
+            alert("Главная страница");
         }
     </script>
+
 </body>
 </html>
