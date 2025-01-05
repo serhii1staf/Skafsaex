@@ -1,140 +1,323 @@
-import logging
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto, InputMediaVideo
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, MessageHandler, Filters, CallbackContext
-from datetime import datetime, timedelta
-
-# Enable logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-# Define constants
-TASKS = []
-MEDIA = []
-RECOMMENDATIONS = {
-    "movies": ["Inception", "The Matrix", "Interstellar"],
-    "books": ["1984", "Brave New World", "Fahrenheit 451"],
-    "music": ["Bohemian Rhapsody", "Stairway to Heaven", "Hotel California"]
-}
-
-# Start command handler
-def start(update: Update, context: CallbackContext) -> None:
-    keyboard = [
-        [InlineKeyboardButton("Задачи", callback_data='tasks')],
-        [InlineKeyboardButton("Медиа", callback_data='media')],
-        [InlineKeyboardButton("Рекомендации", callback_data='recommendations')],
-        [InlineKeyboardButton("Настройки", callback_data='settings')]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('Добро пожаловать! Выберите раздел:', reply_markup=reply_markup)
-
-# Callback query handler
-def button(update: Update, context: CallbackContext) -> None:
-    query = update.callback_query
-    query.answer()
-
-    if query.data == 'tasks':
-        show_tasks(query)
-    elif query.data == 'media':
-        show_media(query)
-    elif query.data == 'recommendations':
-        show_recommendations(query)
-    elif query.data == 'settings':
-        show_settings(query)
-
-# Show tasks
-def show_tasks(query):
-    keyboard = [
-        [InlineKeyboardButton("Добавить задачу", callback_data='add_task')],
-        [InlineKeyboardButton("Назад", callback_data='back')]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    tasks_text = "\n".join([f"{task['description']} - {task['time']} - {task['category']}" for task in TASKS])
-    query.edit_message_text(text=f"Ваши задачи:\n{tasks_text}", reply_markup=reply_markup)
-
-# Add task
-def add_task(update: Update, context: CallbackContext) -> None:
-    context.user_data['adding_task'] = True
-    update.callback_query.edit_message_text(text="Введите описание задачи:")
-
-# Handle text messages
-def handle_text(update: Update, context: CallbackContext) -> None:
-    if context.user_data.get('adding_task'):
-        context.user_data['task_description'] = update.message.text
-        context.user_data['adding_task'] = False
-        context.user_data['adding_time'] = True
-        update.message.reply_text("Введите время выполнения задачи (в формате ЧЧ:ММ):")
-    elif context.user_data.get('adding_time'):
-        context.user_data['task_time'] = update.message.text
-        context.user_data['adding_time'] = False
-        context.user_data['adding_category'] = True
-        update.message.reply_text("Введите категорию задачи (Работа, Учёба, Личное):")
-    elif context.user_data.get('adding_category'):
-        task = {
-            'description': context.user_data['task_description'],
-            'time': context.user_data['task_time'],
-            'category': update.message.text
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web App</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(to bottom, #87CEFA, #1A1F36);
+            color: white;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.5s;
         }
-        TASKS.append(task)
-        context.user_data['adding_category'] = False
-        update.message.reply_text("Задача добавлена!")
-        show_tasks(update.message)
 
-# Show media
-def show_media(query):
-    keyboard = [
-        [InlineKeyboardButton("Загрузить медиа", callback_data='upload_media')],
-        [InlineKeyboardButton("Назад", callback_data='back')]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    media_text = "\n".join([f"{media['type']} - {media['caption']}" for media in MEDIA])
-    query.edit_message_text(text=f"Ваши медиа:\n{media_text}", reply_markup=reply_markup)
-
-# Upload media
-def upload_media(update: Update, context: CallbackContext) -> None:
-    context.user_data['uploading_media'] = True
-    update.callback_query.edit_message_text(text="Отправьте изображение или видео:")
-
-# Handle media messages
-def handle_media(update: Update, context: CallbackContext) -> None:
-    if context.user_data.get('uploading_media'):
-        media = {
-            'type': 'photo' if update.message.photo else 'video',
-            'file_id': update.message.photo[-1].file_id if update.message.photo else update.message.video.file_id,
-            'caption': update.message.caption or ''
+        body.dark-mode {
+            background: linear-gradient(to bottom, #1A1F36, #000);
         }
-        MEDIA.append(media)
-        context.user_data['uploading_media'] = False
-        update.message.reply_text("Медиа загружено!")
-        show_media(update.message)
 
-# Show recommendations
-def show_recommendations(query):
-    keyboard = [
-        [InlineKeyboardButton("Фильмы", callback_data='movies')],
-        [InlineKeyboardButton("Книги", callback_data='books')],
-        [InlineKeyboardButton("Музыка", callback_data='music')],
-        [InlineKeyboardButton("Назад", callback_data='back')]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    query.edit_message_text(text="Выберите категорию рекомендаций:", reply_markup=reply_markup)
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
 
-# Show settings
-def show_settings(query):
-    query.edit_message_text(text="Настройки пока недоступны.")
+        #content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
 
-# Main function
-def main() -> None:
-    updater = Updater("YOUR_TELEGRAM_BOT_TOKEN")
+        #navbar {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(51, 51, 51, 0.8);
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
 
-    dispatcher = updater.dispatcher
+        #navbar button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0.7;
+        }
 
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CallbackQueryHandler(button))
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_text))
-    dispatcher.add_handler(MessageHandler(Filters.photo | Filters.video, handle_media))
+        #navbar button:hover {
+            opacity: 1;
+        }
 
-    updater.start_polling()
-    updater.idle()
+        #chat {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
 
-if __name__ == '__main__':
-    main()
+        #messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        #messageInput {
+            width: calc(100% - 100px);
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        .user-message {
+            text-align: right;
+            margin: 10px 0;
+        }
+
+        .bot-message {
+            text-align: left;
+            margin: 10px 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .article {
+            background: rgba(51, 51, 51, 0.8);
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .article img {
+            width: 100%;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .login-form input {
+            margin: 5px 0;
+            padding: 10px;
+            width: 200px;
+        }
+
+        .login-form button {
+            padding: 10px;
+            width: 100px;
+            cursor: pointer;
+        }
+
+        .admin-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .admin-panel input, .admin-panel textarea {
+            margin: 5px 0;
+            padding: 10px;
+            width: 200px;
+        }
+
+        .admin-panel button {
+            padding: 10px;
+            width: 100px;
+            cursor: pointer;
+        }
+
+        .preview {
+            background: rgba(51, 51, 51, 0.8);
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .icon {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <div id="content">
+            <!-- Main content will be loaded here -->
+        </div>
+        <div id="navbar">
+            <button onclick="navigate('tasks')"><i class="fa-solid fa-tasks"></i></button>
+            <button onclick="navigate('media')"><i class="fa-solid fa-photo-video"></i></button>
+            <button onclick="navigate('recommendations')"><i class="fa-solid fa-star"></i></button>
+            <button onclick="navigate('settings')"><i class="fa-solid fa-cog"></i></button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            navigate('tasks');
+        });
+
+        function navigate(screen) {
+            const content = document.getElementById('content');
+            const navbar = document.getElementById('navbar');
+            content.innerHTML = '';
+
+            switch (screen) {
+                case 'tasks':
+                    content.innerHTML = `
+                        <h1>Задачи</h1>
+                        <button onclick="showTaskForm()">Добавить задачу</button>
+                        <div id="taskList"></div>
+                    `;
+                    loadTasks();
+                    break;
+                case 'media':
+                    content.innerHTML = `
+                        <h1>Медиа</h1>
+                        <button onclick="showMediaForm()">Загрузить медиа</button>
+                        <div id="mediaList"></div>
+                    `;
+                    loadMedia();
+                    break;
+                case 'recommendations':
+                    content.innerHTML = `
+                        <h1>Рекомендации</h1>
+                        <button onclick="showRecommendationForm()">Добавить интересы</button>
+                        <div id="recommendationList"></div>
+                    `;
+                    loadRecommendations();
+                    break;
+                case 'settings':
+                    content.innerHTML = '<h1>Настройки</h1>';
+                    break;
+            }
+        }
+
+        function showTaskForm() {
+            const taskForm = `
+                <div id="taskForm">
+                    <input type="text" id="taskDescription" placeholder="Описание задачи">
+                    <input type="time" id="taskTime">
+                    <select id="taskCategory">
+                        <option value="Работа">Работа</option>
+                        <option value="Учёба">Учёба</option>
+                        <option value="Личное">Личное</option>
+                    </select>
+                    <button onclick="addTask()">Добавить</button>
+                </div>
+            `;
+            document.getElementById('content').innerHTML += taskForm;
+        }
+
+        function addTask() {
+            const description = document.getElementById('taskDescription').value;
+            const time = document.getElementById('taskTime').value;
+            const category = document.getElementById('taskCategory').value;
+
+            if (description.trim() === '' || time.trim() === '') return;
+
+            const task = { description, time, category };
+            const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+            tasks.push(task);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            loadTasks();
+        }
+
+        function loadTasks() {
+            const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+            tasks.forEach(task => {
+                const taskElement = document.createElement('div');
+                taskElement.className = 'task';
+                taskElement.innerHTML = `<p>${task.description} - ${task.time} - ${task.category}</p>`;
+                taskList.appendChild(taskElement);
+            });
+        }
+
+        function showMediaForm() {
+            const mediaForm = `
+                <div id="mediaForm">
+                    <input type="file" id="mediaFile" accept="image/*,video/*">
+                    <button onclick="uploadMedia()">Загрузить</button>
+                </div>
+            `;
+            document.getElementById('content').innerHTML += mediaForm;
+        }
+
+        function uploadMedia() {
+            const file = document.getElementById('mediaFile').files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const media = { type: file.type.startsWith('image') ? 'image' : 'video', src: e.target.result };
+                const mediaList = JSON.parse(localStorage.getItem('media') || '[]');
+                mediaList.push(media);
+                localStorage.setItem('media', JSON.stringify(mediaList));
+                loadMedia();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadMedia() {
+            const mediaList = JSON.parse(localStorage.getItem('media') || '[]');
+            const mediaContainer = document.getElementById('mediaList');
+            mediaContainer.innerHTML = '';
+            mediaList.forEach(media => {
+                const mediaElement = document.createElement('div');
+                mediaElement.className = 'media';
+                if (media.type === 'image') {
+                    mediaElement.innerHTML = `<img src="${media.src}" alt="Media Image">`;
+                } else {
+                    mediaElement.innerHTML = `<video src="${media.src}" controls></video>`;
+                }
+                mediaContainer.appendChild(mediaElement);
+            });
+        }
+
+        function showRecommendationForm() {
+            const recommendationForm = `
+                <div id="recommendationForm">
+                    <input type="text" id="interest" placeholder="Ваши интересы (книги, фильмы, музыка)">
+                    <button onclick="addRecommendation()">Добавить</button>
+                </div>
+            `;
+            document.getElementById('content').innerHTML += recommendationForm;
+        }
+
+        function addRecommendation() {
+            const interest = document.getElementById('interest').value;
+            if (interest.trim() === '') return;
+
+            const recommendations = JSON.parse(localStorage.getItem('recommendations') || '[]');
+            recommendations.push(interest);
+            localStorage.setItem('recommendations', JSON.stringify(recommendations));
+            loadRecommendations();
+        }
+
+        function loadRecommendations() {
+            const recommendations = JSON.parse(localStorage.getItem('recommendations') || '[]');
+            const recommendationList = document.getElementById('recommendationList');
+            recommendationList.innerHTML = '';
+            recommendations.forEach(interest => {
+                const recommendationElement = document.createElement('div');
+                recommendationElement.className = 'recommendation';
+                recommendationElement.innerHTML = `<p>${interest}</p>`;
+                recommendationList.appendChild(recommendationElement);
+            });
+        }
+    </script>
+</body>
+</html>
