@@ -11,7 +11,7 @@
             font-family: Arial, sans-serif;
             background-color: #05161A;
             color: white;
-            overflow: hidden;
+            overflow: hidden; /* Блокировка прокрутки по умолчанию */
         }
         .header {
             display: flex;
@@ -44,17 +44,13 @@
             font-size: 28px;
         }
         .menu button:nth-child(3) {
-            transform: translateX(-10px);
+            transform: translateX(-10px); /* Сдвиг для выравнивания по центру */
         }
         .content {
             padding: 20px;
             text-align: center;
-            height: calc(100vh - 60px);
-            overflow: hidden;
-        }
-        .scrollable-content {
-            overflow-y: auto;
             height: 100%;
+            overflow: auto; /* Разрешение прокрутки на экране статьи */
         }
         .input-group {
             display: flex;
@@ -114,6 +110,52 @@
         .slider {
             width: 70%;
         }
+        .profile-container {
+            text-align: center;
+            padding-top: 20px;
+        }
+        .profile-picture {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: white;
+            display: inline-block;
+            position: relative;
+        }
+        .profile-picture input[type="file"] {
+            display: none;
+        }
+        .edit-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: #0F969C;
+            border-radius: 50%;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .form-group {
+            margin: 10px 0;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+        }
+        .save-button {
+            background-color: #0F969C;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -137,7 +179,7 @@
         const content = document.getElementById('content');
         const welcomeMessage = document.getElementById('welcomeMessage');
 
-        // Скрытие приветственного сообщения
+        // Таймер на скрытие приветственного сообщения
         setTimeout(() => {
             welcomeMessage.style.display = 'none';
         }, 7000);
@@ -147,24 +189,23 @@
                 <h2>Главная страница</h2>
                 <div id="articlesList"></div>
             `;
-            loadArticles();
+            loadArticles(); // Подгрузка статей
         }
 
         function showArticles() {
+            content.style.overflow = "auto"; // Включаем прокрутку только на странице статьи
             content.innerHTML = `
-                <div class="scrollable-content">
-                    <h2>Добавить статью</h2>
-                    <div class="input-group">
-                        <input id="articleText" type="text" placeholder="Введите текст статьи">
-                        <button onclick="document.getElementById('articleImage').click()"><i class="fa-solid fa-plus"></i></button>
-                    </div>
-                    <input type="file" id="articleImage" accept="image/*" style="display: none;">
-                    <div class="button-group">
-                        <button onclick="previewArticle()">Предварительный просмотр</button>
-                        <button onclick="addArticle()">Опубликовать</button>
-                    </div>
-                    <div id="articlePreview"></div>
+                <h2>Добавить статью</h2>
+                <div class="input-group">
+                    <input id="articleText" type="text" placeholder="Введите текст статьи">
+                    <button onclick="document.getElementById('articleImage').click()"><i class="fa-solid fa-plus"></i></button>
                 </div>
+                <input type="file" id="articleImage" accept="image/*" style="display: none;">
+                <div class="button-group">
+                    <button onclick="previewArticle()">Предварительный просмотр</button>
+                    <button onclick="addArticle()">Опубликовать</button>
+                </div>
+                <div id="articlePreview"></div>
             `;
         }
 
@@ -258,31 +299,43 @@
                     <input type="range" min="12" max="24" value="16" class="slider" oninput="updateTextSize(this.value)">
                 </div>
                 <p id="sampleText">Пример текста для изменения размера.</p>
+                <button class="save-button" onclick="alert('Размер текста сохранен!')">Сохранить</button>
             `;
         }
 
         function updateTextSize(size) {
             document.getElementById('sampleText').style.fontSize = size + "px";
+            document.body.style.fontSize = size + "px"; // Глобальное изменение текста
         }
 
         function showProfile() {
-            content.innerHTML = "<h2>Ваш профиль</h2><button onclick='editProfile()'>Редактировать профиль</button>";
-        }
-
-        function editProfile() {
             content.innerHTML = `
-                <h2>Редактировать профиль</h2>
-                <label>Фотография профиля:</label>
-                <input type="file" accept="image/*">
-                <label>Имя:</label>
-                <input type="text">
-                <label>Никнейм:</label>
-                <input type="text">
-                <label>Номер телефона:</label>
-                <input type="text">
-                <label>О себе:</label>
-                <textarea></textarea>
-                <button>Сохранить изменения</button>
+                <div class="profile-container">
+                    <div class="profile-picture">
+                        <img src="" alt="" style="width: 100%; height: 100%; border-radius: 50%;">
+                        <div class="edit-icon" onclick="document.getElementById('profileImage').click()">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                        <input type="file" id="profileImage" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label>Имя:</label>
+                        <input type="text" placeholder="Введите имя">
+                    </div>
+                    <div class="form-group">
+                        <label>Никнейм:</label>
+                        <input type="text" placeholder="Введите никнейм">
+                    </div>
+                    <div class="form-group">
+                        <label>Номер телефона:</label>
+                        <input type="text" placeholder="Введите номер телефона">
+                    </div>
+                    <div class="form-group">
+                        <label>О себе:</label>
+                        <textarea placeholder="Расскажите о себе"></textarea>
+                    </div>
+                    <button class="save-button">Сохранить изменения</button>
+                </div>
             `;
         }
     </script>
