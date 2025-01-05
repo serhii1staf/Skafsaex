@@ -1,153 +1,156 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klyo — Ваш Путеводитель</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Klyo - Ваш Путеводитель</title>
     <style>
         body {
             margin: 0;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #fdf6f0;
+            font-family: 'Arial', sans-serif;
+            background-color: #F3EFE9;
             overflow: hidden;
         }
 
-        .screen {
-            display: none;
-            width: 100vw;
-            height: 100vh;
+        .container {
             padding: 20px;
-            box-sizing: border-box;
         }
 
-        .active {
-            display: block;
+        .section {
+            background-color: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .title {
-            font-size: 32px;
-            margin-bottom: 10px;
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header-title {
+            font-size: 26px;
             font-weight: bold;
-            color: #4e4e4e;
+            color: #D94C3D;
         }
 
-        .content {
-            margin-top: 20px;
+        .content-block {
+            text-align: left;
         }
 
-        .circle {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            position: absolute;
-            background: #fdf6f0;
+        .content-block p {
+            margin: 10px 0;
+            font-size: 18px;
         }
 
         .button {
             display: inline-block;
-            padding: 15px 20px;
-            background-color: #f05a28;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-align: center;
+            padding: 10px 20px;
             font-size: 18px;
-            margin-top: 20px;
+            background-color: #D94C3D;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
         }
 
-        .nav-bar {
+        .circles {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: rgba(217, 76, 61, 0.3);
+        }
+
+        .footer {
             display: flex;
             justify-content: space-around;
-            padding: 10px;
+            padding: 10px 0;
+            background-color: #D94C3D;
             position: fixed;
             bottom: 0;
             width: 100%;
-            background-color: #f05a28;
         }
 
-        .nav-bar button {
+        .footer button {
             background: none;
             border: none;
-            font-size: 20px;
-            cursor: pointer;
             color: white;
+            font-size: 24px;
+            cursor: pointer;
         }
 
-        .nav-bar button i {
-            font-size: 28px;
+        .hidden {
+            display: none;
         }
 
-        .fact-card {
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        .visible {
+            display: block;
+        }
+
+        .arrow {
+            font-size: 30px;
+            color: #D94C3D;
         }
     </style>
 </head>
-
 <body>
-    <div class="screen active" id="screen1">
-        <div class="title">Познакомьтесь с Европейской историей</div>
-        <div class="content">
-            <p>Узнайте о важных событиях в истории великих империй.</p>
-            <button class="button" onclick="navigateTo(2)">Перейти к темам</button>
-        </div>
-    </div>
+    <div class="circles"></div>
 
-    <div class="screen" id="screen2">
-        <div class="title">Выберите интересующую вас тему</div>
-        <div class="fact-card">
-            <h3>История Римской Империи</h3>
-            <p>Познакомьтесь с событиями великой эпохи Рима.</p>
-            <button class="button" onclick="navigateTo(3)">Читать</button>
+    <div class="container">
+        <div class="header">
+            <div class="header-title">Познакомьтесь с Европейской историей</div>
         </div>
-        <div class="fact-card">
+
+        <div class="content-block section">
+            <h3>История Римской империи</h3>
+            <p>Познакомьтесь с событиями великой империи, от ее становления до падения.</p>
+            <div class="button" onclick="goToNextPage(1)">Читать &rarr;</div>
+        </div>
+
+        <div class="content-block section">
             <h3>История Средневековья</h3>
-            <p>Узнайте о рыцарях, замках и битвах.</p>
-            <button class="button" onclick="navigateTo(4)">Читать</button>
+            <p>Узнайте о рыцарях, замках и великих битвах.</p>
+            <div class="button" onclick="goToNextPage(2)">Читать &rarr;</div>
+        </div>
+
+        <div id="chapter1" class="hidden">
+            <h2>Глава 1: Восхождение Рима</h2>
+            <p>Изучите ключевые моменты истории, когда маленький город стал империей.</p>
+            <div class="button" onclick="goBack()">Назад</div>
+        </div>
+
+        <div id="chapter2" class="hidden">
+            <h2>Глава 2: Рыцарские битвы</h2>
+            <p>Погружение в эпоху рыцарей и сражений.</p>
+            <div class="button" onclick="goBack()">Назад</div>
         </div>
     </div>
 
-    <div class="screen" id="screen3">
-        <div class="title">Глава 1: Конец Римской Империи</div>
-        <div class="content">
-            <p>Рассказ об упадке Рима и его значении для мировой истории.</p>
-            <button class="button" onclick="navigateTo(2)">Назад</button>
-        </div>
-    </div>
-
-    <div class="screen" id="screen4">
-        <div class="title">Ваш профиль</div>
-        <div class="content">
-            <p>Имя пользователя: <strong>Пользователь</strong></p>
-            <button class="button" onclick="navigateTo(1)">Вернуться на главную</button>
-        </div>
-    </div>
-
-    <div class="nav-bar">
-        <button onclick="navigateTo(1)"><i class="fa-solid fa-house"></i></button>
-        <button onclick="navigateTo(2)"><i class="fa-solid fa-book"></i></button>
-        <button onclick="navigateTo(4)"><i class="fa-solid fa-user"></i></button>
+    <div class="footer">
+        <button onclick="goToPage('home')">&#8962;</button>
+        <button onclick="goToPage('articles')">&#128196;</button>
+        <button onclick="goToPage('profile')">&#128100;</button>
     </div>
 
     <script>
-        function navigateTo(screenNumber) {
-            const screens = document.querySelectorAll('.screen');
-            screens.forEach(screen => screen.classList.remove('active'));
-            document.getElementById(`screen${screenNumber}`).classList.add('active');
+        function goToNextPage(page) {
+            document.querySelector('.container').classList.add('hidden');
+            document.getElementById(`chapter${page}`).classList.remove('hidden');
         }
 
-        document.body.addEventListener('click', function (e) {
-            if (e.detail === 2) {
-                document.activeElement.blur();
-            }
-        });
+        function goBack() {
+            document.querySelector('.container').classList.remove('hidden');
+            document.querySelectorAll('.hidden').forEach((el) => el.classList.add('hidden'));
+        }
+
+        function goToPage(page) {
+            alert(`Переход к странице: ${page}`);
+        }
     </script>
 </body>
-
 </html>
