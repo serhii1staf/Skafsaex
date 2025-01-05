@@ -11,7 +11,7 @@
             font-family: Arial, sans-serif;
             background-color: #05161A;
             color: white;
-            overflow: hidden; /* Блокировка прокрутки */
+            overflow: hidden; /* Блокировка вертикальной прокрутки */
         }
         .header {
             display: flex;
@@ -26,7 +26,7 @@
         }
         .menu {
             display: flex;
-            justify-content: center;
+            justify-content: space-around;
             padding: 10px;
             background-color: var(--theme-color, #05161A);
             position: fixed;
@@ -37,16 +37,54 @@
             background: none;
             border: none;
             font-size: 20px;
-            margin: 0 15px;
             cursor: pointer;
             color: white;
         }
         .menu button i {
             font-size: 28px;
         }
+        .menu button:nth-child(3) {
+            transform: translateX(-10px); /* Сдвиг для выравнивания по центру */
+        }
         .content {
             padding: 20px;
             text-align: center;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .input-group input {
+            padding: 10px;
+            width: 80%;
+            border-radius: 8px;
+            border: none;
+        }
+        .input-group button {
+            background-color: white;
+            border-radius: 50%;
+            padding: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+        .settings-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid white;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -81,14 +119,17 @@
                 <h2>Главная страница</h2>
                 <div id="articlesList"></div>
             `;
-            loadArticles(); // Подгрузка статей
+            loadArticles();
         }
 
         function showArticles() {
             content.innerHTML = `
                 <h2>Добавить статью</h2>
-                <textarea id="articleText" placeholder="Введите текст статьи"></textarea>
-                <input type="file" id="articleImage" accept="image/*">
+                <div class="input-group">
+                    <input id="articleText" type="text" placeholder="Введите текст статьи">
+                    <button onclick="document.getElementById('articleImage').click()"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <input type="file" id="articleImage" accept="image/*" style="display: none;">
                 <div class="button-group">
                     <button onclick="previewArticle()">Предварительный просмотр</button>
                     <button onclick="addArticle()">Опубликовать</button>
@@ -148,7 +189,7 @@
                 document.getElementById('articleText').value = "";
                 imageInput.value = "";
                 document.getElementById('articlePreview').innerHTML = "";
-                alert("Статья опубликована и видна на главной странице!");
+                alert("Статья опубликована!");
             }
         }
 
@@ -159,9 +200,17 @@
         function showSettings() {
             content.innerHTML = `
                 <h2>Настройки</h2>
-                <button onclick="showColorPicker()">Оформление</button>
-                <button onclick="showTextSize()">Размер текста</button>
-                <div class="color-scroll" id="colorScroll">
+                <ul class="settings-list">
+                    <li class="settings-item" onclick="showColorPicker()">Оформление <i class="fa-regular fa-chevron-right"></i></li>
+                    <li class="settings-item" onclick="showTextSize()">Размер текста <i class="fa-regular fa-chevron-right"></i></li>
+                </ul>
+            `;
+        }
+
+        function showColorPicker() {
+            content.innerHTML = `
+                <h2>Оформление</h2>
+                <div class="color-scroll">
                     <div class="color-box" style="background-color: #05161A;"></div>
                     <div class="color-box" style="background-color: #072E33;"></div>
                     <div class="color-box" style="background-color: #0C7075;"></div>
@@ -178,11 +227,6 @@
             });
         }
 
-        function showColorPicker() {
-            const colorScroll = document.getElementById('colorScroll');
-            colorScroll.style.display = 'block';
-        }
-
         function showTextSize() {
             alert("Функция изменения размера текста готова.");
         }
@@ -192,7 +236,20 @@
         }
 
         function editProfile() {
-            alert("Окно редактирования профиля открыто.");
+            content.innerHTML = `
+                <h2>Редактировать профиль</h2>
+                <label>Фотография профиля:</label>
+                <input type="file" accept="image/*">
+                <label>Имя:</label>
+                <input type="text">
+                <label>Никнейм:</label>
+                <input type="text">
+                <label>Номер телефона:</label>
+                <input type="text">
+                <label>О себе:</label>
+                <textarea></textarea>
+                <button>Сохранить изменения</button>
+            `;
         }
     </script>
 </body>
