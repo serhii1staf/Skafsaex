@@ -3,158 +3,150 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Klyo - Ваш Путеводитель</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klyo — Ваш Путеводитель</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
-            font-family: 'Arial', sans-serif;
-            background-color: #f7f4f1;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #fdf6f0;
+            overflow: hidden;
         }
 
         .screen {
             display: none;
+            width: 100vw;
+            height: 100vh;
             padding: 20px;
-            text-align: center;
+            box-sizing: border-box;
         }
 
         .active {
             display: block;
         }
 
-        .header {
-            padding: 20px;
-            background-color: #d33a2c;
-            color: white;
-            text-align: center;
-            font-size: 24px;
+        .title {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #4e4e4e;
         }
 
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            background-color: #d33a2c;
-            padding: 10px 0;
+        .content {
+            margin-top: 20px;
         }
 
-        .footer button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .section-title {
-            font-size: 22px;
-            margin: 20px 0;
-        }
-
-        .article {
-            background-color: #eae8e3;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .button {
-            background-color: #d33a2c;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .button:hover {
-            background-color: #b12d21;
-        }
-
-        .icon {
-            font-size: 50px;
-            margin: 20px 0;
-        }
-
-        .profile-avatar {
+        .circle {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            margin-bottom: 10px;
+            position: absolute;
+            background: #fdf6f0;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 20px;
+            background-color: #f05a28;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f05a28;
+        }
+
+        .nav-bar button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .nav-bar button i {
+            font-size: 28px;
+        }
+
+        .fact-card {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 
 <body>
-    <div class="header">Klyo - Ваш Путеводитель</div>
-
     <div class="screen active" id="screen1">
-        <div class="section-title">Добро пожаловать в приложение "Klyo"!</div>
-        <p>Ваш помощник для изучения интересных фактов и истории. Исследуйте удивительные статьи!</p>
-        <a class="button" onclick="showScreen(2)">Начать</a>
+        <div class="title">Познакомьтесь с Европейской историей</div>
+        <div class="content">
+            <p>Узнайте о важных событиях в истории великих империй.</p>
+            <button class="button" onclick="navigateTo(2)">Перейти к темам</button>
+        </div>
     </div>
 
     <div class="screen" id="screen2">
-        <div class="section-title">Выберите интересующую вас тему</div>
-        <div class="article">
-            <p><strong>История Римской империи</strong></p>
-            <p>Познакомьтесь с фактами и событиями о великой империи.</p>
-            <a class="button" onclick="showScreen(3)">Читать</a>
+        <div class="title">Выберите интересующую вас тему</div>
+        <div class="fact-card">
+            <h3>История Римской Империи</h3>
+            <p>Познакомьтесь с событиями великой эпохи Рима.</p>
+            <button class="button" onclick="navigateTo(3)">Читать</button>
         </div>
-        <div class="article">
-            <p><strong>История Средневековья</strong></p>
-            <p>Узнайте о рыцарях, замках и великих битвах.</p>
-            <a class="button" onclick="showScreen(3)">Читать</a>
+        <div class="fact-card">
+            <h3>История Средневековья</h3>
+            <p>Узнайте о рыцарях, замках и битвах.</p>
+            <button class="button" onclick="navigateTo(4)">Читать</button>
         </div>
     </div>
 
     <div class="screen" id="screen3">
-        <div class="section-title">История Римской империи</div>
-        <p>Глава 1: Золотой век</p>
-        <p>Рассказ о великом времени расцвета Римской цивилизации.</p>
-        <p><i class="fa-solid fa-play icon"></i></p>
-        <a class="button" onclick="showScreen(4)">Продолжить</a>
+        <div class="title">Глава 1: Конец Римской Империи</div>
+        <div class="content">
+            <p>Рассказ об упадке Рима и его значении для мировой истории.</p>
+            <button class="button" onclick="navigateTo(2)">Назад</button>
+        </div>
     </div>
 
     <div class="screen" id="screen4">
-        <div class="section-title">Ваш прогресс</div>
-        <p>Прогресс чтения: Глава 1 пройдена!</p>
-        <a class="button" onclick="showScreen(5)">Профиль</a>
+        <div class="title">Ваш профиль</div>
+        <div class="content">
+            <p>Имя пользователя: <strong>Пользователь</strong></p>
+            <button class="button" onclick="navigateTo(1)">Вернуться на главную</button>
+        </div>
     </div>
 
-    <div class="screen" id="screen5">
-        <div class="section-title">Профиль пользователя</div>
-        <img src="https://via.placeholder.com/100" class="profile-avatar">
-        <p>Ваше имя: Игорь</p>
-        <p>Ваш прогресс: 3 из 10 глав</p>
-        <a class="button" onclick="showScreen(6)">Редактировать профиль</a>
-    </div>
-
-    <div class="screen" id="screen6">
-        <div class="section-title">Редактирование профиля</div>
-        <p>Выберите аватар:</p>
-        <input type="file" accept="image/*">
-        <p>Измените имя:</p>
-        <input type="text" placeholder="Введите имя">
-        <a class="button" onclick="showScreen(1)">Сохранить</a>
-    </div>
-
-    <div class="footer">
-        <button onclick="showScreen(1)"><i class="fa-solid fa-house"></i></button>
-        <button onclick="showScreen(2)"><i class="fa-solid fa-book"></i></button>
-        <button onclick="showScreen(5)"><i class="fa-solid fa-user"></i></button>
+    <div class="nav-bar">
+        <button onclick="navigateTo(1)"><i class="fa-solid fa-house"></i></button>
+        <button onclick="navigateTo(2)"><i class="fa-solid fa-book"></i></button>
+        <button onclick="navigateTo(4)"><i class="fa-solid fa-user"></i></button>
     </div>
 
     <script>
-        function showScreen(screenId) {
+        function navigateTo(screenNumber) {
             const screens = document.querySelectorAll('.screen');
             screens.forEach(screen => screen.classList.remove('active'));
-            document.getElementById(`screen${screenId}`).classList.add('active');
+            document.getElementById(`screen${screenNumber}`).classList.add('active');
         }
+
+        document.body.addEventListener('click', function (e) {
+            if (e.detail === 2) {
+                document.activeElement.blur();
+            }
+        });
     </script>
 </body>
 
