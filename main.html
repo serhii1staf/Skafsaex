@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Roboto', Arial, sans-serif;
-            background: linear-gradient(to bottom, #87CEFA, #1A1F36);
+            background: linear-gradient(to bottom, #05161A, #072E33);
             color: white;
             height: 100%;
             display: flex;
@@ -25,6 +25,24 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+        }
+
+        #profile {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: rgba(51, 51, 51, 0.8);
+        }
+
+        #profile img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        #profile h2 {
+            margin: 0;
         }
 
         #content {
@@ -56,36 +74,12 @@
             opacity: 1;
         }
 
-        #chat {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        #messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        #messageInput {
-            width: calc(100% - 100px);
-            padding: 10px;
-            margin-right: 10px;
-        }
-
-        .user-message {
-            text-align: right;
-            margin: 10px 0;
-        }
-
-        .bot-message {
-            text-align: left;
-            margin: 10px 0;
-        }
-
-        .hidden {
+        .page {
             display: none;
+        }
+
+        .page.active {
+            display: block;
         }
 
         .task, .media, .recommendation {
@@ -98,54 +92,16 @@
             width: 100%;
         }
 
-        .login-form {
+        .settings {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .login-form input {
-            margin: 5px 0;
-            padding: 10px;
-            width: 200px;
-        }
-
-        .login-form button {
-            padding: 10px;
-            width: 100px;
-            cursor: pointer;
-        }
-
-        .admin-panel {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .admin-panel input, .admin-panel textarea {
-            margin: 5px 0;
-            padding: 10px;
-            width: 200px;
-        }
-
-        .admin-panel button {
-            padding: 10px;
-            width: 100px;
-            cursor: pointer;
-        }
-
-        .preview {
-            background: rgba(51, 51, 51, 0.8);
-            padding: 10px;
+        .settings button {
             margin: 10px 0;
-        }
-
-        .icon {
-            display: inline-block;
-            width: 100px;
-            height: 100px;
-            background-size: cover;
-            margin: 10px;
+            padding: 10px;
+            width: 200px;
             cursor: pointer;
         }
     </style>
@@ -153,55 +109,53 @@
 </head>
 <body>
     <div id="app">
+        <div id="profile">
+            <img src="https://via.placeholder.com/50" alt="Profile Picture">
+            <h2>Username</h2>
+        </div>
         <div id="content">
-            <!-- Main content will be loaded here -->
+            <div id="home" class="page active">
+                <h1>Главная страница</h1>
+                <button onclick="navigate('tasks')">Задачи</button>
+                <button onclick="navigate('media')">Медиа</button>
+                <button onclick="navigate('recommendations')">Рекомендации</button>
+            </div>
+            <div id="tasks" class="page">
+                <h1>Задачи</h1>
+                <button onclick="showTaskForm()">Добавить задачу</button>
+                <div id="taskList"></div>
+            </div>
+            <div id="media" class="page">
+                <h1>Медиа</h1>
+                <button onclick="showMediaForm()">Загрузить медиа</button>
+                <div id="mediaList"></div>
+            </div>
+            <div id="recommendations" class="page">
+                <h1>Рекомендации</h1>
+                <button onclick="showRecommendationForm()">Добавить интересы</button>
+                <div id="recommendationList"></div>
+            </div>
+            <div id="settings" class="page">
+                <h1>Настройки</h1>
+                <div class="settings">
+                    <button onclick="toggleTheme()">Переключить тему</button>
+                </div>
+            </div>
         </div>
         <div id="navbar">
-            <button onclick="navigate('tasks')"><i class="fa-solid fa-tasks"></i></button>
-            <button onclick="navigate('media')"><i class="fa-solid fa-photo-video"></i></button>
-            <button onclick="navigate('recommendations')"><i class="fa-solid fa-star"></i></button>
+            <button onclick="navigate('home')"><i class="fa-solid fa-house"></i></button>
             <button onclick="navigate('settings')"><i class="fa-solid fa-cog"></i></button>
         </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            navigate('tasks');
+            navigate('home');
         });
 
-        function navigate(screen) {
-            const content = document.getElementById('content');
-            const navbar = document.getElementById('navbar');
-            content.innerHTML = '';
-
-            switch (screen) {
-                case 'tasks':
-                    content.innerHTML = `
-                        <h1>Задачи</h1>
-                        <button onclick="showTaskForm()">Добавить задачу</button>
-                        <div id="taskList"></div>
-                    `;
-                    loadTasks();
-                    break;
-                case 'media':
-                    content.innerHTML = `
-                        <h1>Медиа</h1>
-                        <button onclick="showMediaForm()">Загрузить медиа</button>
-                        <div id="mediaList"></div>
-                    `;
-                    loadMedia();
-                    break;
-                case 'recommendations':
-                    content.innerHTML = `
-                        <h1>Рекомендации</h1>
-                        <button onclick="showRecommendationForm()">Добавить интересы</button>
-                        <div id="recommendationList"></div>
-                    `;
-                    loadRecommendations();
-                    break;
-                case 'settings':
-                    content.innerHTML = '<h1>Настройки</h1>';
-                    break;
-            }
+        function navigate(page) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => p.classList.remove('active'));
+            document.getElementById(page).classList.add('active');
         }
 
         function showTaskForm() {
@@ -217,7 +171,7 @@
                     <button onclick="addTask()">Добавить</button>
                 </div>
             `;
-            document.getElementById('content').innerHTML += taskForm;
+            document.getElementById('tasks').innerHTML += taskForm;
         }
 
         function addTask() {
@@ -253,7 +207,7 @@
                     <button onclick="uploadMedia()">Загрузить</button>
                 </div>
             `;
-            document.getElementById('content').innerHTML += mediaForm;
+            document.getElementById('media').innerHTML += mediaForm;
         }
 
         function uploadMedia() {
@@ -294,7 +248,7 @@
                     <button onclick="addRecommendation()">Добавить</button>
                 </div>
             `;
-            document.getElementById('content').innerHTML += recommendationForm;
+            document.getElementById('recommendations').innerHTML += recommendationForm;
         }
 
         function addRecommendation() {
@@ -317,6 +271,10 @@
                 recommendationElement.innerHTML = `<p>${interest}</p>`;
                 recommendationList.appendChild(recommendationElement);
             });
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
         }
     </script>
 </body>
