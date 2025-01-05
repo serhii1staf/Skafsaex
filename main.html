@@ -3,166 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Klyo Главная страница</title>
+    <title>Klyo Telegram App</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            color: black;
+            background-color: #0C7075; /* Новый фон */
+            color: white;
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .location {
-            font-size: 16px;
-        }
-        .search-bar {
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            width: calc(100% - 60px);
         }
-        .section {
-            margin: 20px 0;
-        }
-        .articles-scroll {
+        .location-select {
             display: flex;
-            overflow-x: auto;
-            padding: 10px;
+            align-items: center;
             gap: 10px;
         }
-        .article-card {
-            width: 200px;
-            height: 250px;
-            border-radius: 12px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .article-card img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-        }
-        .article-card p {
-            padding: 10px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .bottom-nav {
+        .search-bar {
             display: flex;
-            justify-content: space-around;
+            align-items: center;
             padding: 10px;
-            background-color: #ffffff;
-            position: fixed;
-            bottom: 0;
+            background-color: white;
+            border-radius: 10px;
             width: 100%;
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
         }
-        .bottom-nav button {
-            background: none;
+        .search-bar input {
+            flex: 1;
+            padding: 10px;
             border: none;
-            cursor: pointer;
-            font-size: 24px;
+            border-radius: 5px;
         }
-        .profile-pic {
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            object-fit: cover;
+        .search-bar input:focus {
+            outline: none;
+        }
+        .search-suggestions {
+            background-color: white;
+            color: black;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            max-height: 150px;
+            overflow-y: auto;
+            display: none;
+        }
+        .search-suggestion {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .search-suggestion:hover {
+            background-color: #f0f0f0;
+        }
+        .content {
+            padding: 20px;
+        }
+        .content h2 {
+            text-align: center;
+        }
+        .info-card {
+            background-color: #05161A;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            color: white;
         }
     </style>
 </head>
 <body>
-
     <div class="header">
-        <div class="location">New York, USA</div>
-        <input class="search-bar" type="text" placeholder="Search...">
-        <img class="profile-pic" src="https://via.placeholder.com/30" alt="Profile">
-    </div>
-
-    <div class="section">
-        <h3>Ближайшие статьи</h3>
-        <div class="articles-scroll" id="articles">
-            <!-- Карточки статей появятся здесь -->
-        </div>
-    </div>
-
-    <div class="section">
-        <h3>Лучшие авторы</h3>
-        <div class="articles-scroll">
-            <div class="article-card">
-                <img src="https://via.placeholder.com/200x140" alt="Author">
-                <p>Автор 1</p>
-            </div>
-            <div class="article-card">
-                <img src="https://via.placeholder.com/200x140" alt="Author">
-                <p>Автор 2</p>
-            </div>
-            <div class="article-card">
-                <img src="https://via.placeholder.com/200x140" alt="Author">
-                <p>Автор 3</p>
+        <div class="location-select">
+            <i class="fa-solid fa-location-dot"></i>
+            <div class="search-bar">
+                <input type="text" id="locationInput" placeholder="Введите местоположение">
+                <div class="search-suggestions" id="suggestionsList"></div>
             </div>
         </div>
     </div>
 
-    <div class="bottom-nav">
-        <button onclick="showHome()"><i class="fa-solid fa-house"></i></button>
-        <button><i class="fa-solid fa-heart"></i></button>
-        <button onclick="showAddArticle()"><i class="fa-solid fa-plus"></i></button>
-        <button><i class="fa-solid fa-map-marker-alt"></i></button>
-        <button onclick="showProfile()"><i class="fa-solid fa-user"></i></button>
+    <div class="content">
+        <h2>Совет дня</h2>
+        <div class="info-card">
+            <p>Полезный совет для пользователей вашего приложения.</p>
+        </div>
+        <h2>Новости</h2>
+        <div class="info-card">
+            <p>Здесь будут выводиться последние статьи.</p>
+        </div>
     </div>
 
     <script>
-        const articles = [
-            {
-                title: "Совет дня",
-                image: "https://via.placeholder.com/200x140",
-                text: "Занимайтесь спортом каждый день!"
-            },
-            {
-                title: "Новость",
-                image: "https://via.placeholder.com/200x140",
-                text: "Обновление функций!"
+        const locationInput = document.getElementById("locationInput");
+        const suggestionsList = document.getElementById("suggestionsList");
+        const suggestions = ["Осло, Норвегия", "Берген, Норвегия", "Тронхейм, Норвегия", "Ставангер, Норвегия"];
+
+        locationInput.addEventListener("input", function () {
+            const inputText = locationInput.value.toLowerCase();
+            suggestionsList.innerHTML = "";
+
+            if (inputText.trim()) {
+                suggestionsList.style.display = "block";
+                const filteredSuggestions = suggestions.filter((item) =>
+                    item.toLowerCase().includes(inputText)
+                );
+
+                filteredSuggestions.forEach((suggestion) => {
+                    const suggestionElement = document.createElement("div");
+                    suggestionElement.classList.add("search-suggestion");
+                    suggestionElement.textContent = suggestion;
+
+                    suggestionElement.addEventListener("click", () => {
+                        locationInput.value = suggestion;
+                        suggestionsList.style.display = "none";
+                    });
+
+                    suggestionsList.appendChild(suggestionElement);
+                });
+            } else {
+                suggestionsList.style.display = "none";
             }
-        ];
+        });
 
-        function loadArticles() {
-            const articlesContainer = document.getElementById("articles");
-            articles.forEach(article => {
-                const articleDiv = document.createElement("div");
-                articleDiv.className = "article-card";
-                articleDiv.innerHTML = `
-                    <img src="${article.image}" alt="Article Image">
-                    <p>${article.title}</p>
-                `;
-                articlesContainer.appendChild(articleDiv);
-            });
-        }
-
-        window.onload = loadArticles;
-
-        function showAddArticle() {
-            alert("Переход на экран добавления статьи...");
-        }
-
-        function showProfile() {
-            alert("Профиль открыт");
-        }
-
-        function showHome() {
-            alert("Главная страница");
-        }
+        // Убираем клавиатуру по двойному нажатию на экран
+        document.body.addEventListener("dblclick", () => {
+            locationInput.blur();
+        });
     </script>
-
 </body>
 </html>
