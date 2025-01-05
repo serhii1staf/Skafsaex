@@ -1,233 +1,206 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klyo - Приложение</title>
+    <title>Klyo App</title>
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #1d1d1d;
-            color: white;
+            font-family: 'Arial', sans-serif;
             overflow: hidden;
         }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+            background-color: var(--bg-color, #f0f0f0);
+        }
+
         .header {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--accent-color, #6200ea);
+            color: white;
+        }
+
+        .content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .welcome {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeOut 7s forwards;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                display: none;
+            }
+        }
+
+        .article-preview {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            background-color: white;
+        }
+
+        .settings-section {
+            padding: 15px;
+        }
+
+        .setting-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
-            background-color: #2a2a2a;
-            border-bottom: 1px solid #3a3a3a;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
         }
-        .header h1 {
-            margin: 0;
-            font-size: 24px;
+
+        .slider {
+            width: 100%;
         }
-        .content {
-            padding: 20px;
-            overflow-y: auto;
-            height: calc(100vh - 120px);
-        }
-        .navigation {
+
+        .footer {
             display: flex;
             justify-content: space-around;
-            background-color: #2a2a2a;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-        .nav-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 12px;
-            color: white;
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 10px;
-            transition: background-color 0.2s;
-        }
-        .nav-btn:hover {
-            background-color: #3a3a3a;
-        }
-        .hidden {
-            display: none;
-        }
-        .section {
-            margin-bottom: 20px;
-        }
-        .btn-primary {
-            background-color: #4caf50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn-primary:hover {
-            background-color: #45a049;
-        }
-        .input-field {
-            width: 100%;
             padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            background-color: var(--accent-color, #6200ea);
+            position: fixed;
+            width: 100%;
+            bottom: 0;
         }
-        .scrollable {
-            overflow-y: auto;
-            max-height: 300px;
+
+        .footer button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
         }
     </style>
 </head>
+
 <body>
-    <div class="header">
-        <h1>Klyo</h1>
-        <div id="profile-icon" class="nav-btn">👤</div>
-    </div>
+    <div class="container">
+        <div class="header">Добро пожаловать в Klyo</div>
+        <div class="content">
+            <div class="welcome">Привет, пользователь!</div>
 
-    <div class="content">
-        <div id="home-screen" class="section">
-            <h2>Добро пожаловать!</h2>
-            <p>Это главное окно приложения.</p>
-            <div id="articles-container" class="scrollable">
-                <h3>Ваши статьи:</h3>
-                <div id="article-list">
-                    <!-- Список статей появится здесь -->
-                </div>
+            <div class="article-preview">
+                <h3>Статья 1: Важные моменты</h3>
+                <p>Описание первой статьи...</p>
+            </div>
+
+            <div class="article-preview">
+                <h3>Статья 2: Новая информация</h3>
+                <p>Описание второй статьи...</p>
             </div>
         </div>
 
-        <div id="add-article-screen" class="section hidden">
-            <h2>Добавить статью</h2>
-            <textarea id="article-text" class="input-field" placeholder="Введите текст статьи..."></textarea>
-            <input type="file" id="article-image" accept="image/*">
-            <button class="btn-primary" onclick="previewArticle()">Предварительный просмотр</button>
-            <button class="btn-primary" onclick="publishArticle()">Опубликовать</button>
-            <div id="preview-container" class="hidden">
-                <h3>Предварительный просмотр:</h3>
-                <p id="preview-text"></p>
-                <img id="preview-image" src="" alt="" style="max-width: 100%; border-radius: 10px;">
-            </div>
+        <div class="footer">
+            <button onclick="goHome()"><i class="fa-regular fa-house"></i></button>
+            <button onclick="openArticles()"><i class="fa-regular fa-file"></i></button>
+            <button onclick="openSettings()"><i class="fa-regular fa-gear"></i></button>
+            <button onclick="openProfile()"><i class="fa-regular fa-user"></i></button>
         </div>
-
-        <div id="profile-screen" class="section hidden">
-            <h2>Ваш профиль</h2>
-            <p id="username-display">Имя пользователя: User</p>
-            <button class="btn-primary" onclick="editProfile()">Редактировать профиль</button>
-        </div>
-
-        <div id="settings-screen" class="section hidden">
-            <h2>Настройки</h2>
-            <div>
-                <button class="btn-primary" onclick="openAppearanceSettings()">Оформление</button>
-                <button class="btn-primary" onclick="openTextSizeSettings()">Размер текста</button>
-            </div>
-        </div>
-
-        <div id="appearance-settings" class="section hidden">
-            <h3>Выбор цвета</h3>
-            <div id="color-options" class="scrollable">
-                <!-- Цветовые опции -->
-                <button class="btn-primary" onclick="changeColor('#ffcc00')">Желтый</button>
-                <button class="btn-primary" onclick="changeColor('#00ccff')">Синий</button>
-                <button class="btn-primary" onclick="changeColor('#ff6699')">Розовый</button>
-            </div>
-        </div>
-
-        <div id="text-size-settings" class="section hidden">
-            <h3>Размер текста</h3>
-            <input type="range" id="text-size-slider" min="12" max="24" value="16" onchange="updateTextSize()">
-        </div>
-
-        <div id="edit-profile-screen" class="section hidden">
-            <h3>Редактировать профиль</h3>
-            <input type="text" id="nickname-input" class="input-field" placeholder="Введите никнейм">
-            <input type="text" id="bio-input" class="input-field" placeholder="О себе">
-            <button class="btn-primary" onclick="saveProfile()">Сохранить</button>
-        </div>
-    </div>
-
-    <div class="navigation">
-        <div class="nav-btn" onclick="showScreen('home-screen')">🏠 Домой</div>
-        <div class="nav-btn" onclick="showScreen('add-article-screen')">📝 Статья</div>
-        <div class="nav-btn" onclick="showScreen('settings-screen')">⚙️ Настройки</div>
-        <div class="nav-btn" onclick="showScreen('profile-screen')">👤 Профиль</div>
     </div>
 
     <script>
-        function showScreen(screenId) {
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.add('hidden');
-            });
-            document.getElementById(screenId).classList.remove('hidden');
+        function goHome() {
+            document.querySelector('.content').innerHTML = `
+                <h2>Главная страница</h2>
+                <p>Ваши последние статьи будут здесь.</p>`;
+        }
+
+        function openArticles() {
+            document.querySelector('.content').innerHTML = `
+                <h2>Добавить статью</h2>
+                <textarea placeholder="Введите текст статьи" rows="5" style="width: 100%; margin-bottom: 10px;"></textarea>
+                <input type="file" id="file-input">
+                <button onclick="previewArticle()">Предварительный просмотр</button>
+                <button onclick="publishArticle()">Опубликовать</button>
+                <div id="article-preview-section"></div>`;
         }
 
         function previewArticle() {
-            const text = document.getElementById('article-text').value;
-            const file = document.getElementById('article-image').files[0];
-            if (text || file) {
-                document.getElementById('preview-text').textContent = text;
-                if (file) {
+            const text = document.querySelector('textarea').value;
+            const fileInput = document.querySelector('#file-input').files[0];
+            const previewDiv = document.querySelector('#article-preview-section');
+            if (text) {
+                previewDiv.innerHTML = `<h3>Предварительный просмотр</h3><p>${text}</p>`;
+                if (fileInput) {
                     const reader = new FileReader();
-                    reader.onload = () => {
-                        document.getElementById('preview-image').src = reader.result;
+                    reader.onload = function (e) {
+                        previewDiv.innerHTML += `<img src="${e.target.result}" alt="Предпросмотр изображения" style="width: 100%; max-height: 200px;">`;
                     };
-                    reader.readAsDataURL(file);
+                    reader.readAsDataURL(fileInput);
                 }
-                document.getElementById('preview-container').classList.remove('hidden');
             }
         }
 
         function publishArticle() {
-            const text = document.getElementById('article-text').value;
-            const file = document.getElementById('article-image').files[0];
-            if (text || file) {
-                const articleItem = document.createElement('div');
-                articleItem.innerHTML = `<p>${text}</p>`;
-                if (file) {
-                    const img = document.createElement('img');
-                    img.style.maxWidth = '100%';
-                    img.src = URL.createObjectURL(file);
-                    articleItem.appendChild(img);
-                }
-                document.getElementById('article-list').appendChild(articleItem);
-                document.getElementById('article-text').value = '';
-                document.getElementById('article-image').value = '';
-                alert('Статья опубликована!');
+            const articles = document.querySelector('.content');
+            const text = document.querySelector('textarea').value;
+            const previewSection = document.querySelector('#article-preview-section');
+            if (text) {
+                articles.innerHTML += `<div class="article-preview"><h3>Новая статья</h3><p>${text}</p></div>`;
+                alert("Статья опубликована!");
+            } else {
+                alert("Пожалуйста, введите текст статьи перед публикацией.");
             }
         }
 
-        function openAppearanceSettings() {
-            showScreen('appearance-settings');
+        function openSettings() {
+            document.querySelector('.content').innerHTML = `
+                <h2>Настройки</h2>
+                <div class="settings-section">
+                    <div class="setting-item">
+                        <span>Оформление</span>
+                        <button onclick="chooseTheme()">Выбрать тему</button>
+                    </div>
+                    <div class="setting-item">
+                        <span>Размер текста</span>
+                        <input type="range" min="12" max="36" class="slider" id="text-size-slider" oninput="changeTextSize(this.value)">
+                    </div>
+                </div>`;
         }
 
-        function openTextSizeSettings() {
-            showScreen('text-size-settings');
-        }
-
-        function changeColor(color) {
-            document.body.style.backgroundColor = color;
-        }
-
-        function updateTextSize() {
-            const size = document.getElementById('text-size-slider').value;
+        function changeTextSize(size) {
             document.body.style.fontSize = `${size}px`;
         }
 
-        function editProfile() {
-            showScreen('edit-profile-screen');
+        function chooseTheme() {
+            document.body.style.setProperty('--bg-color', '#e0f7fa');
+        }
+
+        function openProfile() {
+            document.querySelector('.content').innerHTML = `
+                <h2>Ваш профиль</h2>
+                <p>Редактировать профиль</p>
+                <input type="text" placeholder="Ваше имя">
+                <input type="text" placeholder="О себе">
+                <button onclick="saveProfile()">Сохранить</button>`;
         }
 
         function saveProfile() {
-            const nickname = document.getElementById('nickname-input').value;
-            const bio = document.getElementById('bio-input').value;
-            document.getElementById('username-display').textContent = `Имя пользователя: ${nickname}`;
-            alert('Профиль сохранен!');
-            showScreen('profile-screen');
+            alert("Профиль сохранен!");
         }
     </script>
 </body>
+
 </html>
