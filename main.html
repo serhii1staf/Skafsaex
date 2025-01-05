@@ -1,390 +1,140 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog App</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Roboto', Arial, sans-serif;
-            background: linear-gradient(to bottom, #87CEFA, #1A1F36);
-            color: white;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            transition: background 0.5s;
+import logging
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto, InputMediaVideo
+from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, MessageHandler, Filters, CallbackContext
+from datetime import datetime, timedelta
+
+# Enable logging
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Define constants
+TASKS = []
+MEDIA = []
+RECOMMENDATIONS = {
+    "movies": ["Inception", "The Matrix", "Interstellar"],
+    "books": ["1984", "Brave New World", "Fahrenheit 451"],
+    "music": ["Bohemian Rhapsody", "Stairway to Heaven", "Hotel California"]
+}
+
+# Start command handler
+def start(update: Update, context: CallbackContext) -> None:
+    keyboard = [
+        [InlineKeyboardButton("Задачи", callback_data='tasks')],
+        [InlineKeyboardButton("Медиа", callback_data='media')],
+        [InlineKeyboardButton("Рекомендации", callback_data='recommendations')],
+        [InlineKeyboardButton("Настройки", callback_data='settings')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text('Добро пожаловать! Выберите раздел:', reply_markup=reply_markup)
+
+# Callback query handler
+def button(update: Update, context: CallbackContext) -> None:
+    query = update.callback_query
+    query.answer()
+
+    if query.data == 'tasks':
+        show_tasks(query)
+    elif query.data == 'media':
+        show_media(query)
+    elif query.data == 'recommendations':
+        show_recommendations(query)
+    elif query.data == 'settings':
+        show_settings(query)
+
+# Show tasks
+def show_tasks(query):
+    keyboard = [
+        [InlineKeyboardButton("Добавить задачу", callback_data='add_task')],
+        [InlineKeyboardButton("Назад", callback_data='back')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    tasks_text = "\n".join([f"{task['description']} - {task['time']} - {task['category']}" for task in TASKS])
+    query.edit_message_text(text=f"Ваши задачи:\n{tasks_text}", reply_markup=reply_markup)
+
+# Add task
+def add_task(update: Update, context: CallbackContext) -> None:
+    context.user_data['adding_task'] = True
+    update.callback_query.edit_message_text(text="Введите описание задачи:")
+
+# Handle text messages
+def handle_text(update: Update, context: CallbackContext) -> None:
+    if context.user_data.get('adding_task'):
+        context.user_data['task_description'] = update.message.text
+        context.user_data['adding_task'] = False
+        context.user_data['adding_time'] = True
+        update.message.reply_text("Введите время выполнения задачи (в формате ЧЧ:ММ):")
+    elif context.user_data.get('adding_time'):
+        context.user_data['task_time'] = update.message.text
+        context.user_data['adding_time'] = False
+        context.user_data['adding_category'] = True
+        update.message.reply_text("Введите категорию задачи (Работа, Учёба, Личное):")
+    elif context.user_data.get('adding_category'):
+        task = {
+            'description': context.user_data['task_description'],
+            'time': context.user_data['task_time'],
+            'category': update.message.text
         }
+        TASKS.append(task)
+        context.user_data['adding_category'] = False
+        update.message.reply_text("Задача добавлена!")
+        show_tasks(update.message)
 
-        body.dark-mode {
-            background: linear-gradient(to bottom, #1A1F36, #000);
+# Show media
+def show_media(query):
+    keyboard = [
+        [InlineKeyboardButton("Загрузить медиа", callback_data='upload_media')],
+        [InlineKeyboardButton("Назад", callback_data='back')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    media_text = "\n".join([f"{media['type']} - {media['caption']}" for media in MEDIA])
+    query.edit_message_text(text=f"Ваши медиа:\n{media_text}", reply_markup=reply_markup)
+
+# Upload media
+def upload_media(update: Update, context: CallbackContext) -> None:
+    context.user_data['uploading_media'] = True
+    update.callback_query.edit_message_text(text="Отправьте изображение или видео:")
+
+# Handle media messages
+def handle_media(update: Update, context: CallbackContext) -> None:
+    if context.user_data.get('uploading_media'):
+        media = {
+            'type': 'photo' if update.message.photo else 'video',
+            'file_id': update.message.photo[-1].file_id if update.message.photo else update.message.video.file_id,
+            'caption': update.message.caption or ''
         }
+        MEDIA.append(media)
+        context.user_data['uploading_media'] = False
+        update.message.reply_text("Медиа загружено!")
+        show_media(update.message)
 
-        #app {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
+# Show recommendations
+def show_recommendations(query):
+    keyboard = [
+        [InlineKeyboardButton("Фильмы", callback_data='movies')],
+        [InlineKeyboardButton("Книги", callback_data='books')],
+        [InlineKeyboardButton("Музыка", callback_data='music')],
+        [InlineKeyboardButton("Назад", callback_data='back')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    query.edit_message_text(text="Выберите категорию рекомендаций:", reply_markup=reply_markup)
 
-        #content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
+# Show settings
+def show_settings(query):
+    query.edit_message_text(text="Настройки пока недоступны.")
 
-        #navbar {
-            display: flex;
-            justify-content: space-around;
-            background: rgba(51, 51, 51, 0.8);
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
+# Main function
+def main() -> None:
+    updater = Updater("YOUR_TELEGRAM_BOT_TOKEN")
 
-        #navbar button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            opacity: 0.7;
-        }
+    dispatcher = updater.dispatcher
 
-        #navbar button:hover {
-            opacity: 1;
-        }
+    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(CallbackQueryHandler(button))
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_text))
+    dispatcher.add_handler(MessageHandler(Filters.photo | Filters.video, handle_media))
 
-        #chat {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
+    updater.start_polling()
+    updater.idle()
 
-        #messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        #messageInput {
-            width: calc(100% - 100px);
-            padding: 10px;
-            margin-right: 10px;
-        }
-
-        .user-message {
-            text-align: right;
-            margin: 10px 0;
-        }
-
-        .bot-message {
-            text-align: left;
-            margin: 10px 0;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .article {
-            background: rgba(51, 51, 51, 0.8);
-            padding: 10px;
-            margin: 10px 0;
-        }
-
-        .article img {
-            width: 100%;
-        }
-
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .login-form input {
-            margin: 5px 0;
-            padding: 10px;
-            width: 200px;
-        }
-
-        .login-form button {
-            padding: 10px;
-            width: 100px;
-            cursor: pointer;
-        }
-
-        .admin-panel {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .admin-panel input, .admin-panel textarea {
-            margin: 5px 0;
-            padding: 10px;
-            width: 200px;
-        }
-
-        .admin-panel button {
-            padding: 10px;
-            width: 100px;
-            cursor: pointer;
-        }
-
-        .preview {
-            background: rgba(51, 51, 51, 0.8);
-            padding: 10px;
-            margin: 10px 0;
-        }
-
-        .icon {
-            display: inline-block;
-            width: 100px;
-            height: 100px;
-            background-size: cover;
-            margin: 10px;
-            cursor: pointer;
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <div id="app">
-        <div id="content">
-            <!-- Main content will be loaded here -->
-        </div>
-        <div id="navbar">
-            <button onclick="navigate('home')"><i class="fa-regular fa-house"></i></button>
-            <button onclick="navigate('blog')"><i class="fa-solid fa-blog"></i></button>
-            <button onclick="navigate('articles')"><i class="fa-solid fa-newspaper"></i></button>
-            <button onclick="navigate('chat')"><i class="fa-solid fa-robot"></i></button>
-            <button onclick="navigate('profile')"><i class="fa-solid fa-user"></i></button>
-        </div>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            navigate('home');
-            setInterval(updateBackground, 60000); // Update background every minute
-        });
-
-        function navigate(screen) {
-            const content = document.getElementById('content');
-            const navbar = document.getElementById('navbar');
-            content.innerHTML = '';
-
-            switch (screen) {
-                case 'home':
-                    content.innerHTML = '<h1>Главная страница</h1>';
-                    navbar.classList.remove('hidden');
-                    break;
-                case 'blog':
-                    content.innerHTML = '<h1>Блог</h1>';
-                    loadArticles();
-                    break;
-                case 'articles':
-                    content.innerHTML = `
-                        <div id="articles">
-                            <button onclick="showArticleForm()">Добавить статью</button>
-                            <div id="articleList"></div>
-                        </div>
-                    `;
-                    loadArticles();
-                    break;
-                case 'chat':
-                    content.innerHTML = `
-                        <div id="chat">
-                            <div id="messages"></div>
-                            <div style="display: flex; padding: 10px; position: fixed; bottom: 0; width: 100%; background: rgba(51, 51, 51, 0.8);">
-                                <input type="text" id="messageInput" placeholder="Введите сообщение...">
-                                <button onclick="sendMessage()">Отправить</button>
-                            </div>
-                        </div>
-                    `;
-                    navbar.classList.add('hidden');
-                    const homeButton = document.createElement('button');
-                    homeButton.innerHTML = '<i class="fa-regular fa-house"></i>';
-                    homeButton.style.position = 'fixed';
-                    homeButton.style.top = '10px';
-                    homeButton.style.right = '10px';
-                    homeButton.style.background = 'none';
-                    homeButton.style.border = 'none';
-                    homeButton.style.color = 'white';
-                    homeButton.style.fontSize = '24px';
-                    homeButton.style.cursor = 'pointer';
-                    homeButton.onclick = () => {
-                        navigate('home');
-                        homeButton.remove();
-                    };
-                    document.body.appendChild(homeButton);
-                    break;
-                case 'profile':
-                    content.innerHTML = '<h1>Профиль</h1>';
-                    break;
-            }
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const message = input.value;
-            if (message.trim() === '') return;
-
-            const messages = document.getElementById('messages');
-            const userMessage = document.createElement('div');
-            userMessage.className = 'user-message';
-            userMessage.textContent = message;
-            messages.appendChild(userMessage);
-
-            input.value = '';
-
-            // Simulate AI response
-            setTimeout(() => {
-                const botMessage = document.createElement('div');
-                botMessage.className = 'bot-message';
-                botMessage.textContent = 'Ответ от бота: ' + message;
-                messages.appendChild(botMessage);
-            }, 1000);
-        }
-
-        function showArticleForm() {
-            const articleForm = `
-                <div id="articleForm">
-                    <input type="text" id="articleTitle" placeholder="Заголовок">
-                    <textarea id="articleText" placeholder="Текст"></textarea>
-                    <input type="file" id="articleImage" accept="image/*">
-                    <button onclick="previewArticle()">Предварительный просмотр</button>
-                    <button onclick="addArticle()">Добавить</button>
-                </div>
-            `;
-            document.getElementById('content').innerHTML += articleForm;
-        }
-
-        function previewArticle() {
-            const title = document.getElementById('articleTitle').value;
-            const text = document.getElementById('articleText').value;
-            const image = document.getElementById('articleImage').files[0];
-
-            if (title.trim() === '' || text.trim() === '') return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const preview = document.createElement('div');
-                preview.className = 'preview';
-                preview.innerHTML = `<h3>${title}</h3><img src="${e.target.result}" alt="Article Image"><p>${text}</p>`;
-                document.getElementById('content').appendChild(preview);
-            };
-            reader.readAsDataURL(image);
-        }
-
-        function addArticle() {
-            const title = document.getElementById('articleTitle').value;
-            const text = document.getElementById('articleText').value;
-            const image = document.getElementById('articleImage').files[0];
-
-            if (title.trim() === '' || text.trim() === '') return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const articleList = document.getElementById('articleList');
-                const article = document.createElement('div');
-                article.className = 'article';
-                article.innerHTML = `<h3>${title}</h3><img src="${e.target.result}" alt="Article Image"><p>${text}</p>`;
-                articleList.appendChild(article);
-
-                document.getElementById('articleForm').remove();
-                saveArticle({ title, text, image: e.target.result });
-            };
-            reader.readAsDataURL(image);
-        }
-
-        function loadArticles() {
-            const articles = JSON.parse(localStorage.getItem('articles') || '[]');
-            const articleList = document.getElementById('articleList');
-            articles.forEach(article => {
-                const articleElement = document.createElement('div');
-                articleElement.className = 'article';
-                articleElement.innerHTML = `<h3>${article.title}</h3><img src="${article.image}" alt="Article Image"><p>${article.text.substring(0, 100)}...</p>`;
-                articleElement.onclick = () => showFullArticle(article);
-                articleList.appendChild(articleElement);
-            });
-        }
-
-        function saveArticle(article) {
-            const articles = JSON.parse(localStorage.getItem('articles') || '[]');
-            articles.push(article);
-            localStorage.setItem('articles', JSON.stringify(articles));
-        }
-
-        function showFullArticle(article) {
-            const content = document.getElementById('content');
-            content.innerHTML = `
-                <div class="article">
-                    <h3>${article.title}</h3>
-                    <img src="${article.image}" alt="Article Image">
-                    <p>${article.text}</p>
-                    <button onclick="editArticle('${article.title}')">Редактировать</button>
-                    <button onclick="deleteArticle('${article.title}')">Удалить</button>
-                </div>
-            `;
-        }
-
-        function editArticle(title) {
-            const articles = JSON.parse(localStorage.getItem('articles') || '[]');
-            const article = articles.find(a => a.title === title);
-            if (!article) return;
-
-            const content = document.getElementById('content');
-            content.innerHTML = `
-                <div id="articleForm">
-                    <input type="text" id="articleTitle" value="${article.title}" placeholder="Заголовок">
-                    <textarea id="articleText" placeholder="Текст">${article.text}</textarea>
-                    <input type="file" id="articleImage" accept="image/*">
-                    <button onclick="previewArticle()">Предварительный просмотр</button>
-                    <button onclick="updateArticle('${title}')">Обновить</button>
-                </div>
-            `;
-        }
-
-        function updateArticle(oldTitle) {
-            const title = document.getElementById('articleTitle').value;
-            const text = document.getElementById('articleText').value;
-            const image = document.getElementById('articleImage').files[0];
-
-            if (title.trim() === '' || text.trim() === '') return;
-
-            const articles = JSON.parse(localStorage.getItem('articles') || '[]');
-            const articleIndex = articles.findIndex(a => a.title === oldTitle);
-            if (articleIndex === -1) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                articles[articleIndex] = { title, text, image: e.target.result };
-                localStorage.setItem('articles', JSON.stringify(articles));
-                loadArticles();
-                navigate('articles');
-            };
-            reader.readAsDataURL(image);
-        }
-
-        function deleteArticle(title) {
-            let articles = JSON.parse(localStorage.getItem('articles') || '[]');
-            articles = articles.filter(a => a.title !== title);
-            localStorage.setItem('articles', JSON.stringify(articles));
-            loadArticles();
-            navigate('articles');
-        }
-
-        function updateBackground() {
-            const hour = new Date().getHours();
-            const body = document.body;
-            if (hour >= 6 && hour < 18) {
-                body.classList.remove('dark-mode');
-            } else {
-                body.classList.add('dark-mode');
-            }
-        }
-    </script>
-</body>
-</html>
+if __name__ == '__main__':
+    main()
