@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Roboto', Arial, sans-serif;
-            background: url('https://i.postimg.cc/L5xyCgmQ/IMG-4569.jpg') no-repeat center center fixed;
+            background: url('https://i.postimg.cc/qMd2txdk/IMG-4570.png') no-repeat center center fixed;
             background-size: cover;
             color: white;
             height: 100%;
@@ -32,7 +32,7 @@
         #navbar {
             display: flex;
             justify-content: space-around;
-            background-color: rgba(51, 51, 51, 0.8);
+            background: none;
             padding: 10px 0;
             position: fixed;
             bottom: 0;
@@ -79,6 +79,38 @@
             text-align: left;
             margin: 10px 0;
         }
+
+        .hidden {
+            display: none;
+        }
+
+        .article {
+            background: rgba(51, 51, 51, 0.8);
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .article img {
+            width: 100%;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .login-form input {
+            margin: 5px 0;
+            padding: 10px;
+            width: 200px;
+        }
+
+        .login-form button {
+            padding: 10px;
+            width: 100px;
+            cursor: pointer;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -101,13 +133,13 @@
 
         function navigate(screen) {
             const content = document.getElementById('content');
+            const navbar = document.getElementById('navbar');
             content.innerHTML = '';
 
             switch (screen) {
                 case 'info':
-                    content.innerHTML = `
-                        <h1>Добро пожаловать в [название приложения]!</h1>
-                    `;
+                    content.innerHTML = '';
+                    navbar.classList.remove('hidden');
                     break;
                 case 'ai':
                     content.innerHTML = `
@@ -119,6 +151,22 @@
                             </div>
                         </div>
                     `;
+                    navbar.classList.add('hidden');
+                    const homeButton = document.createElement('button');
+                    homeButton.innerHTML = '<i class="fa-regular fa-house"></i>';
+                    homeButton.style.position = 'fixed';
+                    homeButton.style.top = '10px';
+                    homeButton.style.right = '10px';
+                    homeButton.style.background = 'none';
+                    homeButton.style.border = 'none';
+                    homeButton.style.color = 'white';
+                    homeButton.style.fontSize = '24px';
+                    homeButton.style.cursor = 'pointer';
+                    homeButton.onclick = () => {
+                        navigate('info');
+                        homeButton.remove();
+                    };
+                    document.body.appendChild(homeButton);
                     break;
                 case 'news':
                     content.innerHTML = `
@@ -127,6 +175,7 @@
                             <div id="articleList"></div>
                         </div>
                     `;
+                    loadArticles();
                     break;
                 case 'settings':
                     content.innerHTML = `
@@ -188,11 +237,63 @@
             articleList.appendChild(article);
 
             document.getElementById('articleForm').remove();
+            saveArticle({ title, text });
+        }
+
+        function loadArticles() {
+            const articles = JSON.parse(localStorage.getItem('articles') || '[]');
+            const articleList = document.getElementById('articleList');
+            articles.forEach(article => {
+                const articleElement = document.createElement('div');
+                articleElement.className = 'article';
+                articleElement.innerHTML = `<h3>${article.title}</h3><p>${article.text.substring(0, 100)}...</p>`;
+                articleElement.onclick = () => showFullArticle(article);
+                articleList.appendChild(articleElement);
+            });
+        }
+
+        function saveArticle(article) {
+            const articles = JSON.parse(localStorage.getItem('articles') || '[]');
+            articles.push(article);
+            localStorage.setItem('articles', JSON.stringify(articles));
+        }
+
+        function showFullArticle(article) {
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <div class="article">
+                    <h3>${article.title}</h3>
+                    <p>${article.text}</p>
+                </div>
+            `;
         }
 
         function changeBackground() {
             const background = document.getElementById('background').value;
             document.body.style.backgroundColor = background;
+        }
+
+        function showLoginForm() {
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <div class="login-form">
+                    <input type="text" id="login" placeholder="Логин">
+                    <input type="password" id="password" placeholder="Пароль">
+                    <button onclick="login()">Войти</button>
+                </div>
+            `;
+        }
+
+        function login() {
+            const login = document.getElementById('login').value;
+            const password = document.getElementById('password').value;
+
+            if (login === 'admin' && password === 'Pa$$w0rd123') {
+                alert('Вход успешно выполнен');
+                navigate('news');
+            } else {
+                alert('Неверный логин или пароль');
+            }
         }
     </script>
 </body>
