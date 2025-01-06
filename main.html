@@ -1,153 +1,143 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klyo - Welcome</title>
+    <title>Klyo</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            background-color: #D8E7E4;
-            color: #333;
+            background-color: #d8eae5;
+            display: flex;
+            justify-content: center;
         }
+
         .container {
+            width: 90%;
+            max-width: 400px;
+            background-color: #eef5f2;
             padding: 20px;
-        }
-        .card {
-            background-color: #F0F5F4;
             border-radius: 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+        }
+
+        .profile-header {
+            text-align: center;
             margin-bottom: 20px;
         }
-        .profile-section {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-bottom: 20px;
-        }
+
         .profile-image {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background-color: #ddd;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #a4d4b4;
+            margin: 0 auto 10px auto;
         }
+
         .welcome-text {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .date-text {
+            color: #6a6a6a;
+            font-size: 16px;
+        }
+
+        .weather {
             text-align: center;
             margin-top: 15px;
         }
-        .welcome-text h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-        .news-section, .weather-section {
-            padding: 20px;
+
+        .weather-box {
+            background-color: #d6e7dd;
+            padding: 10px;
             border-radius: 15px;
-            margin-top: 15px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .icon-bar {
+
+        .news-box {
+            background-color: #d6e7dd;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .icon {
+            font-size: 40px;
+            display: inline-block;
+            color: #6a6a6a;
+        }
+
+        .footer-nav {
             display: flex;
             justify-content: space-around;
-            margin-top: 30px;
-            padding: 10px 0;
-            border-radius: 15px;
-            background-color: #E7F0EF;
+            margin-top: 20px;
         }
-        .icon-bar div {
-            width: 50px;
-            height: 50px;
+
+        .footer-nav .nav-item {
+            width: 60px;
+            height: 60px;
+            background-color: #eef5f2;
             border-radius: 50%;
-            background-color: #F0F5F4;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
         }
-        .icon-bar img {
-            width: 24px;
-            height: 24px;
+
+        .footer-nav .nav-item img {
+            width: 32px;
+            height: 32px;
         }
-        .temperature-info {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .temperature-info span {
-            font-size: 24px;
-            font-weight: bold;
-            margin-right: 10px;
+
+        .footer-nav .active {
+            background-color: #a4d4b4;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <div class="card profile-section">
-            <div class="profile-image" id="profileImage">
-                <img id="profilePhoto" src="https://i.postimg.cc/2ywGszX1/IMG-4613.png" alt="User Photo" style="width: 100%; height: 100%; border-radius: 50%;">
-            </div>
-            <div class="welcome-text">
-                <h1 id="userName">Добро пожаловать, Имя пользователя!</h1>
-                <p id="dateText"></p>
-                <p id="weatherText">Загрузка погоды...</p>
-            </div>
+        <div class="profile-header">
+            <div class="profile-image"></div>
+            <div class="welcome-text">Welcome Back</div>
+            <div class="date-text">Понедельник, 6 января 2025 г.</div>
         </div>
 
-        <div class="card news-section">
-            <h2>Ваши новости</h2>
-            <p>Здесь будут отображаться важные события.</p>
+        <div class="weather-box">
+            <span class="icon">☁️</span>
+            <span>-7°C, пасмурно</span>
         </div>
 
-        <div class="card weather-section">
-            <div class="temperature-info">
-                <span id="temperature">26°C</span>
-                <img id="weatherIcon" src="" alt="Погода">
+        <div class="news-box">Ваши новости</div>
+
+        <div class="footer-nav">
+            <div class="nav-item">
+                <img src="https://via.placeholder.com/32x32?text=🗨️" alt="Chat">
             </div>
-            <p id="weatherDescription">Ясно</p>
-        </div>
-
-        <div class="icon-bar">
-            <div><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="Чат"></div>
-            <div><img src="https://cdn-icons-png.flaticon.com/512/1384/1384015.png" alt="Видео"></div>
-            <div><img src="https://cdn-icons-png.flaticon.com/512/1384/1384018.png" alt="Настройки"></div>
-            <div><img src="https://cdn-icons-png.flaticon.com/512/1384/1384016.png" alt="Домой"></div>
+            <div class="nav-item">
+                <img src="https://via.placeholder.com/32x32?text=🎥" alt="Video">
+            </div>
+            <div class="nav-item active">
+                <img src="https://via.placeholder.com/32x32?text=⚙️" alt="Settings">
+            </div>
+            <div class="nav-item">
+                <img src="https://via.placeholder.com/32x32?text=🏠" alt="Home">
+            </div>
         </div>
     </div>
-
-    <script>
-        function updateDate() {
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const formattedDate = now.toLocaleDateString('ru-RU', options);
-            document.getElementById('dateText').innerText = formattedDate;
-        }
-
-        async function fetchWeather() {
-            try {
-                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Oslo&appid=f828b5cb9dde8e05d490f23ade569731&units=metric&lang=ru`);
-                const data = await response.json();
-                const temp = Math.round(data.main.temp);
-                const description = data.weather[0].description;
-                const iconCode = data.weather[0].icon;
-                document.getElementById('temperature').innerText = `${temp}°C`;
-                document.getElementById('weatherDescription').innerText = description.charAt(0).toUpperCase() + description.slice(1);
-                document.getElementById('weatherIcon').src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-            } catch (error) {
-                document.getElementById('weatherText').innerText = 'Не удалось загрузить погоду';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            updateDate();
-            fetchWeather();
-        });
-    </script>
 </body>
+
 </html>
