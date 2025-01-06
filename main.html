@@ -1,147 +1,119 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klyo - Ваш Путеводитель</title>
+    <title>Klyo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
             font-family: 'Arial', sans-serif;
-            background-color: #fff4e6;
-            color: #3d3d3d;
+            background-color: #d7e4dc; /* Цвет фона */
         }
-
         .container {
             padding: 20px;
+            text-align: center;
         }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: #f26456;
-            color: white;
-            border-bottom-left-radius: 40px;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .circle-background {
-            position: absolute;
-            top: 20px;
-            right: -40px;
-            width: 100px;
-            height: 100px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            z-index: 1;
-        }
-
         .card {
             background-color: white;
             border-radius: 20px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            position: relative;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin: 15px 0;
         }
-
-        .card h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
+        .profile-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            margin: auto;
+            margin-bottom: 20px;
         }
-
-        .card p {
-            font-size: 16px;
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
         }
-
-        .read-btn {
-            display: inline-flex;
+        .subtitle {
+            font-size: 18px;
+            color: gray;
+            margin: 5px 0;
+        }
+        .weather {
+            display: flex;
+            justify-content: center;
             align-items: center;
-            padding: 10px 15px;
-            background-color: #f26456;
-            color: white;
+            padding: 10px;
             border-radius: 10px;
-            border: none;
-            margin-top: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            text-decoration: none;
+            background-color: #f3f3f3;
         }
-
-        .read-btn i {
-            margin-left: 5px;
+        .weather-icon {
+            font-size: 48px;
+            margin-right: 10px;
         }
-
-        .footer-nav {
+        .nav {
             display: flex;
             justify-content: space-around;
-            padding: 15px 0;
-            background-color: #f26456;
-            border-top-left-radius: 40px;
-            border-top-right-radius: 40px;
+            padding: 10px 0;
+            background-color: #c7d8d0;
+            border-radius: 20px 20px 0 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
-
-        .footer-nav a {
-            color: white;
-            font-size: 20px;
-            text-decoration: none;
-        }
-
-        .footer-nav a.active {
-            font-weight: bold;
-        }
-
-        .footer-icon {
-            font-size: 24px;
+        .nav-icon {
+            font-size: 28px;
+            color: #333;
         }
     </style>
 </head>
-
 <body>
-    <div class="circle-background"></div>
-
-    <div class="header">
-        <h1>Klyo - Ваш Путеводитель</h1>
-        <span>Меню</span>
-    </div>
 
     <div class="container">
         <div class="card">
-            <h2>История Римской империи</h2>
-            <p>Познакомьтесь с событиями великой империи, от ее становления до падения.</p>
-            <a href="#" class="read-btn">Читать <i>→</i></a>
+            <div class="profile-circle"></div>
+            <h2 class="title">Klyo — Добро пожаловать!</h2>
+            <p class="subtitle">Сегодня четверг, 29 сентября</p>
+            <p class="subtitle" id="weather">Загрузка погоды...</p>
         </div>
 
         <div class="card">
-            <h2>История Средневековья</h2>
-            <p>Узнайте о рыцарях, замках и великих битвах.</p>
-            <a href="#" class="read-btn">Читать <i>→</i></a>
+            <h3 class="title">Ваши новости</h3>
+            <p class="subtitle">Здесь будут отображаться самые важные события.</p>
         </div>
 
-        <div class="card">
-            <h2>Эпоха Возрождения</h2>
-            <p>Погрузитесь в культурное и научное развитие, которое изменило мир.</p>
-            <a href="#" class="read-btn">Читать <i>→</i></a>
+        <div class="weather card">
+            <i class="fas fa-cloud-sun weather-icon"></i>
+            <div>
+                <h3 id="temp">26°C</h3>
+                <p id="description">Ясно</p>
+            </div>
         </div>
     </div>
 
-    <nav class="footer-nav">
-        <a href="#" class="footer-icon active">🏠</a>
-        <a href="#" class="footer-icon">📜</a>
-        <a href="#" class="footer-icon">👤</a>
-    </nav>
-</body>
+    <div class="nav">
+        <i class="fas fa-comment-alt nav-icon"></i>
+        <i class="fas fa-video nav-icon"></i>
+        <i class="fas fa-cog nav-icon"></i>
+        <i class="fas fa-home nav-icon"></i>
+    </div>
 
+    <script>
+        async function getWeather() {
+            const apiKey = "f828b5cb9dde8e05d490f23ade569731";
+            const city = "Oslo"; // Задайте город
+            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ru&appid=${apiKey}`);
+            const data = await response.json();
+            const temperature = Math.round(data.main.temp);
+            const description = data.weather[0].description;
+
+            document.getElementById('weather').textContent = `Температура: ${temperature}°C, ${description}`;
+        }
+
+        getWeather();
+    </script>
+
+</body>
 </html>
