@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <title>Новогоднее поздравление</title>
-    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
     <style>
         * {
             margin: 0;
@@ -47,63 +45,37 @@
             visibility: visible;
         }
 
-        #homeScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        #leftScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        #rightScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        #profileScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        #articlesScreen {
+        #articleScreen {
             background-image: url('https://i.postimg.cc/P58Pyd2v/IMG-4641.jpg');
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 16px;
             overflow-y: auto;
         }
 
-        .message {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 24px;
-            border-radius: 12px;
-            text-align: center;
-            max-width: 90%;
-            width: 100%;
-            backdrop-filter: blur(8px);
-            margin: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
         .article-card {
-            margin: 16px;
-            padding: 16px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 20px;
             text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .article-card:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .article-image {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
+        .article-card img {
+            max-width: 100%;
             border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .article-card h2 {
+            font-size: 22px;
             margin-bottom: 12px;
+        }
+
+        .article-card p {
+            font-size: 16px;
+            line-height: 1.6;
         }
 
         .nav-buttons {
@@ -149,39 +121,18 @@
             background: rgba(255, 255, 255, 0.4);
         }
 
-        #homeBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
+        #articleBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20zm-2 15H8v-2h2v2zm0-4H8V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
             background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        #profileBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        #articlesBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .voluntary-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div id="app">
+        <!-- Существующие экраны -->
         <div id="homeScreen" class="screen active">
             <div class="message">
                 <h1>С Новым 2025 Годом!</h1>
@@ -207,4 +158,102 @@
             <div class="message">
                 <div class="social-links">
                     <a href="https://t.me/sangklasy" class="social-link" target="_blank">📱 Telegram канал</a>
-                    <a href="https://www.instagram.com
+                    <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" class="social-link" target="_blank">📷 Instagram аккаунт</a>
+                </div>
+                <p class="voluntary-text">* Подписка является полностью добровольной</p>
+            </div>
+        </div>
+
+        <!-- Новый экран статей -->
+        <div id="articleScreen" class="screen">
+            <div class="article-card">
+                <img src="/mnt/data/5A5F8F56-DA8F-44A6-8BA4-3B271872E4B8.png" alt="Фото 1">
+                <h2>Интересное событие №1</h2>
+                <p>Это статья рассказывает о важном событии, которое вдохновляет вас на новые достижения и приключения.</p>
+            </div>
+            <div class="article-card">
+                <img src="/mnt/data/1E21418B-28CD-4CA7-9251-3D4ECF59DCD6.png" alt="Фото 2">
+                <h2>Интересное событие №2</h2>
+                <p>Вдохновляющая история о людях и местах, которые оставляют яркие воспоминания.</p>
+            </div>
+            <div class="article-card">
+                <img src="/mnt/data/A10B5286-7387-4DCA-83C1-32924858FE5F.jpeg" alt="Фото 3">
+                <h2>Интересное событие №3</h2>
+                <p>Этот рассказ окунет вас в мир новых открытий и невероятных историй.</p>
+            </div>
+            <div class="article-card">
+                <img src="/mnt/data/EF650427-C841-4951-AF53-74C50C2470C0.jpeg" alt="Фото 4">
+                <h2>Интересное событие №4</h2>
+                <p>Эта статья посвящена важным моментам, которые сделали этот год особенным.</p>
+            </div>
+        </div>
+
+        <!-- Навигационные кнопки -->
+        <div class="nav-buttons">
+            <button id="leftBtn" class="nav-btn">←</button>
+            <div class="nav-center-group">
+                <button id="homeBtn" class="nav-btn"></button>
+                <button id="profileBtn" class="nav-btn"></button>
+                <button id="articleBtn" class="nav-btn"></button>
+            </div>
+            <button id="rightBtn" class="nav-btn">→</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            const screens = {
+                home: document.getElementById('homeScreen'),
+                left: document.getElementById('leftScreen'),
+                right: document.getElementById('rightScreen'),
+                profile: document.getElementById('profileScreen'),
+                article: document.getElementById('articleScreen')
+            };
+
+            const buttons = {
+                home: document.getElementById('homeBtn'),
+                left: document.getElementById('leftBtn'),
+                right: document.getElementById('rightBtn'),
+                profile: document.getElementById('profileBtn'),
+                article: document.getElementById('articleBtn')
+            };
+
+            let currentScreen = 'home';
+            let isAnimating = false;
+
+            function showScreen(screenName) {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                screens[currentScreen]?.classList.remove('active');
+                screens[screenName]?.classList.add('active');
+                currentScreen = screenName;
+
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 300);
+            }
+
+            buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.left.addEventListener('click', () => showScreen('left'));
+            buttons.right.addEventListener('click', () => showScreen('right'));
+            buttons.profile.addEventListener('click', () => showScreen('profile'));
+            buttons.article.addEventListener('click', () => showScreen('article'));
+
+            // Предзагрузка изображений статей для предотвращения задержек
+            const articleImages = [
+                '/mnt/data/5A5F8F56-DA8F-44A6-8BA4-3B271872E4B8.png',
+                '/mnt/data/1E21418B-28CD-4CA7-9251-3D4ECF59DCD6.png',
+                '/mnt/data/A10B5286-7387-4DCA-83C1-32924858FE5F.jpeg',
+                '/mnt/data/EF650427-C841-4951-AF53-74C50C2470C0.jpeg'
+            ];
+
+            articleImages.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        });
+    </script>
+</body>
+</html>
