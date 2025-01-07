@@ -1,168 +1,226 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Klyo Главная страница</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>Новогоднее поздравление</title>
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
     <style>
-        body {
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            color: black;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .header {
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        #app {
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #homeScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
+        }
+
+        #leftScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
+        }
+
+        #rightScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
+        }
+
+        #profileScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
+        }
+
+        .message {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 90%;
+            width: 100%;
+            backdrop-filter: blur(8px);
+            margin: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        p {
+            color: white;
+            font-size: 18px;
+            line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            z-index: 1000;
         }
-        .location {
-            font-size: 16px;
-        }
-        .search-bar {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            width: calc(100% - 60px);
-        }
-        .section {
-            margin: 20px 0;
-        }
-        .articles-scroll {
+
+        .nav-center-group {
             display: flex;
-            overflow-x: auto;
-            padding: 10px;
-            gap: 10px;
+            gap: 16px;
         }
-        .article-card {
-            width: 200px;
-            height: 250px;
-            border-radius: 12px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .article-card img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-        }
-        .article-card p {
-            padding: 10px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .bottom-nav {
-            display: flex;
-            justify-content: space-around;
-            padding: 10px;
-            background-color: #ffffff;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .bottom-nav button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 24px;
-        }
-        .profile-pic {
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            object-fit: cover;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        #homeBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        #profileBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .voluntary-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-
-    <div class="header">
-        <div class="location">New York, USA</div>
-        <input class="search-bar" type="text" placeholder="Search...">
-        <img class="profile-pic" src="https://via.placeholder.com/30" alt="Profile">
-    </div>
-
-    <div class="section">
-        <h3>Ближайшие статьи</h3>
-        <div class="articles-scroll" id="articles">
-            <!-- Карточки статей появятся здесь -->
-        </div>
-    </div>
-
-    <div class="section">
-        <h3>Лучшие авторы</h3>
-        <div class="articles-scroll">
-            <div class="article-card">
-                <img src="https://via.placeholder.com/200x140" alt="Author">
-                <p>Автор 1</p>
-            </div>
-            <div class="article-card">
-                <img src="https://via.placeholder.com/200x140" alt="Author">
-                <p>Автор 2</p>
-            </div>
-            <div class="article-card">
-                <img src="https://via.placeholder.com/200x140" alt="Author">
-                <p>Автор 3</p>
+    <div id="app">
+        <div id="homeScreen" class="screen active">
+            <div class="message">
+                <h1>С Новым 2025 Годом!</h1>
+                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
             </div>
         </div>
+
+        <div id="leftScreen" class="screen">
+            <div class="message">
+                <p>Старый 2024 год ушел и никогда не вернется.</p>
+                <p>Время для новых начинаний!</p>
+            </div>
+        </div>
+
+        <div id="rightScreen" class="screen">
+            <div class="message">
+                <h1>С 2025 Годом!</h1>
+                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
+            </div>
+        </div>
+
+        <div id="profileScreen" class="screen">
+            <div class="message">
+                <div class="social-links">
+                    <a href="https://t.me/sangklasy" class="social-link" target="_blank">📱 Telegram канал</a>
+                    <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" class="social-link" target="_blank">📷 Instagram аккаунт</a>
+                </div>
+                <p class="voluntary-text">* Подписка является полностью добровольной</p>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button id="leftBtn" class="nav-btn">←</button>
+            <div class="nav-center-group">
+                <button id="homeBtn" class="nav-btn"></button>
+                <button id="profileBtn" class="nav-btn"></button>
+            </div>
+            <button id="rightBtn" class="nav-btn">→</button>
+        </div>
     </div>
-
-    <div class="bottom-nav">
-        <button onclick="showHome()"><i class="fa-solid fa-house"></i></button>
-        <button><i class="fa-solid fa-heart"></i></button>
-        <button onclick="showAddArticle()"><i class="fa-solid fa-plus"></i></button>
-        <button><i class="fa-solid fa-map-marker-alt"></i></button>
-        <button onclick="showProfile()"><i class="fa-solid fa-user"></i></button>
-    </div>
-
-    <script>
-        const articles = [
-            {
-                title: "Совет дня",
-                image: "https://via.placeholder.com/200x140",
-                text: "Занимайтесь спортом каждый день!"
-            },
-            {
-                title: "Новость",
-                image: "https://via.placeholder.com/200x140",
-                text: "Обновление функций!"
-            }
-        ];
-
-        function loadArticles() {
-            const articlesContainer = document.getElementById("articles");
-            articles.forEach(article => {
-                const articleDiv = document.createElement("div");
-                articleDiv.className = "article-card";
-                articleDiv.innerHTML = `
-                    <img src="${article.image}" alt="Article Image">
-                    <p>${article.title}</p>
-                `;
-                articlesContainer.appendChild(articleDiv);
-            });
-        }
-
-        window.onload = loadArticles;
-
-        function showAddArticle() {
-            alert("Переход на экран добавления статьи...");
-        }
-
-        function showProfile() {
-            alert("Профиль открыт");
-        }
-
-        function showHome() {
-            alert("Главная страница");
-        }
-    </script>
-
 </body>
 </html>
