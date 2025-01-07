@@ -222,5 +222,44 @@
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const screens = {
+                home: document.getElementById('homeScreen'),
+                left: document.getElementById('leftScreen'),
+                right: document.getElementById('rightScreen'),
+                profile: document.getElementById('profileScreen')
+            };
+
+            const buttons = {
+                home: document.getElementById('homeBtn'),
+                left: document.getElementById('leftBtn'),
+                right: document.getElementById('rightBtn'),
+                profile: document.getElementById('profileBtn')
+            };
+
+            let currentScreen = 'home';
+            let isAnimating = false;
+
+            function showScreen(screenName) {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                screens[currentScreen].classList.remove('active');
+                screens[screenName].classList.add('active');
+                currentScreen = screenName;
+
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 300);
+            }
+
+            buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.left.addEventListener('click', () => showScreen('left'));
+            buttons.right.addEventListener('click', () => showScreen('right'));
+            buttons.profile.addEventListener('click', () => showScreen('profile'));
+        });
+    </script>
 </body>
 </html>
