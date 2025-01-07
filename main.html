@@ -162,7 +162,46 @@
                 </div>
                 <p class="voluntary-text">* Подписка является полностью добровольной</p>
             </div>
-        </div>        document.addEventListener('DOMContentLoaded', function() {
+        </div>
+
+        <!-- Новый экран статей -->
+        <div id="articleScreen" class="screen">
+            <div class="article-card">
+                <img src="/mnt/data/5A5F8F56-DA8F-44A6-8BA4-3B271872E4B8.png" alt="Фото 1">
+                <h2>Интересное событие №1</h2>
+                <p>Это статья рассказывает о важном событии, которое вдохновляет вас на новые достижения и приключения.</p>
+            </div>
+            <div class="article-card">
+                <img src="/mnt/data/1E21418B-28CD-4CA7-9251-3D4ECF59DCD6.png" alt="Фото 2">
+                <h2>Интересное событие №2</h2>
+                <p>Вдохновляющая история о людях и местах, которые оставляют яркие воспоминания.</p>
+            </div>
+            <div class="article-card">
+                <img src="/mnt/data/A10B5286-7387-4DCA-83C1-32924858FE5F.jpeg" alt="Фото 3">
+                <h2>Интересное событие №3</h2>
+                <p>Этот рассказ окунет вас в мир новых открытий и невероятных историй.</p>
+            </div>
+            <div class="article-card">
+                <img src="/mnt/data/EF650427-C841-4951-AF53-74C50C2470C0.jpeg" alt="Фото 4">
+                <h2>Интересное событие №4</h2>
+                <p>Эта статья посвящена важным моментам, которые сделали этот год особенным.</p>
+            </div>
+        </div>
+
+        <!-- Навигационные кнопки -->
+        <div class="nav-buttons">
+            <button id="leftBtn" class="nav-btn">←</button>
+            <div class="nav-center-group">
+                <button id="homeBtn" class="nav-btn"></button>
+                <button id="profileBtn" class="nav-btn"></button>
+                <button id="articleBtn" class="nav-btn"></button>
+            </div>
+            <button id="rightBtn" class="nav-btn">→</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             const screens = {
                 home: document.getElementById('homeScreen'),
                 left: document.getElementById('leftScreen'),
@@ -186,8 +225,8 @@
                 if (isAnimating) return;
                 isAnimating = true;
 
-                screens[currentScreen]?.classList.remove('active');
-                screens[screenName]?.classList.add('active');
+                screens[currentScreen].classList.remove('active');
+                screens[screenName].classList.add('active');
                 currentScreen = screenName;
 
                 setTimeout(() => {
@@ -200,22 +239,7 @@
             buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
             buttons.article.addEventListener('click', () => showScreen('article'));
-
-            // Предзагрузка изображений статей для предотвращения задержек
-            const articleImages = [
-                '/mnt/data/5A5F8F56-DA8F-44A6-8BA4-3B271872E4B8.png',
-                '/mnt/data/1E21418B-28CD-4CA7-9251-3D4ECF59DCD6.png',
-                '/mnt/data/A10B5286-7387-4DCA-83C1-32924858FE5F.jpeg',
-                '/mnt/data/EF650427-C841-4951-AF53-74C50C2470C0.jpeg'
-            ];
-
-            articleImages.forEach(src => {
-                const img = new Image();
-                img.src = src;
-            });
         });
     </script>
 </body>
 </html>
-
-
