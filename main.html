@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <title>Новогоднее поздравление</title>
+    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -38,7 +40,6 @@
             align-items: center;
             background-size: cover;
             background-position: center;
-            overflow-y: auto;
         }
 
         .screen.active {
@@ -46,211 +47,28 @@
             visibility: visible;
         }
 
-        #articleScreen {
-            background-image: url('https://i.postimg.cc/P58Pyd2v/IMG-4641.jpg');
-            padding: 16px;
+        #homeScreen,
+        #leftScreen,
+        #rightScreen,
+        #profileScreen,
+        #newsScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
         }
 
-        .article-card {
-            background: rgba(255, 255, 255, 0.8);
+        .message {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 24px;
             border-radius: 12px;
-            padding: 20px;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 16px;
-            cursor: pointer;
-        }
-
-        .article-card img {
-            max-width: 100%;
-            border-radius: 8px;
-            margin-bottom: 16px;
-        }
-
-        .article-card h2 {
-            font-size: 22px;
-            margin-bottom: 12px;
-        }
-
-        .article-card p {
-            font-size: 16px;
-            line-height: 1.6;
-        }
-
-        .full-article {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 12px;
-            padding: 20px;
             max-width: 90%;
             width: 100%;
+            backdrop-filter: blur(8px);
+            margin: 20px;
+            position: relative;
+            z-index: 2;
         }
 
-        .nav-buttons {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            z-index: 1000;
-        }
-
-        .nav-center-group {
-            display: flex;
-            gap: 16px;
-        }
-
-        .nav-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
+        h1 {
             color: white;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .nav-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        #articleBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20zm-2 15H8v-2h2v2zm0-4H8V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-    </style>
-</head>
-<body>
-    <div id="app">
-        <!-- Экраны -->
-        <div id="homeScreen" class="screen active">
-            <div class="message">
-                <h1>С Новым 2025 Годом!</h1>
-                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
-            </div>
-        </div>
-
-        <div id="leftScreen" class="screen">
-            <div class="message">
-                <p>Старый 2024 год ушел и никогда не вернется.</p>
-                <p>Время для новых начинаний!</p>
-            </div>
-        </div>
-
-        <div id="rightScreen" class="screen">
-            <div class="message">
-                <h1>С 2025 Годом!</h1>
-                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
-            </div>
-        </div>
-
-        <div id="profileScreen" class="screen">
-            <div class="message">
-                <div class="social-links">
-                    <a href="https://t.me/sangklasy" class="social-link" target="_blank">📱 Telegram канал</a>
-                    <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" class="social-link" target="_blank">📷 Instagram аккаунт</a>
-                </div>
-                <p class="voluntary-text">* Подписка является полностью добровольной</p>
-            </div>
-        </div>
-
-        <div id="articleScreen" class="screen">
-            <div class="article-card" data-title="Интересное событие №1" data-content="Это статья рассказывает о важном событии, которое вдохновляет вас на новые достижения и приключения.">
-                <img src="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png" alt="Фото 1">
-                <h2>Интересное событие №1</h2>
-                <p>Это статья рассказывает о важном событии, которое вдохновляет вас на новые достижения и приключения.</p>
-            </div>
-            <div class="article-card" data-title="Интересное событие №2" data-content="Вдохновляющая история о людях и местах, которые оставляют яркие воспоминания.">
-                <img src="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png" alt="Фото 2">
-                <h2>Интересное событие №2</h2>
-                <p>Вдохновляющая история о людях и местах, которые оставляют яркие воспоминания.</p>
-            </div>
-            <div class="article-card" data-title="Интересное событие №3" data-content="Этот рассказ окунет вас в мир новых открытий и невероятных историй.">
-                <img src="https://i.postimg.cc/FzqQHW7d/2-CE650-F3-6-ADB-4-EA4-AC00-9-AB9-CA9231-F4.png" alt="Фото 3">
-                <h2>Интересное событие №3</h2>
-                <p>Этот рассказ окунет вас в мир новых открытий и невероятных историй.</p>
-            </div>
-        </div>
-
-        <!-- Экран для полной статьи -->
-        <div id="fullArticleScreen" class="screen">
-            <div class="full-article">
-                <h2 id="fullArticleTitle">Заголовок</h2>
-                <p id="fullArticleContent">Текст статьи...</p>
-            </div>
-        </div>
-
-        <div class="nav-buttons">
-            <button id="leftBtn" class="nav-btn">←</button>
-            <div class="nav-center-group">
-                <button id="homeBtn" class="nav-btn"></button>
-                <button id="profileBtn" class="nav-btn"></button>
-                <button id="articleBtn" class="nav-btn"></button>
-            </div>
-            <button id="rightBtn" class="nav-btn">→</button>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                left: document.getElementById('leftScreen'),
-                right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen'),
-                article: document.getElementById('articleScreen'),
-                fullArticle: document.getElementById('fullArticleScreen')
-            };
-
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                left: document.getElementById('leftBtn'),
-                right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn'),
-                article: document.getElementById('articleBtn')
-            };
-
-            let currentScreen = 'home';
-
-            function showScreen(screenName) {
-                Object.values(screens).forEach(screen => screen.classList.remove('active'));
-                screens[screenName].classList.add('active');
-                currentScreen = screenName;
-            }
-
-            buttons.home.addEventListener('click', () => showScreen('home'));
-            buttons.left.addEventListener('click', () => showScreen('left'));
-            buttons.right.addEventListener('click', () => showScreen('right'));
-            buttons.profile.addEventListener('click', () => showScreen('profile'));
-            buttons.article.addEventListener('click', () => showScreen('article'));
-
-            document.querySelectorAll('.article-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    document.getElementById('fullArticleTitle').textContent = this.dataset.title;
-                    document.getElementById('fullArticleContent').textContent = this.dataset.content;
-                    showScreen('fullArticle');
-                });
-            });
-
-            document.getElementById('fullArticleScreen').addEventListener('click', () => showScreen('article'));
-        });
-    </script>
-</body>
-</html>
+            font-size: 28px;
+            margin-bottom: 
