@@ -183,8 +183,8 @@
         }
 
         #chatBtn {
-            background-image: url('https://i.postimg.cc/26sHhMs4/IMG-4767.png');
-            background-size: cover;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v14l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM4 16V4h16v8H5.17L4 13.17V16z"/></svg>');
+            background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
             background-color: rgba(255, 255, 255, 0.2);
@@ -376,10 +376,10 @@
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">
-                <button id="chatBtn" class="nav-btn"></button>
+                <button id="chatBtn" class="nav-btn"><i class="fa-solid fa-comment-nodes"></i></button>
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
-                <button id="articlesBtn" class="nav-btn"></button>
+                <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
@@ -395,7 +395,7 @@
     <div id="chatModal" class="chat-modal">
         <div class="chat-modal-content" style="background-image: url('https://i.postimg.cc/26sHhMs4/IMG-4767.png'); background-size: cover;">
             <div class="chat-header">
-                <h2>Общение с ИИ (Pae AI)</h2>
+                <h2 style="background: rgba(255, 255, 255, 0.5);">Общение с Pae AI</h2>
                 <button class="close-btn" id="closeChatModal">×</button>
             </div>
             <div class="chat-messages" id="chatMessages"></div>
@@ -444,12 +444,14 @@
                     buttons.profile.style.display = 'none';
                     buttons.articles.style.display = 'none';
                     buttons.home.style.margin = '0 auto';
+                    buttons.chat.style.display = 'none';
                 } else {
                     buttons.left.style.display = 'flex';
                     buttons.right.style.display = 'flex';
                     buttons.profile.style.display = 'flex';
                     buttons.articles.style.display = 'flex';
                     buttons.home.style.margin = '0';
+                    buttons.chat.style.display = 'flex';
                 }
 
                 currentScreen = screenName;
@@ -517,6 +519,7 @@
                     const chatMessages = document.getElementById('chatMessages');
                     const userMessage = document.createElement('div');
                     userMessage.className = 'chat-message user-message';
+                    userMessage.style.background = 'rgba(255, 255, 255, 0.5)';
                     userMessage.textContent = message;
                     chatMessages.appendChild(userMessage);
                     input.value = '';
@@ -541,6 +544,7 @@
                     .then(data => {
                         const aiMessage = document.createElement('div');
                         aiMessage.className = 'chat-message ai-message';
+                        aiMessage.style.background = 'rgba(169, 169, 169, 0.5)';
                         aiMessage.textContent = 'Ответ ИИ: ' + data.choices[0].message.content;
                         chatMessages.appendChild(aiMessage);
                     })
