@@ -85,6 +85,7 @@
         article img {
             width: 100%;
             border-radius: 8px;
+            object-fit: cover;
         }
 
         article h2 {
@@ -186,7 +187,6 @@
             background-position: center;
             background-color: rgba(255, 255, 255, 0.2);
         }
-
         .social-links {
             display: flex;
             flex-direction: column;
@@ -216,7 +216,6 @@
             color: rgba(255, 255, 255, 0.7);
             margin-top: 20px;
         }
-
         .article-modal {
             position: fixed;
             top: 0;
@@ -230,7 +229,6 @@
             padding: 20px;
             color: white;
         }
-
         .article-modal-content {
             background: white;
             color: black;
@@ -242,33 +240,40 @@
             overflow: auto;
             position: relative;
         }
-
         .close-btn {
             position: fixed;
             top: 0;
             right: 0;
-            background: white;
+            background: rgba(255, 255, 255, 0.2);
             border: none;
             font-size: 24px;
             cursor: pointer;
-            color: black;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
             display: none;
+            align-items: center;
+            justify-content: center;
         }
-
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .close-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.4);
+        }
         .article-modal img {
             max-width: 100%;
             border-radius: 8px;
         }
-
         .article-modal h2 {
             margin: 20px 0;
         }
-
         .article-modal p {
             font-size: 16px;
             color: black;
         }
-
         .article-image {
             width: 100%;
             max-width: 100%;
@@ -322,115 +327,32 @@
                     <img src="https://via.placeholder.com/300x200?text=Статья+3" alt="Статья 3">
                     <h2>Вдохновение вокруг нас</h2>
                 </article>
-                <!-- Добавить остальные статьи аналогичным образом -->
+                <article data-title="Никогда не поздно начать заново" data-text="Независимо от того, сколько раз вы начинали с нуля, каждый новый старт — это еще один шанс. Главное — верить в себя и продолжать путь. Ошибки — это часть жизни, но они не определяют наше будущее. Важно помнить, что каждый шаг приближает нас к успеху." data-img="https://via.placeholder.com/300x200?text=Статья+4">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+4" alt="Статья 4">
+                    <h2>Никогда не поздно начать заново</h2>
+                </article>
+                <article data-title="Важность маленьких шагов" data-text="Не каждый успех приходит с грандиозных действий. Иногда самые маленькие шаги — это те самые кирпичики, которые создают вашу крепость. Маленькие победы дают веру в большие достижения, поэтому не пренебрегайте мелочами." data-img="https://via.placeholder.com/300x200?text=Статья+5">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+5" alt="Статья 5">
+                    <h2>Важность маленьких шагов</h2>
+                </article>
+                <article data-title="Мотивация и её значение в повседневной жизни" data-text="Мотивация — это двигатель всех наших действий. Важно знать, что не каждый день будет легким, и в такие моменты нужно напоминать себе, почему вы начали свой путь. Найдите источники мотивации: любимая музыка, успехи других людей или ваши собственные достижения." data-img="https://via.placeholder.com/300x200?text=Статья+6">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+6" alt="Статья 6">
+                    <h2>Мотивация и её значение в повседневной жизни</h2>
+                </article>
+                <article data-title="Принятие себя и своих ошибок" data-text="Совершать ошибки — это нормально. Важно научиться прощать себя и двигаться дальше. Принятие своих слабостей и осознание своей силы — это шаг к внутренней гармонии и свободе. Путь к принятию себя начинается с любви и заботы о себе." data-img="https://via.placeholder.com/300x200?text=Статья+7">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+7" alt="Статья 7">
+                    <h2>Принятие себя и своих ошибок</h2>
+                </article>
+                <article data-title="Почему отдых — это тоже часть успеха" data-text="Отдых — это не лень, а часть успешного пути. В современном мире многие забывают о важности восстановления сил. Но без отдыха невозможно достичь максимальной продуктивности. Дайте себе время перезарядиться, чтобы двигаться вперед с новой энергией." data-img="https://via.placeholder.com/300x200?text=Статья+8">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+8" alt="Статья 8">
+                    <h2>Почему отдых — это тоже часть успеха</h2>
+                </article>
+                <article data-title="Влияние окружения на наши достижения" data-text="Люди и события, которые нас окружают, могут либо мотивировать нас, либо сдерживать. Важно находить тех, кто поддерживает и вдохновляет. Создайте вокруг себя атмосферу, в которой ваши цели будут расти и развиваться." data-img="https://via.placeholder.com/300x200?text=Статья+9">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+9" alt="Статья 9">
+                    <h2>Влияние окружения на наши достижения</h2>
+                </article>
+                <article data-title="Смелость делать первый шаг" data-text="Самое сложное — это сделать первый шаг навстречу неизвестности. Страх перед провалом может парализовать, но каждый первый шаг — это уже успех. Доверьтесь своим инстинктам и знайте: даже маленькое действие способно изменить всё." data-img="https://via.placeholder.com/300x200?text=Статья+10">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+10" alt="Статья 10">
+                    <h2>Смелость делать первый шаг</h2>
+                </article>
             </div>
-        </div>
-
-        <div class="nav-buttons">
-            <button id="leftBtn" class="nav-btn">←</button>
-            <div class="nav-center-group">
-                <button id="homeBtn" class="nav-btn"></button>
-                <button id="profileBtn" class="nav-btn"></button>
-                <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
-            </div>
-            <button id="rightBtn" class="nav-btn">→</button>
-        </div>
-    </div>
-
-    <div id="articleModal" class="article-modal">
-        <div class="article-modal-content">
-            <button class="close-btn" id="closeArticleModal">×</button>
-            <img id="modalImage" src="" alt="Article Image" class="article-image">
-            <h2 id="modalTitle"></h2>
-            <p id="modalText"></p>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                left: document.getElementById('leftScreen'),
-                right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen'),
-                articles: document.getElementById('articlesScreen'),
-            };
-
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                left: document.getElementById('leftBtn'),
-                right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn'),
-                articles: document.getElementById('articlesBtn'),
-                close: document.getElementById('closeArticleModal')
-            };
-
-            let currentScreen = 'home';
-            let isAnimating = false;
-
-            function showScreen(screenName) {
-                if (isAnimating) return;
-                isAnimating = true;
-
-                screens[currentScreen].classList.remove('active');
-                screens[screenName].classList.add('active');
-
-                if (screenName === 'articles') {
-                    buttons.left.style.display = 'none';
-                    buttons.right.style.display = 'none';
-                    buttons.profile.style.display = 'none';
-                    buttons.articles.style.display = 'none';
-                    buttons.home.style.margin = '0 auto';
-                } else {
-                    buttons.left.style.display = 'flex';
-                    buttons.right.style.display = 'flex';
-                    buttons.profile.style.display = 'flex';
-                    buttons.articles.style.display = 'flex';
-                    buttons.home.style.margin = '0';
-                }
-
-                currentScreen = screenName;
-
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 300);
-            }
-
-            function showArticleDetail(title, text, imgSrc) {
-                const modal = document.getElementById('articleModal');
-                document.getElementById('modalTitle').textContent = title;
-                document.getElementById('modalText').textContent = text;
-                document.getElementById('modalImage').src = imgSrc;
-
-                modal.style.display = 'flex';
-                setTimeout(() => {
-                    buttons.close.style.display = 'block';
-                }, 2000);
-            }
-
-            function hideArticleDetail() {
-                const modal = document.getElementById('articleModal');
-                modal.style.display = 'none';
-                buttons.close.style.display = 'none';
-                showScreen('articles');
-            }
-
-            buttons.home.addEventListener('click', () => showScreen('home'));
-            buttons.left.addEventListener('click', () => showScreen('left'));
-            buttons.right.addEventListener('click', () => showScreen('right'));
-            buttons.profile.addEventListener('click', () => showScreen('profile'));
-            buttons.articles.addEventListener('click', () => showScreen('articles'));
-            buttons.close.addEventListener('click', hideArticleDetail);
-
-            document.querySelectorAll('#articlesScreen article').forEach(article => {
-                article.addEventListener('click', () => {
-                    const title = article.getAttribute('data-title');
-                    const text = article.getAttribute('data-text');
-                    const imgSrc = article.getAttribute('data-img');
-                    showArticleDetail(title, text, imgSrc);
-                });
-            });
-        });
-    </script>
-</body>
-</html>
