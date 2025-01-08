@@ -6,7 +6,7 @@
     <meta name="format-detection" content="telephone=no">
     <title>Новогоднее поздравление</title>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
         * {
@@ -121,42 +121,49 @@
             background: rgba(255, 255, 255, 0.4);
         }
 
-        .articles {
-            padding: 16px;
+        .articles-screen {
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
             overflow-y: auto;
-            height: calc(100vh - 100px);
+            padding: 20px;
         }
 
         .article-card {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 8px;
             margin-bottom: 16px;
-            color: white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            cursor: pointer;
+        }
+
+        .article-card:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .article-title {
             font-size: 20px;
+            font-weight: bold;
             margin-bottom: 8px;
         }
 
         .article-content {
-            font-size: 16px;
-            line-height: 1.5;
+            display: none;
         }
 
         .close-btn {
             position: absolute;
             top: 16px;
             right: 16px;
-            font-size: 18px;
             color: white;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
             display: none;
         }
 
-        .active .close-btn {
+        .close-btn.show {
             display: block;
         }
     </style>
@@ -170,69 +177,66 @@
             </div>
         </div>
 
-        <div id="articleScreen" class="screen">
-            <div class="articles">
-                <div class="article-card">
-                    <i class="fa-solid fa-newspaper"></i>
+        <div id="articlesScreen" class="screen">
+            <button class="close-btn" id="closeArticle">X</button>
+            <div id="articleList">
+                <!-- Статьи -->
+                <div class="article-card" data-title="Вдохновляющий момент из жизни." data-content="Этот снимок захватывает уникальное мгновение...">
                     <h2 class="article-title">Вдохновляющий момент из жизни.</h2>
-                    <p class="article-content">Этот снимок захватывает уникальное мгновение, когда мир вокруг нас кажется полным возможностей...</p>
+                    <p>Этот снимок захватывает уникальное мгновение...</p>
                 </div>
-                <div class="article-card">
-                    <i class="fa-solid fa-newspaper"></i>
+                <div class="article-card" data-title="Цвета природы." data-content="Природа всегда готова удивлять нас своими красками...">
                     <h2 class="article-title">Цвета природы.</h2>
-                    <p class="article-content">Природа всегда готова удивлять нас своими яркими красками и невообразимой гармонией...</p>
+                    <p>Природа всегда готова удивлять...</p>
                 </div>
-                <div class="article-card">
-                    <i class="fa-solid fa-newspaper"></i>
-                    <h2 class="article-title">Современные технологии и природа.</h2>
-                    <p class="article-content">Слияние технологий и природы — это не просто тренд, это будущее...</p>
-                </div>
-                <div class="article-card">
-                    <i class="fa-solid fa-newspaper"></i>
-                    <h2 class="article-title">Момент тишины.</h2>
-                    <p class="article-content">Иногда самое ценное — это моменты тишины, когда все вокруг затихает...</p>
-                </div>
-                <div class="article-card">
-                    <i class="fa-solid fa-newspaper"></i>
-                    <h2 class="article-title">Динамика города.</h2>
-                    <p class="article-content">Город — это всегда движение, потоки людей, транспорта и световых огней...</p>
-                </div>
+                <!-- Добавьте остальные 8 статей -->
             </div>
         </div>
 
         <div class="nav-buttons">
-            <button id="leftBtn" class="nav-btn">←</button>
-            <div class="nav-center-group">
-                <button id="homeBtn" class="nav-btn"></button>
-                <button id="articleBtn" class="nav-btn">
-                    <i class="fa-solid fa-newspaper"></i>
-                </button>
-                <button id="profileBtn" class="nav-btn"></button>
-            </div>
-            <button id="rightBtn" class="nav-btn">→</button>
+            <button id="homeBtn" class="nav-btn">🏠</button>
+            <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
+            <button id="profileBtn" class="nav-btn">👤</button>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const screens = {
                 home: document.getElementById('homeScreen'),
-                article: document.getElementById('articleScreen'),
+                articles: document.getElementById('articlesScreen')
             };
 
             const buttons = {
                 home: document.getElementById('homeBtn'),
-                article: document.getElementById('articleBtn'),
+                articles: document.getElementById('articlesBtn')
             };
 
-            let currentScreen = 'home';
-            function showScreen(screenName) {
-                Object.values(screens).forEach(screen => screen.classList.remove('active'));
-                screens[screenName].classList.add('active');
-            }
+            buttons.home.addEventListener('click', () => {
+                screens.articles.classList.remove('active');
+                screens.home.classList.add('active');
+            });
 
-            buttons.home.addEventListener('click', () => showScreen('home'));
-            buttons.article.addEventListener('click', () => showScreen('article'));
+            buttons.articles.addEventListener('click', () => {
+                screens.home.classList.remove('active');
+                screens.articles.classList.add('active');
+            });
+
+            const articleCards = document.querySelectorAll('.article-card');
+            const closeArticleBtn = document.getElementById('closeArticle');
+
+            articleCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const title = card.getAttribute('data-title');
+                    const content = card.getAttribute('data-content');
+                    alert(`${title}\n${content}`);
+                });
+            });
+
+            closeArticleBtn.addEventListener('click', () => {
+                screens.articles.classList.remove('active');
+                screens.home.classList.add('active');
+            });
         });
     </script>
 </body>
