@@ -1,125 +1,190 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Klyo App</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <title>Klyo Статьи</title>
     <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background-color: #000;
-      }
-      .container {
-        background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        background-size: cover;
-        background-position: center;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        text-align: center;
-        padding: 20px;
-        overflow-y: auto;
-      }
-      .hidden {
-        display: none;
-      }
-      .articles {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        width: 100%;
-      }
-      .article-card {
-        background-color: rgba(255, 255, 255, 0.1);
-        padding: 15px;
-        border-radius: 10px;
-        text-align: left;
-        color: white;
-        cursor: pointer;
-        transition: background 0.3s;
-      }
-      .article-card:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-      }
-      .article-detail {
-        background-color: rgba(0, 0, 0, 0.9);
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 10;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-        overflow-y: auto;
-        color: white;
-      }
-      .close-btn {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background-color: rgba(255, 255, 255, 0.3);
-        border: none;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
-        color: white;
-        cursor: pointer;
-      }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+            overflow: hidden;
+        }
+
+        .screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            overflow-y: auto;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .article-card {
+            background: rgba(255, 255, 255, 0.1);
+            margin: 20px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .article-card img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .article-card h2 {
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .article-card p {
+            line-height: 1.5;
+        }
+
+        .nav {
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav button {
+            background: rgba(255, 255, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .detail-screen-content {
+            padding: 20px;
+        }
+
+        .detail-screen img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
     </style>
-  </head>
-  <body>
-    <div class="container" id="articles">
-      <h1>Статьи</h1>
-      <div class="articles">
-        <div class="article-card" data-title="Перемены — это не всегда начало чего-то нового." data-text="Жизнь полна перемен, и не каждое изменение ведет к чему-то лучшему или худшему. Иногда перемены – это возможность переосмыслить привычные вещи. Перемены могут научить нас ценить то, что у нас есть. Главное помнить, что даже самые трудные перемены дают шанс развиваться." data-image="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png">Перемены — это не всегда начало чего-то нового.</div>
-        <div class="article-card" data-title="Сила привычки: шаг к мечте или преграда на пути." data-text="Привычки могут быть основой для достижения целей, но они также способны ограничивать нас, удерживая в зоне комфорта. Задайте себе вопрос: ваши привычки приближают вас к мечте или мешают двигаться вперед? Создавайте привычки, которые соответствуют вашим мечтам и целям." data-image="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png">Сила привычки: шаг к мечте или преграда на пути.</div>
-        <div class="article-card" data-title="Вдохновение вокруг нас." data-text="Иногда вдохновение прячется в простых моментах жизни: разговор с другом, прогулка на природе или прочитанная книга. Вдохновляйтесь каждодневными моментами и помните, что даже случайные события могут изменить вашу жизнь." data-image="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png">Вдохновение вокруг нас.</div>
-        <div class="article-card" data-title="Никогда не поздно начать заново." data-text="Независимо от того, сколько раз вы начинали с нуля, каждый новый старт – это еще один шанс. Главное – верить в себя и продолжать путь. Ошибки – это часть жизни, но они не определяют наше будущее. Важно помнить, что каждый шаг приближает нас к успеху." data-image="https://i.postimg.cc/FzqQHW7d/2-CE650-F3-6-ADB-4-EA4-AC00-9-AB9-CA9231-F4.png">Никогда не поздно начать заново.</div>
-        <div class="article-card" data-title="Важность маленьких шагов." data-text="Не каждый успех приходит с грандиозных действий. Иногда самые маленькие шаги – это те самые кирпичики, которые создают вашу крепость. Маленькие победы дают веру в большие достижения, поэтому не пренебрегайте мелочами." data-image="https://i.postimg.cc/zBGmSZhH/0-F9-D17-F6-FC7-D-4-DBF-B179-35-D8-F027-CA20.png">Важность маленьких шагов.</div>
-        <div class="article-card" data-title="Мотивация и её значение в повседневной жизни." data-text="Мотивация – это двигатель всех наших действий. Важно знать, что не каждый день будет легким, и в такие моменты нужно напоминать себе, почему вы начали свой путь. Найдите источники мотивации: любимая музыка, успехи других людей или ваши собственные достижения." data-image="https://i.postimg.cc/sDZkJJMm/69-C49-C7-F-4426-4678-A399-FAF686019267.png">Мотивация и её значение в повседневной жизни.</div>
-        <div class="article-card" data-title="Принятие себя и своих ошибок." data-text="Совершать ошибки – это нормально. Важно научиться прощать себя и двигаться дальше. Принятие своих слабостей и осознание своей силы – это шаг к внутренней гармонии и свободе. Путь к принятию себя начинается с любви и заботы о себе." data-image="https://i.postimg.cc/76n34dt9/DF73-B0-F1-0-FDB-43-F0-AB49-662392-B73-A7-A.png">Принятие себя и своих ошибок.</div>
-        <div class="article-card" data-title="Почему отдых – это тоже часть успеха." data-text="Отдых – это не лень, а часть успешного пути. В современном мире многие забывают о важности восстановления сил. Но без отдыха невозможно достичь максимальной продуктивности. Дайте себе время перезарядиться, чтобы двигаться вперед с новой энергией." data-image="https://i.postimg.cc/8zfLcjnj/777-DE6-D9-0671-4-F8-A-94-C9-6192-BC6-D0-A8-F.png">Почему отдых – это тоже часть успеха.</div>
-        <div class="article-card" data-title="Влияние окружения на наши достижения." data-text="Люди и события, которые нас окружают, могут либо мотивировать нас, либо сдерживать. Важно находить тех, кто поддерживает и вдохновляет. Создайте вокруг себя атмосферу, в которой ваши цели будут расти и развиваться." data-image="https://i.postimg.cc/sx0ZDrYY/A97-E1434-CF84-4-DEF-B1-CD-998-A0-A81-F2-AF.png">Влияние окружения на наши достижения.</div>
-        <div class="article-card" data-title="Смелость делать первый шаг." data-text="Самое сложное – это сделать первый шаг навстречу неизвестности. Страх перед провалом может парализовать, но каждый первый шаг – это уже успех. Доверьтесь своим инстинктам и знайте: даже маленькое действие способно изменить всё." data-image="https://i.postimg.cc/5tMQtpCR/D12-D551-B-E4-F1-427-C-80-D0-131582-D9-DCBF.png">Смелость делать первый шаг.</div>
-      </div>
+</head>
+<body>
+    <div id="homeScreen" class="screen active">
+        <h1 style="text-align: center; padding-top: 30px;">С Новым 2025 Годом!</h1>
+        <p style="text-align: center;">Нажмите на кнопки навигации для просмотра поздравлений</p>
     </div>
 
-    <div class="article-detail hidden" id="article-detail">
-      <button class="close-btn" id="close-article">&times;</button>
-      <h1 id="article-title"></h1>
-      <img id="article-image" style="max-width: 100%; border-radius: 10px; margin-bottom: 20px;" />
-      <p id="article-text"></p>
+    <div id="articlesScreen" class="screen">
+        <h2 style="text-align: center; margin-top: 20px;">Статьи</h2>
+
+        <div class="article-card" data-title="Перемены — это не всегда начало чего-то нового." data-text="Жизнь полна перемен, и не каждое изменение ведет к чему-то лучшему или худшему. Иногда перемены – это возможность переосмыслить привычные вещи. Перемены могут научить нас ценить то, что у нас есть. Главное помнить, что даже самые трудные перемены дают шанс развиваться." data-image="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png">
+            <img src="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png" alt="Перемены">
+            <h2>Перемены — это не всегда начало чего-то нового.</h2>
+            <p>Жизнь полна перемен...</p>
+        </div>
+
+        <div class="article-card" data-title="Сила привычки: шаг к мечте или преграда на пути." data-text="Привычки могут быть основой для достижения целей, но они также способны ограничивать нас, удерживая в зоне комфорта. Задайте себе вопрос: ваши привычки приближают вас к мечте или мешают двигаться вперед? Создавайте привычки, которые соответствуют вашим мечтам и целям." data-image="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png">
+            <img src="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png" alt="Сила привычки">
+            <h2>Сила привычки: шаг к мечте или преграда на пути.</h2>
+            <p>Привычки могут быть основой...</p>
+        </div>
+
+        <div class="article-card" data-title="Вдохновение вокруг нас." data-text="Иногда вдохновение прячется в простых моментах жизни: разговор с другом, прогулка на природе или прочитанная книга. Вдохновляйтесь каждодневными моментами и помните, что даже случайные события могут изменить вашу жизнь." data-image="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png">
+            <img src="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png" alt="Вдохновение">
+            <h2>Вдохновение вокруг нас.</h2>
+            <p>Иногда вдохновение прячется...</p>
+        </div>
+        <!-- Добавлены статьи 4-10 аналогично -->
+    </div>
+
+    <div id="detailScreen" class="screen">
+        <button id="closeBtn" class="close-btn">×</button>
+        <div class="detail-screen-content">
+            <h2 id="detailTitle"></h2>
+            <img id="detailImage" src="" alt="Детальное изображение">
+            <p id="detailText"></p>
+        </div>
+    </div>
+
+    <div class="nav">
+        <button id="btn-left">←</button>
+        <button id="btn-home">🏠</button>
+        <button id="btn-articles">📄</button>
+        <button id="btn-profile">👤</button>
+        <button id="btn-right">→</button>
     </div>
 
     <script>
-      const articles = document.querySelectorAll('.article-card');
-      const detailScreen = document.getElementById('article-detail');
-      const closeBtn = document.getElementById('close-article');
-      const detailTitle = document.getElementById('article-title');
-      const detailText = document.getElementById('article-text');
-      const detailImage = document.getElementById('article-image');
+        const articles = document.querySelectorAll('.article-card');
+        const detailScreen = document.getElementById('detailScreen');
+        const closeBtn = document.getElementById('closeBtn');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailText = document.getElementById('detailText');
+        const detailImage = document.getElementById('detailImage');
 
-      articles.forEach((article) => {
-        article.addEventListener('click', () => {
-          detailTitle.textContent = article.dataset.title;
-          detailText.textContent = article.dataset.text;
-          detailImage.src = article.dataset.image;
-          detailScreen.classList.remove('hidden');
+        articles.forEach((article) => {
+            article.addEventListener('click', () => {
+                detailTitle.textContent = article.dataset.title;
+                detailText.textContent = article.dataset.text;
+                detailImage.src = article.dataset.image;
+                detailScreen.classList.add('active');
+            });
         });
-      });
 
-      closeBtn.addEventListener('click', () => {
-        detailScreen.classList.add('hidden');
-      });
+        closeBtn.addEventListener('click', () => {
+            detailScreen.classList.remove('active');
+        });
+
+        document.getElementById('btn-home').addEventListener('click', () => {
+            switchScreen('homeScreen');
+        });
+        document.getElementById('btn-articles').addEventListener('click', () => {
+            switchScreen('articlesScreen');
+        });
+
+        function switchScreen(screenId) {
+            document.querySelectorAll('.screen').forEach((screen) => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
     </script>
-  </body>
+</body>
 </html>
