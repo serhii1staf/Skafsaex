@@ -3,218 +3,204 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Klyo Mini-App</title>
+    <title>Klyo App</title>
     <style>
       body {
         margin: 0;
-        padding: 0;
         font-family: Arial, sans-serif;
-        background: url('https://example.com/background-image.jpg') no-repeat center center fixed;
+        background-color: #000;
+      }
+      .container {
+        background-image: url('https://example.com/brick-wall.jpg');
         background-size: cover;
-        color: white;
-        overflow: hidden;
-      }
-
-      .screen {
-        display: none;
+        background-position: center;
         height: 100vh;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-      }
-
-      .screen.active {
-        display: flex;
-      }
-
-      .header {
-        font-size: 24px;
-        font-weight: bold;
-      }
-
-      .subheader {
-        margin-top: 10px;
-        font-size: 18px;
-      }
-
-      .card-container {
         display: flex;
         flex-direction: column;
-        gap: 15px;
-        padding: 20px;
-        overflow-y: auto;
-      }
-
-      .card {
-        background: rgba(0, 0, 0, 0.6);
-        border-radius: 12px;
-        padding: 20px;
+        justify-content: center;
+        align-items: center;
+        color: white;
         text-align: center;
+        padding: 20px;
       }
-
-      .card img {
-        max-width: 100%;
-        border-radius: 10px;
+      .content {
+        margin-bottom: 20px;
       }
-
-      .card-title {
-        font-size: 20px;
-        margin-bottom: 10px;
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 400px;
+        position: absolute;
+        bottom: 10px;
       }
-
-      .card-description {
-        font-size: 16px;
+      .nav button {
+        width: 60px;
+        height: 60px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
       }
-
-      .article-modal {
+      .hidden {
         display: none;
+      }
+      .articles {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+      }
+      .article-card {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        width: calc(50% - 20px);
+        text-align: left;
+        color: white;
+        cursor: pointer;
+      }
+      .article-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      .article-description {
+        font-size: 0.9rem;
+        margin-top: 5px;
+      }
+      .article-detail {
+        background-color: rgba(0, 0, 0, 0.8);
         position: fixed;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.9);
-        padding: 20px;
-        box-sizing: border-box;
-        overflow-y: auto;
+        width: 100%;
+        height: 100%;
         z-index: 10;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
       }
-
-      .article-modal.active {
-        display: block;
-      }
-
       .close-btn {
         position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 24px;
-        cursor: pointer;
-        color: white;
-      }
-
-      .nav {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        display: flex;
-        justify-content: space-around;
-        padding: 10px 0;
-        background: rgba(0, 0, 0, 0.5);
-      }
-
-      .nav button {
-        background: transparent;
+        top: 20px;
+        right: 20px;
+        background-color: rgba(255, 255, 255, 0.3);
         border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
         color: white;
-        font-size: 20px;
         cursor: pointer;
-      }
-
-      .nav button.active {
-        color: yellow;
-      }
-
-      .nav-icons {
-        font-size: 24px;
       }
     </style>
   </head>
   <body>
-    <div id="home" class="screen active">
-      <div>
-        <div class="header">С Новым 2025 Годом!</div>
-        <div class="subheader">Нажмите на кнопки навигации для просмотра поздравлений</div>
+    <div class="container" id="main">
+      <div class="content">
+        <h1>С Новым 2025 Годом!</h1>
+        <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
       </div>
     </div>
 
-    <div id="left" class="screen">
-      <div>
-        <div class="header">Старый 2024 год ушел и никогда не вернется.</div>
-        <div class="subheader">Время для новых начинаний!</div>
+    <div class="container hidden" id="left">
+      <div class="content">
+        <p>Старый 2024 год ушел и никогда не вернется.<br />Время для новых начинаний!</p>
       </div>
     </div>
 
-    <div id="right" class="screen">
-      <div>
-        <div class="header">С 2025 Годом!</div>
-        <div class="subheader">Пусть этот год принесет много радости, счастья и успехов!</div>
+    <div class="container hidden" id="right">
+      <div class="content">
+        <h1>С 2025 Годом!</h1>
+        <p>Пусть этот год принесет много радости, счастья и успехов!</p>
       </div>
     </div>
 
-    <div id="profile" class="screen">
-      <div>
-        <div class="header">Социальные ссылки</div>
-        <p>📱 <a href="#">Telegram канал</a></p>
-        <p>📷 <a href="#">Instagram аккаунт</a></p>
+    <div class="container hidden" id="profile">
+      <div class="content">
+        <p>📱 Telegram канал</p>
+        <p>📸 Instagram аккаунт</p>
         <p>* Подписка является полностью добровольной</p>
       </div>
     </div>
 
-    <div id="articles" class="screen">
-      <div class="card-container">
-        <div class="card">
-          <img src="https://example.com/article1.jpg" alt="Статья 1" />
-          <div class="card-title">Интересное событие №1</div>
-          <div class="card-description">Описание первого события. Подробнее читайте ниже!</div>
+    <div class="container hidden" id="articles">
+      <div class="articles">
+        <div class="article-card" data-title="Событие №1" data-description="Описание первого события" data-image="https://example.com/image1.jpg">
+          <div class="article-title">Интересное событие №1</div>
+          <div class="article-description">Описание первого события. Подробнее читайте ниже!</div>
         </div>
-
-        <div class="card">
-          <img src="https://example.com/article2.jpg" alt="Статья 2" />
-          <div class="card-title">Интересное событие №2</div>
-          <div class="card-description">Описание второго события с увлекательными деталями!</div>
+        <div class="article-card" data-title="Событие №2" data-description="Описание второго события" data-image="https://example.com/image2.jpg">
+          <div class="article-title">Интересное событие №2</div>
+          <div class="article-description">Описание второго события с увлекательными деталями!</div>
         </div>
-        <!-- Повторить для других статей -->
       </div>
     </div>
 
-    <div class="article-modal" id="article-modal">
-      <span class="close-btn">✖</span>
-      <h2 id="article-title">Заголовок статьи</h2>
-      <img id="article-image" src="" alt="" />
-      <p id="article-text">Текст статьи...</p>
+    <div class="article-detail hidden" id="article-detail">
+      <button class="close-btn" id="close-article">&times;</button>
+      <h1 id="article-title"></h1>
+      <img id="article-image" style="max-width: 100%; border-radius: 10px;" />
+      <p id="article-text"></p>
     </div>
 
     <div class="nav">
-      <button class="nav-btn" data-target="left">⬅</button>
-      <button class="nav-btn active" data-target="home">🏠</button>
-      <button class="nav-btn" data-target="articles">📄</button>
-      <button class="nav-btn" data-target="profile">👤</button>
-      <button class="nav-btn" data-target="right">➡</button>
+      <button id="btn-left">⟵</button>
+      <button id="btn-home">🏠</button>
+      <button id="btn-articles">📰</button>
+      <button id="btn-profile">👤</button>
+      <button id="btn-right">⟶</button>
     </div>
 
     <script>
-      const screens = document.querySelectorAll(".screen");
-      const buttons = document.querySelectorAll(".nav-btn");
-      const articleCards = document.querySelectorAll(".card");
-      const modal = document.getElementById("article-modal");
-      const closeModal = document.querySelector(".close-btn");
-      const articleTitle = document.getElementById("article-title");
-      const articleText = document.getElementById("article-text");
-      const articleImage = document.getElementById("article-image");
+      const screens = {
+        main: document.getElementById('main'),
+        left: document.getElementById('left'),
+        right: document.getElementById('right'),
+        profile: document.getElementById('profile'),
+        articles: document.getElementById('articles'),
+        articleDetail: document.getElementById('article-detail')
+      };
 
-      buttons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const target = btn.getAttribute("data-target");
-          screens.forEach((screen) => screen.classList.remove("active"));
-          document.getElementById(target).classList.add("active");
-          buttons.forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-        });
-      });
+      const buttons = {
+        left: document.getElementById('btn-left'),
+        home: document.getElementById('btn-home'),
+        articles: document.getElementById('btn-articles'),
+        profile: document.getElementById('btn-profile'),
+        right: document.getElementById('btn-right')
+      };
+
+      const articleCards = document.querySelectorAll('.article-card');
+      const articleTitle = document.getElementById('article-title');
+      const articleText = document.getElementById('article-text');
+      const articleImage = document.getElementById('article-image');
+      const closeArticle = document.getElementById('close-article');
+
+      function showScreen(screen) {
+        for (let key in screens) {
+          screens[key].classList.add('hidden');
+        }
+        screens[screen].classList.remove('hidden');
+      }
+
+      buttons.left.addEventListener('click', () => showScreen('left'));
+      buttons.home.addEventListener('click', () => showScreen('main'));
+      buttons.articles.addEventListener('click', () => showScreen('articles'));
+      buttons.profile.addEventListener('click', () => showScreen('profile'));
+      buttons.right.addEventListener('click', () => showScreen('right'));
 
       articleCards.forEach((card) => {
-        card.addEventListener("click", () => {
-          articleTitle.textContent = card.querySelector(".card-title").textContent;
-          articleText.textContent = "Полное описание статьи. Пример текста и подробности о событии.";
-          articleImage.src = card.querySelector("img").src;
-          modal.classList.add("active");
+        card.addEventListener('click', () => {
+          articleTitle.textContent = card.dataset.title;
+          articleText.textContent = card.dataset.description;
+          articleImage.src = card.dataset.image;
+          showScreen('articleDetail');
         });
       });
 
-      closeModal.addEventListener("click", () => {
-        modal.classList.remove("active");
-      });
+      closeArticle.addEventListener('click', () => showScreen('articles'));
     </script>
   </body>
 </html>
