@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <title>Новогоднее поздравление</title>
-
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
             margin: 0;
@@ -19,7 +18,6 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             overflow: hidden;
-            background-color: #000;
         }
 
         #app {
@@ -122,52 +120,20 @@
             background: rgba(255, 255, 255, 0.4);
         }
 
-        .articles-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            padding: 20px;
-            width: 100%;
-            max-width: 500px;
+        #homeBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
-        .article-card {
-            background: rgba(255, 255, 255, 0.3);
-            padding: 16px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s;
-            cursor: pointer;
-        }
-
-        .article-card:hover {
-            transform: translateY(-4px);
-        }
-
-        .article-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: white;
-        }
-
-        .article-description {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .article-detail {
-            background-color: rgba(0, 0, 0, 0.8);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+        #profileBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         .close-btn {
@@ -182,27 +148,11 @@
             font-size: 1.5rem;
             color: white;
             cursor: pointer;
+            display: none; /* Скрываем кнопку крестика по умолчанию */
         }
 
-        #homeBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        #profileBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        #articlesBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M4 4h16v2H4V4zm0 6h16v2H4v-2zm0 6h10v2H4v-2z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
+        .show-close-btn .close-btn {
+            display: block; /* Показываем кнопку только на экране статей */
         }
     </style>
 </head>
@@ -240,33 +190,22 @@
         </div>
 
         <div id="articlesScreen" class="screen">
-            <div class="articles-container">
-                <div class="article-card" data-title="Перемены" data-description="Полное описание статьи о переменах">
-                    <div class="article-title">Перемены — это не всегда начало чего-то нового.</div>
-                    <div class="article-description">Короткое описание статьи.</div>
-                </div>
-                <div class="article-card" data-title="Маленькие шаги" data-description="Полное описание статьи о маленьких шагах">
-                    <div class="article-title">О важности маленьких шагов к мечте.</div>
-                    <div class="article-description">Короткое описание статьи.</div>
-                </div>
-                <div class="article-card" data-title="Новый день" data-description="Полное описание статьи о новых возможностях">
-                    <div class="article-title">Каждый день — возможность узнать что-то новое.</div>
-                    <div class="article-description">Короткое описание статьи.</div>
-                </div>
+            <button class="close-btn" id="closeBtn">&times;</button>
+            <div class="message">
+                <h1>Статьи</h1>
+                <p>Перемены — это не всегда начало чего-то нового.</p>
+                <p>О важности маленьких шагов к мечте.</p>
+                <p>Каждый день — возможность узнать что-то новое.</p>
             </div>
-        </div>
-
-        <div class="article-detail hidden" id="articleDetail">
-            <button class="close-btn" id="closeArticle">&times;</button>
-            <h1 id="articleTitle"></h1>
-            <p id="articleText"></p>
         </div>
 
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">
                 <button id="homeBtn" class="nav-btn"></button>
-                <button id="articlesBtn" class="nav-btn"></button>
+                <button id="articlesBtn" class="nav-btn">
+                    <i class="fa-solid fa-newspaper"></i>
+                </button>
                 <button id="profileBtn" class="nav-btn"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
@@ -280,8 +219,7 @@
                 left: document.getElementById('leftScreen'),
                 right: document.getElementById('rightScreen'),
                 profile: document.getElementById('profileScreen'),
-                articles: document.getElementById('articlesScreen'),
-                articleDetail: document.getElementById('articleDetail')
+                articles: document.getElementById('articlesScreen')
             };
 
             const buttons = {
@@ -292,33 +230,29 @@
                 articles: document.getElementById('articlesBtn')
             };
 
-            const articleCards = document.querySelectorAll('.article-card');
-            const articleTitle = document.getElementById('articleTitle');
-            const articleText = document.getElementById('articleText');
-            const closeArticle = document.getElementById('closeArticle');
+            const closeBtn = document.getElementById('closeBtn');
 
-            function showScreen(screen) {
+            let currentScreen = 'home';
+
+            function showScreen(screenName) {
                 for (let key in screens) {
                     screens[key].classList.add('hidden');
+                    screens[key].classList.remove('show-close-btn');
                 }
-                screens[screen].classList.remove('hidden');
+                screens[screenName].classList.remove('hidden');
+                currentScreen = screenName;
+                if (screenName === 'articles') {
+                    screens[screenName].classList.add('show-close-btn');
+                }
             }
 
-            buttons.left.addEventListener('click', () => showScreen('left'));
             buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.left.addEventListener('click', () => showScreen('left'));
             buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
             buttons.articles.addEventListener('click', () => showScreen('articles'));
 
-            articleCards.forEach((card) => {
-                card.addEventListener('click', () => {
-                    articleTitle.textContent = card.dataset.title;
-                    articleText.textContent = card.dataset.description;
-                    showScreen('articleDetail');
-                });
-            });
-
-            closeArticle.addEventListener('click', () => showScreen('articles'));
+            closeBtn.addEventListener('click', () => showScreen('home'));
         });
     </script>
 </body>
