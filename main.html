@@ -175,7 +175,7 @@
         }
 
         #articlesBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M5 8h14V6H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2z"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2v20M2 12h20"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
@@ -183,7 +183,7 @@
         }
 
         #chatBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v14l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM4 16V4h16v8H5.17L4 13.17V16z"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M21 11.5a8.38 8.38 0 01-11.07 7.83A8.42 8.42 0 013 11.5 8.42 8.42 0 019.93 3a8.42 8.42 0 017.57 4.57 8.38 8.38 0 013.5 3.93zM9 14l2-2 4 4m-4-4l4-4m0 0H5m0 8h.01"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
@@ -525,19 +525,15 @@
                     input.value = '';
 
                     // Simulate AI response
-                    fetch('https://api.openai.com/v1/chat/completions', {
+                    fetch('https://api.open-assistant.io/v1/query', {
                         method: 'POST',
                         headers: {
-                            'Authorization': 'Bearer [API_KEY]',
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            model: 'gpt-3.5-turbo',
-                            messages: [
-                                { role: 'system', content: 'You are Pae AI assistant.' },
-                                { role: 'user', content: message }
-                            ],
-                            temperature: 0.7
+                            text: message,
+                            lang: 'ru',
+                            user_id: 'уникальный_идентификатор'
                         })
                     })
                     .then(response => response.json())
@@ -545,7 +541,7 @@
                         const aiMessage = document.createElement('div');
                         aiMessage.className = 'chat-message ai-message';
                         aiMessage.style.background = 'rgba(169, 169, 169, 0.5)';
-                        aiMessage.textContent = 'Ответ ИИ: ' + data.choices[0].message.content;
+                        aiMessage.textContent = 'Ответ ИИ: ' + data.reply;
                         chatMessages.appendChild(aiMessage);
                     })
                     .catch(error => console.error('Error:', error));
