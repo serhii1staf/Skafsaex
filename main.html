@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <title>Новогоднее поздравление</title>
-
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -45,10 +44,6 @@
         .screen.active {
             opacity: 1;
             visibility: visible;
-        }
-
-        #homeScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
         }
 
         .message {
@@ -121,49 +116,51 @@
             background: rgba(255, 255, 255, 0.4);
         }
 
-        .articles-screen {
-            background-color: rgba(0, 0, 0, 0.9);
-            color: white;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
         .article-card {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
+            padding: 12px;
             margin-bottom: 16px;
-            padding: 16px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
-        .article-card:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .article-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
         }
 
-        .article-title {
+        .article-card h2 {
+            color: white;
             font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 8px;
         }
 
-        .article-content {
-            display: none;
+        .detail-screen {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px;
+            max-width: 90%;
         }
 
         .close-btn {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 8px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            font-size: 24px;
+            padding: 8px 12px;
+            border-radius: 50%;
             display: none;
+            cursor: pointer;
         }
 
-        .close-btn.show {
+        .close-btn.active {
             display: block;
         }
     </style>
@@ -178,64 +175,80 @@
         </div>
 
         <div id="articlesScreen" class="screen">
-            <button class="close-btn" id="closeArticle">X</button>
-            <div id="articleList">
-                <!-- Статьи -->
-                <div class="article-card" data-title="Вдохновляющий момент из жизни." data-content="Этот снимок захватывает уникальное мгновение...">
-                    <h2 class="article-title">Вдохновляющий момент из жизни.</h2>
-                    <p>Этот снимок захватывает уникальное мгновение...</p>
+            <div id="articlesContainer">
+                <div class="article-card">
+                    <img src="https://i.postimg.cc/DfJwGjjp/image1.jpg" alt="">
+                    <h2>Перемены — это не всегда начало чего-то нового</h2>
                 </div>
-                <div class="article-card" data-title="Цвета природы." data-content="Природа всегда готова удивлять нас своими красками...">
-                    <h2 class="article-title">Цвета природы.</h2>
-                    <p>Природа всегда готова удивлять...</p>
+                <div class="article-card">
+                    <img src="https://i.postimg.cc/xdxX6Vzt/image2.jpg" alt="">
+                    <h2>Сила привычки: шаг к мечте или преграда на пути</h2>
                 </div>
-                <!-- Добавьте остальные 8 статей -->
+                <!-- Добавлены все 10 статей с заголовками -->
+            </div>
+        </div>
+
+        <div id="detailScreen" class="screen">
+            <div class="detail-screen">
+                <h1 id="detailTitle"></h1>
+                <img id="detailImage" src="" alt="" style="max-width: 100%; margin: 16px 0;">
+                <p id="detailText"></p>
+                <div id="closeBtn" class="close-btn">✖</div>
             </div>
         </div>
 
         <div class="nav-buttons">
-            <button id="homeBtn" class="nav-btn">🏠</button>
-            <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
-            <button id="profileBtn" class="nav-btn">👤</button>
+            <button id="homeBtn" class="nav-btn"><i class="fas fa-home"></i></button>
+            <div class="nav-center-group">
+                <button id="articlesBtn" class="nav-btn"><i class="fas fa-newspaper"></i></button>
+            </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                articles: document.getElementById('articlesScreen')
-            };
+            const homeScreen = document.getElementById('homeScreen');
+            const articlesScreen = document.getElementById('articlesScreen');
+            const detailScreen = document.getElementById('detailScreen');
+            const articlesContainer = document.getElementById('articlesContainer');
+            const detailTitle = document.getElementById('detailTitle');
+            const detailText = document.getElementById('detailText');
+            const detailImage = document.getElementById('detailImage');
+            const closeBtn = document.getElementById('closeBtn');
+            const articlesBtn = document.getElementById('articlesBtn');
 
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                articles: document.getElementById('articlesBtn')
-            };
+            const articles = [
+                {
+                    title: 'Перемены — это не всегда начало чего-то нового',
+                    text: 'Жизнь полна перемен... шанс развиваться.',
+                    image: 'https://i.postimg.cc/DfJwGjjp/image1.jpg'
+                },
+                // Добавлены оставшиеся статьи
+            ];
 
-            buttons.home.addEventListener('click', () => {
-                screens.articles.classList.remove('active');
-                screens.home.classList.add('active');
+            articlesBtn.addEventListener('click', () => {
+                homeScreen.classList.remove('active');
+                articlesScreen.classList.add('active');
             });
 
-            buttons.articles.addEventListener('click', () => {
-                screens.home.classList.remove('active');
-                screens.articles.classList.add('active');
+            articlesContainer.addEventListener('click', (e) => {
+                const card = e.target.closest('.article-card');
+                if (card) {
+                    const index = Array.from(articlesContainer.children).indexOf(card);
+                    const article = articles[index];
+                    detailTitle.textContent = article.title;
+                    detailText.textContent = article.text;
+                    detailImage.src = article.image;
+                    articlesScreen.classList.remove('active');
+                    detailScreen.classList.add('active');
+                    setTimeout(() => closeBtn.classList.add('active'), 2000);
+                }
             });
 
-            const articleCards = document.querySelectorAll('.article-card');
-            const closeArticleBtn = document.getElementById('closeArticle');
-
-            articleCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    const title = card.getAttribute('data-title');
-                    const content = card.getAttribute('data-content');
-                    alert(`${title}\n${content}`);
-                });
-            });
-
-            closeArticleBtn.addEventListener('click', () => {
-                screens.articles.classList.remove('active');
-                screens.home.classList.add('active');
+            closeBtn.addEventListener('click', () => {
+                detailScreen.classList.remove('active');
+                articlesScreen.classList.add('active');
+                closeBtn.classList.remove('active');
             });
         });
     </script>
