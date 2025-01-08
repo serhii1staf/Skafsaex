@@ -1,261 +1,156 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <title>Новогоднее поздравление</title>
-    
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klyo — Статьи</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            min-height: 100vh;
-            overflow: hidden;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: white;
         }
 
-        #app {
-            min-height: 100vh;
-            position: relative;
+        .container {
+            padding: 20px;
         }
 
-        .screen {
+        .article {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            padding: 16px;
+            cursor: pointer;
+        }
+
+        .article img {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .article-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .detail-screen {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 100vw;
             height: 100vh;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .screen.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #homeScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        #leftScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        #rightScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        #profileScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        .message {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 24px;
-            border-radius: 12px;
-            text-align: center;
-            max-width: 90%;
-            width: 100%;
-            backdrop-filter: blur(8px);
-            margin: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        h1 {
-            color: white;
-            font-size: 28px;
-            margin-bottom: 16px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }
-
-        p {
-            color: white;
-            font-size: 18px;
-            line-height: 1.5;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
-        .nav-buttons {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
+            background-color: rgba(0, 0, 0, 0.9);
             z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
         }
 
-        .nav-center-group {
-            display: flex;
-            gap: 16px;
+        .detail-screen.active {
+            display: block;
         }
 
-        .nav-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+        .detail-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
         }
 
-        .nav-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.4);
+        .detail-image {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 16px;
         }
 
-        #homeBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }#profileBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .social-links {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .social-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .voluntary-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 20px;
+        .detail-text {
+            font-size: 18px;
         }
     </style>
 </head>
+
 <body>
-    <div id="app">
-        <div id="homeScreen" class="screen active">
-            <div class="message">
-                <h1>С Новым 2025 Годом!</h1>
-                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
-            </div>
+    <div class="container">
+        <div class="article" data-title="Вдохновляющий момент из жизни." data-text="Этот снимок захватывает уникальное мгновение, когда мир вокруг нас кажется полным возможностей. Вдохновляйтесь и двигайтесь вперед, несмотря на все преграды! Это — часть нового функционала в приложении Klyo, где мы предлагаем не только интересные моменты, но и создаем пространство для вдохновения в Telegram." data-image="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png">
+            <img src="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png" alt="Фото 1">
+            <div class="article-title">Вдохновляющий момент из жизни.</div>
         </div>
-
-        <div id="leftScreen" class="screen">
-            <div class="message">
-                <p>Старый 2024 год ушел и никогда не вернется.</p>
-                <p>Время для новых начинаний!</p>
-            </div>
+        <div class="article" data-title="Цвета природы." data-text="Природа всегда готова удивлять нас своими яркими красками и невообразимой гармонией. Каждое изображение — это напоминание о том, как прекрасно наше окружение. В Klyo мы собираемся добавить больше такого контента, который позволит нам наслаждаться природой через экран." data-image="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png">
+            <img src="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png" alt="Фото 2">
+            <div class="article-title">Цвета природы.</div>
         </div>
-
-        <div id="rightScreen" class="screen">
-            <div class="message">
-                <h1>С 2025 Годом!</h1>
-                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
-            </div>
+        <div class="article" data-title="Современные технологии и природа." data-text="Слияние технологий и природы — это не просто тренд, это будущее. Здесь мы видим, как современные инновации могут гармонично сосуществовать с окружающим миром. В Klyo мы интегрируем технологии, которые помогают соединить людей и природу, создавая пространство для общения и обмена." data-image="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png">
+            <img src="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png" alt="Фото 3">
+            <div class="article-title">Современные технологии и природа.</div>
         </div>
-
-        <div id="profileScreen" class="screen">
-            <div class="message">
-                <div class="social-links">
-                    <a href="https://t.me/sangklasy" class="social-link" target="_blank">📱 Telegram канал</a>
-                    <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" class="social-link" target="_blank">📷 Instagram аккаунт</a>
-                </div>
-                <p class="voluntary-text">* Подписка является полностью добровольной</p>
-            </div>
+        <div class="article" data-title="Момент тишины." data-text="Иногда самое ценное — это моменты тишины, когда все вокруг затихает, и мы можем сосредоточиться на том, что действительно важно. В будущем приложении Klyo мы хотим создать такие моменты для пользователей, где можно будет отдыхать и получать нужный контент без лишней суеты." data-image="https://i.postimg.cc/FzqQHW7d/2-CE650-F3-6-ADB-4-EA4-AC00-9-AB9-CA9231-F4.png">
+            <img src="https://i.postimg.cc/FzqQHW7d/2-CE650-F3-6-ADB-4-EA4-AC00-9-AB9-CA9231-F4.png" alt="Фото 4">
+            <div class="article-title">Момент тишины.</div>
         </div>
-
-        <div class="nav-buttons">
-            <button id="leftBtn" class="nav-btn">←</button>
-            <div class="nav-center-group">
-                <button id="homeBtn" class="nav-btn"></button>
-                <button id="profileBtn" class="nav-btn"></button>
-            </div>
-            <button id="rightBtn" class="nav-btn">→</button>
+        <div class="article" data-title="Динамика города." data-text="Город — это всегда движение, потоки людей, транспорта и световых огней. В Klyo, мы пытаемся отражать динамику современных событий и предлагать пользователям актуальную информацию, которая будет полезна в их повседневной жизни." data-image="https://i.postimg.cc/zBGmSZhH/0-F9-D17-F6-FC7-D-4-DBF-B179-35-D8-F027-CA20.png">
+            <img src="https://i.postimg.cc/zBGmSZhH/0-F9-D17-F6-FC7-D-4-DBF-B179-35-D8-F027-CA20.png" alt="Фото 5">
+            <div class="article-title">Динамика города.</div>
+        </div>
+        <div class="article" data-title="Путеводная звезда." data-text="Каждый человек в поисках своего пути. Это изображение напоминает нам, что важно не только найти цель, но и двигаться к ней, несмотря на все трудности. В Klyo мы создаем пространство, которое будет помогать пользователям на их пути, предлагая поддержку и новаторские функции." data-image="https://i.postimg.cc/sDZkJJMm/69-C49-C7-F-4426-4678-A399-FAF686019267.png">
+            <img src="https://i.postimg.cc/sDZkJJMm/69-C49-C7-F-4426-4678-A399-FAF686019267.png" alt="Фото 6">
+            <div class="article-title">Путеводная звезда.</div>
+        </div>
+        <div class="article" data-title="Спокойствие вечернего неба." data-text="Закат — это время для раздумий. Момент, когда свет и тень создают уникальное сочетание, наполняя нас умиротворением и покоем. В приложении Klyo мы стремимся создавать такие моменты для пользователей, чтобы они могли отдыхать и наслаждаться отдыхом, находясь в Telegram." data-image="https://i.postimg.cc/76n34dt9/DF73-B0-F1-0-FDB-43-F0-AB49-662392-B73-A7-A.png">
+            <img src="https://i.postimg.cc/76n34dt9/DF73-B0-F1-0-FDB-43-F0-AB49-662392-B73-A7-A.png" alt="Фото 7">
+            <div class="article-title">Спокойствие вечернего неба.</div>
+        </div>
+        <div class="article" data-title="Детали, которые не заметишь сразу." data-text="Иногда важно остановиться и обратить внимание на мелочи, которые окружают нас. Это может быть крохотная деталь, но она может изменить наш взгляд на мир. В Klyo мы будем работать над тем, чтобы каждая деталь интерфейса приносила удовольствие и была полезной для пользователей." data-image="https://i.postimg.cc/8zfLcjnj/777-DE6-D9-0671-4-F8-A-94-C9-6192-BC6-D0-A8-F.png">
+            <img src="https://i.postimg.cc/8zfLcjnj/777-DE6-D9-0671-4-F8-A-94-C9-6192-BC6-D0-A8-F.png" alt="Фото 8">
+            <div class="article-title">Детали, которые не заметишь сразу.</div>
+        </div>
+        <div class="article" data-title="Вдохновение в движении." data-text="Жизнь — это движение. Этот снимок показывает, как можно черпать вдохновение в самых простых действиях и находить радость в каждом моменте. В Klyo мы уверены, что вдохновение и мотивация могут быть всегда под рукой." data-image="https://i.postimg.cc/sx0ZDrYY/A97-E1434-CF84-4-DEF-B1-CD-998-A0-A81-F2-AF.png">
+            <img src="https://i.postimg.cc/sx0ZDrYY/A97-E1434-CF84-4-DEF-B1-CD-998-A0-A81-F2-AF.png" alt="Фото 9">
+            <div class="article-title">Вдохновение в движении.</div>
+        </div>
+        <div class="article" data-title="Природа в объективе." data-text="Фотография — это способ остановить время. Она позволяет увидеть то, что раньше было незаметно, и поделиться этим с другими. В Klyo мы используем лучшие моменты для того, чтобы делиться ими с тобой прямо внутри Telegram." data-image="https://i.postimg.cc/5tMQtpCR/D12-D551-B-E4-F1-427-C-80-D0-131582-D9-DCBF.png">
+            <img src="https://i.postimg.cc/5tMQtpCR/D12-D551-B-E4-F1-427-C-80-D0-131582-D9-DCBF.png" alt="Фото 10">
+            <div class="article-title">Природа в объективе.</div>
         </div>
     </div>
 
+    <div class="detail-screen" id="detail-screen">
+        <div class="close-btn" id="close-btn">&times;</div>
+        <div class="detail-title" id="detail-title"></div>
+        <img class="detail-image" id="detail-image" src="" alt="Детальное фото">
+        <div class="detail-text" id="detail-text"></div>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                left: document.getElementById('leftScreen'),
-                right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen')
-            };
+        const articles = document.querySelectorAll('.article');
+        const detailScreen = document.getElementById('detail-screen');
+        const closeBtn = document.getElementById('close-btn');
+        const detailTitle = document.getElementById('detail-title');
+        const detailText = document.getElementById('detail-text');
+        const detailImage = document.getElementById('detail-image');
 
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                left: document.getElementById('leftBtn'),
-                right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn')
-            };
+        articles.forEach((article) => {
+            article.addEventListener('click', () => {
+                detailTitle.textContent = article.dataset.title;
+                detailText.textContent = article.dataset.text;
+                detailImage.src = article.dataset.image;
+                detailScreen.classList.add('active');
+            });
+        });
 
-            let currentScreen = 'home';
-            let isAnimating = false;
-
-            function showScreen(screenName) {
-                if (isAnimating) return;
-                isAnimating = true;
-
-                screens[currentScreen].classList.remove('active');
-                screens[screenName].classList.add('active');
-                currentScreen = screenName;
-
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 300);
-            }buttons.home.addEventListener('click', () => showScreen('home'));
-            buttons.left.addEventListener('click', () => showScreen('left'));
-            buttons.right.addEventListener('click', () => showScreen('right'));
-            buttons.profile.addEventListener('click', () => showScreen('profile'));
+        closeBtn.addEventListener('click', () => {
+            detailScreen.classList.remove('active');
         });
     </script>
 </body>
+
 </html>
