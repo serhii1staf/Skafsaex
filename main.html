@@ -64,9 +64,37 @@
         }
 
         #articlesScreen {
-            background-color: #fff;
+            background-color: #f4f4f4;
             overflow-y: auto;
-            padding: 16px;
+            padding: 20px;
+        }
+
+        .articles-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        article {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        article img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        article h2 {
+            margin: 20px 0 10px;
+            font-size: 24px;
+        }
+
+        article p {
+            font-size: 16px;
+            color: #333;
         }
 
         .message {
@@ -82,43 +110,18 @@
             z-index: 2;
         }
 
-        .article-card {
-            background: rgba(240, 240, 240, 0.8);
-            padding: 16px;
+        h1 {
+            color: white;
+            font-size: 28px;
             margin-bottom: 16px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
-        .article-card img {
-            max-width: 100%;
-            border-radius: 8px;
-        }
-
-        .detail-screen {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.8);
+        p {
             color: white;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .close-btn {
-            display: none;
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
+            font-size: 18px;
+            line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .nav-buttons {
@@ -180,6 +183,14 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
+        #articlesBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M5 8h14V6H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2z"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
         .social-links {
             display: flex;
             flex-direction: column;
@@ -208,6 +219,53 @@
             font-size: 14px;
             color: rgba(255, 255, 255, 0.7);
             margin-top: 20px;
+        }
+
+        #articleDetailScreen {
+            background-color: #f4f4f4;
+            overflow-y: auto;
+            padding: 20px;
+            display: none;
+        }
+
+        #articleDetail {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #articleDetail img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        #articleDetail h2 {
+            margin: 20px 0 10px;
+            font-size: 24px;
+        }
+
+        #articleDetail p {
+            font-size: 16px;
+            color: #333;
+        }
+
+        #closeBtn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+        }
+
+        #closeBtn:after {
+            content: '✖';
+            font-size: 20px;
+            color: black;
         }
     </style>
 </head>
@@ -245,56 +303,56 @@
         </div>
 
         <div id="articlesScreen" class="screen">
-            <h1>Статьи</h1>
-            <div id="articlesContainer">
-                <div class="article-card">
-                    <img src="https://via.placeholder.com/300" alt="Фото 1">
+            <div class="articles-container">
+                <article data-title="Перемены — это не всегда начало чего-то нового" data-text="Жизнь полна перемен, и не каждое изменение ведет к чему-то лучшему или худшему. Иногда перемены — это возможность переосмыслить привычные вещи. Перемены могут научить нас ценить то, что у нас есть. Главное помнить, что даже самые трудные перемены дают шанс развиваться." data-img="https://via.placeholder.com/300x200?text=Статья+1">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+1" alt="Статья 1">
                     <h2>Перемены — это не всегда начало чего-то нового</h2>
-                </div>
-                <div class="article-card">
-                    <img src="https://via.placeholder.com/300" alt="Фото 2">
+                </article>
+                <article data-title="Сила привычки: шаг к мечте или преграда на пути" data-text="Привычки могут быть основой для достижения целей, но они также способны ограничивать нас, удерживая в зоне комфорта. Задайте себе вопрос: ваши привычки приближают вас к мечте или мешают двигаться вперед? Создавайте привычки, которые соответствуют вашим мечтам и целям." data-img="https://via.placeholder.com/300x200?text=Статья+2">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+2" alt="Статья 2">
                     <h2>Сила привычки: шаг к мечте или преграда на пути</h2>
-                </div>
-                <div class="article-card">
-                    <img src="https://via.placeholder.com/300" alt="Фото 3">
+                </article>
+                <article data-title="Вдохновение вокруг нас" data-text="Иногда вдохновение прячется в простых моментах жизни: разговор с другом, прогулка на природе или прочитанная книга. Вдохновляйтесь каждодневными моментами и помните, что даже случайные события могут изменить вашу жизнь." data-img="https://via.placeholder.com/300x200?text=Статья+3">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+3" alt="Статья 3">
                     <h2>Вдохновение вокруг нас</h2>
-                </div>
-                <div class="article-card">
-                    <img src="https://via.placeholder.com/300" alt="Фото 4">
+                </article>
+                <article data-title="Никогда не поздно начать заново" data-text="Независимо от того, сколько раз вы начинали с нуля, каждый новый старт — это еще один шанс. Главное — верить в себя и продолжать путь. Ошибки — это часть жизни, но они не определяют наше будущее. Важно помнить, что каждый шаг приближает нас к успеху." data-img="https://via.placeholder.com/300x200?text=Статья+4">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+4" alt="Статья 4">
                     <h2>Никогда не поздно начать заново</h2>
-                </div>
-                <div class="article-card">
-                    <img src="https://via.placeholder.com/300" alt="Фото 5">
+                </article>
+                <article data-title="Важность маленьких шагов" data-text="Не каждый успех приходит с грандиозных действий. Иногда самые маленькие шаги — это те самые кирпичики, которые создают вашу крепость. Маленькие победы дают веру в большие достижения, поэтому не пренебрегайте мелочами." data-img="https://via.placeholder.com/300x200?text=Статья+5">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+5" alt="Статья 5">
                     <h2>Важность маленьких шагов</h2>
-                </div>
-                <div class="article-card">
-                    <img src="https://via.placeholder.com/300" alt="Фото 6">
+                </article>
+                <article data-title="Мотивация и её значение в повседневной жизни" data-text="Мотивация — это двигатель всех наших действий. Важно знать, что не каждый день будет легким, и в такие моменты нужно напоминать себе, почему вы начали свой путь. Найдите источники мотивации: любимая музыка, успехи других людей или ваши собственные достижения." data-img="https://via.placeholder.com/300x200?text=Статья+6">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+6" alt="Статья 6">
                     <h2>Мотивация и её значение в повседневной жизни</h2>
-                </div>
-                <div class="article-card">
-                    <img src="https://via.placeholder.com/300" alt="Фото 7">
+                </article>
+                <article data-title="Принятие себя и своих ошибок" data-text="Совершать ошибки — это нормально. Важно научиться прощать себя и двигаться дальше. Принятие своих слабостей и осознание своей силы — это шаг к внутренней гармонии и свободе. Путь к принятию себя начинается с любви и заботы о себе." data-img="https://via.placeholder.com/300x200?text=Статья+7">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+7" alt="Статья 7">
                     <h2>Принятие себя и своих ошибок</h2>
-                </div>
-                <div class="article-card">
-                    <img src="https://via.placeholder.com/300" alt="Фото 8">
+                </article>
+                <article data-title="Почему отдых — это тоже часть успеха" data-text="Отдых — это не лень, а часть успешного пути. В современном мире многие забывают о важности восстановления сил. Но без отдыха невозможно достичь максимальной продуктивности. Дайте себе время перезарядиться, чтобы двигаться вперед с новой энергией." data-img="https://via.placeholder.com/300x200?text=Статья+8">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+8" alt="Статья 8">
                     <h2>Почему отдых — это тоже часть успеха</h2>
-                </div>
-                <div class="article-card">
-                    <img src="https://via.placeholder.com/300" alt="Фото 9">
+                </article>
+                <article data-title="Влияние окружения на наши достижения" data-text="Люди и события, которые нас окружают, могут либо мотивировать нас, либо сдерживать. Важно находить тех, кто поддерживает и вдохновляет. Создайте вокруг себя атмосферу, в которой ваши цели будут расти и развиваться." data-img="https://via.placeholder.com/300x200?text=Статья+9">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+9" alt="Статья 9">
                     <h2>Влияние окружения на наши достижения</h2>
-                </div>
-                <div class="article-card">
-                    <img src="https://via.placeholder.com/300" alt="Фото 10">
+                </article>
+                <article data-title="Смелость делать первый шаг" data-text="Самое сложное — это сделать первый шаг навстречу неизвестности. Страх перед провалом может парализовать, но каждый первый шаг — это уже успех. Доверьтесь своим инстинктам и знайте: даже маленькое действие способно изменить всё." data-img="https://via.placeholder.com/300x200?text=Статья+10">
+                    <img src="https://via.placeholder.com/300x200?text=Статья+10" alt="Статья 10">
                     <h2>Смелость делать первый шаг</h2>
-                </div>
+                </article>
             </div>
         </div>
 
-        <div class="detail-screen" id="detailScreen">
-            <button class="close-btn" id="closeBtn">×</button>
-            <h2 id="detailTitle"></h2>
-            <p id="detailText">Текст статьи будет здесь.</p>
-            <img id="detailImage" alt="Изображение">
+        <div id="articleDetailScreen">
+            <div id="articleDetail">
+                <img id="articleDetailImg" src="" alt="">
+                <h2 id="articleDetailTitle"></h2>
+                <p id="articleDetailText"></p>
+            </div>
         </div>
 
         <div class="nav-buttons">
@@ -302,75 +360,6 @@
             <div class="nav-center-group">
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
-                <button id="articlesBtn" class="nav-btn">📰</button>
+                <button id="articlesBtn" class="nav-btn"></button>
             </div>
-            <button id="rightBtn" class="nav-btn">→</button>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                left: document.getElementById('leftScreen'),
-                right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen'),
-                articles: document.getElementById('articlesScreen')
-            };
-
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                left: document.getElementById('leftBtn'),
-                right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn'),
-                articles: document.getElementById('articlesBtn')
-            };
-
-            const detailScreen = document.getElementById('detailScreen');
-            const closeBtn = document.getElementById('closeBtn');
-            const detailTitle = document.getElementById('detailTitle');
-            const detailText = document.getElementById('detailText');
-            const detailImage = document.getElementById('detailImage');
-            const articlesContainer = document.getElementById('articlesContainer');
-
-            let currentScreen = 'home';
-            let isAnimating = false;
-
-            function showScreen(screenName) {
-                if (isAnimating) return;
-                isAnimating = true;
-
-                screens[currentScreen].classList.remove('active');
-                screens[screenName].classList.add('active');
-                currentScreen = screenName;
-
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 300);
-            }
-
-            buttons.home.addEventListener('click', () => showScreen('home'));
-            buttons.left.addEventListener('click', () => showScreen('left'));
-            buttons.right.addEventListener('click', () => showScreen('right'));
-            buttons.profile.addEventListener('click', () => showScreen('profile'));
-            buttons.articles.addEventListener('click', () => showScreen('articles'));
-
-            articlesContainer.addEventListener('click', (e) => {
-                const card = e.target.closest('.article-card');
-                if (card) {
-                    detailTitle.textContent = card.querySelector('h2').textContent;
-                    detailText.textContent = 'Добавьте текст здесь';
-                    detailImage.src = card.querySelector('img').src;
-                    detailScreen.style.display = 'block';
-                    setTimeout(() => closeBtn.style.display = 'block', 2000);
-                }
-            });
-
-            closeBtn.addEventListener('click', () => {
-                detailScreen.style.display = 'none';
-                closeBtn.style.display = 'none';
-            });
-        });
-    </script>
-</body>
-</html>
+            <
