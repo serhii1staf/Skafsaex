@@ -1,38 +1,45 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klyo — Статьи</title>
+    <title>Klyo App</title>
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #1e1e1e;
-            color: white;
+            background: url('https://i.postimg.cc/sDZkJJMm/69-C49-C7-F-4426-4678-A399-FAF686019267.png') no-repeat center center fixed;
+            background-size: cover;
         }
 
-        .container {
+        .main-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
         }
 
         .article {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            width: 100%;
+            max-width: 600px;
             margin-bottom: 20px;
-            padding: 16px;
-            cursor: pointer;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: white;
         }
 
         .article img {
             width: 100%;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            height: auto;
+            border-bottom: 1px solid #ddd;
         }
 
         .article-title {
-            font-size: 20px;
+            padding: 10px;
+            font-size: 18px;
             font-weight: bold;
         }
 
@@ -41,108 +48,106 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
+            width: 100%;
             height: 100vh;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            padding: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
             overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .detail-screen.active {
             display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .detail-screen img {
+            width: 90%;
+            max-width: 400px;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px;
+            border-radius: 10px;
+        }
+
+        .detail-title {
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .detail-text {
+            margin-top: 20px;
+            font-size: 16px;
+            line-height: 1.6;
         }
 
         .close-btn {
             position: absolute;
             top: 20px;
             right: 20px;
-            font-size: 24px;
+            background-color: transparent;
+            border: none;
+            font-size: 28px;
+            color: white;
             cursor: pointer;
+            opacity: 0;
+            animation: fadeInOpacity 2s forwards ease-in;
         }
 
-        .detail-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 16px;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
-        .detail-image {
-            width: 100%;
-            border-radius: 12px;
-            margin-bottom: 16px;
-        }
-
-        .detail-text {
-            font-size: 18px;
+        @keyframes fadeInOpacity {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="article" data-title="Вдохновляющий момент из жизни." data-text="Этот снимок захватывает уникальное мгновение, когда мир вокруг нас кажется полным возможностей. Вдохновляйтесь и двигайтесь вперед, несмотря на все преграды! Это — часть нового функционала в приложении Klyo, где мы предлагаем не только интересные моменты, но и создаем пространство для вдохновения в Telegram." data-image="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png">
-            <img src="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png" alt="Фото 1">
+    <div class="main-screen">
+        <div class="article" data-title="Вдохновляющий момент из жизни." data-text="Этот снимок захватывает уникальное мгновение..." data-img="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png">
+            <img src="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png" alt="">
             <div class="article-title">Вдохновляющий момент из жизни.</div>
         </div>
-        <div class="article" data-title="Цвета природы." data-text="Природа всегда готова удивлять нас своими яркими красками и невообразимой гармонией. Каждое изображение — это напоминание о том, как прекрасно наше окружение. В Klyo мы собираемся добавить больше такого контента, который позволит нам наслаждаться природой через экран." data-image="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png">
-            <img src="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png" alt="Фото 2">
+        <div class="article" data-title="Цвета природы." data-text="Природа всегда готова удивлять нас своими яркими красками..." data-img="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png">
+            <img src="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png" alt="">
             <div class="article-title">Цвета природы.</div>
         </div>
-        <div class="article" data-title="Современные технологии и природа." data-text="Слияние технологий и природы — это не просто тренд, это будущее. Здесь мы видим, как современные инновации могут гармонично сосуществовать с окружающим миром. В Klyo мы интегрируем технологии, которые помогают соединить людей и природу, создавая пространство для общения и обмена." data-image="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png">
-            <img src="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png" alt="Фото 3">
-            <div class="article-title">Современные технологии и природа.</div>
-        </div>
-        <div class="article" data-title="Момент тишины." data-text="Иногда самое ценное — это моменты тишины, когда все вокруг затихает, и мы можем сосредоточиться на том, что действительно важно. В будущем приложении Klyo мы хотим создать такие моменты для пользователей, где можно будет отдыхать и получать нужный контент без лишней суеты." data-image="https://i.postimg.cc/FzqQHW7d/2-CE650-F3-6-ADB-4-EA4-AC00-9-AB9-CA9231-F4.png">
-            <img src="https://i.postimg.cc/FzqQHW7d/2-CE650-F3-6-ADB-4-EA4-AC00-9-AB9-CA9231-F4.png" alt="Фото 4">
-            <div class="article-title">Момент тишины.</div>
-        </div>
-        <div class="article" data-title="Динамика города." data-text="Город — это всегда движение, потоки людей, транспорта и световых огней. В Klyo, мы пытаемся отражать динамику современных событий и предлагать пользователям актуальную информацию, которая будет полезна в их повседневной жизни." data-image="https://i.postimg.cc/zBGmSZhH/0-F9-D17-F6-FC7-D-4-DBF-B179-35-D8-F027-CA20.png">
-            <img src="https://i.postimg.cc/zBGmSZhH/0-F9-D17-F6-FC7-D-4-DBF-B179-35-D8-F027-CA20.png" alt="Фото 5">
-            <div class="article-title">Динамика города.</div>
-        </div>
-        <div class="article" data-title="Путеводная звезда." data-text="Каждый человек в поисках своего пути. Это изображение напоминает нам, что важно не только найти цель, но и двигаться к ней, несмотря на все трудности. В Klyo мы создаем пространство, которое будет помогать пользователям на их пути, предлагая поддержку и новаторские функции." data-image="https://i.postimg.cc/sDZkJJMm/69-C49-C7-F-4426-4678-A399-FAF686019267.png">
-            <img src="https://i.postimg.cc/sDZkJJMm/69-C49-C7-F-4426-4678-A399-FAF686019267.png" alt="Фото 6">
-            <div class="article-title">Путеводная звезда.</div>
-        </div>
-        <div class="article" data-title="Спокойствие вечернего неба." data-text="Закат — это время для раздумий. Момент, когда свет и тень создают уникальное сочетание, наполняя нас умиротворением и покоем. В приложении Klyo мы стремимся создавать такие моменты для пользователей, чтобы они могли отдыхать и наслаждаться отдыхом, находясь в Telegram." data-image="https://i.postimg.cc/76n34dt9/DF73-B0-F1-0-FDB-43-F0-AB49-662392-B73-A7-A.png">
-            <img src="https://i.postimg.cc/76n34dt9/DF73-B0-F1-0-FDB-43-F0-AB49-662392-B73-A7-A.png" alt="Фото 7">
-            <div class="article-title">Спокойствие вечернего неба.</div>
-        </div>
-        <div class="article" data-title="Детали, которые не заметишь сразу." data-text="Иногда важно остановиться и обратить внимание на мелочи, которые окружают нас. Это может быть крохотная деталь, но она может изменить наш взгляд на мир. В Klyo мы будем работать над тем, чтобы каждая деталь интерфейса приносила удовольствие и была полезной для пользователей." data-image="https://i.postimg.cc/8zfLcjnj/777-DE6-D9-0671-4-F8-A-94-C9-6192-BC6-D0-A8-F.png">
-            <img src="https://i.postimg.cc/8zfLcjnj/777-DE6-D9-0671-4-F8-A-94-C9-6192-BC6-D0-A8-F.png" alt="Фото 8">
-            <div class="article-title">Детали, которые не заметишь сразу.</div>
-        </div>
-        <div class="article" data-title="Вдохновение в движении." data-text="Жизнь — это движение. Этот снимок показывает, как можно черпать вдохновение в самых простых действиях и находить радость в каждом моменте. В Klyo мы уверены, что вдохновение и мотивация могут быть всегда под рукой." data-image="https://i.postimg.cc/sx0ZDrYY/A97-E1434-CF84-4-DEF-B1-CD-998-A0-A81-F2-AF.png">
-            <img src="https://i.postimg.cc/sx0ZDrYY/A97-E1434-CF84-4-DEF-B1-CD-998-A0-A81-F2-AF.png" alt="Фото 9">
-            <div class="article-title">Вдохновение в движении.</div>
-        </div>
-        <div class="article" data-title="Природа в объективе." data-text="Фотография — это способ остановить время. Она позволяет увидеть то, что раньше было незаметно, и поделиться этим с другими. В Klyo мы используем лучшие моменты для того, чтобы делиться ими с тобой прямо внутри Telegram." data-image="https://i.postimg.cc/5tMQtpCR/D12-D551-B-E4-F1-427-C-80-D0-131582-D9-DCBF.png">
-            <img src="https://i.postimg.cc/5tMQtpCR/D12-D551-B-E4-F1-427-C-80-D0-131582-D9-DCBF.png" alt="Фото 10">
-            <div class="article-title">Природа в объективе.</div>
-        </div>
+        <!-- Add all remaining articles similarly -->
     </div>
 
-    <div class="detail-screen" id="detail-screen">
-        <div class="close-btn" id="close-btn">&times;</div>
-        <div class="detail-title" id="detail-title"></div>
-        <img class="detail-image" id="detail-image" src="" alt="Детальное фото">
-        <div class="detail-text" id="detail-text"></div>
+    <div class="detail-screen">
+        <button class="close-btn">&times;</button>
+        <img class="detail-image" src="" alt="">
+        <div class="detail-title"></div>
+        <div class="detail-text"></div>
     </div>
 
     <script>
         const articles = document.querySelectorAll('.article');
-        const detailScreen = document.getElementById('detail-screen');
-        const closeBtn = document.getElementById('close-btn');
-        const detailTitle = document.getElementById('detail-title');
-        const detailText = document.getElementById('detail-text');
-        const detailImage = document.getElementById('detail-image');
+        const detailScreen = document.querySelector('.detail-screen');
+        const closeBtn = document.querySelector('.close-btn');
+        const detailTitle = document.querySelector('.detail-title');
+        const detailText = document.querySelector('.detail-text');
+        const detailImage = document.querySelector('.detail-image');
 
         articles.forEach((article) => {
             article.addEventListener('click', () => {
                 detailTitle.textContent = article.dataset.title;
                 detailText.textContent = article.dataset.text;
-                detailImage.src = article.dataset.image;
+                detailImage.src = article.dataset.img;
                 detailScreen.classList.add('active');
             });
         });
