@@ -369,6 +369,7 @@
             <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">
                 <button id="homeBtn" class="nav-btn"></button>
+                <button id="chatBtn" class="nav-btn"><i class="fa-solid fa-comment-nodes"></i></button>
                 <button id="profileBtn" class="nav-btn"></button>
                 <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
             </div>
@@ -380,6 +381,20 @@
             <img id="modalImage" src="" alt="Article Image" class="article-image">
             <h2 id="modalTitle"></h2>
             <p id="modalText"></p>
+        </div>
+    </div>
+
+    <div id="chatModal" class="chat-modal">
+        <div class="chat-modal-content">
+            <div class="chat-header">
+                <h2>Общение с Pae AI</h2>
+                <button class="close-btn" id="closeChatModal">×</button>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input-container">
+                <input type="text" id="chatInput" placeholder="Введите сообщение...">
+                <button id="sendBtn">Отправить</button>
+            </div>
         </div>
     </div>
 
@@ -399,7 +414,10 @@
                 right: document.getElementById('rightBtn'),
                 profile: document.getElementById('profileBtn'),
                 articles: document.getElementById('articlesBtn'),
-                close: document.getElementById('closeArticleModal')
+                chat: document.getElementById('chatBtn'),
+                closeArticle: document.getElementById('closeArticleModal'),
+                closeChat: document.getElementById('closeChatModal'),
+                send: document.getElementById('sendBtn')
             };
 
             let currentScreen = 'home';
@@ -441,15 +459,29 @@
 
                 modal.style.display = 'flex';
                 setTimeout(() => {
-                    buttons.close.style.display = 'block';
+                    buttons.closeArticle.style.display = 'block';
                 }, 2000);
             }
 
             function hideArticleDetail() {
                 const modal = document.getElementById('articleModal');
                 modal.style.display = 'none';
-                buttons.close.style.display = 'none';
+                buttons.closeArticle.style.display = 'none';
                 showScreen('articles');
+            }
+
+            function showChat() {
+                const modal = document.getElementById('chatModal');
+                modal.style.display = 'flex';
+                setTimeout(() => {
+                    buttons.closeChat.style.display = 'block';
+                }, 2000);
+            }
+
+            function hideChat() {
+                const modal = document.getElementById('chatModal');
+                modal.style.display = 'none';
+                buttons.closeChat.style.display = 'none';
             }
 
             buttons.home.addEventListener('click', () => showScreen('home'));
@@ -457,7 +489,9 @@
             buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
             buttons.articles.addEventListener('click', () => showScreen('articles'));
-            buttons.close.addEventListener('click', hideArticleDetail);
+            buttons.chat.addEventListener('click', showChat);
+            buttons.closeArticle.addEventListener('click', hideArticleDetail);
+            buttons.closeChat.addEventListener('click', hideChat);
 
             document.querySelectorAll('#articlesScreen article').forEach(article => {
                 article.addEventListener('click', () => {
@@ -466,6 +500,25 @@
                     const imgSrc = article.getAttribute('data-img');
                     showArticleDetail(title, text, imgSrc);
                 });
+            });
+
+            buttons.send.addEventListener('click', () => {
+                const input = document.getElementById('chatInput');
+                const message = input.value;
+                if (message.trim()) {
+                    const chatMessages = document.getElementById('chatMessages');
+                    const userMessage = document.createElement('div');
+                    userMessage.className = 'chat-message user-message';
+                    userMessage.textContent = message;
+                    chatMessages.appendChild(userMessage);
+                    input.value = '';
+
+                    // Simulate AI response
+                    const aiMessage = document.createElement('div');
+                    aiMessage.className = 'chat-message ai-message';
+                    aiMessage.textContent = 'Ответ ИИ: ' + message;
+                    chatMessages.appendChild(aiMessage);
+                }
             });
         });
     </script>
