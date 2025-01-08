@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
-    <title>Klyo Статьи</title>
+    <title>Новогоднее поздравление</title>
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -13,178 +16,250 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
             overflow: hidden;
         }
 
+        #app {
+            min-height: 100vh;
+            position: relative;
+        }
+
         .screen {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             background-size: cover;
             background-position: center;
-            overflow-y: auto;
         }
 
         .screen.active {
-            display: block;
+            opacity: 1;
+            visibility: visible;
         }
 
-        .article-card {
-            background: rgba(255, 255, 255, 0.1);
-            margin: 20px;
-            padding: 15px;
-            border-radius: 10px;
+        #homeScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
         }
 
-        .article-card img {
+        #leftScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
+        }
+
+        #rightScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
+        }
+
+        #profileScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
+        }
+
+        .message {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 90%;
             width: 100%;
-            border-radius: 10px;
-            margin-bottom: 10px;
+            backdrop-filter: blur(8px);
+            margin: 20px;
+            position: relative;
+            z-index: 2;
         }
 
-        .article-card h2 {
-            margin-bottom: 10px;
-            font-size: 1.5em;
+        h1 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
-        .article-card p {
+        p {
+            color: white;
+            font-size: 18px;
             line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
-        .nav {
+        .nav-buttons {
             position: fixed;
-            bottom: 10px;
+            bottom: 20px;
             left: 0;
             right: 0;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
-            z-index: 100;
+            padding: 16px;
+            z-index: 1000;
         }
 
-        .nav button {
-            background: rgba(255, 255, 255, 0.1);
-            width: 50px;
-            height: 50px;
+        .nav-center-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             border: none;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        #homeBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        #profileBtn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            text-decoration: none;
             color: white;
-            font-size: 24px;
-            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .detail-screen-content {
-            padding: 20px;
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
         }
 
-        .detail-screen img {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
+        .voluntary-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 20px;
         }
-
     </style>
 </head>
 <body>
-    <div id="homeScreen" class="screen active">
-        <h1 style="text-align: center; padding-top: 30px;">С Новым 2025 Годом!</h1>
-        <p style="text-align: center;">Нажмите на кнопки навигации для просмотра поздравлений</p>
-    </div>
-
-    <div id="articlesScreen" class="screen">
-        <h2 style="text-align: center; margin-top: 20px;">Статьи</h2>
-
-        <div class="article-card" data-title="Перемены — это не всегда начало чего-то нового." data-text="Жизнь полна перемен, и не каждое изменение ведет к чему-то лучшему или худшему. Иногда перемены – это возможность переосмыслить привычные вещи. Перемены могут научить нас ценить то, что у нас есть. Главное помнить, что даже самые трудные перемены дают шанс развиваться." data-image="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png">
-            <img src="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png" alt="Перемены">
-            <h2>Перемены — это не всегда начало чего-то нового.</h2>
-            <p>Жизнь полна перемен...</p>
+    <div id="app">
+        <div id="homeScreen" class="screen active">
+            <div class="message">
+                <h1>С Новым 2025 Годом!</h1>
+                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
+            </div>
         </div>
 
-        <div class="article-card" data-title="Сила привычки: шаг к мечте или преграда на пути." data-text="Привычки могут быть основой для достижения целей, но они также способны ограничивать нас, удерживая в зоне комфорта. Задайте себе вопрос: ваши привычки приближают вас к мечте или мешают двигаться вперед? Создавайте привычки, которые соответствуют вашим мечтам и целям." data-image="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png">
-            <img src="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png" alt="Сила привычки">
-            <h2>Сила привычки: шаг к мечте или преграда на пути.</h2>
-            <p>Привычки могут быть основой...</p>
+        <div id="leftScreen" class="screen">
+            <div class="message">
+                <p>Старый 2024 год ушел и никогда не вернется.</p>
+                <p>Время для новых начинаний!</p>
+            </div>
         </div>
 
-        <div class="article-card" data-title="Вдохновение вокруг нас." data-text="Иногда вдохновение прячется в простых моментах жизни: разговор с другом, прогулка на природе или прочитанная книга. Вдохновляйтесь каждодневными моментами и помните, что даже случайные события могут изменить вашу жизнь." data-image="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png">
-            <img src="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png" alt="Вдохновение">
-            <h2>Вдохновение вокруг нас.</h2>
-            <p>Иногда вдохновение прячется...</p>
+        <div id="rightScreen" class="screen">
+            <div class="message">
+                <h1>С 2025 Годом!</h1>
+                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
+            </div>
         </div>
-        <!-- Добавлены статьи 4-10 аналогично -->
-    </div>
 
-    <div id="detailScreen" class="screen">
-        <button id="closeBtn" class="close-btn">×</button>
-        <div class="detail-screen-content">
-            <h2 id="detailTitle"></h2>
-            <img id="detailImage" src="" alt="Детальное изображение">
-            <p id="detailText"></p>
+        <div id="profileScreen" class="screen">
+            <div class="message">
+                <div class="social-links">
+                    <a href="https://t.me/sangklasy" class="social-link" target="_blank">📱 Telegram канал</a>
+                    <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" class="social-link" target="_blank">📷 Instagram аккаунт</a>
+                </div>
+                <p class="voluntary-text">* Подписка является полностью добровольной</p>
+            </div>
         </div>
-    </div>
 
-    <div class="nav">
-        <button id="btn-left">←</button>
-        <button id="btn-home">🏠</button>
-        <button id="btn-articles">📄</button>
-        <button id="btn-profile">👤</button>
-        <button id="btn-right">→</button>
+        <div class="nav-buttons">
+            <button id="leftBtn" class="nav-btn">←</button>
+            <div class="nav-center-group">
+                <button id="homeBtn" class="nav-btn"></button>
+                <button id="profileBtn" class="nav-btn"></button>
+            </div>
+            <button id="rightBtn" class="nav-btn">→</button>
+        </div>
     </div>
 
     <script>
-        const articles = document.querySelectorAll('.article-card');
-        const detailScreen = document.getElementById('detailScreen');
-        const closeBtn = document.getElementById('closeBtn');
-        const detailTitle = document.getElementById('detailTitle');
-        const detailText = document.getElementById('detailText');
-        const detailImage = document.getElementById('detailImage');
+        document.addEventListener('DOMContentLoaded', function() {
+            const screens = {
+                home: document.getElementById('homeScreen'),
+                left: document.getElementById('leftScreen'),
+                right: document.getElementById('rightScreen'),
+                profile: document.getElementById('profileScreen')
+            };
 
-        articles.forEach((article) => {
-            article.addEventListener('click', () => {
-                detailTitle.textContent = article.dataset.title;
-                detailText.textContent = article.dataset.text;
-                detailImage.src = article.dataset.image;
-                detailScreen.classList.add('active');
-            });
-        });
+            const buttons = {
+                home: document.getElementById('homeBtn'),
+                left: document.getElementById('leftBtn'),
+                right: document.getElementById('rightBtn'),
+                profile: document.getElementById('profileBtn')
+            };
 
-        closeBtn.addEventListener('click', () => {
-            detailScreen.classList.remove('active');
-        });
+            let currentScreen = 'home';
+            let isAnimating = false;
 
-        document.getElementById('btn-home').addEventListener('click', () => {
-            switchScreen('homeScreen');
-        });
-        document.getElementById('btn-articles').addEventListener('click', () => {
-            switchScreen('articlesScreen');
-        });
+            function showScreen(screenName) {
+                if (isAnimating) return;
+                isAnimating = true;
 
-        function switchScreen(screenId) {
-            document.querySelectorAll('.screen').forEach((screen) => {
-                screen.classList.remove('active');
-            });
-            document.getElementById(screenId).classList.add('active');
-        }
+                screens[currentScreen].classList.remove('active');
+                screens[screenName].classList.add('active');
+                currentScreen = screenName;
+
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 300);
+            }
+
+            buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.left.addEventListener('click', () => showScreen('left'));
+            buttons.right.addEventListener('click', () => showScreen('right'));
+            buttons.profile.addEventListener('click', () => showScreen('profile'));
+        });
     </script>
 </body>
 </html>
