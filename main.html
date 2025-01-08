@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
-    <title>Klyo App</title>
+    <title>Новогоднее поздравление</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
         * {
@@ -18,19 +19,23 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             overflow: hidden;
-            background-color: #000;
         }
 
         #app {
-            position: relative;
             min-height: 100vh;
+            position: relative;
         }
 
         .screen {
-            position: absolute;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 100%;
-            display: none;
+            height: 100vh;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            display: flex;
             justify-content: center;
             align-items: center;
             background-size: cover;
@@ -38,139 +43,153 @@
         }
 
         .screen.active {
-            display: flex;
+            opacity: 1;
+            visibility: visible;
         }
 
         #homeScreen {
             background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
         }
 
+        #leftScreen, #rightScreen, #profileScreen, #articleScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
+        }
+
         .message {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             padding: 24px;
             border-radius: 12px;
             text-align: center;
-            width: 90%;
+            max-width: 90%;
+            width: 100%;
             backdrop-filter: blur(8px);
-            color: white;
-        }
-
-        h1, p {
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+            margin: 20px;
+            position: relative;
+            z-index: 2;
         }
 
         h1 {
+            color: white;
             font-size: 28px;
             margin-bottom: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
         p {
+            color: white;
             font-size: 18px;
+            line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .nav-buttons {
-            position: absolute;
+            position: fixed;
             bottom: 20px;
             left: 0;
             right: 0;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 16px;
+            z-index: 1000;
+        }
+
+        .nav-center-group {
+            display: flex;
+            gap: 16px;
         }
 
         .nav-btn {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             border: none;
             background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        #articleScreen {
-            background-color: #000;
-            display: none;
-            flex-direction: column;
-            justify-content: flex-start;
-            padding: 20px;
-        }
-
-        .article-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .article-header h2 {
+            font-size: 20px;
             color: white;
-            font-size: 24px;
-        }
-
-        .close-btn {
-            background: transparent;
-            border: none;
-            font-size: 24px;
-            color: white;
-            cursor: pointer;
-        }
-
-        .article-content {
-            color: white;
-            font-size: 18px;
-            line-height: 1.6;
-            margin-top: 20px;
-        }
-
-        .article-image {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-            margin-bottom: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
         .article-card {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.2);
             padding: 16px;
-            margin: 8px 0;
-            color: white;
+            border-radius: 8px;
+            margin: 10px;
             cursor: pointer;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .article-card:hover {
             background: rgba(255, 255, 255, 0.3);
         }
 
+        .article-content {
+            padding: 20px;
+            max-width: 90%;
+            overflow-y: auto;
+            height: 70%;
+        }
+
         .social-links {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .social-link {
-            color: white;
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s;
         }
 
         .social-link:hover {
             background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
         }
     </style>
 </head>
-
 <body>
     <div id="app">
-        <!-- Home Screen -->
         <div id="homeScreen" class="screen active">
             <div class="message">
                 <h1>С Новым 2025 Годом!</h1>
@@ -178,58 +197,125 @@
             </div>
         </div>
 
-        <!-- Article Section -->
-        <div id="articleScreen" class="screen">
-            <div class="article-header">
-                <h2 id="articleTitle">Заголовок статьи</h2>
-                <button id="closeArticle" class="close-btn">×</button>
+        <div id="leftScreen" class="screen">
+            <div class="message">
+                <p>Старый 2024 год ушел и никогда не вернется.</p>
+                <p>Время для новых начинаний!</p>
             </div>
-            <img id="articleImage" class="article-image" src="" alt="Статья">
-            <p id="articleText" class="article-content">Текст статьи...</p>
         </div>
 
-        <!-- Navigation -->
+        <div id="rightScreen" class="screen">
+            <div class="message">
+                <h1>С 2025 Годом!</h1>
+                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
+            </div>
+        </div>
+
+        <div id="profileScreen" class="screen">
+            <div class="message">
+                <div class="social-links">
+                    <a href="https://t.me/sangklasy" class="social-link" target="_blank">📱 Telegram канал</a>
+                    <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" class="social-link" target="_blank">📷 Instagram аккаунт</a>
+                </div>
+                <p class="voluntary-text">* Подписка является полностью добровольной</p>
+            </div>
+        </div>
+
+        <div id="articleScreen" class="screen">
+            <div class="close-btn" id="closeArticle">✖</div>
+            <div class="article-content">
+                <h1 id="articleTitle">Заголовок статьи</h1>
+                <img id="articleImage" src="" alt="Изображение статьи" style="width: 100%; border-radius: 8px; margin: 16px 0;">
+                <p id="articleText">Текст статьи</p>
+            </div>
+        </div>
+
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">
-                <button id="homeBtn" class="nav-btn">🏠</button>
-                <button id="profileBtn" class="nav-btn">👤</button>
-                <button id="articleBtn" class="nav-btn">📰</button>
+                <button id="homeBtn" class="nav-btn"></button>
+                <button id="profileBtn" class="nav-btn"></button>
+                <button id="articleBtn" class="nav-btn">📖</button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const screens = {
                 home: document.getElementById('homeScreen'),
+                left: document.getElementById('leftScreen'),
+                right: document.getElementById('rightScreen'),
+                profile: document.getElementById('profileScreen'),
                 article: document.getElementById('articleScreen')
             };
 
             const buttons = {
                 home: document.getElementById('homeBtn'),
-                article: document.getElementById('articleBtn'),
-                closeArticle: document.getElementById('closeArticle')
+                left: document.getElementById('leftBtn'),
+                right: document.getElementById('rightBtn'),
+                profile: document.getElementById('profileBtn'),
+                article: document.getElementById('articleBtn')
             };
 
+            let currentScreen = 'home';
+            let isAnimating = false;
+
             function showScreen(screenName) {
-                for (const key in screens) {
-                    screens[key].classList.remove('active');
-                }
+                if (isAnimating) return;
+                isAnimating = true;
+
+                screens[currentScreen].classList.remove('active');
                 screens[screenName].classList.add('active');
+                currentScreen = screenName;
+
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 300);
             }
 
-            buttons.article.addEventListener('click', () => {
-                showScreen('article');
-                document.getElementById('articleTitle').textContent = "Пример статьи";
-                document.getElementById('articleText').textContent = "Это пример большой статьи с текстом о событиях и поздравлениях.";
-                document.getElementById('articleImage').src = "https://i.postimg.cc/9MnmBfgx/example.jpg";
+            buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.left.addEventListener('click', () => showScreen('left'));
+            buttons.right.addEventListener('click', () => showScreen('right'));
+            buttons.profile.addEventListener('click', () => showScreen('profile'));
+            buttons.article.addEventListener('click', () => showScreen('article'));
+
+            const articles = [
+                {
+                    title: 'Интересное событие №1',
+                    text: 'Описание первого события. Подробнее читайте ниже!',
+                    image: 'https://example.com/image1.jpg'
+                },
+                {
+                    title: 'Интересное событие №2',
+                    text: 'Описание второго события с увлекательными деталями!',
+                    image: 'https://example.com/image2.jpg'
+                }
+            ];
+
+            const articleCardsContainer = document.createElement('div');
+            articleCardsContainer.style.display = 'flex';
+            articleCardsContainer.style.flexWrap = 'wrap';
+            articleCardsContainer.style.justifyContent = 'center';
+            screens.article.appendChild(articleCardsContainer);
+
+            articles.forEach((article, index) => {
+                const card = document.createElement('div');
+                card.className = 'article-card';
+                card.innerHTML = `<h3>${article.title}</h3><p>${article.text}</p>`;
+                articleCardsContainer.appendChild(card);
+
+                card.addEventListener('click', () => {
+                    document.getElementById('articleTitle').textContent = article.title;
+                    document.getElementById('articleText').textContent = article.text;
+                    document.getElementById('articleImage').src = article.image;
+                    showScreen('article');
+                });
             });
 
-            buttons.closeArticle.addEventListener('click', () => showScreen('home'));
+            document.getElementById('closeArticle').addEventListener('click', () => showScreen('home'));
         });
     </script>
 </body>
-
 </html>
