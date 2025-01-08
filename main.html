@@ -1,210 +1,213 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klyo App</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>Новогоднее поздравление</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #000;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
             overflow: hidden;
+            background-color: #000;
         }
-        .container {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-            padding: 20px;
+        #app {
+            min-height: 100vh;
+            position: relative;
         }
-        .content {
-            margin-bottom: 20px;
-            backdrop-filter: blur(8px);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            border-radius: 15px;
-        }
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 400px;
-            position: absolute;
-            bottom: 10px;
-        }
-        .nav button {
-            width: 60px;
-            height: 60px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .hidden {
-            display: none;
-        }
-        .articles {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            overflow-y: auto;
-            max-height: calc(100vh - 200px);
-            scrollbar-width: none;
-        }
-        .articles::-webkit-scrollbar {
-            display: none;
-        }
-        .article-card {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            width: 90%;
-            text-align: left;
-            color: white;
-            cursor: pointer;
-        }
-        .article-card img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-        }
-        .article-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        .article-description {
-            font-size: 1rem;
-            margin-top: 5px;
-        }
-        .article-detail {
-            background-color: rgba(0, 0, 0, 0.9);
+        .screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            z-index: 10;
+            height: 100vh;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            background-size: cover;
+            background-position: center;
         }
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 1.5rem;
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        #homeScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
+        }
+        #leftScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
+        }
+        #rightScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
+        }
+        #profileScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
+        }
+        .message {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 90%;
+            width: 100%;
+            backdrop-filter: blur(8px);
+            margin: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        h1 {
             color: white;
+            font-size: 28px;
+            margin-bottom: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        p {
+            color: white;
+            font-size: 18px;
+            line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        .nav {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 16px;
+            z-index: 1000;
+        }
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .nav-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.4);
         }
     </style>
 </head>
 <body>
-    <div class="container" id="main">
-        <div class="content">
-            <h1>С Новым 2025 Годом!</h1>
-            <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
-        </div>
-    </div>
-
-    <div class="container hidden" id="articles">
-        <div class="content">
-            <h2>Статьи</h2>
-        </div>
-        <div class="articles">
-            <div class="article-card" data-title="Перемены — это не всегда начало чего-то нового." data-description="Полный текст статьи о том, что перемены не всегда означают новый старт." data-image="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png">
-                <img src="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png" alt="Статья 1">
-                <div class="article-title">Перемены — это не всегда начало чего-то нового.</div>
+    <div id="app">
+        <div id="homeScreen" class="screen active">
+            <div class="message">
+                <h1>С Новым 2025 Годом!</h1>
+                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
             </div>
-            <div class="article-card" data-title="О важности маленьких шагов к мечте." data-description="Полный текст статьи о том, что каждый шаг к мечте имеет значение." data-image="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png">
-                <img src="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png" alt="Статья 2">
-                <div class="article-title">О важности маленьких шагов к мечте.</div>
-            </div>
-            <!-- Добавлены все 10 статей -->
-            <div class="article-card" data-title="Каждый день — возможность узнать что-то новое." data-description="Полный текст статьи о важности знаний." data-image="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png">
-                <img src="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png" alt="Статья 3">
-                <div class="article-title">Каждый день — возможность узнать что-то новое.</div>
-            </div>
-            <!-- Добавить другие статьи аналогично -->
         </div>
-    </div>
 
-    <div class="article-detail hidden" id="article-detail">
-        <button class="close-btn" id="close-article">&times;</button>
-        <img id="article-image" style="max-width: 100%; border-radius: 10px;" />
-        <h1 id="article-title"></h1>
-        <p id="article-text"></p>
-    </div>
+        <div id="leftScreen" class="screen">
+            <div class="message">
+                <p>Старый 2024 год ушел и никогда не вернется.</p>
+                <p>Время для новых начинаний!</p>
+            </div>
+        </div>
 
-    <div class="nav">
-        <button id="btn-left">⟵</button>
-        <button id="btn-home"></button>
-        <button id="btn-articles"><i class="fa-solid fa-newspaper"></i></button>
-        <button id="btn-profile"></button>
-        <button id="btn-right">⟶</button>
+        <div id="rightScreen" class="screen">
+            <div class="message">
+                <h1>С 2025 Годом!</h1>
+                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
+            </div>
+        </div>
+
+        <div id="profileScreen" class="screen">
+            <div class="message">
+                <p>Ваш профиль загружается...</p>
+            </div>
+        </div>
+
+        <div id="articlesScreen" class="screen">
+            <div class="message">
+                <h1>Статьи</h1>
+                <p>Перемены — это не всегда начало чего-то нового.</p>
+                <p>О важности маленьких шагов к мечте.</p>
+                <p>Каждый день — возможность узнать что-то новое.</p>
+                <p>Путь к успеху требует терпения.</p>
+                <p>Никогда не поздно начать заново.</p>
+                <p>Дорога к успеху начинается с маленьких шагов.</p>
+                <p>Не бойтесь перемен.</p>
+                <p>Учитесь на каждом шагу.</p>
+                <p>Делайте добро и оно вернется.</p>
+                <p>Ставьте цели и достигайте их!</p>
+            </div>
+        </div>
+
+        <div class="nav">
+            <button id="btn-left" class="nav-btn">⟵</button>
+            <button id="btn-home" class="nav-btn"></button>
+            <button id="btn-articles" class="nav-btn"></button>
+            <button id="btn-profile" class="nav-btn"></button>
+            <button id="btn-right" class="nav-btn">⟶</button>
+        </div>
     </div>
 
     <script>
-        const screens = {
-            main: document.getElementById('main'),
-            articles: document.getElementById('articles'),
-            articleDetail: document.getElementById('article-detail')
-        };
+        document.addEventListener('DOMContentLoaded', function() {
+            const screens = {
+                home: document.getElementById('homeScreen'),
+                left: document.getElementById('leftScreen'),
+                right: document.getElementById('rightScreen'),
+                profile: document.getElementById('profileScreen'),
+                articles: document.getElementById('articlesScreen')
+            };
 
-        const buttons = {
-            left: document.getElementById('btn-left'),
-            home: document.getElementById('btn-home'),
-            articles: document.getElementById('btn-articles'),
-            profile: document.getElementById('btn-profile'),
-            right: document.getElementById('btn-right')
-        };
+            const buttons = {
+                home: document.getElementById('btn-home'),
+                left: document.getElementById('btn-left'),
+                right: document.getElementById('btn-right'),
+                profile: document.getElementById('btn-profile'),
+                articles: document.getElementById('btn-articles')
+            };
 
-        const articleCards = document.querySelectorAll('.article-card');
-        const articleTitle = document.getElementById('article-title');
-        const articleText = document.getElementById('article-text');
-        const articleImage = document.getElementById('article-image');
-        const closeArticle = document.getElementById('close-article');
+            let currentScreen = 'home';
+            let isAnimating = false;
 
-        function showScreen(screen) {
-            for (let key in screens) {
-                screens[key].classList.add('hidden');
+            function showScreen(screenName) {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                Object.values(screens).forEach(screen => {
+                    screen.classList.remove('active');
+                });
+
+                screens[screenName].classList.add('active');
+                currentScreen = screenName;
+
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 300);
             }
-            screens[screen].classList.remove('hidden');
-        }
 
-        buttons.left.addEventListener('click', () => showScreen('main'));
-        buttons.home.addEventListener('click', () => showScreen('main'));
-        buttons.articles.addEventListener('click', () => showScreen('articles'));
-        buttons.profile.addEventListener('click', () => showScreen('main'));
-        buttons.right.addEventListener('click', () => showScreen('main'));
-
-        articleCards.forEach((card) => {
-            card.addEventListener('click', () => {
-                articleTitle.textContent = card.dataset.title;
-                articleText.textContent = card.dataset.description;
-                articleImage.src = card.dataset.image;
-                showScreen('articleDetail');
-            });
+            buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.left.addEventListener('click', () => showScreen('left'));
+            buttons.right.addEventListener('click', () => showScreen('right'));
+            buttons.profile.addEventListener('click', () => showScreen('profile'));
+            buttons.articles.addEventListener('click', () => showScreen('articles'));
         });
-
-        closeArticle.addEventListener('click', () => showScreen('articles'));
     </script>
 </body>
 </html>
