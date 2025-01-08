@@ -308,7 +308,7 @@
 
         <div id="leftScreen" class="screen">
             <div class="message">
-                <p>Старый 2024 год ушел и никогда не вернется.</p>
+                <p>Старый 2024 год ушел и никогда не вернется.</п>
                 <p>Время для новых начинаний!</p>
             </div>
         </div>
@@ -316,7 +316,7 @@
         <div id="rightScreen" class="screen">
             <div class="message">
                 <h1>С 2025 Годом!</h1>
-                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
+                <p>Пусть этот год принесет много радости, счастья и успехов!</п>
             </div>
         </div><div id="profileScreen" class="screen">
             <div class="message">
@@ -525,16 +525,18 @@
                     input.value = '';
 
                     // Simulate AI response
-                    fetch('https://api.open-assistant.io/v1/query', {
+                    fetch('https://api.open-assistant.io/v1/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            model: "oasst-sft-1-pythia-12b",
+                            model: "gpt-3.5-turbo",
                             messages: [
+                                { role: 'system', content: 'Ты ИИ в приложении Klyo. Отвечай на вопросы пользователя лаконично.' },
                                 { role: 'user', content: message }
-                            ]
+                            ],
+                            temperature: 0.7
                         })
                     })
                     .then(response => response.json())
