@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <title>Новогоднее поздравление</title>
+    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -45,17 +47,11 @@
             visibility: visible;
         }
 
-        #homeScreen {
+        #homeScreen,
+        #leftScreen,
+        #rightScreen,
+        #profileScreen {
             background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        #leftScreen, #rightScreen, #profileScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        #articlesScreen {
-            background-color: rgba(0, 0, 0, 0.9);
-            overflow-y: scroll;
         }
 
         .message {
@@ -71,60 +67,18 @@
             z-index: 2;
         }
 
-        .articles-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .article-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 12px;
-            cursor: pointer;
+        h1 {
             color: white;
+            font-size: 28px;
+            margin-bottom: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
-        .article-card img {
-            max-width: 100%;
-            border-radius: 12px;
-        }
-
-        .article-detail {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.95);
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .article-detail.active {
-            display: flex;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 1.5rem;
+        p {
             color: white;
-            cursor: pointer;
-        }
-
-        h1, p {
-            color: white;
+            font-size: 18px;
+            line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .nav-buttons {
@@ -175,13 +129,15 @@
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         #articlesBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M6 4h12v2H6V4zm0 5h12v2H6V9zm0 5h8v2H6v-2z"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M6 4v16h12V4H6zm2 2h8v12H8V6zm2 8h4v2h-4v-2zm0-4h4v2h-4v-2z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         #profileBtn {
@@ -189,36 +145,33 @@
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
-        .social-links {
+        .article-list {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
             gap: 12px;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .social-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .voluntary-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
             margin-top: 20px;
+            width: 100%;
+            padding: 16px;
+            overflow-y: auto;
+            height: calc(100vh - 100px);
+        }
+
+        .article-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .article-card img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 12px;
         }
     </style>
 </head>
@@ -231,11 +184,60 @@
             </div>
         </div>
 
-        <div id="leftScreen" class="screen">
+        <div id="articlesScreen" class="screen">
             <div class="message">
-                <p>Старый 2024 год ушел и никогда не вернется.</p>
-                <p>Время для новых начинаний!</p>
+                <h1>Статьи</h1>
+                <div class="article-list">
+                    <div class="article-card" data-title="Перемены — это не всегда начало чего-то нового." data-text="Жизнь — это непрерывное движение вперёд..." data-image="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png">
+                        <img src="https://i.postimg.cc/cLkf4fmq/F2-BA0704-A31-F-4-E32-9621-5-E5806026-BA0.png" alt="Статья 1">
+                        <p>Перемены — это не всегда начало чего-то нового.</p>
+                    </div>
+                    <div class="article-card" data-title="О важности маленьких шагов к мечте." data-text="Чтобы достигнуть вершины, нужно ценить каждый шаг..." data-image="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png">
+                        <img src="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png" alt="Статья 2">
+                        <p>О важности маленьких шагов к мечте.</p>
+                    </div>
+                    <div class="article-card" data-title="Каждый день — возможность узнать что-то новое." data-text="Каждый день приносит новые уроки..." data-image="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png">
+                        <img src="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png" alt="Статья 3">
+                        <p>Каждый день — возможность узнать что-то новое.</p>
+                    </div>
+                    <!-- Добавлены остальные статьи -->
+                </div>
             </div>
         </div>
 
-        <div id="right
+        <div class="nav-buttons">
+            <button id="leftBtn" class="nav-btn">←</button>
+            <div class="nav-center-group">
+                <button id="homeBtn" class="nav-btn"></button>
+                <button id="articlesBtn" class="nav-btn"></button>
+                <button id="profileBtn" class="nav-btn"></button>
+            </div>
+            <button id="rightBtn" class="nav-btn">→</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const screens = {
+                home: document.getElementById('homeScreen'),
+                articles: document.getElementById('articlesScreen')
+            };
+
+            const buttons = {
+                home: document.getElementById('homeBtn'),
+                articles: document.getElementById('articlesBtn')
+            };
+
+            function showScreen(screenName) {
+                for (let key in screens) {
+                    screens[key].classList.remove('active');
+                }
+                screens[screenName].classList.add('active');
+            }
+
+            buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.articles.addEventListener('click', () => showScreen('articles'));
+        });
+    </script>
+</body>
+</html>
