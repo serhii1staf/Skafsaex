@@ -175,7 +175,7 @@
         }
 
         #articlesBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2v20M2 12h20"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M5 8h14V6H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
@@ -183,7 +183,7 @@
         }
 
         #chatBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M21 11.5a8.38 8.38 0 01-11.07 7.83A8.42 8.42 0 013 11.5 8.42 8.42 0 019.93 3a8.42 8.42 0 017.57 4.57 8.38 8.38 0 013.5 3.93zM9 14l2-2 4 4m-4-4l4-4m0 0H5m0 8h.01"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 10c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
@@ -383,171 +383,4 @@
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
-    </div><div id="articleModal" class="article-modal">
-        <div class="article-modal-content">
-            <button class="close-btn" id="closeArticleModal">×</button>
-            <img id="modalImage" src="" alt="Article Image" class="article-image">
-            <h2 id="modalTitle"></h2>
-            <p id="modalText"></p>
-        </div>
     </div>
-
-    <div id="chatModal" class="chat-modal">
-        <div class="chat-modal-content" style="background-image: url('https://i.postimg.cc/26sHhMs4/IMG-4767.png'); background-size: cover;">
-            <div class="chat-header">
-                <h2 style="background: rgba(255, 255, 255, 0.5);">Общение с Pae AI</h2>
-                <button class="close-btn" id="closeChatModal">×</button>
-            </div>
-            <div class="chat-messages" id="chatMessages"></div>
-            <div class="chat-input-container">
-                <input type="text" id="chatInput" placeholder="Введите сообщение...">
-                <button id="sendBtn">Отправить</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                left: document.getElementById('leftScreen'),
-                right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen'),
-                articles: document.getElementById('articlesScreen'),
-            };
-
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                left: document.getElementById('leftBtn'),
-                right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn'),
-                articles: document.getElementById('articlesBtn'),
-                chat: document.getElementById('chatBtn'),
-                closeArticle: document.getElementById('closeArticleModal'),
-                closeChat: document.getElementById('closeChatModal'),
-                send: document.getElementById('sendBtn')
-            };
-
-            let currentScreen = 'home';
-            let isAnimating = false;
-
-            function showScreen(screenName) {
-                if (isAnimating) return;
-                isAnimating = true;
-
-                screens[currentScreen].classList.remove('active');
-                screens[screenName].classList.add('active');
-
-                if (screenName === 'articles') {
-                    buttons.left.style.display = 'none';
-                    buttons.right.style.display = 'none';
-                    buttons.profile.style.display = 'none';
-                    buttons.articles.style.display = 'none';
-                    buttons.home.style.margin = '0 auto';
-                    buttons.chat.style.display = 'none';
-                } else {
-                    buttons.left.style.display = 'flex';
-                    buttons.right.style.display = 'flex';
-                    buttons.profile.style.display = 'flex';
-                    buttons.articles.style.display = 'flex';
-                    buttons.home.style.margin = '0';
-                    buttons.chat.style.display = 'flex';
-                }
-
-                currentScreen = screenName;
-
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 300);
-            }
-
-            function showArticleDetail(title, text, imgSrc) {
-                const modal = document.getElementById('articleModal');
-                document.getElementById('modalTitle').textContent = title;
-                document.getElementById('modalText').textContent = text;
-                document.getElementById('modalImage').src = imgSrc;
-
-                modal.style.display = 'flex';
-                setTimeout(() => {
-                    buttons.closeArticle.style.display = 'block';
-                }, 2000);
-            }
-
-            function hideArticleDetail() {
-                const modal = document.getElementById('articleModal');
-                modal.style.display = 'none';
-                buttons.closeArticle.style.display = 'none';
-                showScreen('articles');
-            }
-
-            function showChat() {
-                const modal = document.getElementById('chatModal');
-                modal.style.display = 'flex';
-                setTimeout(() => {
-                    buttons.closeChat.style.display = 'block';
-                }, 2000);
-            }
-
-            function hideChat() {
-                const modal = document.getElementById('chatModal');
-                modal.style.display = 'none';
-                buttons.closeChat.style.display = 'none';
-            }
-
-            buttons.home.addEventListener('click', () => showScreen('home'));
-            buttons.left.addEventListener('click', () => showScreen('left'));
-            buttons.right.addEventListener('click', () => showScreen('right'));
-            buttons.profile.addEventListener('click', () => showScreen('profile'));
-            buttons.articles.addEventListener('click', () => showScreen('articles'));
-            buttons.chat.addEventListener('click', showChat);
-            buttons.closeArticle.addEventListener('click', hideArticleDetail);
-            buttons.closeChat.addEventListener('click', hideChat);
-
-            document.querySelectorAll('#articlesScreen article').forEach(article => {
-                article.addEventListener('click', () => {
-                    const title = article.getAttribute('data-title');
-                    const text = article.getAttribute('data-text');
-                    const imgSrc = article.getAttribute('data-img');
-                    showArticleDetail(title, text, imgSrc);
-                });
-            });
-
-            buttons.send.addEventListener('click', () => {
-                const input = document.getElementById('chatInput');
-                const message = input.value;
-                if (message.trim()) {
-                    const chatMessages = document.getElementById('chatMessages');
-                    const userMessage = document.createElement('div');
-                    userMessage.className = 'chat-message user-message';
-                    userMessage.style.background = 'rgba(255, 255, 255, 0.5)';
-                    userMessage.textContent = message;
-                    chatMessages.appendChild(userMessage);
-                    input.value = '';
-
-                    // Simulate AI response
-                    fetch('https://api.open-assistant.io/v1/query', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            text: message,
-                            lang: 'ru',
-                            user_id: 'уникальный_идентификатор'
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        const aiMessage = document.createElement('div');
-                        aiMessage.className = 'chat-message ai-message';
-                        aiMessage.style.background = 'rgba(169, 169, 169, 0.5)';
-                        aiMessage.textContent = 'Ответ ИИ: ' + data.reply;
-                        chatMessages.appendChild(aiMessage);
-                    })
-                    .catch(error => console.error('Error:', error));
-                }
-            });
-        });
-    </script>
-</body>
-</html>
