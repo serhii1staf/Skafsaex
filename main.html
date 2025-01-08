@@ -64,37 +64,8 @@
         }
 
         #articlesScreen {
-            background-color: #f4f4f4;
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
             overflow-y: auto;
-            padding: 20px;
-        }
-
-        .articles-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        article {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        article img {
-            width: 100%;
-            border-radius: 8px;
-        }
-
-        article h2 {
-            margin: 20px 0 10px;
-            font-size: 24px;
-        }
-
-        article p {
-            font-size: 16px;
-            color: #333;
         }
 
         .message {
@@ -184,7 +155,7 @@
         }
 
         #articlesBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M5 8h14V6H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2z"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M6 4h12v2H6V4zm0 4h12v2H6V8zm0 4h12v2H6v-2zm0 4h12v2H6v-2z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
@@ -221,51 +192,80 @@
             margin-top: 20px;
         }
 
-        #articleDetailScreen {
-            background-color: #f4f4f4;
-            overflow-y: auto;
-            padding: 20px;
-            display: none;
+        .article-card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 16px;
+            border-radius: 12px;
+            margin: 10px;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.3s;
         }
 
-        #articleDetail {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        .article-card:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
 
-        #articleDetail img {
+        .article-card img {
             width: 100%;
             border-radius: 8px;
+            margin-bottom: 10px;
         }
 
-        #articleDetail h2 {
-            margin: 20px 0 10px;
-            font-size: 24px;
-        }
-
-        #articleDetail p {
-            font-size: 16px;
-            color: #333;
-        }
-
-        #closeBtn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border: none;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: none;
-        }
-
-        #closeBtn:after {
-            content: '✖';
+        .article-card h2 {
             font-size: 20px;
-            color: black;
+            margin-bottom: 10px;
+        }
+
+        .article-card p {
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        .article-full {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            text-align: left;
+            max-width: 90%;
+            width: 100%;
+            backdrop-filter: blur(8px);
+            margin: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .article-full img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .article-full h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .article-full p {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .article-full:hover .close-btn {
+            opacity: 1;
         }
     </style>
 </head>
@@ -303,55 +303,57 @@
         </div>
 
         <div id="articlesScreen" class="screen">
-            <div class="articles-container">
-                <article data-title="Перемены — это не всегда начало чего-то нового" data-text="Жизнь полна перемен, и не каждое изменение ведет к чему-то лучшему или худшему. Иногда перемены — это возможность переосмыслить привычные вещи. Перемены могут научить нас ценить то, что у нас есть. Главное помнить, что даже самые трудные перемены дают шанс развиваться." data-img="https://via.placeholder.com/300x200?text=Статья+1">
+            <div class="message">
+                <div class="article-card" onclick="showArticle(1)">
                     <img src="https://via.placeholder.com/300x200?text=Статья+1" alt="Статья 1">
                     <h2>Перемены — это не всегда начало чего-то нового</h2>
-                </article>
-                <article data-title="Сила привычки: шаг к мечте или преграда на пути" data-text="Привычки могут быть основой для достижения целей, но они также способны ограничивать нас, удерживая в зоне комфорта. Задайте себе вопрос: ваши привычки приближают вас к мечте или мешают двигаться вперед? Создавайте привычки, которые соответствуют вашим мечтам и целям." data-img="https://via.placeholder.com/300x200?text=Статья+2">
+                    <p>Жизнь полна перемен, и не каждое изменение ведет к чему-то лучшему или худшему...</p>
+                </div>
+                <div class="article-card" onclick="showArticle(2)">
                     <img src="https://via.placeholder.com/300x200?text=Статья+2" alt="Статья 2">
                     <h2>Сила привычки: шаг к мечте или преграда на пути</h2>
-                </article>
-                <article data-title="Вдохновение вокруг нас" data-text="Иногда вдохновение прячется в простых моментах жизни: разговор с другом, прогулка на природе или прочитанная книга. Вдохновляйтесь каждодневными моментами и помните, что даже случайные события могут изменить вашу жизнь." data-img="https://via.placeholder.com/300x200?text=Статья+3">
+                    <p>Привычки могут быть основой для достижения целей, но они также способны удерживать нас в зоне комфорта...</p>
+                </div>
+                <div class="article-card" onclick="showArticle(3)">
                     <img src="https://via.placeholder.com/300x200?text=Статья+3" alt="Статья 3">
                     <h2>Вдохновение вокруг нас</h2>
-                </article>
-                <article data-title="Никогда не поздно начать заново" data-text="Независимо от того, сколько раз вы начинали с нуля, каждый новый старт — это еще один шанс. Главное — верить в себя и продолжать путь. Ошибки — это часть жизни, но они не определяют наше будущее. Важно помнить, что каждый шаг приближает нас к успеху." data-img="https://via.placeholder.com/300x200?text=Статья+4">
+                    <p>Иногда вдохновение прячется в простых моментах жизни: разговор с другом, прогулка на природе или прочитанная книга...</p>
+                </div>
+                <div class="article-card" onclick="showArticle(4)">
                     <img src="https://via.placeholder.com/300x200?text=Статья+4" alt="Статья 4">
                     <h2>Никогда не поздно начать заново</h2>
-                </article>
-                <article data-title="Важность маленьких шагов" data-text="Не каждый успех приходит с грандиозных действий. Иногда самые маленькие шаги — это те самые кирпичики, которые создают вашу крепость. Маленькие победы дают веру в большие достижения, поэтому не пренебрегайте мелочами." data-img="https://via.placeholder.com/300x200?text=Статья+5">
+                    <p>Независимо от того, сколько раз вы начинали с нуля, каждый новый старт — это еще один шанс...</p>
+                </div>
+                <div class="article-card" onclick="showArticle(5)">
                     <img src="https://via.placeholder.com/300x200?text=Статья+5" alt="Статья 5">
                     <h2>Важность маленьких шагов</h2>
-                </article>
-                <article data-title="Мотивация и её значение в повседневной жизни" data-text="Мотивация — это двигатель всех наших действий. Важно знать, что не каждый день будет легким, и в такие моменты нужно напоминать себе, почему вы начали свой путь. Найдите источники мотивации: любимая музыка, успехи других людей или ваши собственные достижения." data-img="https://via.placeholder.com/300x200?text=Статья+6">
+                    <p>Не каждый успех приходит с грандиозных действий. Иногда самые маленькие шаги — это те самые кирпичики, которые создают вашу крепость...</p>
+                </div>
+                <div class="article-card" onclick="showArticle(6)">
                     <img src="https://via.placeholder.com/300x200?text=Статья+6" alt="Статья 6">
                     <h2>Мотивация и её значение в повседневной жизни</h2>
-                </article>
-                <article data-title="Принятие себя и своих ошибок" data-text="Совершать ошибки — это нормально. Важно научиться прощать себя и двигаться дальше. Принятие своих слабостей и осознание своей силы — это шаг к внутренней гармонии и свободе. Путь к принятию себя начинается с любви и заботы о себе." data-img="https://via.placeholder.com/300x200?text=Статья+7">
+                    <p>Мотивация — это двигатель всех наших действий. Важно знать, что не каждый день будет легким...</p>
+                </div>
+                <div class="article-card" onclick="showArticle(7)">
                     <img src="https://via.placeholder.com/300x200?text=Статья+7" alt="Статья 7">
                     <h2>Принятие себя и своих ошибок</h2>
-                </article>
-                <article data-title="Почему отдых — это тоже часть успеха" data-text="Отдых — это не лень, а часть успешного пути. В современном мире многие забывают о важности восстановления сил. Но без отдыха невозможно достичь максимальной продуктивности. Дайте себе время перезарядиться, чтобы двигаться вперед с новой энергией." data-img="https://via.placeholder.com/300x200?text=Статья+8">
+                    <p>Совершать ошибки — это нормально. Важно научиться прощать себя и двигаться дальше...</p>
+                </div>
+                <div class="article-card" onclick="showArticle(8)">
                     <img src="https://via.placeholder.com/300x200?text=Статья+8" alt="Статья 8">
                     <h2>Почему отдых — это тоже часть успеха</h2>
-                </article>
-                <article data-title="Влияние окружения на наши достижения" data-text="Люди и события, которые нас окружают, могут либо мотивировать нас, либо сдерживать. Важно находить тех, кто поддерживает и вдохновляет. Создайте вокруг себя атмосферу, в которой ваши цели будут расти и развиваться." data-img="https://via.placeholder.com/300x200?text=Статья+9">
+                    <p>Отдых — это не лень, а часть успешного пути. В современном мире многие забывают о важности восстановления сил...</p>
+                </div>
+                <div class="article-card" onclick="showArticle(9)">
                     <img src="https://via.placeholder.com/300x200?text=Статья+9" alt="Статья 9">
                     <h2>Влияние окружения на наши достижения</h2>
-                </article>
-                <article data-title="Смелость делать первый шаг" data-text="Самое сложное — это сделать первый шаг навстречу неизвестности. Страх перед провалом может парализовать, но каждый первый шаг — это уже успех. Доверьтесь своим инстинктам и знайте: даже маленькое действие способно изменить всё." data-img="https://via.placeholder.com/300x200?text=Статья+10">
+                    <p>Люди и события, которые нас окружают, могут либо мотивировать нас, либо сдерживать...</p>
+                </div>
+                <div class="article-card" onclick="showArticle(10)">
                     <img src="https://via.placeholder.com/300x200?text=Статья+10" alt="Статья 10">
                     <h2>Смелость делать первый шаг</h2>
-                </article>
-            </div>
-        </div>
-
-        <div id="articleDetailScreen">
-            <div id="articleDetail">
-                <img id="articleDetailImg" src="" alt="">
-                <h2 id="articleDetailTitle"></h2>
-                <p id="articleDetailText"></p>
+                    <p>Самое сложное — это сделать первый шаг навстречу неизвестности. Страх перед провалом может парализовать...</p>
+                </div>
             </div>
         </div>
 
@@ -359,7 +361,127 @@
             <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">
                 <button id="homeBtn" class="nav-btn"></button>
-                <button id="profileBtn" class="nav-btn"></button>
                 <button id="articlesBtn" class="nav-btn"></button>
+                <button id="profileBtn" class="nav-btn"></button>
             </div>
-            <
+            <button id="rightBtn" class="nav-btn">→</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const screens = {
+                home: document.getElementById('homeScreen'),
+                left: document.getElementById('leftScreen'),
+                right: document.getElementById('rightScreen'),
+                profile: document.getElementById('profileScreen'),
+                articles: document.getElementById('articlesScreen')
+            };
+
+            const buttons = {
+                home: document.getElementById('homeBtn'),
+                left: document.getElementById('leftBtn'),
+                right: document.getElementById('rightBtn'),
+                profile: document.getElementById('profileBtn'),
+                articles: document.getElementById('articlesBtn')
+            };
+
+            let currentScreen = 'home';
+            let isAnimating = false;
+
+            function showScreen(screenName) {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                screens[currentScreen].classList.remove('active');
+                screens[screenName].classList.add('active');
+                currentScreen = screenName;
+
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 300);
+            }
+
+            buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.left.addEventListener('click', () => showScreen('left'));
+            buttons.right.addEventListener('click', () => showScreen('right'));
+            buttons.profile.addEventListener('click', () => showScreen('profile'));
+            buttons.articles.addEventListener('click', () => showScreen('articles'));
+        });
+
+        function showArticle(articleId) {
+            const articles = [
+                {
+                    title: "Перемены — это не всегда начало чего-то нового",
+                    text: "Жизнь полна перемен, и не каждое изменение ведет к чему-то лучшему или худшему. Иногда перемены — это возможность переосмыслить привычные вещи. Перемены могут научить нас ценить то, что у нас есть. Главное помнить, что даже самые трудные перемены дают шанс развиваться.",
+                    image: "https://via.placeholder.com/300x200?text=Статья+1"
+                },
+                {
+                    title: "Сила привычки: шаг к мечте или преграда на пути",
+                    text: "Привычки могут быть основой для достижения целей, но они также способны ограничивать нас, удерживая в зоне комфорта. Задайте себе вопрос: ваши привычки приближают вас к мечте или мешают двигаться вперед? Создавайте привычки, которые соответствуют вашим мечтам и целям.",
+                    image: "https://via.placeholder.com/300x200?text=Статья+2"
+                },
+                {
+                    title: "Вдохновение вокруг нас",
+                    text: "Иногда вдохновение прячется в простых моментах жизни: разговор с другом, прогулка на природе или прочитанная книга. Вдохновение может прийти в любой момент, главное быть открытым к новым впечатлениям и идеям. Не бойтесь искать вдохновение в самых неожиданных местах.",
+                    image: "https://via.placeholder.com/300x200?text=Статья+3"
+                },
+                {
+                    title: "Никогда не поздно начать заново",
+                    text: "Независимо от того, сколько раз вы начинали с нуля, каждый новый старт — это еще один шанс. Не бойтесь начинать заново, если это необходимо. Главное — верить в себя и свои силы. Каждый новый день — это возможность изменить свою жизнь к лучшему.",
+                    image: "https://via.placeholder.com/300x200?text=Статья+4"
+                },
+                {
+                    title: "Важность маленьких шагов",
+                    text: "Не каждый успех приходит с грандиозных действий. Иногда самые маленькие шаги — это те самые кирпичики, которые создают вашу крепость. Не бойтесь делать маленькие шаги на пути к своей мечте. Главное — не останавливаться и двигаться вперед.",
+                    image: "https://via.placeholder.com/300x200?text=Статья+5"
+                },
+                {
+                    title: "Мотивация и её значение в повседневной жизни",
+                    text: "Мотивация — это двигатель всех наших действий. Важно знать, что не каждый день будет легким. Иногда мотивация может пропадать, и это нормально. Главное — не сдаваться и продолжать двигаться вперед, несмотря на трудности. Верьте в себя и свои силы.",
+                    image: "https://via.placeholder.com/300x200?text=Статья+6"
+                },
+                {
+                    title: "Принятие себя и своих ошибок",
+                    text: "Совершать ошибки — это нормально. Важно научиться прощать себя и двигаться дальше. Не бойтесь ошибаться, ведь ошибки — это часть нашего пути. Главное — учиться на своих ошибках и не повторять их в будущем. Примите себя таким, какой вы есть.",
+                    image: "https://via.placeholder.com/300x200?text=Статья+7"
+                },
+                {
+                    title: "Почему отдых — это тоже часть успеха",
+                    text: "Отдых — это не лень, а часть успешного пути. В современном мире многие забывают о важности восстановления сил. Не бойтесь брать перерывы и отдыхать, когда это необходимо. Отдых поможет вам восстановить силы и вернуться к работе с новыми идеями и энергией.",
+                    image: "https://via.placeholder.com/300x200?text=Статья+8"
+                },
+                {
+                    title: "Влияние окружения на наши достижения",
+                    text: "Люди и события, которые нас окружают, могут либо мотивировать нас, либо сдерживать. Важно окружать себя людьми, которые поддерживают и вдохновляют вас. Не бойтесь менять окружение, если это необходимо для вашего роста и развития. Верьте в себя и свои силы.",
+                    image: "https://via.placeholder.com/300x200?text=Статья+9"
+                },
+                {
+                    title: "Смелость делать первый шаг",
+                    text: "Самое сложное — это сделать первый шаг навстречу неизвестности. Страх перед провалом может парализовать. Но помните, что каждый шаг — это возможность изменить свою жизнь к лучшему. Не бойтесь делать первый шаг и двигаться вперед, несмотря на страхи и сомнения.",
+                    image: "https://via.placeholder.com/300x200?text=Статья+10"
+                }
+            ];
+
+            const article = articles[articleId - 1];
+            const articleFull = document.createElement('div');
+            articleFull.className = 'article-full';
+            articleFull.innerHTML = `
+                <button class="close-btn" onclick="closeArticle()">×</button>
+                <img src="${article.image}" alt="${article.title}">
+                <h2>${article.title}</h2>
+                <p>${article.text}</p>
+            `;
+
+            document.body.appendChild(articleFull);
+        }
+
+        function closeArticle() {
+            const articleFull = document.querySelector('.article-full');
+            if (articleFull) {
+                articleFull.remove();
+            }
+        }
+    </script>
+</body>
+</html>
