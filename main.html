@@ -182,6 +182,14 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
+        #chatBtn {
+            background-image: url('https://i.postimg.cc/26sHhMs4/IMG-4767.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
         .social-links {
             display: flex;
             flex-direction: column;
@@ -239,6 +247,7 @@
         }
 
         .close-btn {
+            display: none; /* Скрываем кнопку по умолчанию */
             position: fixed;
             top: 10px;
             right: 10px;
@@ -249,7 +258,6 @@
             background: rgba(255, 255, 255, 0.2);
             color: white;
             font-size: 24px;
-            display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
@@ -368,10 +376,10 @@
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">
-                <button id="chatBtn" class="nav-btn"><i class="fa-solid fa-comment-nodes"></i></button>
+                <button id="chatBtn" class="nav-btn"></button>
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
-                <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
+                <button id="articlesBtn" class="nav-btn"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
@@ -387,7 +395,7 @@
     <div id="chatModal" class="chat-modal">
         <div class="chat-modal-content" style="background-image: url('https://i.postimg.cc/26sHhMs4/IMG-4767.png'); background-size: cover;">
             <div class="chat-header">
-                <h2>Общение с Pae AI</h2>
+                <h2>Общение с ИИ (Pae AI)</h2>
                 <button class="close-btn" id="closeChatModal">×</button>
             </div>
             <div class="chat-messages" id="chatMessages"></div>
@@ -514,10 +522,29 @@
                     input.value = '';
 
                     // Simulate AI response
-                    const aiMessage = document.createElement('div');
-                    aiMessage.className = 'chat-message ai-message';
-                    aiMessage.textContent = 'Ответ ИИ: ' + message;
-                    chatMessages.appendChild(aiMessage);
+                    fetch('https://api.openai.com/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer [API_KEY]',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            model: 'gpt-3.5-turbo',
+                            messages: [
+                                { role: 'system', content: 'You are Pae AI assistant.' },
+                                { role: 'user', content: message }
+                            ],
+                            temperature: 0.7
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const aiMessage = document.createElement('div');
+                        aiMessage.className = 'chat-message ai-message';
+                        aiMessage.textContent = 'Ответ ИИ: ' + data.choices[0].message.content;
+                        chatMessages.appendChild(aiMessage);
+                    })
+                    .catch(error => console.error('Error:', error));
                 }
             });
         });
