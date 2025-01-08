@@ -45,29 +45,18 @@
             visibility: visible;
         }
 
-        #homeScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        #leftScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        #rightScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        #profileScreen {
+        #homeScreen, #leftScreen, #rightScreen, #profileScreen {
             background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
         }
 
         #articleScreen {
-            background-image: url('https://i.postimg.cc/P58Pyd2v/IMG-4641.jpg');
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            background: white;
             padding: 16px;
             overflow-y: auto;
+            display: none;
+            position: absolute;
+            inset: 0;
+            z-index: 1000;
         }
 
         .message {
@@ -83,28 +72,18 @@
             z-index: 2;
         }
 
-        .article-card {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .article-card img {
-            max-width: 100%;
-            border-radius: 8px;
+        h1 {
+            color: white;
+            font-size: 28px;
             margin-bottom: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
-        .article-card h2 {
-            font-size: 22px;
-            margin-bottom: 12px;
-        }
-
-        .article-card p {
-            font-size: 16px;
-            line-height: 1.6;
+        p {
+            color: white;
+            font-size: 18px;
+            line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .nav-buttons {
@@ -151,17 +130,56 @@
         }
 
         #articleBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20zm-2 15H8v-2h2v2zm0-4H8V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M3 4v16h18V4H3zm16 14H5V6h14v12z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .article-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-card h2 {
+            margin-bottom: 8px;
+        }
+
+        .article-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            text-align: center;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            color: black;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
         }
     </style>
 </head>
 <body>
     <div id="app">
-        <!-- Существующие экраны -->
+        <!-- Основные экраны -->
         <div id="homeScreen" class="screen active">
             <div class="message">
                 <h1>С Новым 2025 Годом!</h1>
@@ -193,57 +211,24 @@
             </div>
         </div>
 
-        <!-- Новый экран статей -->
-        <div id="articleScreen" class="screen">
-            <div class="article-card">
-                <img src="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png" alt="Фото 1">
+        <!-- Экран со статьями -->
+        <div id="articleScreen">
+            <div class="article-content">
+                <div class="close-btn" id="closeArticle">×</div>
+                <img id="articleImage" src="" alt="Картинка статьи">
+                <h2 id="articleTitle"></h2>
+                <p id="articleText"></p>
+            </div>
+        </div>
+
+        <div id="articleList" class="screen">
+            <div class="article-card" data-title="Интересное событие №1" data-text="Полное описание события №1." data-image="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png">
                 <h2>Интересное событие №1</h2>
                 <p>Описание первого события. Подробнее читайте ниже!</p>
             </div>
-            <div class="article-card">
-                <img src="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png" alt="Фото 2">
+            <div class="article-card" data-title="Интересное событие №2" data-text="Полное описание события №2." data-image="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png">
                 <h2>Интересное событие №2</h2>
                 <p>Описание второго события с увлекательными деталями!</p>
-            </div>
-            <div class="article-card">
-                <img src="https://i.postimg.cc/FzqQHW7d/2-CE650-F3-6-ADB-4-EA4-AC00-9-AB9-CA9231-F4.png" alt="Фото 3">
-                <h2>Интересное событие №3</h2>
-                <p>Эта статья расскажет о достижениях прошлого года и новых приключениях.</p>
-            </div>
-            <div class="article-card">
-                <img src="https://i.postimg.cc/zBGmSZhH/0-F9-D17-F6-FC7-D-4-DBF-B179-35-D8-F027-CA20.png" alt="Фото 4">
-                <h2>Интересное событие №4</h2>
-                <p>История о важных событиях с интересными фактами и полезной информацией.</p>
-            </div>
-            <div class="article-card">
-                <img src="https://i.postimg.cc/sDZkJJMm/69-C49-C7-F-4426-4678-A399-FAF686019267.png" alt="Фото 5">
-                <h2>Интересное событие №5</h2>
-                <p>Необычные события и факты, которые произвели впечатление на всех.</p>
-            </div>
-            <div class="article-card">
-                <img src="https://i.postimg.cc/76n34dt9/DF73-B0-F1-0-FDB-43-F0-AB49-662392-B73-A7-A.png" alt="Фото 6">
-                <h2>Интересное событие №6</h2>
-                <p>Примеры удивительных случаев и историй, которые вдохновляют на успех.</p>
-            </div>
-            <div class="article-card">
-                <img src="https://i.postimg.cc/8zfLcjnj/777-DE6-D9-0671-4-F8-A-94-C9-6192-BC6-D0-A8-F.png" alt="Фото 7">
-                <h2>Интересное событие №7</h2>
-                <p>Невероятные истории о достижениях, которые были сделаны с нуля.</p>
-            </div>
-            <div class="article-card">
-                <img src="https://i.postimg.cc/sx0ZDrYY/A97-E1434-CF84-4-DEF-B1-CD-998-A0-A81-F2-AF.png" alt="Фото 8">
-                <h2>Интересное событие №8</h2>
-                <p>Рассказы о людях и местах, которые оставляют след в истории.</p>
-            </div>
-            <div class="article-card">
-                <img src="https://i.postimg.cc/5tMQtpCR/D12-D551-B-E4-F1-427-C-80-D0-131582-D9-DCBF.png" alt="Фото 9">
-                <h2>Интересное событие №9</h2>
-                <p>Идеи для вдохновения и мотивации на следующий год.</p>
-            </div>
-            <div class="article-card">
-                <img src="https://i.postimg.cc/bJVv1RZ8/065-ABE99-4-A53-4-E79-98-FF-9-FCEECB3-E15-B.png" alt="Фото 10">
-                <h2>Интересное событие №10</h2>
-                <p>Воспоминания о лучших моментах прошлого года и планы на будущее.</p>
             </div>
         </div>
 
@@ -266,6 +251,7 @@
                 left: document.getElementById('leftScreen'),
                 right: document.getElementById('rightScreen'),
                 profile: document.getElementById('profileScreen'),
+                articleList: document.getElementById('articleList'),
                 article: document.getElementById('articleScreen')
             };
 
@@ -277,33 +263,35 @@
                 article: document.getElementById('articleBtn')
             };
 
+            const closeArticle = document.getElementById('closeArticle');
+            const articleTitle = document.getElementById('articleTitle');
+            const articleText = document.getElementById('articleText');
+            const articleImage = document.getElementById('articleImage');
+
             let currentScreen = 'home';
-            let isAnimating = false;
 
             function showScreen(screenName) {
-                if (isAnimating) return;
-                isAnimating = true;
-
                 Object.values(screens).forEach(screen => screen.classList.remove('active'));
                 screens[screenName].classList.add('active');
                 currentScreen = screenName;
-
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 300);
             }
 
             buttons.home.addEventListener('click', () => showScreen('home'));
             buttons.left.addEventListener('click', () => showScreen('left'));
             buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
-            buttons.article.addEventListener('click', () => showScreen('article'));
+            buttons.article.addEventListener('click', () => showScreen('articleList'));
 
-            document.querySelectorAll('.article-card').forEach((card, index) => {
+            document.querySelectorAll('.article-card').forEach(card => {
                 card.addEventListener('click', () => {
-                    alert(`Открыта полная версия статьи №${index + 1}`);
+                    articleTitle.textContent = card.dataset.title;
+                    articleText.textContent = card.dataset.text;
+                    articleImage.src = card.dataset.image;
+                    showScreen('article');
                 });
             });
+
+            closeArticle.addEventListener('click', () => showScreen('articleList'));
         });
     </script>
 </body>
