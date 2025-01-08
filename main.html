@@ -11,7 +11,7 @@
         background-color: #000;
       }
       .container {
-        background-image: url('https://example.com/brick-wall.jpg');
+        background-image: url('https://i.postimg.cc/P58Pyd2v/IMG-4641.jpg');
         background-size: cover;
         background-position: center;
         height: 100vh;
@@ -41,6 +41,24 @@
         border: none;
         border-radius: 50%;
         cursor: pointer;
+        background-repeat: no-repeat;
+        background-size: 50%;
+        background-position: center;
+      }
+      #btn-left {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>');
+      }
+      #btn-home {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
+      }
+      #btn-articles {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M21 4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 8h16v10H4V8zm2 2h5v2H6v-2zm0 4h5v2H6v-2z"/></svg>');
+      }
+      #btn-profile {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+      }
+      #btn-right {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>');
       }
       .hidden {
         display: none;
@@ -128,13 +146,17 @@
 
     <div class="container hidden" id="articles">
       <div class="articles">
-        <div class="article-card" data-title="Событие №1" data-description="Описание первого события" data-image="https://example.com/image1.jpg">
-          <div class="article-title">Интересное событие №1</div>
-          <div class="article-description">Описание первого события. Подробнее читайте ниже!</div>
+        <div class="article-card" data-title="Перемены" data-description="Перемены — это не всегда начало чего-то нового." data-image="https://i.postimg.cc/KjsmgcsY/817-D1-CDE-473-B-4-EB0-8-D01-3-C89-F91261-D6.png">
+          <div class="article-title">Статья 1</div>
+          <div class="article-description">Перемены — это не всегда начало чего-то нового.</div>
         </div>
-        <div class="article-card" data-title="Событие №2" data-description="Описание второго события" data-image="https://example.com/image2.jpg">
-          <div class="article-title">Интересное событие №2</div>
-          <div class="article-description">Описание второго события с увлекательными деталями!</div>
+        <div class="article-card" data-title="Вдохновение" data-description="О важности маленьких шагов к мечте." data-image="https://i.postimg.cc/q7d4K5Q2/9766-A097-B752-4-AA2-8094-945563-B418-FC.png">
+          <div class="article-title">Статья 2</div>
+          <div class="article-description">О важности маленьких шагов к мечте.</div>
+        </div>
+        <div class="article-card" data-title="День открытий" data-description="Каждый день — возможность узнать что-то новое." data-image="https://i.postimg.cc/FzqQHW7d/2-CE650-F3-6-ADB-4-EA4-AC00-9-AB9-CA9231-F4.png">
+          <div class="article-title">Статья 3</div>
+          <div class="article-description">Каждый день — возможность узнать что-то новое.</div>
         </div>
       </div>
     </div>
@@ -147,11 +169,11 @@
     </div>
 
     <div class="nav">
-      <button id="btn-left">⟵</button>
-      <button id="btn-home">🏠</button>
-      <button id="btn-articles">📰</button>
-      <button id="btn-profile">👤</button>
-      <button id="btn-right">⟶</button>
+      <button id="btn-left"></button>
+      <button id="btn-home"></button>
+      <button id="btn-articles"></button>
+      <button id="btn-profile"></button>
+      <button id="btn-right"></button>
     </div>
 
     <script>
