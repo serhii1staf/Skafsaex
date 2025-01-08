@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <title>Новогоднее поздравление</title>
+
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -124,7 +126,6 @@
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
         }
 
         #profileBtn {
@@ -132,42 +133,36 @@
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
         }
 
         #articlesBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M21 6h-4V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1H3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zM9 5h6v1H9V5zm11 14H4v-2h16v2zm0-4H4v-2h16v2zm0-4H4v-2h16v2z"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M19 3H4a2 2 0 00-2 2v14a2 2 0 002 2h15a2 2 0 002-2V5a2 2 0 00-2-2zM6 7h9v2H6V7zm0 4h9v2H6v-2zm0 4h9v2H6v-2z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .articles {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 90%;
         }
 
         .article-card {
             background: rgba(255, 255, 255, 0.2);
-            padding: 12px;
+            padding: 16px;
             border-radius: 8px;
-            margin-bottom: 12px;
-            cursor: pointer;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 1.5rem;
+            text-align: center;
             color: white;
             cursor: pointer;
-            display: none;
         }
 
-        .article-detail.active .close-btn {
-            display: block;
+        .article-card img {
+            width: 100%;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -207,24 +202,48 @@
         <div id="articlesScreen" class="screen">
             <div class="message">
                 <h1>Статьи</h1>
-                <div class="article-card" data-title="Перемены" data-text="Перемены — это не всегда начало чего-то нового." data-image="https://example.com/image1.jpg">
-                    Перемены — это не всегда начало чего-то нового.
+                <div class="articles">
+                    <div class="article-card" data-title="Статья 1" data-text="Перемены — это не всегда начало чего-то нового.">
+                        <img src="https://example.com/image1.jpg" alt="Статья 1">
+                        <p>Перемены — это не всегда начало чего-то нового.</p>
+                    </div>
+                    <div class="article-card" data-title="Статья 2" data-text="О важности маленьких шагов к мечте.">
+                        <img src="https://example.com/image2.jpg" alt="Статья 2">
+                        <p>О важности маленьких шагов к мечте.</p>
+                    </div>
+                    <div class="article-card" data-title="Статья 3" data-text="Каждый день — возможность узнать что-то новое.">
+                        <img src="https://example.com/image3.jpg" alt="Статья 3">
+                        <p>Каждый день — возможность узнать что-то новое.</p>
+                    </div>
+                    <div class="article-card" data-title="Статья 4" data-text="Путь к успеху требует терпения.">
+                        <img src="https://example.com/image4.jpg" alt="Статья 4">
+                        <p>Путь к успеху требует терпения.</p>
+                    </div>
+                    <div class="article-card" data-title="Статья 5" data-text="Никогда не поздно начать заново.">
+                        <img src="https://example.com/image5.jpg" alt="Статья 5">
+                        <p>Никогда не поздно начать заново.</p>
+                    </div>
+                    <div class="article-card" data-title="Статья 6" data-text="Дорога к успеху начинается с маленьких шагов.">
+                        <img src="https://example.com/image6.jpg" alt="Статья 6">
+                        <p>Дорога к успеху начинается с маленьких шагов.</p>
+                    </div>
+                    <div class="article-card" data-title="Статья 7" data-text="Главное — не сдаваться перед трудностями.">
+                        <img src="https://example.com/image7.jpg" alt="Статья 7">
+                        <p>Главное — не сдаваться перед трудностями.</p>
+                    </div>
+                    <div class="article-card" data-title="Статья 8" data-text="Успех требует постоянной работы над собой.">
+                        <img src="https://example.com/image8.jpg" alt="Статья 8">
+                        <p>Успех требует постоянной работы над собой.</p>
+                    </div>
+                    <div class="article-card" data-title="Статья 9" data-text="Ошибки — это часть пути.">
+                        <img src="https://example.com/image9.jpg" alt="Статья 9">
+                        <p>Ошибки — это часть пути.</p>
+                    </div>
+                    <div class="article-card" data-title="Статья 10" data-text="Научитесь радоваться каждому моменту.">
+                        <img src="https://example.com/image10.jpg" alt="Статья 10">
+                        <p>Научитесь радоваться каждому моменту.</p>
+                    </div>
                 </div>
-                <div class="article-card" data-title="Шаги к мечте" data-text="О важности маленьких шагов к мечте." data-image="https://example.com/image2.jpg">
-                    О важности маленьких шагов к мечте.
-                </div>
-                <div class="article-card" data-title="Каждый день" data-text="Каждый день — возможность узнать что-то новое." data-image="https://example.com/image3.jpg">
-                    Каждый день — возможность узнать что-то новое.
-                </div>
-            </div>
-        </div>
-
-        <div class="article-detail screen hidden" id="articleDetail">
-            <button class="close-btn" id="closeBtn">×</button>
-            <div class="message">
-                <h1 id="articleTitle"></h1>
-                <img id="articleImage" style="max-width: 100%; border-radius: 10px; margin-bottom: 12px;" />
-                <p id="articleText"></p>
             </div>
         </div>
 
@@ -246,8 +265,7 @@
                 left: document.getElementById('leftScreen'),
                 right: document.getElementById('rightScreen'),
                 profile: document.getElementById('profileScreen'),
-                articles: document.getElementById('articlesScreen'),
-                articleDetail: document.getElementById('articleDetail')
+                articles: document.getElementById('articlesScreen')
             };
 
             const buttons = {
@@ -259,16 +277,12 @@
             };
 
             const articleCards = document.querySelectorAll('.article-card');
-            const articleTitle = document.getElementById('articleTitle');
-            const articleText = document.getElementById('articleText');
-            const articleImage = document.getElementById('articleImage');
-            const closeBtn = document.getElementById('closeBtn');
 
             function showScreen(screen) {
                 for (let key in screens) {
-                    screens[key].classList.add('hidden');
+                    screens[key].classList.remove('active');
                 }
-                screens[screen].classList.remove('hidden');
+                screens[screen].classList.add('active');
             }
 
             buttons.home.addEventListener('click', () => showScreen('home'));
@@ -279,14 +293,9 @@
 
             articleCards.forEach((card) => {
                 card.addEventListener('click', () => {
-                    articleTitle.textContent = card.dataset.title;
-                    articleText.textContent = card.dataset.text;
-                    articleImage.src = card.dataset.image;
-                    showScreen('articleDetail');
+                    alert(`${card.dataset.title}: ${card.dataset.text}`);
                 });
             });
-
-            closeBtn.addEventListener('click', () => showScreen('articles'));
         });
     </script>
 </body>
