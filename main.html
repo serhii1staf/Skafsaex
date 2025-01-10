@@ -46,8 +46,60 @@
             visibility: visible;
         }
 
-        .hidden-navigation {
-            display: none !important;
+        #homeScreen,
+        #leftScreen,
+        #rightScreen,
+        #profileScreen,
+        #articlesScreen {
+            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
+        }
+
+        .nav-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            z-index: 1000;
+        }
+
+        .nav-center-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .chat-button {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-image: url('https://i.postimg.cc/26sHhMs4/IMG-4767.png');
+            background-size: cover;
+            border: none;
+            cursor: pointer;
         }
 
         .chat-modal {
@@ -59,7 +111,6 @@
             background-image: url('https://i.postimg.cc/0QTr6rVH/black-mask-style.png');
             border-radius: 12px 12px 0 0;
             padding: 16px;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
             display: none;
             flex-direction: column;
             gap: 16px;
@@ -73,7 +124,6 @@
             font-size: 20px;
             color: white;
             border-radius: 12px;
-            position: relative;
         }
 
         .chat-messages {
@@ -138,15 +188,11 @@
             padding: 8px;
             cursor: pointer;
         }
-
-        .close-chat-btn.hidden {
-            display: none;
-        }
     </style>
 </head>
 <body>
     <div id="app">
-        <div class="screen active">
+        <div id="homeScreen" class="screen active">
             <div class="message">
                 <h1>С Новым 2025 Годом!</h1>
                 <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
@@ -156,7 +202,7 @@
         <div id="chatModal" class="chat-modal">
             <div class="chat-header">
                 Общение с Pae Ai
-                <button id="closeChatBtn" class="close-chat-btn hidden">×</button>
+                <button id="closeChatBtn" class="close-chat-btn">×</button>
             </div>
             <div class="chat-messages" id="chatMessages"></div>
             <div class="chat-input">
@@ -165,8 +211,15 @@
             </div>
         </div>
 
-        <button id="chatBtn" class="chat-button" style="background-image: url('https://i.postimg.cc/26sHhMs4/IMG-4767.png');"></button>
-
+        <div class="nav-buttons">
+            <button id="leftBtn" class="nav-btn">←</button>
+            <div class="nav-center-group">
+                <button id="homeBtn" class="nav-btn"></button>
+                <button id="chatBtn" class="chat-button"></button>
+                <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
+            </div>
+            <button id="rightBtn" class="nav-btn">→</button>
+        </div>
     </div>
 
     <script>
@@ -181,16 +234,18 @@
 
             chatBtn.addEventListener('click', () => {
                 chatModal.style.display = 'flex';
-                navButtons.classList.add('hidden-navigation');
-                setTimeout(() => {
-                    closeChatBtn.classList.remove('hidden');
-                }, 15000); // Показать хрестик через 15 секунд
+                navButtons.style.display = 'none';
+                setInterval(() => {
+                    closeChatBtn.style.display = 'block';
+                    setTimeout(() => {
+                        closeChatBtn.style.display = 'none';
+                    }, 3000);
+                }, 15000);
             });
 
             closeChatBtn.addEventListener('click', () => {
                 chatModal.style.display = 'none';
-                navButtons.classList.remove('hidden-navigation');
-                closeChatBtn.classList.add('hidden');
+                navButtons.style.display = 'flex';
             });
 
             sendBtn.addEventListener('click', async () => {
