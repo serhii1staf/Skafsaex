@@ -1,129 +1,207 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget, QMessageBox, QFileDialog
-from PySide6.QtGui import QIcon, QPixmap
-from PySide6.QtCore import QTimer
-import sys
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        #welcome-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .hidden {
+            display: none;
+        }
+        nav {
+            display: flex;
+            justify-content: space-around;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #ddd;
+            padding: 10px 0;
+        }
+        nav button {
+            border: none;
+            background: none;
+        }
+        .page {
+            display: none;
+            padding: 20px;
+        }
+        .active {
+            display: block;
+        }
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .article {
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .article img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .settings-item {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div id="welcome-screen">
+        <h1>Добро пожаловать в приложение!</h1>
+    </div>
 
-class TelegramApp(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Telegram Demo App")
-        self.setGeometry(200, 200, 400, 600)
-        self.current_theme = "light"
-        self.first_time = True
+    <div id="main-menu" class="hidden">
+        <!-- Страница Профиль -->
+        <div id="profile-page" class="page">
+            <h2>Профиль</h2>
+            <img src="https://via.placeholder.com/150" alt="Фото профиля" class="profile-pic" id="profile-pic">
+            <p><strong>Имя:</strong> <span id="profile-name">Иван Иванов</span></p>
+            <p><strong>Описание:</strong> <span id="profile-bio">Люблю читать статьи!</span></p>
+            <button id="edit-profile-button">Редактировать профиль</button>
+            <div id="edit-profile-form" class="hidden">
+                <input type="file" id="profile-pic-input"><br>
+                <input type="text" id="profile-name-input" placeholder="Введите имя"><br>
+                <textarea id="profile-bio-input" placeholder="Введите описание"></textarea><br>
+                <button id="save-profile-button">Сохранить</button>
+            </div>
+        </div>
 
-        # Главное окно
-        self.central_widget = QWidget()
-        self.setCentralWidget(self.central_widget)
-        self.layout = QVBoxLayout(self.central_widget)
+        <!-- Страница Статьи -->
+        <div id="articles-page" class="page">
+            <h2>Статьи</h2>
+            <div class="article" data-title="Статья 1" data-text="Текст статьи 1">
+                <img src="https://via.placeholder.com/300x200" alt="Статья 1">
+                <h3>Статья 1</h3>
+            </div>
+            <div class="article" data-title="Статья 2" data-text="Текст статьи 2">
+                <img src="https://via.placeholder.com/300x200" alt="Статья 2">
+                <h3>Статья 2</h3>
+            </div>
+            <div id="article-detail" class="hidden">
+                <h3 id="article-title"></h3>
+                <p id="article-text"></p>
+                <button id="close-article-button">Закрыть</button>
+            </div>
+        </div>
 
-        # Приветствие
-        self.welcome_label = QLabel("Добро пожаловать в приложение!", self)
-        self.welcome_label.setAlignment(Qt.AlignCenter)
-        self.layout.addWidget(self.welcome_label)
+        <!-- Страница Настройки -->
+        <div id="settings-page" class="page">
+            <h2>Настройки</h2>
+            <div class="settings-item">
+                <label for="theme-select">Цветовая тема:</label>
+                <select id="theme-select">
+                    <option value="light">Светлая</option>
+                    <option value="dark">Тёмная</option>
+                    <option value="blue">Синяя</option>
+                </select>
+            </div>
+            <div class="settings-item">
+                <label for="notifications-toggle">Уведомления:</label>
+                <input type="checkbox" id="notifications-toggle" checked>
+            </div>
+        </div>
 
-        QTimer.singleShot(7000, self.hide_welcome_message)
+        <!-- Навигация -->
+        <nav>
+            <button onclick="showPage('profile-page')"><img src="https://via.placeholder.com/32" alt="Профиль"></button>
+            <button onclick="showPage('articles-page')"><img src="https://via.placeholder.com/32" alt="Статьи"></button>
+            <button onclick="showPage('settings-page')"><img src="https://via.placeholder.com/32" alt="Настройки"></button>
+        </nav>
+    </div>
 
-        # Кнопки меню
-        self.profile_button = QPushButton("Профиль")
-        self.articles_button = QPushButton("Статьи")
-        self.settings_button = QPushButton("Настройки")
-        self.profile_button.setIcon(QIcon("profile_icon.png"))
-        self.articles_button.setIcon(QIcon("articles_icon.png"))
-        self.settings_button.setIcon(QIcon("settings_icon.png"))
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const welcomeScreen = document.getElementById("welcome-screen");
+            const mainMenu = document.getElementById("main-menu");
 
-        self.profile_button.clicked.connect(self.show_profile_page)
-        self.articles_button.clicked.connect(self.show_articles_page)
-        self.settings_button.clicked.connect(self.show_settings_page)
+            setTimeout(() => {
+                welcomeScreen.classList.add("hidden");
+                mainMenu.classList.remove("hidden");
+                if (!localStorage.getItem("visited")) {
+                    alert("Нажмите на «Профиль», чтобы увидеть ваши данные.");
+                    localStorage.setItem("visited", "true");
+                }
+            }, 7000);
 
-        self.layout.addWidget(self.profile_button)
-        self.layout.addWidget(self.articles_button)
-        self.layout.addWidget(self.settings_button)
+            document.getElementById("edit-profile-button").addEventListener("click", () => {
+                document.getElementById("edit-profile-form").classList.toggle("hidden");
+            });
 
-    def hide_welcome_message(self):
-        self.welcome_label.hide()
-        if self.first_time:
-            QMessageBox.information(self, "Подсказка", "Нажмите на ‘Профиль’, чтобы увидеть ваши данные.")
-            self.first_time = False
+            document.getElementById("save-profile-button").addEventListener("click", () => {
+                const nameInput = document.getElementById("profile-name-input").value;
+                const bioInput = document.getElementById("profile-bio-input").value;
+                const picInput = document.getElementById("profile-pic-input").files[0];
 
-    # Страница профиля
-    def show_profile_page(self):
-        profile_window = QWidget()
-        profile_layout = QVBoxLayout()
+                if (nameInput) document.getElementById("profile-name").textContent = nameInput;
+                if (bioInput) document.getElementById("profile-bio").textContent = bioInput;
+                if (picInput) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        document.getElementById("profile-pic").src = e.target.result;
+                    };
+                    reader.readAsDataURL(picInput);
+                }
 
-        profile_picture_label = QLabel(self)
-        profile_picture_label.setPixmap(QPixmap("default_profile.jpg").scaled(100, 100))
-        profile_layout.addWidget(profile_picture_label)
+                alert("Профиль обновлён!");
+                document.getElementById("edit-profile-form").classList.add("hidden");
+            });
 
-        profile_name_label = QLabel("Ваше имя: Иван Иванов")
-        profile_description_label = QLabel("Описание: Пример биографии")
+            document.querySelectorAll(".article").forEach(article => {
+                article.addEventListener("click", () => {
+                    document.getElementById("article-title").textContent = article.dataset.title;
+                    document.getElementById("article-text").textContent = article.dataset.text;
+                    document.getElementById("article-detail").classList.remove("hidden");
+                });
+            });
 
-        edit_profile_button = QPushButton("Редактировать профиль")
-        edit_profile_button.clicked.connect(self.edit_profile)
+            document.getElementById("close-article-button").addEventListener("click", () => {
+                document.getElementById("article-detail").classList.add("hidden");
+            });
 
-        profile_layout.addWidget(profile_name_label)
-        profile_layout.addWidget(profile_description_label)
-        profile_layout.addWidget(edit_profile_button)
+            document.getElementById("theme-select").addEventListener("change", (event) => {
+                const theme = event.target.value;
+                if (theme === "light") {
+                    document.body.style.backgroundColor = "white";
+                    document.body.style.color = "black";
+                } else if (theme === "dark") {
+                    document.body.style.backgroundColor = "#333";
+                    document.body.style.color = "white";
+                } else if (theme === "blue") {
+                    document.body.style.backgroundColor = "#4B8BFF";
+                    document.body.style.color = "white";
+                }
+            });
 
-        profile_window.setLayout(profile_layout)
-        profile_window.show()
+            document.getElementById("notifications-toggle").addEventListener("change", (event) => {
+                if (event.target.checked) {
+                    alert("Уведомления включены.");
+                } else {
+                    alert("Уведомления отключены.");
+                }
+            });
+        });
 
-    # Редактирование профиля
-    def edit_profile(self):
-        QMessageBox.information(self, "Редактирование", "Открыта форма редактирования профиля.")
-
-    # Страница со статьями
-    def show_articles_page(self):
-        articles_window = QWidget()
-        articles_layout = QVBoxLayout()
-
-        article_title = QLabel("Статья 1: Как использовать приложение?")
-        article_picture = QLabel()
-        article_picture.setPixmap(QPixmap("article1.jpg").scaled(200, 150))
-        article_text_button = QPushButton("Открыть статью")
-        article_text_button.clicked.connect(lambda: self.show_article_details("Текст статьи", "Закрыть"))
-
-        articles_layout.addWidget(article_title)
-        articles_layout.addWidget(article_picture)
-        articles_layout.addWidget(article_text_button)
-        articles_window.setLayout(articles_layout)
-        articles_window.show()
-
-    # Открытие отдельной статьи
-    def show_article_details(self, article_text, button_text):
-        QMessageBox.information(self, "Текст статьи", f"{article_text}")
-
-    # Страница настроек
-    def show_settings_page(self):
-        settings_window = QWidget()
-        settings_layout = QVBoxLayout()
-
-        change_theme_button = QPushButton("Сменить цветовую тему")
-        change_theme_button.clicked.connect(self.toggle_theme)
-
-        toggle_notifications_button = QPushButton("Включить/отключить уведомления")
-        toggle_notifications_button.clicked.connect(self.toggle_notifications)
-
-        settings_layout.addWidget(change_theme_button)
-        settings_layout.addWidget(toggle_notifications_button)
-        settings_window.setLayout(settings_layout)
-        settings_window.show()
-
-    def toggle_theme(self):
-        if self.current_theme == "light":
-            self.setStyleSheet("background-color: #2E2E2E; color: white;")
-            self.current_theme = "dark"
-        elif self.current_theme == "dark":
-            self.setStyleSheet("background-color: #4B8BFF; color: black;")
-            self.current_theme = "blue"
-        else:
-            self.setStyleSheet("")
-            self.current_theme = "light"
-
-    def toggle_notifications(self):
-        QMessageBox.information(self, "Уведомления", "Уведомления включены/отключены")
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = TelegramApp()
-    window.show()
-    sys.exit(app.exec())
+        function showPage(pageId) {
+            document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+            document.getElementById(pageId).classList.add("active");
+        }
+    </script>
+</body>
+</html>
