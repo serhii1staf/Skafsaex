@@ -6,59 +6,98 @@
     <title>Telegram Web App</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
         }
         #welcome-screen {
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background: linear-gradient(to bottom, #a8dadc, #ffffff);
+            transition: opacity 0.5s ease;
         }
         .hidden {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        #main-content {
+            display: none;
+            height: 100vh;
+            padding-bottom: 60px;
+        }
+        .page {
             display: none;
         }
+        .active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
         nav {
-            display: flex;
-            justify-content: space-around;
             position: fixed;
             bottom: 0;
             width: 100%;
-            background-color: #ddd;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: space-around;
             padding: 10px 0;
         }
         nav button {
             border: none;
             background: none;
+            cursor: pointer;
         }
-        .page {
-            display: none;
-            padding: 20px;
-        }
-        .active {
-            display: block;
+        nav img {
+            width: 40px;
+            height: 40px;
         }
         .profile-pic {
-            width: 150px;
-            height: 150px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 20px;
         }
+        #edit-profile-form input, #edit-profile-form textarea {
+            display: block;
+            width: 80%;
+            margin: 10px auto;
+            padding: 8px;
+        }
         .article {
-            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
             cursor: pointer;
         }
         .article img {
             width: 100%;
-            height: auto;
             border-radius: 5px;
         }
-        .settings-item {
-            margin-bottom: 15px;
+        #toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(200, 200, 200, 0.8);
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none;
+            text-align: center;
+            z-index: 1000;
+        }
+        #settings-page select {
+            margin: 10px auto;
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
     </style>
 </head>
@@ -67,25 +106,31 @@
         <h1>Добро пожаловать в приложение!</h1>
     </div>
 
-    <div id="main-menu" class="hidden">
-        <!-- Страница Профиль -->
+    <div id="main-content">
+        <!-- Главная страница -->
+        <div id="home-page" class="page active">
+            <h2>Добро пожаловать!</h2>
+            <p>Это ваша главная страница.</p>
+        </div>
+
+        <!-- Профиль -->
         <div id="profile-page" class="page">
             <h2>Профиль</h2>
-            <img src="https://via.placeholder.com/150" alt="Фото профиля" class="profile-pic" id="profile-pic">
+            <img src="https://via.placeholder.com/100" alt="Фото профиля" class="profile-pic" id="profile-pic">
             <p><strong>Имя:</strong> <span id="profile-name">Иван Иванов</span></p>
-            <p><strong>Описание:</strong> <span id="profile-bio">Люблю читать статьи!</span></p>
+            <p><strong>Описание:</strong> <span id="profile-bio">Ваше описание...</span></p>
             <button id="edit-profile-button">Редактировать профиль</button>
             <div id="edit-profile-form" class="hidden">
-                <input type="file" id="profile-pic-input"><br>
-                <input type="text" id="profile-name-input" placeholder="Введите имя"><br>
-                <textarea id="profile-bio-input" placeholder="Введите описание"></textarea><br>
-                <button id="save-profile-button">Сохранить</button>
+                <input type="file" id="profile-pic-input">
+                <input type="text" id="profile-name-input" placeholder="Введите имя">
+                <textarea id="profile-bio-input" placeholder="Введите описание"></textarea>
+                <button id="save-profile-button">Сохранить изменения</button>
             </div>
         </div>
 
-        <!-- Страница Статьи -->
+        <!-- Статьи -->
         <div id="articles-page" class="page">
-            <h2>Статьи</h2>
+            <h2>Все статьи</h2>
             <div class="article" data-title="Статья 1" data-text="Текст статьи 1">
                 <img src="https://via.placeholder.com/300x200" alt="Статья 1">
                 <h3>Статья 1</h3>
@@ -97,47 +142,39 @@
             <div id="article-detail" class="hidden">
                 <h3 id="article-title"></h3>
                 <p id="article-text"></p>
-                <button id="close-article-button">Закрыть</button>
+                <button id="close-article-button">Назад</button>
             </div>
         </div>
 
-        <!-- Страница Настройки -->
+        <!-- Настройки -->
         <div id="settings-page" class="page">
             <h2>Настройки</h2>
-            <div class="settings-item">
-                <label for="theme-select">Цветовая тема:</label>
-                <select id="theme-select">
-                    <option value="light">Светлая</option>
-                    <option value="dark">Тёмная</option>
-                    <option value="blue">Синяя</option>
-                </select>
-            </div>
-            <div class="settings-item">
-                <label for="notifications-toggle">Уведомления:</label>
-                <input type="checkbox" id="notifications-toggle" checked>
-            </div>
+            <label for="theme-select">Цветовая тема:</label>
+            <select id="theme-select">
+                <option value="light">Светлая тема</option>
+                <option value="dark">Тёмная тема</option>
+                <option value="blue">Синяя тема</option>
+            </select>
+            <label for="notifications-toggle">Уведомления:</label>
+            <input type="checkbox" id="notifications-toggle" checked>
         </div>
 
         <!-- Навигация -->
         <nav>
+            <button onclick="showPage('home-page')"><img src="https://via.placeholder.com/32" alt="Дом"></button>
             <button onclick="showPage('profile-page')"><img src="https://via.placeholder.com/32" alt="Профиль"></button>
-            <button onclick="showPage('articles-page')"><img src="https://via.placeholder.com/32" alt="Статьи"></button>
             <button onclick="showPage('settings-page')"><img src="https://via.placeholder.com/32" alt="Настройки"></button>
         </nav>
     </div>
 
+    <div id="toast">Подсказка: нажмите на профиль, чтобы изменить ваши данные!</div>
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const welcomeScreen = document.getElementById("welcome-screen");
-            const mainMenu = document.getElementById("main-menu");
-
             setTimeout(() => {
-                welcomeScreen.classList.add("hidden");
-                mainMenu.classList.remove("hidden");
-                if (!localStorage.getItem("visited")) {
-                    alert("Нажмите на «Профиль», чтобы увидеть ваши данные.");
-                    localStorage.setItem("visited", "true");
-                }
+                document.getElementById("welcome-screen").classList.add("hidden");
+                document.getElementById("main-content").style.display = "block";
+                showToast("Откройте настройки, чтобы изменить тему.");
             }, 7000);
 
             document.getElementById("edit-profile-button").addEventListener("click", () => {
@@ -159,7 +196,7 @@
                     reader.readAsDataURL(picInput);
                 }
 
-                alert("Профиль обновлён!");
+                alert("Профиль обновлен!");
                 document.getElementById("edit-profile-form").classList.add("hidden");
             });
 
@@ -167,35 +204,37 @@
                 article.addEventListener("click", () => {
                     document.getElementById("article-title").textContent = article.dataset.title;
                     document.getElementById("article-text").textContent = article.dataset.text;
+                    document.getElementById("articles-page").classList.add("hidden");
                     document.getElementById("article-detail").classList.remove("hidden");
                 });
             });
 
             document.getElementById("close-article-button").addEventListener("click", () => {
                 document.getElementById("article-detail").classList.add("hidden");
+                document.getElementById("articles-page").classList.remove("hidden");
             });
 
-            document.getElementById("theme-select").addEventListener("change", (event) => {
-                const theme = event.target.value;
+            document.getElementById("theme-select").addEventListener("change", (e) => {
+                const theme = e.target.value;
+                document.body.className = theme;
                 if (theme === "light") {
                     document.body.style.backgroundColor = "white";
                     document.body.style.color = "black";
                 } else if (theme === "dark") {
                     document.body.style.backgroundColor = "#333";
                     document.body.style.color = "white";
-                } else if (theme === "blue") {
+                } else {
                     document.body.style.backgroundColor = "#4B8BFF";
                     document.body.style.color = "white";
                 }
             });
 
-            document.getElementById("notifications-toggle").addEventListener("change", (event) => {
-                if (event.target.checked) {
-                    alert("Уведомления включены.");
-                } else {
-                    alert("Уведомления отключены.");
-                }
-            });
+            function showToast(message) {
+                const toast = document.getElementById("toast");
+                toast.textContent = message;
+                toast.style.display = "block";
+                setTimeout(() => toast.style.display = "none", 5000);
+            }
         });
 
         function showPage(pageId) {
