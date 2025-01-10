@@ -1,469 +1,129 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <title>Новогоднее поздравление</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget, QMessageBox, QFileDialog
+from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtCore import QTimer
+import sys
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            min-height: 100vh;
-            overflow: hidden;
-        }
+class TelegramApp(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Telegram Demo App")
+        self.setGeometry(200, 200, 400, 600)
+        self.current_theme = "light"
+        self.first_time = True
 
-        #app {
-            min-height: 100vh;
-            position: relative;
-        }
+        # Главное окно
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
+        self.layout = QVBoxLayout(self.central_widget)
 
-        .screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-size: cover;
-            background-position: center;
-        }
+        # Приветствие
+        self.welcome_label = QLabel("Добро пожаловать в приложение!", self)
+        self.welcome_label.setAlignment(Qt.AlignCenter)
+        self.layout.addWidget(self.welcome_label)
 
-        .screen.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        QTimer.singleShot(7000, self.hide_welcome_message)
 
-        #homeScreen,
-        #leftScreen,
-        #rightScreen,
-        #profileScreen,
-        #articlesScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
+        # Кнопки меню
+        self.profile_button = QPushButton("Профиль")
+        self.articles_button = QPushButton("Статьи")
+        self.settings_button = QPushButton("Настройки")
+        self.profile_button.setIcon(QIcon("profile_icon.png"))
+        self.articles_button.setIcon(QIcon("articles_icon.png"))
+        self.settings_button.setIcon(QIcon("settings_icon.png"))
 
-        #articlesScreen {
-            overflow-y: auto;
-            padding: 20px;
-        }
+        self.profile_button.clicked.connect(self.show_profile_page)
+        self.articles_button.clicked.connect(self.show_articles_page)
+        self.settings_button.clicked.connect(self.show_settings_page)
 
-        .articles-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+        self.layout.addWidget(self.profile_button)
+        self.layout.addWidget(self.articles_button)
+        self.layout.addWidget(self.settings_button)
 
-        article {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-        }
+    def hide_welcome_message(self):
+        self.welcome_label.hide()
+        if self.first_time:
+            QMessageBox.information(self, "Подсказка", "Нажмите на ‘Профиль’, чтобы увидеть ваши данные.")
+            self.first_time = False
 
-        article img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            object-fit: contain;
-            max-width: 1024px;
-            max-height: 1024px;
-        }
+    # Страница профиля
+    def show_profile_page(self):
+        profile_window = QWidget()
+        profile_layout = QVBoxLayout()
 
-        article h2 {
-            margin: 20px 0 10px;
-            font-size: 24px;
-            color: black;
-        }
+        profile_picture_label = QLabel(self)
+        profile_picture_label.setPixmap(QPixmap("default_profile.jpg").scaled(100, 100))
+        profile_layout.addWidget(profile_picture_label)
 
-        .message {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 24px;
-            border-radius: 12px;
-            text-align: center;
-            max-width: 90%;
-            width: 100%;
-            backdrop-filter: blur(8px);
-            margin: 20px;
-            position: relative;
-            z-index: 2;
-        }
+        profile_name_label = QLabel("Ваше имя: Иван Иванов")
+        profile_description_label = QLabel("Описание: Пример биографии")
 
-        h1 {
-            color: white;
-            font-size: 28px;
-            margin-bottom: 16px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }
+        edit_profile_button = QPushButton("Редактировать профиль")
+        edit_profile_button.clicked.connect(self.edit_profile)
 
-        p {
-            color: white;
-            font-size: 18px;
-            line-height: 1.5;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
+        profile_layout.addWidget(profile_name_label)
+        profile_layout.addWidget(profile_description_label)
+        profile_layout.addWidget(edit_profile_button)
 
-        .nav-buttons {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            z-index: 1000;
-        }
+        profile_window.setLayout(profile_layout)
+        profile_window.show()
 
-        .nav-center-group {
-            display: flex;
-            gap: 16px;
-        }
+    # Редактирование профиля
+    def edit_profile(self):
+        QMessageBox.information(self, "Редактирование", "Открыта форма редактирования профиля.")
 
-        .nav-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
+    # Страница со статьями
+    def show_articles_page(self):
+        articles_window = QWidget()
+        articles_layout = QVBoxLayout()
 
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
+        article_title = QLabel("Статья 1: Как использовать приложение?")
+        article_picture = QLabel()
+        article_picture.setPixmap(QPixmap("article1.jpg").scaled(200, 150))
+        article_text_button = QPushButton("Открыть статью")
+        article_text_button.clicked.connect(lambda: self.show_article_details("Текст статьи", "Закрыть"))
 
-        .nav-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.4);
-        }
+        articles_layout.addWidget(article_title)
+        articles_layout.addWidget(article_picture)
+        articles_layout.addWidget(article_text_button)
+        articles_window.setLayout(articles_layout)
+        articles_window.show()
 
-        #homeBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
+    # Открытие отдельной статьи
+    def show_article_details(self, article_text, button_text):
+        QMessageBox.information(self, "Текст статьи", f"{article_text}")
 
-        #profileBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
+    # Страница настроек
+    def show_settings_page(self):
+        settings_window = QWidget()
+        settings_layout = QVBoxLayout()
 
-        #articlesBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M5 8h14V6H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
+        change_theme_button = QPushButton("Сменить цветовую тему")
+        change_theme_button.clicked.connect(self.toggle_theme)
 
-        #chatBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 10c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
+        toggle_notifications_button = QPushButton("Включить/отключить уведомления")
+        toggle_notifications_button.clicked.connect(self.toggle_notifications)
 
-        .social-links {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
+        settings_layout.addWidget(change_theme_button)
+        settings_layout.addWidget(toggle_notifications_button)
+        settings_window.setLayout(settings_layout)
+        settings_window.show()
 
-        .social-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s;
-        }
+    def toggle_theme(self):
+        if self.current_theme == "light":
+            self.setStyleSheet("background-color: #2E2E2E; color: white;")
+            self.current_theme = "dark"
+        elif self.current_theme == "dark":
+            self.setStyleSheet("background-color: #4B8BFF; color: black;")
+            self.current_theme = "blue"
+        else:
+            self.setStyleSheet("")
+            self.current_theme = "light"
 
-        .social-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
+    def toggle_notifications(self):
+        QMessageBox.information(self, "Уведомления", "Уведомления включены/отключены")
 
-        .voluntary-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 20px;
-        }
-
-        .article-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            color: white;
-        }
-
-        .article-modal-content {
-            background: white;
-            color: black;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 90%;
-            width: 100%;
-            max-height: 80%;
-            overflow: auto;
-            position: relative;
-        }
-
-        .close-btn {
-            display: none; /* Скрываем кнопку по умолчанию */
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 24px;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .close-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        .article-modal img {
-            max-width: 100%;
-            border-radius: 8px;
-        }
-
-        .article-modal h2 {
-            margin: 20px 0;
-        }
-
-        .article-modal p {
-            font-size: 16px;
-            color: black;
-        }
-
-        .article-image {
-            width: 100%;
-            max-width: 1024px;
-            height: auto;
-            object-fit: contain;
-        }
-    </style>
-</head>
-<body>
-    <div id="app">
-        <div id="homeScreen" class="screen active">
-            <div class="message">
-                <h1>С Новым 2025 Годом!</h1>
-                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
-            </div>
-        </div>
-
-        <div id="leftScreen" class="screen">
-            <div class="message">
-                <p>Старый 2024 год ушел и никогда не вернется.</p>
-                <p>Время для новых начинаний!</p>
-            </div>
-        </div>
-
-        <div id="rightScreen" class="screen">
-            <div class="message">
-                <h1>С 2025 Годом!</h1>
-                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
-            </div>
-        </div>
-
-        <div id="profileScreen" class="screen">
-            <div class="message">
-                <div class="social-links">
-                    <a href="https://t.me/sangklasy" class="social-link" target="_blank">📱 Telegram канал</a>
-                    <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" class="social-link" target="_blank">📷 Instagram аккаунт</a>
-                </div>
-                <p class="voluntary-text">* Подписка является полностью добровольной</п>
-            </div>
-        </div>
-
-        <div id="articlesScreen" class="screen">
-            <div class="articles-container">
-                <article data-title="Перемены — это не всегда начало чего-то нового" data-text="Жизнь полна перемен, и не каждое изменение ведет к чему-то лучшему или худшему. Иногда перемены — это возможность переосмыслить привычные вещи. Перемены могут научить нас ценить то, что у нас есть. Главное помнить, что даже самые трудные перемены дают шанс развиваться." data-img="https://i.postimg.cc/L64wKP9F/IMG-4758.jpg">
-                    <img src="https://i.postimg.cc/L64wKP9F/IMG-4758.jpg" alt="Статья 1">
-                    <h2>Перемены — это не всегда начало чего-то нового</h2>
-                </article>
-                <!-- ... другие статьи ... -->
-            </div>
-        </div>
-
-        <div class="nav-buttons">
-            <button id="leftBtn" class="nav-btn">←</button>
-            <div class="nav-center-group">
-                <button id="chatBtn" class="nav-btn"><i class="fa-solid fa-comments"></i></button>
-                <button id="homeBtn" class="nav-btn"></button>
-                <button id="profileBtn" class="nav-btn"></button>
-                <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
-            </div>
-            <button id="rightBtn" class="nav-btn">→</button>
-        </div>
-
-        <div id="articleModal" class="article-modal">
-            <div class="article-modal-content">
-                <button class="close-btn" id="closeArticleModal">×</button>
-                <img id="modalImage" src="" alt="Article Image" class="article-image">
-                <h2 id="modalTitle"></h2>
-                <p id="modalText"></p>
-            </div>
-        </div>
-
-        <div id="chatModal" class="chat-modal">
-            <div class="chat-modal-content" style="background-image: url('https://i.postimg.cc/26sHhMs4/IMG-4767.png'); background-size: cover;">
-                <div class="chat-header">
-                    <h2 style="background: rgba(255, 255, 255, 0.5);">Общение с ИИ Klyo</h2>
-                    <button class="close-btn" id="closeChatModal">×</button>
-                </div>
-                <div class="chat-messages" id="chatMessages"></div>
-                <div class="chat-input-container">
-                    <input type="text" id="chatInput" placeholder="Введите сообщение...">
-                    <button id="sendBtn">Отправить</button>
-                </div>
-            </div>
-        </div><script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                left: document.getElementById('leftScreen'),
-                right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen'),
-                articles: document.getElementById('articlesScreen'),
-            };
-
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                left: document.getElementById('leftBtn'),
-                right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn'),
-                articles: document.getElementById('articlesBtn'),
-                chat: document.getElementById('chatBtn'),
-                closeArticle: document.getElementById('closeArticleModal'),
-                closeChat: document.getElementById('closeChatModal'),
-                send: document.getElementById('sendBtn')
-            };
-
-            let currentScreen = 'home';
-            let isAnimating = false;
-            let showCrossButtonTimeout;
-
-            function showScreen(screenName) {
-                if (isAnimating) return;
-                isAnimating = true;
-
-                screens[currentScreen].classList.remove('active');
-                screens[screenName].classList.add('active');
-
-                if (screenName === 'articles') {
-                    buttons.left.style.display = 'none';
-                    buttons.right.style.display = 'none';
-                    buttons.profile.style.display = 'none';
-                    buttons.articles.style.display = 'none';
-                    buttons.home.style.margin = '0 auto';
-                    buttons.chat.style.display = 'none';
-                } else {
-                    buttons.left.style.display = 'flex';
-                    buttons.right.style.display = 'flex';
-                    buttons.profile.style.display = 'flex';
-                    buttons.articles.style.display = 'flex';
-                    buttons.home.style.margin = '0';
-                    buttons.chat.style.display = 'flex';
-                }
-
-                currentScreen = screenName;
-
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 300);
-            }
-
-            function showArticleDetail(title, text, imgSrc) {
-                const modal = document.getElementById('articleModal');
-                document.getElementById('modalTitle').textContent = title;
-                document.getElementById('modalText').textContent = text;
-                document.getElementById('modalImage').src = imgSrc;
-
-                modal.style.display = 'flex';
-                showCrossButtonTimeout = setTimeout(() => {
-                    buttons.closeArticle.style.display = 'block';
-                }, 2000);
-            }
-
-            function hideArticleDetail() {
-                const modal = document.getElementById('articleModal');
-                modal.style.display = 'none';
-                buttons.closeArticle.style.display = 'none';
-                clearTimeout(showCrossButtonTimeout);
-                showScreen('articles');
-            }
-
-            buttons.home.addEventListener('click', () => showScreen('home'));
-            buttons.left.addEventListener('click', () => showScreen('left'));
-            buttons.right.addEventListener('click', () => showScreen('right'));
-            buttons.profile.addEventListener('click', () => showScreen('profile'));
-            buttons.articles.addEventListener('click', () => showScreen('articles'));
-            buttons.closeArticle.addEventListener('click', hideArticleDetail);
-
-            document.querySelectorAll('#articlesScreen article').forEach(article => {
-                article.addEventListener('click', () => {
-                    const title = article.getAttribute('data-title');
-                    const text = article.getAttribute('data-text');
-                    const imgSrc = article.getAttribute('data-img');
-                    showArticleDetail(title, text, imgSrc);
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = TelegramApp()
+    window.show()
+    sys.exit(app.exec())
