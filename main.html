@@ -46,199 +46,181 @@
             visibility: visible;
         }
 
-        .chat-screen {
+        .chat-button {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
             background-image: url('https://i.postimg.cc/26sHhMs4/IMG-4767.png');
-            flex-direction: column;
-            justify-content: flex-end;
+            background-size: cover;
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-modal {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            max-width: 600px;
+            background-image: url('https://ваша-ссылка-на-фон.png');
+            border-radius: 12px 12px 0 0;
             padding: 16px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            gap: 16px;
         }
 
         .chat-header {
+            background: rgba(50, 50, 50, 0.8);
+            padding: 8px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.3);
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 20px;
+            color: white;
+            border-radius: 12px;
         }
 
         .chat-messages {
             flex-grow: 1;
             overflow-y: auto;
-            margin-top: 16px;
-        }
-
-        .message-bubble {
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.8);
-            max-width: 70%;
-        }
-
-        .message-bubble.user {
-            background-color: rgba(173, 216, 230, 0.8);
-            margin-left: auto;
-        }
-
-        .chat-input-container {
+            padding: 8px;
             display: flex;
-            gap: 12px;
-            margin-top: 16px;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .user-message {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            border-radius: 8px;
+            align-self: flex-end;
+            color: black;
+        }
+
+        .bot-message {
+            background: rgba(70, 70, 70, 0.9);
+            padding: 10px;
+            border-radius: 8px;
+            align-self: flex-start;
+            color: white;
         }
 
         .chat-input {
-            flex-grow: 1;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            gap: 8px;
         }
 
-        .chat-send-btn {
-            padding: 12px 16px;
+        .chat-input input {
+            flex-grow: 1;
+            padding: 10px;
             border-radius: 8px;
+            border: none;
+        }
+
+        .chat-input button {
+            padding: 10px 16px;
             background-color: #007bff;
             color: white;
             border: none;
+            border-radius: 8px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        .chat-send-btn:active {
-            transform: scale(0.95);
+        .chat-input button:hover {
+            background-color: #0056b3;
         }
 
-        .nav-buttons {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            z-index: 1000;
-        }
-
-        .nav-center-group {
-            display: flex;
-            gap: 16px;
-        }
-
-        .nav-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
+        .close-chat-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.8);
             border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-radius: 50%;
+            padding: 8px;
             cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .nav-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        .article-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
         }
     </style>
 </head>
 <body>
     <div id="app">
-        <div id="homeScreen" class="screen active">
-            <div class="message">
-                <h1>С Новым 2025 Годом!</h1>
-                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
-            </div>
-        </div>
-
-        <div id="chatScreen" class="screen chat-screen">
-            <div class="chat-header">Общение с Pae Ai</div>
-            <div class="chat-messages" id="chatMessages"></div>
-            <div class="chat-input-container">
-                <input type="text" id="chatInput" class="chat-input" placeholder="Введите сообщение...">
-                <button class="chat-send-btn" id="sendChatBtn">Отправить</button>
-            </div>
-        </div>
-
+        <!-- Существующие элементы -->
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">
                 <button id="homeBtn" class="nav-btn"></button>
-                <button id="aiChatBtn" class="nav-btn"><i class="fa-solid fa-comment-nodes"></i></button>
                 <button id="profileBtn" class="nav-btn"></button>
+                <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
+                <button id="chatBtn" class="chat-button"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
+        </div>
+
+        <div id="chatModal" class="chat-modal">
+            <button id="closeChatBtn" class="close-chat-btn">×</button>
+            <div class="chat-header">Общение с Pae Ai</div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Введите сообщение...">
+                <button id="sendBtn">Отправить</button>
+            </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                chat: document.getElementById('chatScreen'),
-            };
-
-            const chatInput = document.getElementById('chatInput');
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatBtn = document.getElementById('chatBtn');
+            const chatModal = document.getElementById('chatModal');
+            const closeChatBtn = document.getElementById('closeChatBtn');
+            const sendBtn = document.getElementById('sendBtn');
+            const userInput = document.getElementById('userInput');
             const chatMessages = document.getElementById('chatMessages');
-            const sendChatBtn = document.getElementById('sendChatBtn');
 
-            function showScreen(screenName) {
-                Object.values(screens).forEach(screen => screen.classList.remove('active'));
-                screens[screenName].classList.add('active');
-            }
+            chatBtn.addEventListener('click', () => {
+                chatModal.style.display = 'flex';
+            });
 
-            document.getElementById('aiChatBtn').addEventListener('click', () => showScreen('chat'));
-            sendChatBtn.addEventListener('click', () => sendMessage());
+            closeChatBtn.addEventListener('click', () => {
+                chatModal.style.display = 'none';
+            });
 
-            async function sendMessage() {
-                const message = chatInput.value.trim();
-                if (!message) return;
+            sendBtn.addEventListener('click', async () => {
+                const message = userInput.value.trim();
+                if (message) {
+                    appendMessage('user', message);
+                    userInput.value = '';
 
-                appendMessage('user', message);
-                chatInput.value = '';
+                    try {
+                        const response = await fetch('https://api.open-assistant.io/v1', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                prompt: message,
+                            }),
+                        });
 
-                const response = await fetch('https://api.open-assistant.io/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: 'oasst-sft-1-pythia-12b',
-                        messages: [{ role: 'user', content: message }]
-                    })
-                });
+                        const data = await response.json();
+                        appendMessage('bot', data.reply || 'Ошибка ответа от ИИ');
+                    } catch (error) {
+                        appendMessage('bot', 'Ошибка подключения');
+                    }
+                }
+            });
 
-                const data = await response.json();
-                appendMessage('bot', data.choices[0].message.content);
-            }
-
-            function appendMessage(sender, content) {
-                const bubble = document.createElement('div');
-                bubble.className = `message-bubble ${sender}`;
-                bubble.textContent = content;
-                chatMessages.appendChild(bubble);
+            function appendMessage(sender, text) {
+                const messageElem = document.createElement('div');
+                messageElem.className = sender === 'user' ? 'user-message' : 'bot-message';
+                messageElem.textContent = text;
+                chatMessages.appendChild(messageElem);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
         });
