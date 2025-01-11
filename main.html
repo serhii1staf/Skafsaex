@@ -505,94 +505,71 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                left: document.getElementById('leftScreen'),
-                right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen'),
-                articles: document.getElementById('articlesScreen'),
-                aiChat: document.getElementById('aiChatScreen')
-            };
+    document.addEventListener('DOMContentLoaded', function() {
+        const screens = {
+            home: document.getElementById('homeScreen'),
+            left: document.getElementById('leftScreen'),
+            right: document.getElementById('rightScreen'),
+            profile: document.getElementById('profileScreen'),
+            articles: document.getElementById('articlesScreen'),
+            aiChat: document.getElementById('aiChatScreen')
+        };
 
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                left: document.getElementById('leftBtn'),
-                right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn'),
-                articles: document.getElementById('articlesBtn'),
-                ai: document.getElementById('aiBtn'),
-                close: document.getElementById('closeArticleModal'),
-                closeAiChat: document.getElementById('closeAiChat')
-            };// 
-            Добавление логики клавиатуры и скрытия
-document.getElementById('chatInput').addEventListener('focus', () => {
-    document.querySelector('.chat-input-container').style.position = 'fixed';
-    document.querySelector('.chat-input-container').style.bottom = '0';
-});
+        const buttons = {
+            home: document.getElementById('homeBtn'),
+            left: document.getElementById('leftBtn'),
+            right: document.getElementById('rightBtn'),
+            profile: document.getElementById('profileBtn'),
+            articles: document.getElementById('articlesBtn'),
+            ai: document.getElementById('aiBtn'),
+            close: document.getElementById('closeArticleModal'),
+            closeAiChat: document.getElementById('closeAiChat')
+        };
 
-document.getElementById('chatInput').addEventListener('blur', () => {
-    document.querySelector('.chat-input-container').style.position = 'relative';
-});
+        let currentScreen = 'home';
+        let isAnimating = false;
+        let closeTimeout;
 
-document.getElementById('chatMessages').addEventListener('dblclick', () => {
-    document.getElementById('chatInput').blur();
-});
+        // Добавление логики для поднятия поля ввода вместе с клавиатурой
+        document.getElementById('chatInput').addEventListener('focus', () => {
+            document.querySelector('.chat-input-container').style.position = 'fixed';
+            document.querySelector('.chat-input-container').style.bottom = '0';
+        });
 
-            let currentScreen = 'home';
-            let isAnimating = false;
-            let closeTimeout;
+        document.getElementById('chatInput').addEventListener('blur', () => {
+            document.querySelector('.chat-input-container').style.position = 'relative';
+        });
 
-            function showScreen(screenName) {
-                if (isAnimating) return;
-                isAnimating = true;
+        document.getElementById('chatMessages').addEventListener('dblclick', () => {
+            document.getElementById('chatInput').blur(); // Скрытие клавиатуры при двойном нажатии
+        });
 
-                screens[currentScreen].classList.remove('active');
-                screens[screenName].classList.add('active');
+        // Пример функции для смены экрана
+        function showScreen(screenName) {
+            if (isAnimating) return;
+            isAnimating = true;
 
-                if (screenName === 'articles') {
-                    buttons.left.style.display = 'none';
-                    buttons.right.style.display = 'none';
-                    buttons.profile.style.display = 'none';
-                    buttons.articles.style.display = 'none';
-                    buttons.ai.style.display = 'none';
-                    buttons.home.style.margin = '0 auto';
-                } else if (screenName === 'aiChat') {
-                    document.querySelector('.nav-buttons').style.display = 'none';
-                    resetCloseTimeout();
-                } else {
-                    buttons.left.style.display = 'flex';
-                    buttons.right.style.display = 'flex';
-                    buttons.profile.style.display = 'flex';
-                    buttons.articles.style.display = 'flex';
-                    buttons.ai.style.display = 'flex';
-                    buttons.home.style.margin = '0';
-                    document.querySelector('.nav-buttons').style.display = 'flex';
-                }
+            screens[currentScreen].classList.remove('active');
+            screens[screenName].classList.add('active');
 
-                currentScreen = screenName;
+            currentScreen = screenName;
 
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 300);
-            }
+            setTimeout(() => {
+                isAnimating = false;
+            }, 300);
+        }
 
-            function resetCloseTimeout() {
-                clearTimeout(closeTimeout);
-                buttons.closeAiChat.style.display = 'none';
-                closeTimeout = setTimeout(() => {
-                    buttons.closeAiChat.style.display = 'flex';
-                }, 15000);
-            }
-
-            function addMessage(text, isUser) {
-                const messagesContainer = document.getElementById('chatMessages');
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `chat-message ${isUser ? 'user-message' : 'ai-message'}`;
-                messageDiv.textContent = text;
-                messagesContainer.appendChild(messageDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
+        // Слушатели для навигации
+        buttons.home.addEventListener('click', () => showScreen('home'));
+        buttons.left.addEventListener('click', () => showScreen('left'));
+        buttons.right.addEventListener('click', () => showScreen('right'));
+        buttons.profile.addEventListener('click', () => showScreen('profile'));
+        buttons.articles.addEventListener('click', () => showScreen('articles'));
+        buttons.ai.addEventListener('click', () => showScreen('aiChat'));
+        buttons.close.addEventListener('click', () => showScreen('home'));
+        buttons.closeAiChat.addEventListener('click', () => showScreen('home'));
+    });
+</script>
 
             function handleSendMessage() {
                 const input = document.getElementById('chatInput');
