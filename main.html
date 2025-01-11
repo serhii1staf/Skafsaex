@@ -175,7 +175,7 @@
         }
 
         #articlesBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M5 8h14V6H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2z"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M5 8h14V6H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
             background-position: center;
@@ -287,88 +287,6 @@
             height: auto;
             object-fit: contain;
         }
-
-        .chat-container {
-            width: 90%;
-            max-width: 600px;
-            background-image: url('https://i.postimg.cc/0QTr6rVH/black-mask-style.png');
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            position: relative;
-            z-index: 1000;
-        }
-
-        #chat-title {
-            color: white;
-            font-size: 24px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        #chat-messages {
-            height: 300px;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        .message {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 24px;
-            border-radius: 12px;
-            text-align: left;
-            max-width: 90%;
-            width: 100%;
-            margin: 10px 0;
-        }
-
-        .user {
-            text-align: right;
-        }
-
-        .ai {
-            text-align: left;
-        }
-
-        #chat-input-container {
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        #chat-input {
-            flex-grow: 1;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-right: 10px;
-        }
-
-        #chat-send {
-            background: #007bff;
-            color: white;
-            font-size: 18px;
-            padding: 10px 15px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        #chat-send:hover {
-            background: #0069d9;
-        }
-
-        #chat-send:active {
-            transform: scale(0.95);
-        }
-
-        #closeChatBtn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -453,7 +371,6 @@
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
                 <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
-                <button id="chatBtn" class="nav-btn"><i class="fa-solid fa-comment"></i></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
@@ -465,17 +382,7 @@
             <p id="modalText"></p>
         </div>
     </div>
-    <div id="chatScreen" class="screen">
-        <div class="chat-container">
-            <h2 id="chat-title">Общение с Pae Ai</h2>
-            <div id="chat-messages"></div>
-            <div id="chat-input-container">
-                <input type="text" id="chat-input" placeholder="Введите сообщение...">
-                <button id="chat-send" class="nav-btn"><i class="fa-solid fa-arrow-right"></i></button>
-            </div>
-        </div>
-        <button id="closeChatBtn" class="close-btn">×</button>
-    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const screens = {
@@ -492,8 +399,7 @@
                 right: document.getElementById('rightBtn'),
                 profile: document.getElementById('profileBtn'),
                 articles: document.getElementById('articlesBtn'),
-                close: document.getElementById('closeArticleModal'),
-                chat: document.getElementById('chatBtn'),
+                close: document.getElementById('closeArticleModal')
             };
 
             let currentScreen = 'home';
@@ -553,168 +459,13 @@
             buttons.articles.addEventListener('click', () => showScreen('articles'));
             buttons.close.addEventListener('click', hideArticleDetail);
 
-            // Chat screen variables
-            const chatScreen = document.getElementById('chatScreen');
-            const chatContainer = document.getElementById('chat-container');
-            const chatInput = document.getElementById('chat-input');
-            const chatSend = document.getElementById('chat-send');
-            const chatMessages = document.getElementById('chat-messages');
-            const closeChatBtn = document.getElementById('closeChatBtn');
-
-            // Add event listener for opening the chat window
-            chatBtn.addEventListener('click', () => {
-                // Hide all other screens and show the chat screen
-                screens.home.classList.remove('active');
-                screens.left.classList.remove('active');
-                screens.right.classList.remove('active');
-                screens.profile.classList.remove('active');
-                screens.articles.classList.remove('active');
-                chatScreen.classList.add('active');
-
-                // Hide navigation buttons
-                buttons.left.style.display = 'none';
-                buttons.right.style.display = 'none';
-                buttons.profile.style.display = 'none';
-                buttons.articles.style.display = 'none';
-                buttons.home.style.display = 'none';
-
-                // Focus on the chat input field
-                chatInput.focus();
-            });
-
-            // Add event listener for sending messages
-            chatSend.addEventListener('click', () => {
-                sendMessage();
-            });
-
-            // Add event listener for closing the chat window
-            closeChatBtn.addEventListener('click', () => {
-                // Hide the chat screen and show the home screen
-                chatScreen.classList.remove('active');
-                screens.home.classList.add('active');
-
-                // Show navigation buttons
-                buttons.left.style.display = 'flex';
-                buttons.right.style.display = 'flex';
-                buttons.profile.style.display = 'flex';
-                buttons.articles.style.display = 'flex';
-                buttons.home.style.display = 'flex';
-            });
-
-            // Function to send messages
-            function sendMessage() {
-                const message = chatInput.value;
-                if (message.trim() !== "") {
-                    // Send message to the API
-                    fetch("https://api.open-assistant.io/v1/chat", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            message: message
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Display user message
-                        displayMessage(message, "user");
-
-                        // Display AI response
-                        displayMessage(data.response, "ai");
-
-                        // Clear chat input
-                        chatInput.value = "";
-                    })
-                    .catch(error => {
-                        displayError("Ошибка подключения к серверу.");
-                    });
-
-                    // Reset the timer for showing the close button
-                    resetCloseTimer();
-                }
-            }
-
-            // Function to display messages
-            function displayMessage(message, type) {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message');
-                messageElement.classList.add(type);
-                messageElement.textContent = message;
-                chatMessages.appendChild(messageElement);
-
-                // Scroll to the bottom of the messages
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            // Function to display errors
-            function displayError(error) {
-                const errorElement = document.createElement('div');
-                errorElement.classList.add('message');
-                errorElement.classList.add('error');
-                errorElement.textContent = error;
-                chatMessages.appendChild(errorElement);
-
-                // Scroll to the bottom of the messages
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            // Function to reset the timer for showing the close button
-            let closeTimer;
-            function resetCloseTimer() {
-                clearTimeout(closeTimer);
-                closeTimer = setTimeout(() => {
-                    closeChatBtn.style.display = 'block';
-                }, 15000);
-            }
-
-            // Function to hide the close button when typing
-            chatInput.addEventListener('input', () => {
-                closeChatBtn.style.display = 'none';
-                resetCloseTimer();
-            });
-
-            // Initial timer for showing the close button
-            resetCloseTimer();
-
-            // Adjust the chat container height on window resize
-            window.addEventListener('resize', () => {
-                // Calculate the available height for the chat container
-                const availableHeight = window.innerHeight - chatInputContainer.offsetHeight - chatTitle.offsetHeight - 40;
-                chatMessages.style.height = `${availableHeight}px`;
-            });
-
-            // Call the resize function initially to set the height
-            window.dispatchEvent(new Event('resize'));
-
-            screens.articles.addEventListener('DOMContentLoaded', () => {
-                chatBtn.style.display = 'none';
-            });
-
-            let tapCount = 0;
-            let tapTimeout;
-
-            document.addEventListener('click', () => {
-              tapCount++;
-              if (tapCount === 1) {
-                tapTimeout = setTimeout(() => {
-                  tapCount = 0;
-                }, 300);
-              } else {
-                clearTimeout(tapTimeout);
-                tapCount = 0;
-                if (chatScreen.classList.contains('active')) {
-                  chatScreen.classList.remove('active');
-                  screens.home.classList.add('active');
-
-                  // Show navigation buttons
-                  buttons.left.style.display = 'flex';
-                  buttons.right.style.display = 'flex';
-                  buttons.profile.style.display = 'flex';
-                  buttons.articles.style.display = 'flex';
-                  buttons.home.style.display = 'flex';
-                }
-              }
+            document.querySelectorAll('#articlesScreen article').forEach(article => {
+                article.addEventListener('click', () => {
+                    const title = article.getAttribute('data-title');
+                    const text = article.getAttribute('data-text');
+                    const imgSrc = article.getAttribute('data-img');
+                    showArticleDetail(title, text, imgSrc);
+                });
             });
         });
     </script>
