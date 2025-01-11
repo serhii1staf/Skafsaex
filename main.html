@@ -288,62 +288,105 @@
             object-fit: contain;
         }
 
-        /* Styles for chat window */
-        #chat-window {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://i.postimg.cc/0QTr6rVH/black-mask-style.png') no-repeat center center;
-            background-size: cover;
-            z-index: 1000;
+        #chatScreen {
+            background-image: url('https://i.postimg.cc/0QTr6rVH/black-mask-style.png');
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
         }
-        #chat-header {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px;
+
+        #chatHeader {
+            font-size: 24px;
+            color: white;
             text-align: center;
-            font-size: 20px;
-            font-weight: bold;
+            margin-bottom: 20px;
         }
-        #chat-messages {
-            padding: 10px;
+
+        #chatMessages {
+            flex-grow: 1;
             overflow-y: auto;
-            height: calc(100% - 100px);
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
         }
+
         .chat-message {
             background: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
             padding: 10px;
-            margin: 10px 0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            color: black;
         }
-        #chat-input {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
+
+        #chatInputContainer {
             display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        #chat-input input {
-            flex: 1;
+
+        #chatInput {
+            flex-grow: 1;
             padding: 10px;
+            border-radius: 8px;
             border: none;
+            outline: none;
         }
-        #chat-input button {
-            padding: 10px;
-            background: #007bff;
+
+        #sendBtn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-            border: none;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
-        #close-chat {
-            position: absolute;
+
+        #sendBtn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        #sendBtn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        #closeChatBtn {
+            display: none;
+            position: fixed;
             top: 10px;
             right: 10px;
-            background: red;
-            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
             border: none;
-            padding: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #closeChatBtn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        #closeChatBtn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.4);
         }
     </style>
 </head>
@@ -429,10 +472,7 @@
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
                 <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
-                <button id="ai-chat-button" class="nav-btn">
-                    <i class="fa-solid fa-comment"></i>
-                    Общение с Pae Ai
-                </button>
+                <button id="chatBtn" class="nav-btn"><i class="fa-solid fa-comment"></i></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
@@ -445,15 +485,15 @@
         </div>
     </div>
 
-    <div id="chat-window">
-        <div id="chat-header">Общение с Pae Ai</div>
-        <div id="chat-messages"></div>
-        <div id="chat-input">
-            <input type="text" id="message-input" placeholder="Введите сообщение...">
-            <button id="send-message"><i class="fa-solid fa-paper-plane"></i></button>
+    <div id="chatScreen" class="screen">
+        <div id="chatHeader">Общение с Pae Ai</div>
+        <div id="chatMessages"></div>
+        <div id="chatInputContainer">
+            <input type="text" id="chatInput" placeholder="Введите сообщение...">
+            <button id="sendBtn">➤</button>
         </div>
-        <button id="close-chat">X</button>
     </div>
+    <button id="closeChatBtn">×</button>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -463,6 +503,7 @@
                 right: document.getElementById('rightScreen'),
                 profile: document.getElementById('profileScreen'),
                 articles: document.getElementById('articlesScreen'),
+                chat: document.getElementById('chatScreen')
             };
 
             const buttons = {
@@ -471,7 +512,9 @@
                 right: document.getElementById('rightBtn'),
                 profile: document.getElementById('profileBtn'),
                 articles: document.getElementById('articlesBtn'),
-                close: document.getElementById('closeArticleModal')
+                chat: document.getElementById('chatBtn'),
+                close: document.getElementById('closeArticleModal'),
+                closeChat: document.getElementById('closeChatBtn')
             };
 
             let currentScreen = 'home';
@@ -524,12 +567,69 @@
                 showScreen('articles');
             }
 
+            let inactivityTimeout;
+
+            function resetInactivityTimeout() {
+                clearTimeout(inactivityTimeout);
+                inactivityTimeout = setTimeout(() => {
+                    buttons.closeChat.style.display = 'block';
+                }, 15000);
+            }
+
+            function showChatScreen() {
+                showScreen('chat');
+                resetInactivityTimeout();
+            }
+
+            function hideChatScreen() {
+                buttons.closeChat.style.display = 'none';
+                showScreen('home');
+            }
+
+            function sendMessage() {
+                const message = chatInput.value;
+                if (!message) return;
+
+                fetch("https://api.open-assistant.io/v1/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    displayMessage(data.response, 'response');
+                })
+                .catch(error => displayMessage("Ошибка подключения к серверу.", 'error'));
+
+                displayMessage(message, 'user');
+                chatInput.value = '';
+            }
+
+            function displayMessage(text, type) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('chat-message');
+                messageElement.textContent = text;
+                if (type === 'user') {
+                    messageElement.style.backgroundColor = 'rgba(173, 216, 230, 0.8)';
+                } else if (type === 'response') {
+                    messageElement.style.backgroundColor = 'rgba(144, 238, 144, 0.8)';
+                } else if (type === 'error') {
+                    messageElement.style.backgroundColor = 'rgba(255, 99, 71, 0.8)';
+                }
+                chatMessages.appendChild(messageElement);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
             buttons.home.addEventListener('click', () => showScreen('home'));
             buttons.left.addEventListener('click', () => showScreen('left'));
             buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
             buttons.articles.addEventListener('click', () => showScreen('articles'));
+            buttons.chat.addEventListener('click', showChatScreen);
             buttons.close.addEventListener('click', hideArticleDetail);
+            buttons.closeChat.addEventListener('click', hideChatScreen);
 
             document.querySelectorAll('#articlesScreen article').forEach(article => {
                 article.addEventListener('click', () => {
@@ -540,67 +640,21 @@
                 });
             });
 
-            document.getElementById('ai-chat-button').addEventListener('click', function() {
-                document.getElementById('chat-window').style.display = 'block';
-                // Hide navigation elements
-                document.querySelector('.nav-buttons').style.display = 'none';
+            const chatInput = document.getElementById('chatInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const chatMessages = document.getElementById('chatMessages');
+
+            sendBtn.addEventListener('click', sendMessage);
+            chatInput.addEventListener('focus', resetInactivityTimeout);
+            chatInput.addEventListener('input', resetInactivityTimeout);
+            chatInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') sendMessage();
             });
 
-            document.getElementById('close-chat').addEventListener('click', function() {
-                document.getElementById('chat-window').style.display = 'none';
-                // Show navigation elements
-                document.querySelector('.nav-buttons').style.display = 'flex';
+            document.addEventListener('click', resetInactivityTimeout);
+            document.addEventListener('dblclick', () => {
+                chatInput.blur();
             });
-
-            document.getElementById('send-message').addEventListener('click', function() {
-                const message = document.getElementById('message-input').value;
-                fetch("https://api.open-assistant.io/v1/chat", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        message: message
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    displayMessage(data.response);
-                })
-                .catch(error => {
-                    displayError("Ошибка подключения к серверу.");
-                });
-            });
-
-            function displayMessage(message) {
-                const messageElement = document.createElement('div');
-                messageElement.className = 'chat-message';
-                messageElement.textContent = message;
-                document.getElementById('chat-messages').appendChild(messageElement);
-            }
-
-            function displayError(error) {
-                const errorElement = document.createElement('div');
-                errorElement.className = 'chat-message';
-                errorElement.textContent = error;
-                document.getElementById('chat-messages').appendChild(errorElement);
-            }
-
-            let closeChatTimeout;
-            document.getElementById('message-input').addEventListener('input', function() {
-                clearTimeout(closeChatTimeout);
-                document.getElementById('close-chat').style.display = 'none';
-            });
-
-            document.getElementById('chat-window').addEventListener('dblclick', function() {
-                document.getElementById('message-input').blur();
-            });
-
-            setInterval(function() {
-                closeChatTimeout = setTimeout(function() {
-                    document.getElementById('close-chat').style.display = 'block';
-                }, 15000);
-            }, 15000);
         });
     </script>
 </body>
