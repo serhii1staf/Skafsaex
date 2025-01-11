@@ -3,18 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klyo Hub</title>
+    <title>Klyo Hub - Your Career Path</title>
     <style>
         /* CSS Reset and Variables */
         :root {
             --primary-color: #2563eb;
+            --secondary-color: #4f46e5;
+            --accent-color: #60a5fa;
             --text-color: #1f2937;
             --bg-color: #ffffff;
             --secondary-bg: #f3f4f6;
+            --success-color: #10b981;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         [data-theme="dark"] {
             --primary-color: #60a5fa;
+            --secondary-color: #818cf8;
+            --accent-color: #93c5fd;
             --text-color: #f3f4f6;
             --bg-color: #1f2937;
             --secondary-bg: #374151;
@@ -24,6 +30,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         body {
@@ -31,48 +38,62 @@
             line-height: 1.6;
             color: var(--text-color);
             background-color: var(--bg-color);
-            transition: background-color 0.3s, color 0.3s;
         }
 
-        /* Header Styles */
+        /* Header and Navigation */
         header {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             padding: 2rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 60%);
+            pointer-events: none;
         }
 
         .welcome-text {
             font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
             animation: fadeInUp 1s ease-out;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Navigation */
         nav {
             background: var(--secondary-bg);
             padding: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--card-shadow);
         }
 
-        .theme-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
             color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
         }
 
         /* Main Content */
@@ -84,179 +105,276 @@
 
         .section {
             margin-bottom: 3rem;
-            padding: 1.5rem;
+            padding: 2rem;
             background: var(--secondary-bg);
-            border-radius: 8px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            animation: fadeIn 0.5s ease-out;
         }
 
-        /* Telegram Button */
-        .telegram-btn {
+        /* Registration Form */
+        .registration-form {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--bg-color);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .btn {
             display: inline-block;
-            background: #0088cc;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
             color: white;
-            padding: 1rem 2rem;
-            text-decoration: none;
-            border-radius: 5px;
-            margin: 1rem 0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
             transition: background-color 0.3s;
         }
 
-        .telegram-btn:hover {
-            background: #006699;
+        .btn:hover {
+            background: var(--secondary-color);
         }
 
-        /* News Feed */
-        .news-feed {
+        /* Stats Section */
+        .stats-container {
             display: grid;
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
         }
 
-        .news-item {
-            padding: 1rem;
-            background: var(--bg-color);
-            border-radius: 4px;
-        }
-
-        /* Weather Widget */
-        .weather-widget {
+        .stat-card {
             text-align: center;
-            padding: 1rem;
+            padding: 1.5rem;
+            background: var(--bg-color);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
         }
 
-        /* Currency Converter */
-        .currency-converter {
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* News Section */
+        .news-grid {
             display: grid;
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
 
-        .currency-converter input,
-        .currency-converter select {
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        .news-card {
+            background: var(--bg-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s;
         }
 
-        /* Gallery */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
+        .news-card:hover {
+            transform: translateY(-5px);
         }
 
-        .gallery img {
+        .news-card img {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            border-radius: 4px;
         }
 
-        /* Contact Form */
-        .contact-form {
-            display: grid;
-            gap: 1rem;
-            max-width: 500px;
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-bg);
+            color: var(--text-color);
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
             margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
         }
 
-        .contact-form input,
-        .contact-form textarea {
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
         }
 
-        .contact-form button {
-            background: var(--primary-color);
-            color: white;
-            padding: 0.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        .social-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .gallery {
-                grid-template-columns: 1fr;
-            }
-
             .welcome-text {
                 font-size: 2rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section {
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1 class="welcome-text">Welcome to Klyo Hub</h1>
-        <p>Your gateway to information and utilities</p>
-        <a href="https://t.me/klyohub" class="telegram-btn">Join us on Telegram</a>
-    </header>
-
     <nav>
-        <div>Klyo Hub</div>
-        <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#jobs">Jobs</a>
+            <a href="#employers">Employers</a>
+            <a href="#career">Career Advice</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <button class="theme-toggle btn" onclick="toggleTheme()">🌓</button>
     </nav>
+
+    <header id="home">
+        <h1 class="welcome-text">Discover Your Dream Career Path</h1>
+        <p>Join thousands of professionals finding their perfect career match</p>
+        <a href="https://t.me/klyohub" class="btn" style="margin-top: 1rem;">Join us on Telegram</a>
+    </header>
 
     <main>
         <section class="section">
-            <h2>About Klyo</h2>
-            <p>Klyo is your comprehensive hub for news, weather updates, currency conversion, and more. Stay connected and informed with our integrated services.</p>
+            <h2>Start Your Journey</h2>
+            <form class="registration-form" onsubmit="handleRegistration(event)">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="accountType">Account Type</label>
+                    <select id="accountType" required>
+                        <option value="personal">Personal</option>
+                        <option value="corporate">Corporate</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
         </section>
 
         <section class="section">
-            <h2>Popular Articles</h2>
-            <div class="news-feed" id="newsFeed">
+            <h2>Our Impact</h2>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number">500+</div>
+                    <p>Active Job Listings</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">10K+</div>
+                    <p>Professional Members</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <p>Success Rate</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="news">
+            <h2>Latest Career Insights</h2>
+            <div class="news-grid" id="newsGrid">
                 <!-- News items will be populated by JavaScript -->
             </div>
         </section>
-
-        <section class="section">
-            <h2>Weather in Norway</h2>
-            <div class="weather-widget" id="weatherWidget">
-                <!-- Weather data will be populated by JavaScript -->
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>Currency Converter</h2>
-            <div class="currency-converter">
-                <input type="number" id="amount" placeholder="Amount">
-                <select id="fromCurrency">
-                    <option value="USD">USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="NOK">NOK</option>
-                </select>
-                <select id="toCurrency">
-                    <option value="EUR">EUR</option>
-                    <option value="USD">USD</option>
-                    <option value="NOK">NOK</option>
-                </select>
-                <button onclick="convertCurrency()">Convert</button>
-                <div id="conversionResult"></div>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>Gallery</h2>
-            <div class="gallery" id="gallery">
-                <!-- Gallery images will be populated by JavaScript -->
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>Contact Us</h2>
-            <form class="contact-form" onsubmit="handleContact(event)">
-                <input type="text" placeholder="Name" required>
-                <input type="email" placeholder="Email" required>
-                <textarea placeholder="Message" required></textarea>
-                <div class="captcha" id="captcha">
-                    <!-- CAPTCHA will be populated by JavaScript -->
-                </div>
-                <button type="submit">Send Message</button>
-            </form>
-        </section>
     </main>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h3>Klyo Hub</h3>
+                <p>Your gateway to professional success</p>
+                <div class="social-links">
+                    <a href="#" title="Facebook">📘</a>
+                    <a href="#" title="Twitter">🐦</a>
+                    <a href="#" title="LinkedIn">💼</a>
+                    <a href="https://t.me/klyohub" title="Telegram">✈️</a>
+                </div>
+            </div>
+            <div>
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Contact Us</h3>
+                <p>Email: info@klyohub.com</p>
+                <p>Phone: +1 (555) 123-4567</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // Theme Toggle
@@ -269,84 +387,57 @@
         // Initialize theme
         document.body.dataset.theme = localStorage.getItem('theme') || 'light';
 
-        // News Feed
-        const mockNews = [
-            { title: 'Klyo Hub Launches New Features', date: '2024-01-20' },
-            { title: 'Technology Updates for 2024', date: '2024-01-19' },
-            { title: 'Digital Innovation Trends', date: '2024-01-18' }
-        ];
-
-        function updateNews() {
-            const newsContainer = document.getElementById('newsFeed');
-            newsContainer.innerHTML = mockNews.map(news => `
-                <div class="news-item">
-                    <h3>${news.title}</h3>
-                    <p>Published: ${news.date}</p>
-                </div>
-            `).join('');
-        }
-
-        // Weather Widget
-        async function updateWeather() {
-            const weatherWidget = document.getElementById('weatherWidget');
-            try {
-                // Simulated weather data (replace with actual API call)
-                const weatherData = {
-                    temp: Math.round(Math.random() * 20),
-                    condition: 'Partly Cloudy'
-                };
-                weatherWidget.innerHTML = `
-                    <h3>Oslo, Norway</h3>
-                    <p>${weatherData.temp}°C</p>
-                    <p>${weatherData.condition}</p>
-                `;
-            } catch (error) {
-                weatherWidget.innerHTML = '<p>Weather data unavailable</p>';
+        // Mock News Data
+        const newsData = [
+            {
+                title: 'Top Tech Skills for 2024',
+                excerpt: 'Discover the most in-demand technology skills that employers are looking for in 2024.',
+                image: 'https://source.unsplash.com/random/800x600?technology'
+            },
+            {
+                title: 'Remote Work Trends',
+                excerpt: 'How companies are adapting to the evolving landscape of remote work.',
+                image: 'https://source.unsplash.com/random/800x600?office'
+            },
+            {
+                title: 'Career Development Tips',
+                excerpt: 'Essential strategies for advancing your professional career in today\'s competitive market.',
+                image: 'https://source.unsplash.com/random/800x600?career'
             }
-        }
-
-        // Currency Converter
-        async function convertCurrency() {
-            const amount = document.getElementById('amount').value;
-            const from = document.getElementById('fromCurrency').value;
-            const to = document.getElementById('toCurrency').value;
-            const result = document.getElementById('conversionResult');
-
-            // Simulated conversion (replace with actual API call)
-            const rate = 1.2; // Example rate
-            const converted = (amount * rate).toFixed(2);
-            result.textContent = `${amount} ${from} = ${converted} ${to}`;
-        }
-
-        // Gallery
-        const galleryImages = [
-            'https://source.unsplash.com/random/800x600?nature',
-            'https://source.unsplash.com/random/800x600?technology',
-            'https://source.unsplash.com/random/800x600?architecture'
         ];
 
-        function loadGallery() {
-            const gallery = document.getElementById('gallery');
-            gallery.innerHTML = galleryImages.map(src => `
-                <img src="${src}" alt="Gallery Image" loading="lazy">
+        // Populate News Grid
+        function populateNews() {
+            const newsGrid = document.getElementById('newsGrid');
+            newsGrid.innerHTML = newsData.map(news => `
+                <article class="news-card">
+                    <img src="${news.image}" alt="${news.title}">
+                    <div class="news-content">
+                        <h3>${news.title}</h3>
+                        <p>${news.excerpt}</p>
+                        <a href="#" class="btn" style="margin-top: 1rem;">Read More</a>
+                    </div>
+                </article>
             `).join('');
         }
 
-        // Contact Form
-        function handleContact(event) {
+        // Handle Registration
+        function handleRegistration(event) {
             event.preventDefault();
-            // Add form submission logic here
-            alert('Message sent successfully!');
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                accountType: document.getElementById('accountType').value
+            };
+            console.log('Registration data:', formData);
+            alert('Thank you for registering! We\'ll be in touch soon.');
             event.target.reset();
         }
 
-        // Initialize components
+        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            updateNews();
-            updateWeather();
-            loadGallery();
-            // Update weather every 30 minutes
-            setInterval(updateWeather, 1800000);
+            populateNews();
         });
     </script>
 </body>
