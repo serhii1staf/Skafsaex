@@ -450,7 +450,7 @@
         <div id="chat-messages"></div>
         <div id="chat-input">
             <input type="text" id="message-input" placeholder="Введите сообщение...">
-            <button id="send-message">Отправить</button>
+            <button id="send-message"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
         <button id="close-chat">X</button>
     </div>
@@ -567,7 +567,9 @@
                 .then(data => {
                     displayMessage(data.response);
                 })
-                .catch(error => console.error('Ошибка подключения:', error));
+                .catch(error => {
+                    displayError("Ошибка подключения к серверу.");
+                });
             });
 
             function displayMessage(message) {
@@ -575,6 +577,13 @@
                 messageElement.className = 'chat-message';
                 messageElement.textContent = message;
                 document.getElementById('chat-messages').appendChild(messageElement);
+            }
+
+            function displayError(error) {
+                const errorElement = document.createElement('div');
+                errorElement.className = 'chat-message';
+                errorElement.textContent = error;
+                document.getElementById('chat-messages').appendChild(errorElement);
             }
 
             let closeChatTimeout;
@@ -590,8 +599,8 @@
             setInterval(function() {
                 closeChatTimeout = setTimeout(function() {
                     document.getElementById('close-chat').style.display = 'block';
-                }, 3000);
-            }, 3000);
+                }, 15000);
+            }, 15000);
         });
     </script>
 </body>
