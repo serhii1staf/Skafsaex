@@ -529,19 +529,16 @@
         let currentScreen = 'home';
         let isAnimating = false;
         let closeTimeout;
-
-        // Добавление логики для поднятия поля ввода вместе с клавиатурой
+        // Добавление логики клавиатуры и скрытия
         document.getElementById('chatInput').addEventListener('focus', () => {
             document.querySelector('.chat-input-container').style.position = 'fixed';
             document.querySelector('.chat-input-container').style.bottom = '0';
         });
-
-        document.getElementById('chatInput').addEventListener('blur', () => {
+       document.getElementById('chatInput').addEventListener('blur', () => {
             document.querySelector('.chat-input-container').style.position = 'relative';
         });
-
-        document.getElementById('chatMessages').addEventListener('dblclick', () => {
-            document.getElementById('chatInput').blur(); // Скрытие клавиатуры при двойном нажатии
+       document.getElementById('chatMessages').addEventListener('dblclick', () => {
+            document.getElementById('chatInput').blur();
         });
 
         // Пример функции для смены экрана
