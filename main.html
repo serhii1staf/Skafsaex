@@ -524,7 +524,20 @@
                 ai: document.getElementById('aiBtn'),
                 close: document.getElementById('closeArticleModal'),
                 closeAiChat: document.getElementById('closeAiChat')
-            };
+            };// 
+            Добавление логики клавиатуры и скрытия
+document.getElementById('chatInput').addEventListener('focus', () => {
+    document.querySelector('.chat-input-container').style.position = 'fixed';
+    document.querySelector('.chat-input-container').style.bottom = '0';
+});
+
+document.getElementById('chatInput').addEventListener('blur', () => {
+    document.querySelector('.chat-input-container').style.position = 'relative';
+});
+
+document.getElementById('chatMessages').addEventListener('dblclick', () => {
+    document.getElementById('chatInput').blur();
+});
 
             let currentScreen = 'home';
             let isAnimating = false;
