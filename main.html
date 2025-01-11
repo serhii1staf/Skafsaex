@@ -182,14 +182,6 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
-        #chatBtn {
-            background-image: url('https://i.postimg.cc/26sHhMs4/IMG-4767.png');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
         .social-links {
             display: flex;
             flex-direction: column;
@@ -259,9 +251,6 @@
             font-size: 24px;
             display: flex;
             align-items: center;
-            justify-content: centerВот вторая часть обновленного кода:
-
-```html
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
@@ -298,102 +287,6 @@
             height: auto;
             object-fit: contain;
         }
-
-        #chatScreen {
-            background-image: url('https://i.postimg.cc/0QTr6rVH/black-mask-style.png');
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-        }
-
-        #chatScreen.active {
-            display: flex;
-        }
-
-        .chat-header {
-            font-size: 24px;
-            color: white;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .chat-messages {
-            flex-grow: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .chat-message {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            border-radius: 8px;
-            max-width: 80%;
-            word-wrap: break-word;
-        }
-
-        .chat-input-container {
-            display: flex;
-            gap: 10px;
-        }
-
-        .chat-input {
-            flex-grow: 1;
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
-            outline: none;
-        }
-
-        .chat-send-btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .chat-send-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .chat-send-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        .chat-close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .chat-close-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .chat-close-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.4);
-        }
     </style>
 </head>
 <body>
@@ -417,9 +310,7 @@
                 <h1>С 2025 Годом!</h1>
                 <p>Пусть этот год принесет много радости, счастья и успехов!</p>
             </div>
-        </div>
-
-        <div id="profileScreen" class="screen">
+        </div><div id="profileScreen" class="screen">
             <div class="message">
                 <div class="social-links">
                     <a href="https://t.me/sangklasy" class="social-link" target="_blank">📱 Telegram канал</a>
@@ -455,9 +346,6 @@
                     <img src="https://i.postimg.cc/PJHxr464/IMG-4753.jpg" alt="Статья 6">
                     <h2>Забота о себе</h2>
                 </article>
-                <Вот третья часть обновленного кода:
-
-```html
                 <article data-title="Учитесь каждый день" data-text="Каждый день - это возможность узнать что-то новое. Учитесь, развивайтесь и не останавливайтесь на достигнутом." data-img="https://i.postimg.cc/fR1MRCy9/IMG-4752.jpg">
                     <img src="https://i.postimg.cc/fR1MRCy9/IMG-4752.jpg" alt="Статья 7">
                     <h2>Учитесь каждый день</h2>
@@ -477,29 +365,16 @@
             </div>
         </div>
 
-        <div id="chatScreen" class="screen">
-            <div class="chat-header">Общение с Pae Ai</div>
-            <div class="chat-messages" id="chatMessages"></div>
-            <div class="chat-input-container">
-                <input type="text" id="chatInput" class="chat-input" placeholder="Введите сообщение...">
-                <button id="chatSendBtn" class="chat-send-btn">Отправить</button>
-            </div>
-            <button id="chatCloseBtn" class="chat-close-btn">×</button>
-        </div>
-
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
             <div class="nav-center-group">
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
                 <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
-                <button id="chatBtn" class="nav-btn"></button>
             </div>
             <button id="rightBtn" class="nav-btn">→</button>
         </div>
-    </div>
-
-    <div id="articleModal" class="article-modal">
+    </div><div id="articleModal" class="article-modal">
         <div class="article-modal-content">
             <button class="close-btn" id="closeArticleModal">×</button>
             <img id="modalImage" src="" alt="Article Image" class="article-image">
@@ -516,7 +391,6 @@
                 right: document.getElementById('rightScreen'),
                 profile: document.getElementById('profileScreen'),
                 articles: document.getElementById('articlesScreen'),
-                chat: document.getElementById('chatScreen')
             };
 
             const buttons = {
@@ -525,65 +399,73 @@
                 right: document.getElementById('rightBtn'),
                 profile: document.getElementById('profileBtn'),
                 articles: document.getElementById('articlesBtn'),
-                chat: document.getElementById('chatBtn'),
-                chatClose: document.getElementById('chatCloseBtn')
+                close: document.getElementById('closeArticleModal')
             };
 
-            const chatMessages = document.getElementById('chatMessages');
-            const chatInput = document.getElementById('chatInput');
-            const chatSendBtn = document.getElementById('chatSendBtn');
+            let currentScreen = 'home';
+            let isAnimating = false;
 
-            function switchScreen(screen) {
-                Object.values(screens).forEach(s => s.classList.remove('active'));
-                screens[screen].classList.add('active');
+            function showScreen(screenName) {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                screens[currentScreen].classList.remove('active');
+                screens[screenName].classList.add('active');
+
+                if (screenName === 'articles') {
+                    buttons.left.style.display = 'none';
+                    buttons.right.style.display = 'none';
+                    buttons.profile.style.display = 'none';
+                    buttons.articles.style.display = 'none';
+                    buttons.home.style.margin = '0 auto';
+                } else {
+                    buttons.left.style.display = 'flex';
+                    buttons.right.style.display = 'flex';
+                    buttons.profile.style.display = 'flex';
+                    buttons.articles.style.display = 'flex';
+                    buttons.home.style.margin = '0';
+                }
+
+                currentScreen = screenName;
+
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 300);
             }
 
-            buttons.home.addEventListener('click', () => switchScreen('home'));
-            buttons.left.addEventListener('click', () => switchScreen('left'));
-            buttons.right.addEventListener('click', () => switchScreen('right'));
-            buttons.profile.addEventListener('click', () => switchScreen('profile'));
-            buttons.articles.addEventListener('click', () => switchScreen('articles'));
-            buttons.chat.addEventListener('click', () => {
-                switchScreen('chat');
-                document.querySelector('.nav-buttons').style.display = 'none';
+            function showArticleDetail(title, text, imgSrc) {
+                const modal = document.getElementById('articleModal');
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalText').textContent = text;
+                document.getElementById('modalImage').src = imgSrc;
+
+                modal.style.display = 'flex';
                 setTimeout(() => {
-                    buttons.chatClose.style.display = 'block';
-                }, 15000);
-            });
+                    buttons.close.style.display = 'block';
+                }, 2000);
+            }
 
-            buttons.chatClose.addEventListener('click', () => {
-                switchScreen('home');
-                document.querySelector('.nav-buttons').style.display = 'flex';
-                buttons.chatClose.style.display = 'none';
-            });
+            function hideArticleDetail() {
+                const modal = document.getElementById('articleModal');
+                modal.style.display = 'none';
+                buttons.close.style.display = 'none';
+                showScreen('articles');
+            }
 
-            chatSendBtn.addEventListener('click', () => {
-                const message = chatInput.value.trim();
-                if (message) {
-                    chatMessages.innerHTML += `<div class="chat-message">${message}</div>`;
-                    chatInput.value = '';
-                    fetch("https://api.open-assistant.io/v1/chat", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            message: message
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        chatMessages.innerHTML += `<div class="chat-message">${data.response}</div>`;
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-                    })
-                    .catch(error => console.error('Ошибка подключения:', error));
-                }
-            });
+            buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.left.addEventListener('click', () => showScreen('left'));
+            buttons.right.addEventListener('click', () => showScreen('right'));
+            buttons.profile.addEventListener('click', () => showScreen('profile'));
+            buttons.articles.addEventListener('click', () => showScreen('articles'));
+            buttons.close.addEventListener('click', hideArticleDetail);
 
-            chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    chatSendBtn.click();
-                }
+            document.querySelectorAll('#articlesScreen article').forEach(article => {
+                article.addEventListener('click', () => {
+                    const title = article.getAttribute('data-title');
+                    const text = article.getAttribute('data-text');
+                    const imgSrc = article.getAttribute('data-img');
+                    showArticleDetail(title, text, imgSrc);
+                });
             });
         });
     </script>
