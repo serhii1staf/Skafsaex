@@ -299,10 +299,11 @@
         }
 
         .chat-header {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            text-align: center;
-            backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 25px; /* Добавил округлость заголовка */
+       }
+
         }
 
         .chat-header h2 {
@@ -340,11 +341,19 @@
         }
 
         .chat-input-container {
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            display: flex;
-            gap: 10px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05); /* Сделал фон более прозрачным */
+    backdrop-filter: blur(3px); /* Меньше размытия */
+    gap: 12px; /* Немного увеличил расстояние между кнопкой и полем */
+      }
+
+     .chat-input {
+    flex: 1;
+    padding: 18px; /* Увеличил отступы внутри поля */
+    font-size: 20px; /* Увеличил шрифт */
+    background: rgba(255, 255, 255, 0.85); /* Сделал фон менее прозрачным */
+    }
+
         }
 
         .chat-input {
@@ -357,17 +366,12 @@
         }
 
         .send-button {
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            background: rgba(0, 123, 255, 0.7);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
+    width: 50px; /* Увеличил ширину */
+    height: 50px; /* Увеличил высоту */
+    border-radius: 12px; /* Сделал углы кнопки менее округлыми */
+    background: rgba(0, 123, 255, 0.9); /* Более насыщенный цвет */
+       }
+
         }
 
         .send-button:hover {
