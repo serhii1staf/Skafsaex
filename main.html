@@ -508,7 +508,7 @@
             if (Telegram.WebApp) {
     Telegram.WebApp.expand();
     Telegram.WebApp.setHeaderColor('bg_color'); // Скрыть шапку
-              }
+            }
           const closeButton = document.createElement('button');
                closeButton.innerText = 'Закрыть';
                closeButton.style.position = 'absolute';
@@ -518,7 +518,7 @@
                closeButton.style.padding = '10px';
                closeButton.onclick = function () {
        Telegram.WebApp.close(); // Закрыть приложение
-              };
+            }; 
                document.body.appendChild(closeButton);
 
             const screens = {
