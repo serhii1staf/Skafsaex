@@ -172,9 +172,7 @@
             background-repeat: no-repeat;
             background-position: center;
             background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        #articlesBtn {
+        }#articlesBtn {
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M5 8h14V6H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
@@ -202,7 +200,7 @@
         }
 
         .social-link:hover {
-            background: rgba(255, 255, 255, 3);
+            background: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
 
@@ -425,7 +423,7 @@
                     <img src="https://i.postimg.cc/L64wKP9F/IMG-4758.jpg" alt="Статья 1">
                     <h2>Перемены — это не всегда начало чего-то нового</h2>
                 </article>
-                <article data-title="Сила привычки: шаг к мечте или преграда на пути" data-text="Привычки могут быть основой для достижения целей, но они также способны ограничивать нас, удерживая в зоне комфорта. Задайте себе вопрос: ваши привычки приближают вас к мечте или мешают двигаться вперед? Создайте привычки, которые соответствуют вашим мечтам и целям." data-img="https://i.postimg.cc/J0pT4TrV/IMG-4757.jpg">
+                <article data-title="Сила привычки: шаг к мечте или преграда на пути" data-text="Привычки могут быть основой для достижения целей, но они также способны ограничивать нас, удерживая в зоне комфорта. Задайте себе вопрос: ваши привычки приближают вас к мечте или мешают двигаться вперед? Создавайте привычки, которые соответствуют вашим мечтам и целям." data-img="https://i.postimg.cc/J0pT4TrV/IMG-4757.jpg">
                     <img src="https://i.postimg.cc/J0pT4TrV/IMG-4757.jpg" alt="Статья 2">
                     <h2>Сила привычки: шаг к мечте или преграда на пути</h2>
                 </article>
@@ -445,19 +443,222 @@
                     <img src="https://i.postimg.cc/PJHxr464/IMG-4753.jpg" alt="Статья 6">
                     <h2>Забота о себе</h2>
                 </article>
-                <article data-title="Учитесь каждый день" data-text="Каждый день - это возможность узнать что-то новое. Учитесь, развивайтесь и не останавливайтесь на достигнутом."});
+                <article data-title="Учитесь каждый день" data-text="Каждый день - это возможность узнать что-то новое. Учитесь, развивайтесь и не останавливайтесь на достигнутом." data-img="https://i.postimg.cc/fR1MRCy9/IMG-4752.jpg">
+                    <img src="https://i.postimg.cc/fR1MRCy9/IMG-4752.jpg" alt="Статья 7">
+                    <h2>Учитесь каждый день</h2>
+                </article>
+                <article data-title="Сила позитивного мышления" data-text="Позитивное мышление помогает преодолевать трудности и двигаться вперед. Смотрите на жизнь с оптимизмом и верьте в лучшее." data-img="https://i.postimg.cc/1t92mVGF/IMG-4751.jpg">
+                    <img src="https://i.postimg.cc/1t92mVGF/IMG-4751.jpg" alt="Статья 8">
+                    <h2>Сила позитивного мышления</h2>
+                </article>
+                <article data-title="Будьте благодарны" data-text="Благодарность - это ключ к счастью. Находите поводы для благодарности каждый день и цените то, что у вас есть." data-img="https://i.postimg.cc/mD5wvP8B/IMG-4750.jpg">
+                    <img src="https://i.postimg.cc/mD5wvP8B/IMG-4750.jpg" alt="Статья 9">
+                    <h2>Будьте благодарны</h2>
+                </article>
+                <article data-title="Живите настоящим" data-text="Наслаждайтесь каждым моментом и живите настоящим. Прошлое уже прошло, а будущее еще не наступило." data-img="https://i.postimg.cc/fys40gQV/IMG-4759.jpg">
+                    <img src="https://i.postimg.cc/fys40gQV/IMG-4759.jpg" alt="Статья 10">
+                    <h2>Живите настоящим</h2>
+                </article>
+            </div>
+        </div>
 
-        // Добавляем обработку для поднятия поля ввода при фокусе
-        const chatInput = document.getElementById('chatInput');
-        chatInput.addEventListener('focus', () => {
-            setTimeout(() => {
-                chatInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 300);
-        });
+        <!-- New AI Chat Screen -->
+        <div id="aiChatScreen" class="screen">
+            <div class="chat-header">
+                <h2>Общение с Pae AI</h2>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be added here dynamically -->
+            </div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Введите сообщение...">
+                <button class="send-button" id="sendMessage">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+            <button class="close-btn" id="closeAiChat">×</button>
+        </div>
 
-        // Добавляем обработку для скрытия клавиатуры при двойном клике на экран
-        document.getElementById('aiChatScreen').addEventListener('dblclick', () => {
-            chatInput.blur();
+        <div class="nav-buttons">
+            <button id="leftBtn" class="nav-btn">←</button>
+            <button id="aiBtn" class="nav-btn"><i class="fa-solid fa-comment"></i></button>
+            <div class="nav-center-group">
+                <button id="homeBtn" class="nav-btn"></button>
+                <button id="profileBtn" class="nav-btn"></button>
+                <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
+            </div>
+            <button id="rightBtn" class="nav-btn">→</button>
+        </div>
+    </div>
+
+    <div id="articleModal" class="article-modal">
+        <div class="article-modal-content">
+            <button class="close-btn" id="closeArticleModal">×</button>
+            <img id="modalImage" src="" alt="Article Image" class="article-image">
+            <h2 id="modalTitle"></h2>
+            <p id="modalText"></p>
+        </div>
+    </div><script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const screens = {
+                home: document.getElementById('homeScreen'),
+                left: document.getElementById('leftScreen'),
+                right: document.getElementById('rightScreen'),
+                profile: document.getElementById('profileScreen'),
+                articles: document.getElementById('articlesScreen'),
+                aiChat: document.getElementById('aiChatScreen')
+            };
+
+            const buttons = {
+                home: document.getElementById('homeBtn'),
+                left: document.getElementById('leftBtn'),
+                right: document.getElementById('rightBtn'),
+                profile: document.getElementById('profileBtn'),
+                articles: document.getElementById('articlesBtn'),
+                ai: document.getElementById('aiBtn'),
+                close: document.getElementById('closeArticleModal'),
+                closeAiChat: document.getElementById('closeAiChat')
+            };
+
+            let currentScreen = 'home';
+            let isAnimating = false;
+            let closeTimeout;
+
+            function showScreen(screenName) {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                screens[currentScreen].classList.remove('active');
+                screens[screenName].classList.add('active');
+
+                if (screenName === 'articles') {
+                    buttons.left.style.display = 'none';
+                    buttons.right.style.display = 'none';
+                    buttons.profile.style.display = 'none';
+                    buttons.articles.style.display = 'none';
+                    buttons.ai.style.display = 'none';
+                    buttons.home.style.margin = '0 auto';
+                } else if (screenName === 'aiChat') {
+                    document.querySelector('.nav-buttons').style.display = 'none';
+                    resetCloseTimeout();
+                } else {
+                    buttons.left.style.display = 'flex';
+                    buttons.right.style.display = 'flex';
+                    buttons.profile.style.display = 'flex';
+                    buttons.articles.style.display = 'flex';
+                    buttons.ai.style.display = 'flex';
+                    buttons.home.style.margin = '0';
+                    document.querySelector('.nav-buttons').style.display = 'flex';
+                }
+
+                currentScreen = screenName;
+
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 300);
+            }
+
+            function resetCloseTimeout() {
+                clearTimeout(closeTimeout);
+                buttons.closeAiChat.style.display = 'none';
+                closeTimeout = setTimeout(() => {
+                    buttons.closeAiChat.style.display = 'flex';
+                }, 15000);
+            }
+
+            function addMessage(text, isUser) {
+                const messagesContainer = document.getElementById('chatMessages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `chat-message ${isUser ? 'user-message' : 'ai-message'}`;
+                messageDiv.textContent = text;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            function handleSendMessage() {
+                const input = document.getElementById('chatInput');
+                const message = input.value.trim();
+                
+                if (message) {
+                    addMessage(message, true);
+                    input.value = '';
+                    resetCloseTimeout();
+
+                    // Send message to AI API
+                    fetch("https://api.open-assistant.io/v1/chat", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            message: message
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        addMessage(data.response, false);
+                    })
+                    .catch(error => {
+                        console.error('Ошибка подключения:', error);
+                        addMessage("Извините, произошла ошибка при обработке вашего сообщения.", false);
+                    });
+                }
+            }
+
+            function showArticleDetail(title, text, imgSrc) {
+                const modal = document.getElementById('articleModal');
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalText').textContent = text;
+                document.getElementById('modalImage').src = imgSrc;
+                modal.style.display = 'flex';
+            }
+
+            function hideArticleDetail() {
+                const modal = document.getElementById('articleModal');
+                modal.style.display = 'none';
+                showScreen('articles');
+            }
+
+            // Event Listeners
+            buttons.home.addEventListener('click', () => showScreen('home'));
+            buttons.left.addEventListener('click', () => showScreen('left'));
+            buttons.right.addEventListener('click', () => showScreen('right'));
+            buttons.profile.addEventListener('click', () => showScreen('profile'));
+            buttons.articles.addEventListener('click', () => showScreen('articles'));
+            buttons.ai.addEventListener('click', () => showScreen('aiChat'));
+            buttons.close.addEventListener('click', hideArticleDetail);
+            buttons.closeAiChat.addEventListener('click', () => showScreen('home'));
+
+            document.getElementById('sendMessage').addEventListener('click', handleSendMessage);
+            document.getElementById('chatInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleSendMessage();
+                }
+            });
+
+            document.getElementById('chatInput').addEventListener('input', resetCloseTimeout);
+
+            document.querySelectorAll('#articlesScreen article').forEach(article => {
+                article.addEventListener('click', () => {
+                    const title = article.getAttribute('data-title');
+                    const text = article.getAttribute('data-text');
+                    const imgSrc = article.getAttribute('data-img');
+                    showArticleDetail(title, text, imgSrc);
+                });
+            });
+
+            // Добавляем обработку для поднятия поля ввода при фокусе
+            const chatInput = document.getElementById('chatInput');
+            chatInput.addEventListener('focus', () => {
+                setTimeout(() => {
+                    chatInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            });
+
+            // Добавляем обработку для скрытия клавиатуры при двойном клике на экран
+            document.getElementById('aiChatScreen').addEventListener('dblclick', () => {
+                chatInput.blur();
+            });
         });
     </script>
 </body>
