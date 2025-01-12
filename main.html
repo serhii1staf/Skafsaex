@@ -505,6 +505,22 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            if (Telegram.WebApp) {
+    Telegram.WebApp.expand();
+    Telegram.WebApp.setHeaderColor('bg_color'); // Скрыть шапку
+              }
+          const closeButton = document.createElement('button');
+               closeButton.innerText = 'Закрыть';
+               closeButton.style.position = 'absolute';
+               closeButton.style.top = '10px';
+               closeButton.style.left = '10px';
+               closeButton.style.zIndex = '999';
+               closeButton.style.padding = '10px';
+               closeButton.onclick = function () {
+       Telegram.WebApp.close(); // Закрыть приложение
+              };
+               document.body.appendChild(closeButton);
+
             const screens = {
                 home: document.getElementById('homeScreen'),
                 left: document.getElementById('leftScreen'),
@@ -528,30 +544,8 @@
             let currentScreen = 'home';
             let isAnimating = false;
             let closeTimeout;
-            document.querySelectorAll('#articlesScreen article').forEach(article => {
-                article.addEventListener('click', () => {
-                    const title = article.getAttribute('data-title');
-                    const text = article.getAttribute('data-text');
-                    const imgSrc = article.getAttribute('data-img');
-                    showArticleDetail(title, text, imgSrc);
-                });
-            });
 
-            // Handle keyboard events for chat input
-            document.getElementById('chatInput').addEventListener('focus', () => {
-                document.querySelector('.chat-input-container').style.position = 'fixed';
-                document.querySelector('.chat-input-container').style.bottom = '0';
-            });
-            
-            document.getElementById('chatInput').addEventListener('blur', () => {
-                document.querySelector('.chat-input-container').style.position = 'relative';
-            });
-            
-            document.getElementById('chatMessages').addEventListener('dblclick', () => {
-                document.getElementById('chatInput').blur();
-            });
-        });
-        function showScreen(screenName) {
+            function showScreen(screenName) {
                 if (isAnimating) return;
                 isAnimating = true;
 
