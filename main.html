@@ -3,124 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой сайт</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Telegram Web App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Основные стили */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #001f3d; /* Темно-синий фон */
-            color: white;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            justify-content: space-between;
         }
-        header {
-            display: none; /* Убираем заголовок */
-        }
-        .container {
-            padding: 20px;
-            text-align: center;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .photo {
-            width: 70%;
-            max-width: 500px;
-            border-radius: 10px;
-            margin-top: 20px;
-            object-fit: cover;
-        }
-        .next-page {
-            margin-top: 40px; /* Кнопка ниже центра */
-        }
-        .next-page a {
-            color: lightblue;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: bold;
-            border: 2px solid lightblue;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-        .next-page a:hover {
-            background-color: lightblue;
-            color: #001f3d;
-        }
-        .social-icons {
-            margin-top: 40px; /* Иконки ниже кнопки */
-            display: flex;
-            justify-content: center;
-        }
-        .social-icons a {
-            color: white;
-            font-size: 30px;
-            margin: 0 15px;
-            text-decoration: none;
-        }
-        .bottom-info {
-            text-align: center;
-            padding: 10px 0;
-            background-color: #001f3d;
-            font-size: 14px;
-        }
-        .details {
+
+        /* Стили для окон */
+        .window {
+            flex-grow: 1;
             display: none;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        .show-details {
+
+        .window.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Стили для навигации */
+        .nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            background-color: #2a2a2a;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            color: #6DA5C0;
+            font-size: 24px;
             cursor: pointer;
-            color: lightblue;
+            transition: transform 0.2s ease;
         }
-        @media screen and (max-width: 600px) {
-            .photo {
-                width: 90%;
-            }
-            .next-page a {
-                font-size: 16px;
-                padding: 8px 16px;
-            }
-            .social-icons a {
-                margin: 0 8px;
-                font-size: 25px;
-            }
+
+        .nav-button:active {
+            transform: scale(0.9);
+        }
+
+        /* Дополнительные стили */
+        h1 {
+            color: #FFD700;
+        }
+
+        button {
+            background-color: #6DA5C0;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="https://i.postimg.cc/wjFM9bW8/IMG-4456.jpg" alt="Владелец сайта" class="photo">
-        <div class="next-page">
-            <a href="next-page.html">Продолжить</a>
-        </div>
-
-        <div class="social-icons">
-            <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" target="_blank">
-                <i class="fa-brands fa-instagram"></i>
-            </a>
-            <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">
-                <i class="fa-brands fa-telegram"></i>
-            </a>
-            <a href="chatbot.html" class="chatbot-icon">
-                <i class="fa-solid fa-comments"></i>
-            </a>
-        </div>
+    <!-- Окна приложения -->
+    <div id="home" class="window active">
+        <h1>Главная</h1>
+        <p>Добро пожаловать в наше Telegram Web App!</p>
     </div>
 
-    <div class="bottom-info">
-        <p>Все права защищены | <span class="show-details" onclick="toggleDetails()">Подробные</span></p>
-        <div class="details">
-            <p>Мы не требуем входа или регистрации ваших данных.</p>
-        </div>
-    </div> 
+    <div id="profile" class="window">
+        <h1>Профиль</h1>
+        <p>Здесь будет информация о профиле пользователя.</p>
+    </div>
+
+    <div id="settings" class="window">
+        <h1>Настройки</h1>
+        <p>Здесь будут настройки приложения.</p>
+    </div>
+
+    <div id="other" class="window">
+        <h1>Другое</h1>
+        <p>Дополнительная информация и функции.</p>
+    </div>
+
+    <!-- Навигация -->
+    <nav class="nav">
+        <button class="nav-button" onclick="showWindow('home')">⚡️</button>
+        <button class="nav-button" onclick="showWindow('profile')">👤</button>
+        <button class="nav-button" onclick="showWindow('settings')">⚙️</button>
+        <button class="nav-button" onclick="showWindow('other')">➕</button>
+    </nav>
+
     <script>
-        function toggleDetails() {
-            const details = document.querySelector('.details');
-            details.style.display = details.style.display === 'block' ? 'none' : 'block';
+        // Инициализация Telegram Web App
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.MainButton.hide();
+
+        // Функция для отображения окна
+        function showWindow(windowId) {
+            let windows = document.getElementsByClassName('window');
+            for (let window of windows) {
+                window.classList.remove('active');
+            }
+            document.getElementById(windowId).classList.add('active');
+        }
+
+        // Обработка нажатия кнопки "Назад"
+        tg.BackButton.onClick(() => {
+            showWindow('home');
+            tg.BackButton.hide();
+        });
+
+        // Показываем кнопку "Назад" при переходе на другие окна
+        let navButtons = document.getElementsByClassName('nav-button');
+        for (let button of navButtons) {
+            button.addEventListener('click', () => {
+                if (button.innerText !== '⚡️') {
+                    tg.BackButton.show();
+                } else {
+                    tg.BackButton.hide();
+                }
+            });
         }
     </script>
 </body>
