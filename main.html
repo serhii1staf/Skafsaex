@@ -3,460 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Новогоднее поздравление</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Мой сайт</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #001f3d; /* Темно-синий фон */
+            color: white;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-
-        #app {
-            min-height: 100vh;
-            position: relative;
-        }
-
-        .screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .screen.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #homeScreen,
-        #leftScreen,
-        #rightScreen,
-        #profileScreen,
-        #articlesScreen {
-            background-image: url('https://i.postimg.cc/QdyVhG00/IMG-4650.jpg');
-        }
-
-        #articlesScreen {
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        .articles-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-        }
-
-        article {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-        }
-
-        article img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            object-fit: contain;
-            max-width: 1024px;
-            max-height: 1024px;
-        }
-
-        article h2 {
-            margin: 20px 0 10px;
-            font-size: 24px;
-            color: black;
-        }
-
-        .message {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 24px;
-            border-radius: 12px;
-            text-align: center;
-            max-width: 90%;
-            width: 100%;
-            backdrop-filter: blur(8px);
-            margin: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        h1 {
-            color: white;
-            font-size: 28px;
-            margin-bottom: 16px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }
-
-        p {
-            color: white;
-            font-size: 18px;
-            line-height: 1.5;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
-        .nav-buttons {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            display: flex;
+            min-height: 100vh;
             justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            z-index: 1000;
         }
-
-        .nav-center-group {
-            display: flex;
-            gap: 16px;
+        header {
+            display: none; /* Убираем заголовок */
         }
-
-        .nav-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .nav-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        #homeBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        #profileBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        #articlesBtn {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M5 8h14V6H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2z"/></svg>');
-            background-size: 55%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .social-links {
+        .container {
+            padding: 20px;
+            text-align: center;
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .social-link {
-            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s;
         }
-
-        .social-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .voluntary-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
+        .photo {
+            width: 70%;
+            max-width: 500px;
+            border-radius: 10px;
             margin-top: 20px;
+            object-fit: cover;
         }
-
-        .article-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            color: white;
+        .next-page {
+            margin-top: 40px; /* Кнопка ниже центра */
         }
-
-        .article-modal-content {
-            background: white;
-            color: black;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 90%;
-            width: 100%;
-            max-height: 80%;
-            overflow: auto;
-            position: relative;
+        .next-page a {
+            color: lightblue;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid lightblue;
+            padding: 10px 20px;
+            border-radius: 5px;
         }
-
-        .close-btn {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 24px;
+        .next-page a:hover {
+            background-color: lightblue;
+            color: #001f3d;
+        }
+        .social-icons {
+            margin-top: 40px; /* Иконки ниже кнопки */
             display: flex;
-            align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
-
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+        .social-icons a {
+            color: white;
+            font-size: 30px;
+            margin: 0 15px;
+            text-decoration: none;
         }
-
-        .close-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        .article-modal img {
-            max-width: 100%;
-            border-radius: 8px;
-        }
-
-        .article-modal h2 {
-            margin: 20px 0;
-        }
-
-        .article-modal p {
-            font-size: 16px;
-            color: black;
-        }
-
-        .article-image {
-            width: 100%;
-            max-width: 1024px;
-            height: auto;
-            object-fit: contain;
-        }
-
-        .profile-header {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .profile-photo {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid #007AFF;
-        }
-
-        .crypto-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            padding: 20px;
-            margin-top: 60px;
-        }
-
-        .crypto-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 15px;
+        .bottom-info {
             text-align: center;
-            transition: transform 0.2s;
-            color: white;
+            padding: 10px 0;
+            background-color: #001f3d;
+            font-size: 14px;
         }
-
-        .crypto-card:active {
-            transform: scale(0.95);
+        .details {
+            display: none;
+        }
+        .show-details {
+            cursor: pointer;
+            color: lightblue;
+        }
+        @media screen and (max-width: 600px) {
+            .photo {
+                width: 90%;
+            }
+            .next-page a {
+                font-size: 16px;
+                padding: 8px 16px;
+            }
+            .social-icons a {
+                margin: 0 8px;
+                font-size: 25px;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="app">
-        <div id="homeScreen" class="screen active">
-            <div class="message">
-                <h1>С Новым 2025 Годом!</h1>
-                <p>Нажмите на кнопки навигации для просмотра поздравлений</p>
-            </div>
+    <div class="container">
+        <img src="https://i.postimg.cc/wjFM9bW8/IMG-4456.jpg" alt="Владелец сайта" class="photo">
+        <div class="next-page">
+            <a href="next-page.html">Продолжить</a>
         </div>
 
-        <div id="leftScreen" class="screen">
-            <div class="message">
-                <p>Старый 2024 год ушел и никогда не вернется.</p>
-                <p>Время для новых начинаний!</p>
-            </div>
-        </div>
-
-        <div id="rightScreen" class="screen">
-            <div class="message">
-                <h1>С 2025 Годом!</h1>
-                <p>Пусть этот год принесет много радости, счастья и успехов!</p>
-            </div>
-        </div>
-
-        <div id="profileScreen" class="screen">
-            <div class="profile-header">
-                <img id="userPhoto" class="profile-photo" src="" alt="Profile">
-                <button class="close-btn" onclick="showScreen('home')">×</button>
-            </div>
-            <div class="crypto-grid">
-                <div class="crypto-card" onclick="showCryptoNews()">
-                    <i class="fa-solid fa-coins"></i>
-                    <p>Криптовалюта</p>
-                </div>
-                <div class="crypto-card" onclick="showUpdates()">
-                    <i class="fa-solid fa-bell"></i>
-                    <p>Обновления</p>
-                </div>
-                <div class="crypto-card" onclick="showTrust()">
-                    <i class="fa-solid fa-handshake"></i>
-                    <p>Доверие</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="articlesScreen" class="screen">
-            <div class="articles-container">
-                <!-- Статьи остаются без изменений -->
-            </div>
-        </div>
-
-        <div class="nav-buttons">
-            <button id="leftBtn" class="nav-btn">←</button>
-            <div class="nav-center-group">
-                <button id="homeBtn" class="nav-btn"></button>
-                <button id="profileBtn" class="nav-btn"></button>
-                <button id="articlesBtn" class="nav-btn"><i class="fa-solid fa-newspaper"></i></button>
-            </div>
-            <button id="rightBtn" class="nav-btn">→</button>
+        <div class="social-icons">
+            <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" target="_blank">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://t.me/Paeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" target="_blank">
+                <i class="fa-brands fa-telegram"></i>
+            </a>
+            <a href="chatbot.html" class="chatbot-icon">
+                <i class="fa-solid fa-comments"></i>
+            </a>
         </div>
     </div>
 
-    <div id="articleModal" class="article-modal">
-        <div class="article-modal-content">
-            <button class="close-btn" id="closeArticleModal">×</button>
-            <img id="modalImage" src="" alt="Article Image" class="article-image">
-            <h2 id="modalTitle"></h2>
-            <p id="modalText"></p>
+    <div class="bottom-info">
+        <p>Все права защищены | <span class="show-details" onclick="toggleDetails()">Подробные</span></p>
+        <div class="details">
+            <p>Мы не требуем входа или регистрации ваших данных.</p>
         </div>
-    </div>
-
+    </div> 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const screens = {
-                home: document.getElementById('homeScreen'),
-                left: document.getElementById('leftScreen'),
-                right: document.getElementById('rightScreen'),
-                profile: document.getElementById('profileScreen'),
-                articles: document.getElementById('articlesScreen')
-            };
-
-            const buttons = {
-                home: document.getElementById('homeBtn'),
-                left: document.getElementById('leftBtn'),
-                right: document.getElementById('rightBtn'),
-                profile: document.getElementById('profileBtn'),
-                articles: document.getElementById('articlesBtn'),
-                close: document.getElementById('closeArticleModal')
-            };
-
-            let currentScreen = 'home';
-            let isAnimating = false;
-
-            // Загрузка данных пользователя
-            const user = Telegram.WebApp.initDataUnsafe.user;
-            if(user) {
-                document.getElementById('userPhoto').src = user.photo_url;
-            }
-
-            function showScreen(screenName) {
-                if (isAnimating) return;
-                isAnimating = true;
-
-                screens[currentScreen].classList.remove('active');
-                screens[screenName].classList.add('active');
-                currentScreen = screenName;
-
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 300);
-            }
-
-            // Обработчики событий
-            buttons.home.addEventListener('click', () => showScreen('home'));
-            buttons.left.addEventListener('click', () => showScreen('left'));
-            buttons.right.addEventListener('click', () => showScreen('right'));
-            buttons.profile.addEventListener('click', () => showScreen('profile'));
-            buttons.articles.addEventListener('click', () => showScreen('articles'));
-            buttons.close.addEventListener('click', () => document.getElementById('articleModal').style.display = 'none');
-
-            // Функции для крипто-карточек
-            function showCryptoNews() {
-                alert('Раздел криптовалюты в разработке');
-            }
-
-            function showUpdates() {
-                alert('Новых обновлений пока нет');
-            }
-
-            function showTrust() {
-                alert('Система доверия будет доступна позже');
-            }
-        });
+        function toggleDetails() {
+            const details = document.querySelector('.details');
+            details.style.display = details.style.display === 'block' ? 'none' : 'block';
+        }
     </script>
 </body>
 </html>
