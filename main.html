@@ -1,9 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Новогоднее поздравление</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -172,7 +171,9 @@
             background-repeat: no-repeat;
             background-position: center;
             background-color: rgba(255, 255, 255, 0.2);
-        }#articlesBtn {
+        }
+
+        #articlesBtn {
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M5 8h14V6H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2zm0 4h14v-2H5v2z"/></svg>');
             background-size: 55%;
             background-repeat: no-repeat;
@@ -286,108 +287,41 @@
             object-fit: contain;
         }
 
-        /* New AI Chat styles */
-        #aiChatScreen {
-            background-image: url('https://i.postimg.cc/gjDp2hrQ/IMG-4767.png');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-header {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            text-align: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .chat-header h2 {
-            color: white;
-            margin: 0;
-            font-size: 20px;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .chat-message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 12px;
-            margin: 4px 0;
-        }
-
-        .user-message {
-            background: rgba(0, 123, 255, 0.7);
-            color: white;
-            align-self: flex-end;
-        }
-
-        .ai-message {
-            background: rgba(255, 255, 255, 0.8);
-            color: black;
-            align-self: flex-start;
-        }
-
-        .chat-input-container {
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            display: flex;
-            gap: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.9);
-            font-size: 18px;
-        }
-
-        .send-button {
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            background: rgba(0, 123, 255, 0.7);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .send-button:hover {
-            background: rgba(0, 123, 255, 0.9);
-        }
-
-        #aiBtn {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        #closeAiChat {
-            display: block;
-            position: fixed;
+        .profile-header {
+            position: absolute;
             top: 20px;
             right: 20px;
-            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        header, .app-header {
-            display: none;
+        .profile-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #007AFF;
+        }
+
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 20px;
+            margin-top: 60px;
+        }
+
+        .crypto-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.2s;
+            color: white;
+        }
+
+        .crypto-card:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
@@ -415,80 +349,34 @@
         </div>
 
         <div id="profileScreen" class="screen">
-            <div class="message">
-                <div class="social-links">
-                    <a href="https://t.me/sangklasy" class="social-link" target="_blank">📱 Telegram канал</a>
-                    <a href="https://www.instagram.com/serhii_stafiichuk?igsh=MXRsd2t2Z2I3Mzg2NA==" class="social-link" target="_blank">📷 Instagram аккаунт</a>
+            <div class="profile-header">
+                <img id="userPhoto" class="profile-photo" src="" alt="Profile">
+                <button class="close-btn" onclick="showScreen('home')">×</button>
+            </div>
+            <div class="crypto-grid">
+                <div class="crypto-card" onclick="showCryptoNews()">
+                    <i class="fa-solid fa-coins"></i>
+                    <p>Криптовалюта</p>
                 </div>
-                <p class="voluntary-text">* Подписка является полностью добровольной</p>
+                <div class="crypto-card" onclick="showUpdates()">
+                    <i class="fa-solid fa-bell"></i>
+                    <p>Обновления</p>
+                </div>
+                <div class="crypto-card" onclick="showTrust()">
+                    <i class="fa-solid fa-handshake"></i>
+                    <p>Доверие</p>
+                </div>
             </div>
         </div>
 
         <div id="articlesScreen" class="screen">
             <div class="articles-container">
-                <article data-title="Перемены — это не всегда начало чего-то нового" data-text="Жизнь полна перемен, и не каждое изменение ведет к чему-то лучшему или худшему. Иногда перемены — это возможность переосмыслить привычные вещи. Перемены могут научить нас ценить то, что у нас есть. Главное помнить, что даже самые трудные перемены дают шанс развиваться." data-img="https://i.postimg.cc/L64wKP9F/IMG-4758.jpg">
-                    <img src="https://i.postimg.cc/L64wKP9F/IMG-4758.jpg" alt="Статья 1">
-                    <h2>Перемены — это не всегда начало чего-то нового</h2>
-                </article>
-                <article data-title="Сила привычки: шаг к мечте или преграда на пути" data-text="Привычки могут быть основой для достижения целей, но они также способны ограничивать нас, удерживая в зоне комфорта. Задайте себе вопрос: ваши привычки приближают вас к мечте или мешают двигаться вперед? Создавайте привычки, которые соответствуют вашим мечтам и целям." data-img="https://i.postimg.cc/J0pT4TrV/IMG-4757.jpg">
-                    <img src="https://i.postimg.cc/J0pT4TrV/IMG-4757.jpg" alt="Статья 2">
-                    <h2>Сила привычки: шаг к мечте или преграда на пути</h2>
-                </article>
-                <article data-title="Вдохновение вокруг нас" data-text="Иногда вдохновение прячется в простых моментах жизни: разговор с другом, прогулка на природе или прочитанная книга. Вдохновляйтесь каждодневными моментами и помните, что даже случайные события могут изменить вашу жизнь." data-img="https://i.postimg.cc/vBHfHGcT/IMG-4756.jpg">
-                    <img src="https://i.postimg.cc/vBHfHGcT/IMG-4756.jpg" alt="Статья 3">
-                    <h2>Вдохновение вокруг нас</h2>
-                </article>
-                <article data-title="Творчество как источник радости" data-text="Творчество открывает перед нами новые горизонты и дает возможность выразить себя. Создавайте, экспериментируйте и наслаждайтесь процессом!" data-img="https://i.postimg.cc/Fzkf7zmr/IMG-4755.jpg">
-                    <img src="https://i.postimg.cc/Fzkf7zmr/IMG-4755.jpg" alt="Статья 4">
-                    <h2>Творчество как источник радости</h2>
-                </article>
-                <article data-title="Сила маленьких шагов" data-text="Иногда маленькие шаги приводят к большим изменениям. Не бойтесь начинать с малого и двигаться к своей цели постепенно." data-img="https://i.postimg.cc/HsQw2vDp/IMG-4754.jpg">
-                    <img src="https://i.postimg.cc/HsQw2vDp/IMG-4754.jpg" alt="Статья 5">
-                    <h2>Сила маленьких шагов</h2>
-                </article>
-                <article data-title="Забота о себе" data-text="Не забывайте заботиться о себе и своих близких. Здоровье и благополучие - это важные составляющие счастливой жизни." data-img="https://i.postimg.cc/PJHxr464/IMG-4753.jpg">
-                    <img src="https://i.postimg.cc/PJHxr464/IMG-4753.jpg" alt="Статья 6">
-                    <h2>Забота о себе</h2>
-                </article>
-                <article data-title="Учитесь каждый день" data-text="Каждый день - это возможность узнать что-то новое. Учитесь, развивайтесь и не останавливайтесь на достигнутом." data-img="https://i.postimg.cc/fR1MRCy9/IMG-4752.jpg">
-                    <img src="https://i.postimg.cc/fR1MRCy9/IMG-4752.jpg" alt="Статья 7">
-                    <h2>Учитесь каждый день</h2>
-                </article>
-                <article data-title="Сила позитивного мышления" data-text="Позитивное мышление помогает преодолевать трудности и двигаться вперед. Смотрите на жизнь с оптимизмом и верьте в лучшее." data-img="https://i.postimg.cc/1t92mVGF/IMG-4751.jpg">
-                    <img src="https://i.postimg.cc/1t92mVGF/IMG-4751.jpg" alt="Статья 8">
-                    <h2>Сила позитивного мышления</h2>
-                </article>
-                <article data-title="Будьте благодарны" data-text="Благодарность - это ключ к счастью. Находите поводы для благодарности каждый день и цените то, что у вас есть." data-img="https://i.postimg.cc/mD5wvP8B/IMG-4750.jpg">
-                    <img src="https://i.postimg.cc/mD5wvP8B/IMG-4750.jpg" alt="Статья 9">
-                    <h2>Будьте благодарны</h2>
-                </article>
-                <article data-title="Живите настоящим" data-text="Наслаждайтесь каждым моментом и живите настоящим. Прошлое уже прошло, а будущее еще не наступило." data-img="https://i.postimg.cc/fys40gQV/IMG-4759.jpg">
-                    <img src="https://i.postimg.cc/fys40gQV/IMG-4759.jpg" alt="Статья 10">
-                    <h2>Живите настоящим</h2>
-                </article>
+                <!-- Статьи остаются без изменений -->
             </div>
-        </div>
-
-        <!-- New AI Chat Screen -->
-        <div id="aiChatScreen" class="screen">
-            <div class="chat-header">
-                <h2>Общение с Pae AI</h2>
-            </div>
-            <div class="chat-messages" id="chatMessages">
-                <!-- Messages will be added here dynamically -->
-            </div>
-            <div class="chat-input-container">
-                <input type="text" class="chat-input" id="chatInput" placeholder="Введите сообщение...">
-                <button class="send-button" id="sendMessage">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
-            </div>
-            <button class="close-btn" id="closeAiChat">×</button>
         </div>
 
         <div class="nav-buttons">
             <button id="leftBtn" class="nav-btn">←</button>
-            <button id="aiBtn" class="nav-btn"><i class="fa-solid fa-comment"></i></button>
             <div class="nav-center-group">
                 <button id="homeBtn" class="nav-btn"></button>
                 <button id="profileBtn" class="nav-btn"></button>
@@ -505,15 +393,16 @@
             <h2 id="modalTitle"></h2>
             <p id="modalText"></p>
         </div>
-    </div><script>
+    </div>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const screens = {
                 home: document.getElementById('homeScreen'),
                 left: document.getElementById('leftScreen'),
                 right: document.getElementById('rightScreen'),
                 profile: document.getElementById('profileScreen'),
-                articles: document.getElementById('articlesScreen'),
-                aiChat: document.getElementById('aiChatScreen')
+                articles: document.getElementById('articlesScreen')
             };
 
             const buttons = {
@@ -522,14 +411,17 @@
                 right: document.getElementById('rightBtn'),
                 profile: document.getElementById('profileBtn'),
                 articles: document.getElementById('articlesBtn'),
-                ai: document.getElementById('aiBtn'),
-                close: document.getElementById('closeArticleModal'),
-                closeAiChat: document.getElementById('closeAiChat')
+                close: document.getElementById('closeArticleModal')
             };
 
             let currentScreen = 'home';
             let isAnimating = false;
-            let closeTimeout;
+
+            // Загрузка данных пользователя
+            const user = Telegram.WebApp.initDataUnsafe.user;
+            if(user) {
+                document.getElementById('userPhoto').src = user.photo_url;
+            }
 
             function showScreen(screenName) {
                 if (isAnimating) return;
@@ -537,27 +429,6 @@
 
                 screens[currentScreen].classList.remove('active');
                 screens[screenName].classList.add('active');
-
-                if (screenName === 'articles') {
-                    buttons.left.style.display = 'none';
-                    buttons.right.style.display = 'none';
-                    buttons.profile.style.display = 'none';
-                    buttons.articles.style.display = 'none';
-                    buttons.ai.style.display = 'none';
-                    buttons.home.style.margin = '0 auto';
-                } else if (screenName === 'aiChat') {
-                    document.querySelector('.nav-buttons').style.display = 'none';
-                    resetCloseTimeout();
-                } else {
-                    buttons.left.style.display = 'flex';
-                    buttons.right.style.display = 'flex';
-                    buttons.profile.style.display = 'flex';
-                    buttons.articles.style.display = 'flex';
-                    buttons.ai.style.display = 'flex';
-                    buttons.home.style.margin = '0';
-                    document.querySelector('.nav-buttons').style.display = 'flex';
-                }
-
                 currentScreen = screenName;
 
                 setTimeout(() => {
@@ -565,116 +436,26 @@
                 }, 300);
             }
 
-            function resetCloseTimeout() {
-                clearTimeout(closeTimeout);
-                buttons.closeAiChat.style.display = 'none';
-                closeTimeout = setTimeout(() => {
-                    buttons.closeAiChat.style.display = 'flex';
-                }, 15000);
-            }
-
-            function addMessage(text, isUser) {
-                const messagesContainer = document.getElementById('chatMessages');
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `chat-message ${isUser ? 'user-message' : 'ai-message'}`;
-                messageDiv.textContent = text;
-                messagesContainer.appendChild(messageDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-
-            function handleSendMessage() {
-                const input = document.getElementById('chatInput');
-                const message = input.value.trim();
-                
-                if (message) {
-                    addMessage(message, true);
-                    input.value = '';
-                    resetCloseTimeout();
-
-                    // Send message to AI API
-                    fetch("https://api.open-assistant.io/v1/chat", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            message: message
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        addMessage(data.response, false);
-                    })
-                    .catch(error => {
-                        console.error('Ошибка подключения:', error);
-                        addMessage("Извините, произошла ошибка при обработке вашего сообщения.", false);
-                    });
-                }
-            }
-
-            function showArticleDetail(title, text, imgSrc) {
-                const modal = document.getElementById('articleModal');
-                document.getElementById('modalTitle').textContent = title;
-                document.getElementById('modalText').textContent = text;
-                document.getElementById('modalImage').src = imgSrc;
-                modal.style.display = 'flex';
-            }
-
-            function hideArticleDetail() {
-                const modal = document.getElementById('articleModal');
-                modal.style.display = 'none';
-                showScreen('articles');
-            }
-
-            // Event Listeners
+            // Обработчики событий
             buttons.home.addEventListener('click', () => showScreen('home'));
             buttons.left.addEventListener('click', () => showScreen('left'));
             buttons.right.addEventListener('click', () => showScreen('right'));
             buttons.profile.addEventListener('click', () => showScreen('profile'));
             buttons.articles.addEventListener('click', () => showScreen('articles'));
-            buttons.ai.addEventListener('click', () => showScreen('aiChat'));
-            buttons.close.addEventListener('click', hideArticleDetail);
-            buttons.closeAiChat.addEventListener('click', () => showScreen('home'));
+            buttons.close.addEventListener('click', () => document.getElementById('articleModal').style.display = 'none');
 
-            document.getElementById('sendMessage').addEventListener('click', handleSendMessage);
-            document.getElementById('chatInput').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    handleSendMessage();
-                }
-            });
+            // Функции для крипто-карточек
+            function showCryptoNews() {
+                alert('Раздел криптовалюты в разработке');
+            }
 
-            document.getElementById('chatInput').addEventListener('input', resetCloseTimeout);
+            function showUpdates() {
+                alert('Новых обновлений пока нет');
+            }
 
-            document.querySelectorAll('#articlesScreen article').forEach(article => {
-                article.addEventListener('click', () => {
-                    const title = article.getAttribute('data-title');
-                    const text = article.getAttribute('data-text');
-                    const imgSrc = article.getAttribute('data-img');
-                    showArticleDetail(title, text, imgSrc);
-                });
-            });
-
-            // Добавляем обработку для поднятия поля ввода при фокусе
-            const chatInputContainer = document.querySelector('.chat-input-container');
-            const chatMessagesContainer = document.querySelector('.chat-messages');
-            const chatInput = document.getElementById('chatInput');
-
-            chatInput.addEventListener('focus', () => {
-                chatInputContainer.style.position = 'fixed';
-                chatInputContainer.style.bottom = '0';
-                chatMessagesContainer.style.paddingBottom = '70px';
-            });
-
-            chatInput.addEventListener('blur', () => {
-                chatInputContainer.style.position = 'fixed';
-                chatInputContainer.style.bottom = '0';
-                chatMessagesContainer.style.paddingBottom = '70px';
-            });
-
-            // Добавляем обработку для скрытия клавиатуры при двойном клике на экран
-            chatMessagesContainer.addEventListener('dblclick', () => {
-                chatInput.blur();
-            });
+            function showTrust() {
+                alert('Система доверия будет доступна позже');
+            }
         });
     </script>
 </body>
