@@ -13,20 +13,9 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
-        :root {
-            --bg-color: #17212b;
-            --secondary-bg: #242f3d;
-            --text-color: #ffffff;
-            --input-bg: rgba(45, 45, 45, 0.7);
-            --button-bg: #2ea6ff;
-            --button-hover: #52b5ff;
-            --chat-user-bg: #2ea6ff;
-            --chat-bot-bg: rgba(45, 45, 45, 0.7);
-        }
-
         body {
-            background: linear-gradient(135deg, #17212b 0%, #242f3d 100%);
-            color: var(--text-color);
+            background: #000000;
+            color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -36,11 +25,14 @@
             position: fixed;
             width: 4px;
             height: 4px;
-            background: rgba(255, 255, 255, 0.5);
+            background: #ffffff;
             border-radius: 50%;
             pointer-events: none;
+            filter: blur(1px);
             animation: fall linear infinite;
             z-index: 1;
+            box-shadow: 0 0 5px #ffffff;
+            opacity: 0.6;
         }
 
         @keyframes fall {
@@ -49,49 +41,57 @@
             }
         }
 
-        /* Контейнер чата */
-        .chat-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            padding-bottom: 100px;
-            min-height: 100vh;
-            position: relative;
-            z-index: 2;
-        }
-
         /* Анимированный робот */
         .robot {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             width: 60px;
             height: 60px;
-            background: var(--button-bg);
+            background: #2ea6ff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 20px auto;
-            position: relative;
+            z-index: 1000;
             animation: float 3s ease-in-out infinite;
+            box-shadow: 0 0 30px #2ea6ff;
         }
 
         .robot svg {
             width: 40px;
             height: 40px;
             fill: white;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
             animation: pulse 2s ease-in-out infinite;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.1); opacity: 1; }
         }
 
-        /* Сообщения */
+        /* Чат */
+        .chat-container {
+            padding: 80px 20px 100px;
+            height: 100vh;
+            overflow-y: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .messages-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
         .message {
             margin: 10px 0;
             padding: 12px 16px;
@@ -101,17 +101,18 @@
             position: relative;
             line-height: 1.5;
             word-wrap: break-word;
+            background: rgba(45, 45, 45, 0.5);
+            backdrop-filter: blur(10px);
         }
 
         .user-message {
-            background: var(--chat-user-bg);
+            background: rgba(46, 166, 255, 0.8);
             margin-left: auto;
-            color: white;
             border-bottom-right-radius: 4px;
         }
 
         .bot-message {
-            background: var(--chat-bot-bg);
+            background: rgba(45, 45, 45, 0.5);
             margin-right: auto;
             border-bottom-left-radius: 4px;
             padding-left: 45px;
@@ -132,7 +133,8 @@
         .message-icon svg {
             width: 24px;
             height: 24px;
-            fill: var(--button-bg);
+            fill: #2ea6ff;
+            filter: drop-shadow(0 0 3px #2ea6ff);
         }
 
         @keyframes fadeIn {
@@ -147,7 +149,7 @@
             left: 0;
             right: 0;
             padding: 15px;
-            background: rgba(23, 33, 43, 0.95);
+            background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
             display: flex;
             gap: 12px;
@@ -159,10 +161,12 @@
             padding: 12px 16px;
             border: none;
             border-radius: 12px;
-            background: var(--input-bg);
-            color: var(--text-color);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
             font-size: 16px;
             transition: all 0.3s ease;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .input-field:focus {
@@ -175,18 +179,18 @@
             height: 44px;
             border: none;
             border-radius: 50%;
-            background: var(--button-bg);
-            color: white;
+            background: #2ea6ff;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 0;
+            box-shadow: 0 0 15px #2ea6ff;
         }
 
         .send-button:hover {
-            background: var(--button-hover);
+            background: #52b5ff;
             transform: scale(1.05);
         }
 
@@ -197,10 +201,23 @@
             transform: rotate(45deg);
         }
 
+        /* Скроллбар */
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
         @media (max-width: 600px) {
             .chat-container {
-                padding: 10px;
-                padding-bottom: 80px;
+                padding: 80px 10px 90px;
             }
 
             .message {
@@ -215,13 +232,19 @@
     </style>
 </head>
 <body>
-    <div class="chat-container" id="chatContainer">
-        <div class="robot" id="robot">
-            <svg viewBox="0 0 24 24">
-                <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" />
-            </svg>
-        </div>
+    <!-- Анимированный робот -->
+    <div class="robot">
+        <svg viewBox="0 0 24 24">
+            <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" />
+        </svg>
     </div>
+
+    <!-- Чат -->
+    <div class="chat-container" id="chatContainer">
+        <div class="messages-wrapper"></div>
+    </div>
+
+    <!-- Поле ввода -->
     <div class="input-container">
         <input type="text" class="input-field" id="questionInput" placeholder="Введите ваш вопрос...">
         <button class="send-button" id="sendButton">
@@ -239,34 +262,72 @@
             tg.ready();
         }
 
-        // База данных ответов
+        // ==========================================
+        // БАЗА ДАННЫХ ОТВЕТОВ
+        // Добавляйте новые вопросы и ответы ниже
+        // ==========================================
         const database = {
-            "Что такое программирование?": "Программирование — это процесс создания программ, которые выполняют определённые действия или решают задачи на компьютере.",
-            // Добавьте больше вопросов и ответов здесь
+            "Привет": "Привет! Как я могу помочь?",
+            "Как дела?": "У меня всё хорошо! Как у вас?",
+            "Спасибо": "Пожалуйста! Рад помочь.",
+            "Что такое программирование?": "Программирование — это процесс написания инструкций для компьютеров на специальных языках, таких как Python, Java или C++.",
+            "Как приготовить пасту?": "Отварите пасту в подсоленной воде, добавьте соус и наслаждайтесь!",
+            "Что такое искусственный интеллект?": "Искусственный интеллект — это технология, позволяющая машинам обучаться и выполнять задачи, которые обычно требуют человеческого интеллекта.",
+            "Лучшие фильмы 2023 года?": "Среди лучших фильмов 2023 года: 'Дюна: Часть 2', 'Оппенгеймер' и 'Барби'.",
+            "Что такое философия?": "Философия — это изучение фундаментальных вопросов о бытии, знании, морали и разуме.",
+            "Как сохранить здоровье?": "Соблюдайте сбалансированное питание, регулярно занимайтесь физическими упражнениями, достаточное количество спите и избегайте стрессов.",
+            "Как написать книгу?": "Начните с идеи, создайте план, пишите регулярно и редактируйте свой текст. Не забудьте получить отзывы и советы от других.",
+            "Что такое квантовая механика?": "Квантовая механика — это раздел физики, изучающий поведение частиц на атомном и субатомном уровнях.",
+            "Как научиться программировать?": "Начните с изучения основ, выберите язык программирования, практикуйтесь регулярно и участвуйте в проектах.",
+            "Что такое блокчейн?": "Блокчейн — это распределённая база данных, которая обеспечивает безопасное и прозрачное ведение записей.",
+            "Как путешествовать бюджетно?": "Планируйте заранее, используйте общественный транспорт, выбирайте недорогие места для проживания и ешьте в местных кафе.",
+            "Что такое нейронные сети?": "Нейронные сети — это модели машинного обучения, вдохновлённые структурой и функцией человеческого мозга.",
+            "Как создать стартап?": "Разработайте идею, создайте бизнес-план, найдите финансирование, создайте продукт и запускайте маркетинговую кампанию.",
+            "Что такое Великая Китайская стена?": "Великая Китайская стена — это древняя защитная конструкция в Китае, протяженностью около 21 196 км.",
+            "Как научиться рисовать?": "Начните с основ, изучайте техники и стили, практикуйтесь ежедневно и получайте обратную связь от других художников.",
+            "Что такое глобальное потепление?": "Глобальное потепление — это увеличение средней температуры Земли, вызванное увеличением концентрации парниковых газов в атмосфере.",
+            "Как выучить новый язык?": "Погружайтесь в язык, практикуйтесь ежедневно, используйте приложения для изучения языков и общайтесь с носителями языка.",
+            "Что такое биология?": "Биология — это наука о жизни и живых организмах, их структуре, функции, росте, эволюции и распределении.",
+            "Как организовать время?": "Используйте планировщик, ставьте приоритеты, избегайте отвлекающих факторов и регулярно делайте перерывы.",
+            "Что такое экономика?": "Экономика — это наука, изучающая производство, распределение и потребление товаров и услуг.",
+            "Как научиться играть на гитаре?": "Начните с изучения аккордов, практикуйтесь ежедневно, играйте простые песни и получайте обратную связь от учителей или друзей.",
+            "Что такое теория относительности?": "Теория относительности — это физическая теория, предложенная Альбертом Эйнштейном, описывающая гравитацию и движение объектов в пространстве-времени.",
+            "Как приготовить борщ?": "Отварите мясо, добавьте нарезанные овощи (свеклу, картофель, капусту), приправьте и варите до готовности. Подавайте со сметаной."
         };
 
-        // Анимация снежинок
+        // Функция поиска похожих вопросов
+        function findSimilarQuestions(input) {
+            const userInput = input.toLowerCase();
+            return Object.keys(database).filter(question => 
+                question.toLowerCase().includes(userInput)
+            );
+        }
+
+        // Создание снежинок
         function createSnowflakes() {
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
             snowflake.style.left = Math.random() * 100 + 'vw';
-            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
-            snowflake.style.opacity = Math.random() * 0.3;
+            snowflake.style.animationDuration = Math.random() * 5 + 3 + 's';
+            snowflake.style.opacity = Math.random() * 0.3 + 0.3;
             document.body.appendChild(snowflake);
+
+            snowflake.style.top = -10 + 'px';
 
             snowflake.addEventListener('animationend', () => {
                 snowflake.remove();
             });
         }
 
-        setInterval(createSnowflakes, 100);
+        setInterval(createSnowflakes, 300);
 
         // Функции чата
         const chatContainer = document.getElementById('chatContainer');
+        const messagesWrapper = document.querySelector('.messages-wrapper');
         const questionInput = document.getElementById('questionInput');
         const sendButton = document.getElementById('sendButton');
-        const robot = document.getElementById('robot');
 
+        // Создание элемента сообщения
         function createMessageElement(text, isUser) {
             const messageDiv = document.createElement('div');
             messageDiv.classList.add('message');
@@ -288,16 +349,12 @@
             return messageDiv;
         }
 
+        // Анимация печати ответа
         async function typeResponse(text) {
             const words = text.split(' ');
             const messageElement = createMessageElement('', false);
             const textSpan = messageElement.querySelector('span');
-            chatContainer.appendChild(messageElement);
-
-            // Анимация робота при печатании
-            robot.style.animation = 'none';
-            robot.offsetHeight; // Форсируем перерисовку
-            robot.style.animation = 'float 3s ease-in-out infinite';
+            messagesWrapper.appendChild(messageElement);
 
             for (const word of words) {
                 await new Promise(resolve => {
@@ -310,19 +367,34 @@
             }
         }
 
+        // Обработка вопроса
         async function handleQuestion() {
             const question = questionInput.value.trim();
             if (!question) return;
 
             const messageElement = createMessageElement(question, true);
-            chatContainer.appendChild(messageElement);
+            messagesWrapper.appendChild(messageElement);
             questionInput.value = '';
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
-            const answer = database[question] || "Извините, я не знаю ответа на этот вопрос. Попробуйте переформулировать или задать другой вопрос.";
+            // Поиск точного совпадения
+            let answer = database[question];
+            
+            // Если точного совпадения нет, ищем похожие вопросы
+            if (!answer) {
+                const similarQuestions = findSimilarQuestions(question);
+                if (similarQuestions.length > 0) {
+                    answer = "Возможно, вы имели в виду один из этих вопросов:\n\n" + 
+                            similarQuestions.join("\n");
+                } else {
+                    answer = "Извините, я не знаю ответа на этот вопрос. Попробуйте переформулировать или задать другой вопрос.";
+                }
+            }
+
             await typeResponse(answer);
         }
 
+        // Обработчики событий
         questionInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
