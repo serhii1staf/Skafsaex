@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Telegram Assistant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
@@ -11,96 +11,110 @@
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-text-size-adjust: none;
         }
 
         :root {
-            --bg-color: #0f0f0f;
+            --bg-color: #17212b;
+            --secondary-bg: #242f3d;
             --text-color: #ffffff;
-            --bot-message-bg: rgba(255, 255, 255, 0.08);
-            --user-message-bg: #2ea6ff;
-            --input-bg: rgba(255, 255, 255, 0.06);
-            --robot-color: #2ea6ff;
-            --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
-            --keyboard-height: 0px;
-        }
-
-        html {
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            position: fixed;
+            --input-bg: rgba(45, 45, 45, 0.7);
+            --button-bg: #2ea6ff;
+            --button-hover: #52b5ff;
+            --chat-user-bg: #2ea6ff;
+            --chat-bot-bg: rgba(45, 45, 45, 0.7);
         }
 
         body {
-            background-color: var(--bg-color);
+            background: linear-gradient(135deg, #17212b 0%, #242f3d 100%);
             color: var(--text-color);
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            position: fixed;
-            -webkit-overflow-scrolling: touch;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .app-container {
+        /* Снежинки */
+        .snowflake {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fall linear infinite;
             z-index: 1;
-            transform: translateZ(0);
-            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
-            will-change: transform;
-            background-color: var(--bg-color);
         }
 
-        .app-container.keyboard-visible {
-            transform: translateY(calc(var(--keyboard-height) * -1));
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
         }
 
+        /* Контейнер чата */
         .chat-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 16px calc(60px + var(--safe-area-inset-bottom));
-            -webkit-overflow-scrolling: touch;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 100px;
+            min-height: 100vh;
             position: relative;
-            z-index: 1;
-            transform: translateZ(0);
-            will-change: scroll-position;
-            overscroll-behavior-y: none;
+            z-index: 2;
         }
 
-        .message {
-            max-width: 85%;
-            margin: 4px 0;
-            padding: 8px 12px;
-            border-radius: 12px;
+        /* Анимированный робот */
+        .robot {
+            width: 60px;
+            height: 60px;
+            background: var(--button-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
             position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .robot svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Сообщения */
+        .message {
+            margin: 10px 0;
+            padding: 12px 16px;
+            border-radius: 16px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease-in-out;
+            position: relative;
+            line-height: 1.5;
             word-wrap: break-word;
-            animation: fadeIn 0.2s ease-out;
-            font-size: 15px;
-            line-height: 1.4;
-            transform: translateZ(0);
-            will-change: transform, opacity;
         }
 
         .user-message {
-            background: var(--user-message-bg);
+            background: var(--chat-user-bg);
             margin-left: auto;
-            color: #fff;
+            color: white;
             border-bottom-right-radius: 4px;
         }
 
         .bot-message {
-            background: var(--bot-message-bg);
+            background: var(--chat-bot-bg);
             margin-right: auto;
             border-bottom-left-radius: 4px;
-            padding-left: 40px;
+            padding-left: 45px;
         }
 
         .message-icon {
@@ -108,218 +122,170 @@
             left: 8px;
             top: 50%;
             transform: translateY(-50%);
-            width: 24px;
-            height: 24px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .message-icon svg {
             width: 24px;
             height: 24px;
-            fill: var(--robot-color);
+            fill: var(--button-bg);
         }
 
-        .input-area {
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Поле ввода */
+        .input-container {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 8px 8px calc(8px + var(--safe-area-inset-bottom));
-            background: var(--bg-color);
-            z-index: 100;
-            transform: translateZ(0);
-            will-change: transform;
-            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
-        }
-
-        .input-container {
+            padding: 15px;
+            background: rgba(23, 33, 43, 0.95);
+            backdrop-filter: blur(10px);
             display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px;
-            background: var(--input-bg);
-            border-radius: 10px;
+            gap: 12px;
+            z-index: 1000;
         }
 
         .input-field {
             flex: 1;
-            padding: 8px 12px;
+            padding: 12px 16px;
             border: none;
-            background: transparent;
+            border-radius: 12px;
+            background: var(--input-bg);
             color: var(--text-color);
             font-size: 16px;
-            min-height: 20px;
-            max-height: 120px;
-            line-height: 20px;
-            resize: none;
+            transition: all 0.3s ease;
         }
 
         .input-field:focus {
             outline: none;
-        }
-
-        .input-field::placeholder {
-            color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .send-button {
-            width: 32px;
-            height: 32px;
+            width: 44px;
+            height: 44px;
             border: none;
-            background: transparent;
+            border-radius: 50%;
+            background: var(--button-bg);
+            color: white;
             cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 0;
-            opacity: 0.8;
-            transition: opacity 0.2s;
         }
 
-        .send-button:active {
-            opacity: 1;
+        .send-button:hover {
+            background: var(--button-hover);
+            transform: scale(1.05);
         }
 
         .send-button svg {
             width: 24px;
             height: 24px;
-            fill: var(--robot-color);
+            fill: white;
             transform: rotate(45deg);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @supports (padding: max(0px)) {
-            .input-area {
-                padding-bottom: max(8px, env(safe-area-inset-bottom));
-            }
-            
-            .chat-container {
-                padding-bottom: max(60px, calc(60px + env(safe-area-inset-bottom)));
-            }
-        }
-
         @media (max-width: 600px) {
+            .chat-container {
+                padding: 10px;
+                padding-bottom: 80px;
+            }
+
             .message {
                 max-width: 85%;
                 font-size: 15px;
+            }
+
+            .input-container {
+                padding: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="app-container" id="appContainer">
-        <div class="chat-container" id="chatContainer"></div>
-        <div class="input-area" id="inputArea">
-            <div class="input-container">
-                <input type="text" class="input-field" id="questionInput" placeholder="Сообщение">
-                <button class="send-button" id="sendButton">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                    </svg>
-                </button>
-            </div>
+    <div class="chat-container" id="chatContainer">
+        <div class="robot" id="robot">
+            <svg viewBox="0 0 24 24">
+                <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" />
+            </svg>
         </div>
+    </div>
+    <div class="input-container">
+        <input type="text" class="input-field" id="questionInput" placeholder="Введите ваш вопрос...">
+        <button class="send-button" id="sendButton">
+            <svg viewBox="0 0 24 24">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+        </button>
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.ready();
+        // Инициализация Telegram WebApp
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.expand();
+            tg.ready();
+        }
 
+        // База данных ответов
         const database = {
             "Что такое программирование?": "Программирование — это процесс создания программ, которые выполняют определённые действия или решают задачи на компьютере.",
+            // Добавьте больше вопросов и ответов здесь
         };
 
-        const appContainer = document.getElementById('appContainer');
+        // Анимация снежинок
+        function createSnowflakes() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+            snowflake.style.opacity = Math.random() * 0.3;
+            document.body.appendChild(snowflake);
+
+            snowflake.addEventListener('animationend', () => {
+                snowflake.remove();
+            });
+        }
+
+        setInterval(createSnowflakes, 100);
+
+        // Функции чата
         const chatContainer = document.getElementById('chatContainer');
-        const inputArea = document.getElementById('inputArea');
         const questionInput = document.getElementById('questionInput');
         const sendButton = document.getElementById('sendButton');
-
-        // Оптимизированная обработка клавиатуры
-        let keyboardVisible = false;
-        let lastWindowHeight = window.innerHeight;
-        let visualViewport = window.visualViewport || { height: window.innerHeight };
-
-        function updateKeyboardState() {
-            const currentHeight = visualViewport.height;
-            const diff = lastWindowHeight - currentHeight;
-            
-            if (diff > 100) {
-                document.documentElement.style.setProperty('--keyboard-height', `${diff}px`);
-                appContainer.classList.add('keyboard-visible');
-                keyboardVisible = true;
-                
-                requestAnimationFrame(() => {
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
-                });
-            } else {
-                document.documentElement.style.setProperty('--keyboard-height', '0px');
-                appContainer.classList.remove('keyboard-visible');
-                keyboardVisible = false;
-            }
-        }
-
-        if (window.visualViewport) {
-            visualViewport.addEventListener('resize', () => {
-                requestAnimationFrame(updateKeyboardState);
-            });
-        } else {
-            window.addEventListener('resize', () => {
-                requestAnimationFrame(updateKeyboardState);
-            });
-        }
-
-        // Улучшенная обработка свайпа
-        let touchStartY = 0;
-        const SWIPE_THRESHOLD = 50;
-
-        document.addEventListener('touchstart', (e) => {
-            if (keyboardVisible) {
-                touchStartY = e.touches[0].clientY;
-            }
-        }, { passive: true });
-
-        document.addEventListener('touchmove', (e) => {
-            if (keyboardVisible) {
-                const touchY = e.touches[0].clientY;
-                const diff = touchY - touchStartY;
-                
-                if (diff > SWIPE_THRESHOLD) {
-                    questionInput.blur();
-                }
-            }
-        }, { passive: true });
-
-        // Оптимизированная обработка сообщений
-        const messageTemplate = document.createElement('template');
+        const robot = document.getElementById('robot');
 
         function createMessageElement(text, isUser) {
-            messageTemplate.innerHTML = `
-                <div class="message ${isUser ? 'user-message' : 'bot-message'}">
-                    ${!isUser ? `
-                        <div class="message-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" />
-                            </svg>
-                        </div>
-                    ` : ''}
-                    <span>${text}</span>
-                </div>
-            `;
-            return messageTemplate.content.firstElementChild.cloneNode(true);
-        }
-
-        function addMessage(text, isUser = false) {
-            const messageElement = createMessageElement(text, isUser);
-            chatContainer.appendChild(messageElement);
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
             
-            requestAnimationFrame(() => {
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            });
+            if (!isUser) {
+                const iconDiv = document.createElement('div');
+                iconDiv.classList.add('message-icon');
+                iconDiv.innerHTML = `
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" />
+                    </svg>`;
+                messageDiv.appendChild(iconDiv);
+            }
+            
+            const textSpan = document.createElement('span');
+            textSpan.textContent = text;
+            messageDiv.appendChild(textSpan);
+            return messageDiv;
         }
 
         async function typeResponse(text) {
@@ -327,6 +293,11 @@
             const messageElement = createMessageElement('', false);
             const textSpan = messageElement.querySelector('span');
             chatContainer.appendChild(messageElement);
+
+            // Анимация робота при печатании
+            robot.style.animation = 'none';
+            robot.offsetHeight; // Форсируем перерисовку
+            robot.style.animation = 'float 3s ease-in-out infinite';
 
             for (const word of words) {
                 await new Promise(resolve => {
@@ -343,8 +314,10 @@
             const question = questionInput.value.trim();
             if (!question) return;
 
-            addMessage(question, true);
+            const messageElement = createMessageElement(question, true);
+            chatContainer.appendChild(messageElement);
             questionInput.value = '';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
 
             const answer = database[question] || "Извините, я не знаю ответа на этот вопрос. Попробуйте переформулировать или задать другой вопрос.";
             await typeResponse(answer);
