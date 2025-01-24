@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Telegram Assistant</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -19,14 +19,16 @@
             --bot-message-bg: rgba(24, 37, 51, 0.6);
             --user-message-bg: rgba(46, 166, 255, 0.6);
             --input-bg: rgba(36, 47, 61, 0.6);
+            --keyboard-height: 0px;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
+            touch-action: none;
         }
 
         /* Снежный фон */
@@ -38,6 +40,7 @@
             height: 100vh;
             pointer-events: none;
             z-index: 1;
+            overflow: hidden;
         }
 
         .snowflake {
@@ -47,21 +50,6 @@
             background: white;
             border-radius: 50%;
             filter: blur(1px);
-            animation: snowfall linear infinite;
-        }
-
-        @keyframes snowfall {
-            0% {
-                transform: translateY(-5vh) translateX(-20px);
-                opacity: 0;
-            }
-            20% {
-                opacity: 0.5;
-            }
-            100% {
-                transform: translateY(105vh) translateX(20px);
-                opacity: 0;
-            }
         }
 
         /* Основной контейнер */
@@ -74,13 +62,23 @@
             height: 100vh;
             position: relative;
             z-index: 2;
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
+        }
+
+        .container.keyboard-visible {
+            transform: translateY(calc(-1 * var(--keyboard-height)));
         }
 
         .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
-            z-index: 2;
+            padding: 15px;
+            z-index: 3;
+            pointer-events: none;
         }
 
         .robot-icon {
@@ -107,9 +105,10 @@
         .chat-container {
             flex: 1;
             overflow-y: auto;
-            margin-bottom: 15px;
+            margin: 60px 0 15px;
             padding: 10px;
             z-index: 2;
+            -webkit-overflow-scrolling: touch;
         }
 
         .message {
@@ -164,6 +163,7 @@
             z-index: 2;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
         }
 
         .input-field {
@@ -260,21 +260,21 @@
 
             .input-container {
                 margin: 0 -5px;
-                border-radius: 0;
+                border-radius: 12px 12px 0 0;
             }
         }
     </style>
 </head>
 <body>
     <div class="snow-container" id="snowContainer"></div>
-    <div class="container">
-        <div class="header">
-            <div class="robot-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" />
-                </svg>
-            </div>
+    <div class="header">
+        <div class="robot-icon">
+            <svg viewBox="0 0 24 24">
+                <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" />
+            </svg>
         </div>
+    </div>
+    <div class="container" id="container">
         <div class="chat-container" id="chatContainer"></div>
         <div class="input-container">
             <input type="text" class="input-field" id="questionInput" placeholder="Введите ваш вопрос...">
@@ -296,42 +296,77 @@
         tg.ready();
 
         const snowContainer = document.getElementById('snowContainer');
+        const container = document.getElementById('container');
+        const questionInput = document.getElementById('questionInput');
 
-        function createSnowflakes() {
+        // Обработка клавиатуры
+        let startY = 0;
+        let currentY = 0;
+        let isKeyboardVisible = false;
+
+        function updateKeyboardState(visible) {
+            isKeyboardVisible = visible;
+            container.classList.toggle('keyboard-visible', visible);
+            
+            if (visible) {
+                const keyboardHeight = Math.min(window.innerHeight * 0.4, 300);
+                document.documentElement.style.setProperty('--keyboard-height', `${keyboardHeight}px`);
+            } else {
+                document.documentElement.style.setProperty('--keyboard-height', '0px');
+            }
+        }
+
+        questionInput.addEventListener('focus', () => {
+            updateKeyboardState(true);
+        });
+
+        document.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+            currentY = startY;
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            currentY = e.touches[0].clientY;
+            const diff = currentY - startY;
+
+            if (isKeyboardVisible && diff > 50) {
+                questionInput.blur();
+                updateKeyboardState(false);
+            }
+        });
+
+        // Хаотичное падение снега
+        function createSnowflake() {
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
             
-            // Случайная начальная позиция по горизонтали
-            snowflake.style.left = Math.random() * 100 + 'vw';
-            
-            // Случайный размер снежинки
+            const startX = Math.random() * 100;
+            const endX = startX + (Math.random() * 40 - 20);
+            const duration = Math.random() * 3 + 3;
             const size = Math.random() * 3 + 1;
-            snowflake.style.width = size + 'px';
-            snowflake.style.height = size + 'px';
             
-            // Случайная прозрачность
+            snowflake.style.left = `${startX}vw`;
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
             snowflake.style.opacity = Math.random() * 0.3 + 0.2;
             
-            // Случайная продолжительность анимации
-            const duration = Math.random() * 5 + 5;
-            snowflake.style.animationDuration = duration + 's';
+            const animation = snowflake.animate([
+                { transform: `translate(0, -10px) rotate(0deg)`, opacity: 0 },
+                { transform: `translate(${endX - startX}vw, 105vh) rotate(360deg)`, opacity: 0.5 }
+            ], {
+                duration: duration * 1000,
+                easing: 'linear',
+                iterations: 1
+            });
             
-            // Случайная задержка начала анимации
-            snowflake.style.animationDelay = Math.random() * 5 + 's';
-            
+            animation.onfinish = () => snowflake.remove();
             snowContainer.appendChild(snowflake);
-            
-            // Удаляем снежинку после завершения анимации
-            setTimeout(() => {
-                snowflake.remove();
-            }, (duration + 5) * 1000);
         }
 
         // Создаем снежинки с интервалом
-        setInterval(createSnowflakes, 200);
+        setInterval(createSnowflake, 100);
 
         const chatContainer = document.getElementById('chatContainer');
-        const questionInput = document.getElementById('questionInput');
         const sendButton = document.getElementById('sendButton');
 
         function addMessage(text, isUser = false) {
@@ -414,6 +449,8 @@
 
             addMessage(question, true);
             questionInput.value = '';
+            questionInput.blur();
+            updateKeyboardState(false);
 
             const answer = database[question] || "Извините, я не знаю ответа на этот вопрос. Попробуйте переформулировать или задать другой вопрос.";
             await typeResponse(answer);
