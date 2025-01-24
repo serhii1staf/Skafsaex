@@ -3,135 +3,433 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Web App</title>
+    <title>Telegram Assistant</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Основные стили */
-        body {
-            font-family: 'Inter', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #1a1a1a;
-            color: #ffffff;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        :root {
+            --bg-color: #17212b;
+            --text-color: #ffffff;
+            --bot-message-bg: rgba(24, 37, 51, 0.6);
+            --user-message-bg: rgba(46, 166, 255, 0.6);
+            --input-bg: rgba(36, 47, 61, 0.6);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Снежный фон */
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
             height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .snowflake {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-5vh) translateX(-20px);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(105vh) translateX(20px);
+                opacity: 0;
+            }
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 15px;
             display: flex;
             flex-direction: column;
+            height: 100vh;
+            position: relative;
+            z-index: 2;
         }
 
-        /* Стили для окон */
-        .window {
-            flex-grow: 1;
-            display: none;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .window.active {
-            display: block;
-            opacity: 1;
-        }
-
-        /* Стили для навигации */
-        .nav {
+        .header {
             display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            background-color: #2a2a2a;
+            justify-content: center;
+            margin-bottom: 20px;
+            z-index: 2;
         }
 
-        .nav-button {
-            background: none;
+        .robot-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .robot-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: #2ea6ff;
+            filter: drop-shadow(0 0 8px rgba(46, 166, 255, 0.5));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 10px;
+            z-index: 2;
+        }
+
+        .message {
+            margin: 8px 0;
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 80%;
+            position: relative;
+            line-height: 1.4;
+            animation: fadeIn 0.2s ease-out;
+            word-wrap: break-word;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .user-message {
+            background: var(--user-message-bg);
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+            color: #fff;
+        }
+
+        .bot-message {
+            background: var(--bot-message-bg);
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+            padding-left: 48px;
+        }
+
+        .message-icon {
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+        }
+
+        .message-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: #2ea6ff;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            padding: 8px;
+            background: var(--input-bg);
+            border-radius: 12px;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 12px 16px;
             border: none;
-            color: #6DA5C0;
-            font-size: 24px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
+            border-radius: 18px;
+            background: transparent;
+            color: var(--text-color);
+            font-size: 16px;
         }
 
-        .nav-button:active {
-            transform: scale(0.9);
+        .input-field:focus {
+            outline: none;
         }
 
-        /* Дополнительные стили */
-        h1 {
-            color: #FFD700;
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
-        button {
-            background-color: #6DA5C0;
-            color: #ffffff;
+        .send-button {
+            width: 44px;
+            height: 44px;
             border: none;
-            padding: 10px 20px;
-            margin: 10px 0;
+            background: transparent;
             cursor: pointer;
-            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: transform 0.2s;
+        }
+
+        .send-button svg {
+            width: 24px;
+            height: 24px;
+            fill: #2ea6ff;
+            transform: rotate(45deg);
+        }
+
+        .send-button:hover {
+            transform: scale(1.1);
+        }
+
+        .typing {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            padding: 8px 12px;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: typingAnimation 1s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingAnimation {
+            0%, 100% { transform: translateY(0); opacity: 0.3; }
+            50% { transform: translateY(-4px); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            .message {
+                max-width: 85%;
+            }
+
+            .input-container {
+                margin: 0 -5px;
+                border-radius: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Окна приложения -->
-    <div id="home" class="window active">
-        <h1>Главная</h1>
-        <p>Добро пожаловать в наше Telegram Web App!</p>
+    <div class="snow-container" id="snowContainer"></div>
+    <div class="container">
+        <div class="header">
+            <div class="robot-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" />
+                </svg>
+            </div>
+        </div>
+        <div class="chat-container" id="chatContainer"></div>
+        <div class="input-container">
+            <input type="text" class="input-field" id="questionInput" placeholder="Введите ваш вопрос...">
+            <button class="send-button" id="sendButton">
+                <svg viewBox="0 0 24 24">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </button>
+        </div>
     </div>
-
-    <div id="profile" class="window">
-        <h1>Профиль</h1>
-        <p>Здесь будет информация о профиле пользователя.</p>
-    </div>
-
-    <div id="settings" class="window">
-        <h1>Настройки</h1>
-        <p>Здесь будут настройки приложения.</p>
-    </div>
-
-    <div id="other" class="window">
-        <h1>Другое</h1>
-        <p>Дополнительная информация и функции.</p>
-    </div>
-
-    <!-- Навигация -->
-    <nav class="nav">
-        <button class="nav-button" onclick="showWindow('home')">⚡️</button>
-        <button class="nav-button" onclick="showWindow('profile')">👤</button>
-        <button class="nav-button" onclick="showWindow('settings')">⚙️</button>
-        <button class="nav-button" onclick="showWindow('other')">➕</button>
-    </nav>
 
     <script>
-        // Инициализация Telegram Web App
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.MainButton.hide();
+        const database = {
+            "Что такое программирование?": "Программирование — это процесс создания программ, которые выполняют определённые действия или решают задачи на компьютере.",
+        };
 
-        // Функция для отображения окна
-        function showWindow(windowId) {
-            let windows = document.getElementsByClassName('window');
-            for (let window of windows) {
-                window.classList.remove('active');
-            }
-            document.getElementById(windowId).classList.add('active');
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.ready();
+
+        const snowContainer = document.getElementById('snowContainer');
+
+        function createSnowflakes() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            
+            // Случайная начальная позиция по горизонтали
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            
+            // Случайный размер снежинки
+            const size = Math.random() * 3 + 1;
+            snowflake.style.width = size + 'px';
+            snowflake.style.height = size + 'px';
+            
+            // Случайная прозрачность
+            snowflake.style.opacity = Math.random() * 0.3 + 0.2;
+            
+            // Случайная продолжительность анимации
+            const duration = Math.random() * 5 + 5;
+            snowflake.style.animationDuration = duration + 's';
+            
+            // Случайная задержка начала анимации
+            snowflake.style.animationDelay = Math.random() * 5 + 's';
+            
+            snowContainer.appendChild(snowflake);
+            
+            // Удаляем снежинку после завершения анимации
+            setTimeout(() => {
+                snowflake.remove();
+            }, (duration + 5) * 1000);
         }
 
-        // Обработка нажатия кнопки "Назад"
-        tg.BackButton.onClick(() => {
-            showWindow('home');
-            tg.BackButton.hide();
+        // Создаем снежинки с интервалом
+        setInterval(createSnowflakes, 200);
+
+        const chatContainer = document.getElementById('chatContainer');
+        const questionInput = document.getElementById('questionInput');
+        const sendButton = document.getElementById('sendButton');
+
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+            
+            if (!isUser) {
+                const iconDiv = document.createElement('div');
+                iconDiv.classList.add('message-icon');
+                iconDiv.innerHTML = `
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" />
+                    </svg>`;
+                messageDiv.appendChild(iconDiv);
+            }
+            
+            const textNode = document.createElement('span');
+            textNode.textContent = text;
+            messageDiv.appendChild(textNode);
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function showTypingAnimation() {
+            const typingDiv = document.createElement('div');
+            typingDiv.classList.add('message', 'bot-message', 'typing');
+            
+            const iconDiv = document.createElement('div');
+            iconDiv.classList.add('message-icon');
+            iconDiv.innerHTML = `
+                <svg viewBox="0 0 24 24">
+                    <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" />
+                </svg>`;
+            typingDiv.appendChild(iconDiv);
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('typing-dot');
+                typingDiv.appendChild(dot);
+            }
+            chatContainer.appendChild(typingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            return typingDiv;
+        }
+
+        async function typeResponse(text) {
+            const typingDiv = showTypingAnimation();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            typingDiv.remove();
+
+            const words = text.split(' ');
+            let currentText = '';
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', 'bot-message');
+            
+            const iconDiv = document.createElement('div');
+            iconDiv.classList.add('message-icon');
+            iconDiv.innerHTML = `
+                <svg viewBox="0 0 24 24">
+                    <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" />
+                </svg>`;
+            messageDiv.appendChild(iconDiv);
+            
+            const textSpan = document.createElement('span');
+            messageDiv.appendChild(textSpan);
+            chatContainer.appendChild(messageDiv);
+
+            for (const word of words) {
+                currentText += word + ' ';
+                textSpan.textContent = currentText;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+        }
+
+        async function handleQuestion() {
+            const question = questionInput.value.trim();
+            if (!question) return;
+
+            addMessage(question, true);
+            questionInput.value = '';
+
+            const answer = database[question] || "Извините, я не знаю ответа на этот вопрос. Попробуйте переформулировать или задать другой вопрос.";
+            await typeResponse(answer);
+        }
+
+        questionInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleQuestion();
+            }
         });
 
-        // Показываем кнопку "Назад" при переходе на другие окна
-        let navButtons = document.getElementsByClassName('nav-button');
-        for (let button of navButtons) {
-            button.addEventListener('click', () => {
-                if (button.innerText !== '⚡️') {
-                    tg.BackButton.show();
-                } else {
-                    tg.BackButton.hide();
-                }
-            });
-        }
+        sendButton.addEventListener('click', handleQuestion);
+
+        setTimeout(() => {
+            typeResponse("Привет! Я ваш виртуальный помощник. Задайте мне вопрос, и я постараюсь на него ответить.");
+        }, 500);
     </script>
 </body>
 </html>
