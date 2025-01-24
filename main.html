@@ -303,23 +303,34 @@
             );
         }
 
-        // Создание снежинок
+        // Оптимизированное создание снежинок
+        let snowflakeCount = 0;
+        const MAX_SNOWFLAKES = 15; // Максимальное количество снежинок на экране
+
         function createSnowflakes() {
+            // Проверяем количество существующих снежинок
+            if (snowflakeCount >= MAX_SNOWFLAKES) {
+                return;
+            }
+
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
             snowflake.style.left = Math.random() * 100 + 'vw';
             snowflake.style.animationDuration = Math.random() * 5 + 3 + 's';
-            snowflake.style.opacity = Math.random() * 0.3 + 0.3;
+            snowflake.style.opacity = Math.random() * 0.2 + 0.1; // Уменьшена прозрачность
             document.body.appendChild(snowflake);
 
             snowflake.style.top = -10 + 'px';
+            snowflakeCount++;
 
             snowflake.addEventListener('animationend', () => {
                 snowflake.remove();
+                snowflakeCount--;
             });
         }
 
-        setInterval(createSnowflakes, 300);
+        // Увеличен интервал создания снежинок
+        setInterval(createSnowflakes, 800);
 
         // Функции чата
         const chatContainer = document.getElementById('chatContainer');
