@@ -12,6 +12,7 @@
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            -webkit-text-size-adjust: none;
         }
 
         :root {
@@ -29,6 +30,8 @@
             min-height: 100vh;
             overflow: hidden;
             position: relative;
+            height: 100vh;
+            width: 100vw;
         }
 
         .snow-container {
@@ -58,6 +61,7 @@
             bottom: 0;
             display: flex;
             flex-direction: column;
+            height: 100%;
             z-index: 1;
         }
 
@@ -70,6 +74,11 @@
             height: 48px;
             z-index: 10;
             filter: drop-shadow(0 0 10px rgba(46, 166, 255, 0.5));
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
+        }
+
+        .keyboard-visible .robot-container {
+            transform: translate(-50%, -100%);
         }
 
         .robot-icon {
@@ -109,6 +118,11 @@
             padding: 80px 16px 16px;
             -webkit-overflow-scrolling: touch;
             background: transparent;
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
+        }
+
+        .keyboard-visible .chat-container {
+            transform: translateY(-270px);
         }
 
         .message {
@@ -155,12 +169,19 @@
         }
 
         .input-area {
-            position: relative;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
             padding: 8px;
             background: transparent;
             z-index: 2;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
+            transform: translateY(0);
+        }
+
+        .keyboard-visible .input-area {
+            transform: translateY(-270px);
         }
 
         .input-container {
@@ -170,7 +191,8 @@
             padding: 6px;
             background: var(--input-bg);
             border-radius: 10px;
-            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .input-field {
@@ -214,15 +236,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .keyboard-spacer {
-            height: 0;
-            transition: height 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
-        }
-
-        .keyboard-visible .keyboard-spacer {
-            height: 270px;
-        }
-
         @media (max-width: 600px) {
             .message {
                 max-width: 85%;
@@ -252,7 +265,6 @@
                 </button>
             </div>
         </div>
-        <div class="keyboard-spacer"></div>
     </div>
 
     <script>
@@ -271,15 +283,52 @@
         const sendButton = document.getElementById('sendButton');
         const robotIcon = document.querySelector('.robot-icon');
 
-        // Анимация робота при наведении
-        robotIcon.addEventListener('mouseover', () => {
-            robotIcon.style.animation = 'none';
-            void robotIcon.offsetWidth;
-            robotIcon.style.animation = 'think 0.5s ease-in-out infinite';
+        // Определение высоты клавиатуры
+        let keyboardHeight = 0;
+        const visualViewport = window.visualViewport;
+
+        if (visualViewport) {
+            visualViewport.addEventListener('resize', () => {
+                const currentHeight = visualViewport.height;
+                const windowHeight = window.innerHeight;
+                
+                if (currentHeight < windowHeight) {
+                    keyboardHeight = windowHeight - currentHeight;
+                    document.documentElement.style.setProperty('--keyboard-height', `${keyboardHeight}px`);
+                    appContainer.classList.add('keyboard-visible');
+                } else {
+                    appContainer.classList.remove('keyboard-visible');
+                }
+            });
+        }
+
+        // Двойной тап для скрытия клавиатуры
+        let lastTap = 0;
+        document.addEventListener('touchend', (e) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            
+            if (tapLength < 300 && tapLength > 0) {
+                questionInput.blur();
+                e.preventDefault();
+            }
+            lastTap = currentTime;
         });
 
-        robotIcon.addEventListener('mouseout', () => {
-            robotIcon.style.animation = 'float 3s ease-in-out infinite, glow 2s ease-in-out infinite';
+        // Свайп вниз для скрытия клавиатуры
+        let touchStartY = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            const touchY = e.touches[0].clientY;
+            const diff = touchY - touchStartY;
+            
+            if (diff > 50) {
+                questionInput.blur();
+                e.preventDefault();
+            }
         });
 
         // Снег
@@ -313,26 +362,6 @@
         }
 
         setInterval(createSnowflake, 200);
-
-        // Обработка клавиатуры
-        let isKeyboardVisible = false;
-
-        function updateKeyboardVisibility(visible) {
-            isKeyboardVisible = visible;
-            appContainer.classList.toggle('keyboard-visible', visible);
-            
-            if (visible) {
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }
-        }
-
-        questionInput.addEventListener('focus', () => {
-            updateKeyboardVisibility(true);
-        });
-
-        questionInput.addEventListener('blur', () => {
-            updateKeyboardVisibility(false);
-        });
 
         // Обработка сообщений
         function addMessage(text, isUser = false) {
@@ -390,7 +419,6 @@
 
             addMessage(question, true);
             questionInput.value = '';
-            questionInput.blur();
 
             const answer = database[question] || "Извините, я не знаю ответа на этот вопрос. Попробуйте переформулировать или задать другой вопрос.";
             await typeResponse(answer);
