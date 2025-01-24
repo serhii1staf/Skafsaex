@@ -20,6 +20,7 @@
             overflow-x: hidden;
         }
 
+        /* Снежинки */
         .snowflake {
             position: fixed;
             width: 4px;
@@ -40,6 +41,7 @@
             }
         }
 
+        /* Анимированный робот */
         .robot {
             position: fixed;
             top: 20px;
@@ -75,13 +77,13 @@
             50% { transform: scale(1.1); opacity: 1; }
         }
 
+        /* Чат */
         .chat-container {
             padding: 80px 20px 100px;
             height: 100vh;
             overflow-y: auto;
             position: relative;
             z-index: 2;
-            scroll-behavior: smooth;
         }
 
         .messages-wrapper {
@@ -140,13 +142,14 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Поле ввода */
         .input-container {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             padding: 15px;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
             display: flex;
             gap: 12px;
@@ -198,6 +201,7 @@
             transform: rotate(45deg);
         }
 
+        /* Скроллбар */
         .chat-container::-webkit-scrollbar {
             width: 6px;
         }
@@ -209,32 +213,6 @@
         .chat-container::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 3px;
-        }
-
-        .typing-indicator {
-            display: flex;
-            gap: 4px;
-            padding: 8px 12px;
-            background: rgba(45, 45, 45, 0.5);
-            border-radius: 12px;
-            margin: 10px 0;
-            width: fit-content;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: #2ea6ff;
-            border-radius: 50%;
-            animation: typingDot 1.4s infinite;
-        }
-
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes typingDot {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-4px); }
         }
 
         @media (max-width: 600px) {
@@ -254,16 +232,19 @@
     </style>
 </head>
 <body>
+    <!-- Анимированный робот -->
     <div class="robot">
         <svg viewBox="0 0 24 24">
             <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" />
         </svg>
     </div>
 
+    <!-- Чат -->
     <div class="chat-container" id="chatContainer">
-        <div class="messages-wrapper"></div>
+        <div class="messages-wrapper" id="messagesWrapper"></div>
     </div>
 
+    <!-- Поле ввода -->
     <div class="input-container">
         <input type="text" class="input-field" id="questionInput" placeholder="Введите ваш вопрос...">
         <button class="send-button" id="sendButton">
@@ -274,22 +255,64 @@
     </div>
 
     <script>
-        // OpenAI API configuration
-        const OPENAI_API_KEY = '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';
-        
-        // Initialize Telegram WebApp
+        // Инициализация Telegram WebApp
         const tg = window.Telegram?.WebApp;
         if (tg) {
             tg.expand();
             tg.ready();
         }
 
-        // Snowflake animation code remains unchanged
+        const database = {
+    "Привет": "Привет! Как я могу помочь?",
+    "Как дела?": "У меня всё хорошо! Как у вас?",
+    "Спасибо": "Пожалуйста! Рад помочь.",
+    "Как тебя зовут?": "Меня зовут GitHub Copilot.",
+    "Сколько времени?": "Сейчас 18:42.",
+    "Как погода?": "Сегодня солнечно и тепло.",
+    "Что ты умеешь?": "Я могу помочь с программированием и ответить на вопросы.",
+    "Как настроить Git?": "Для настройки Git, установите его и выполните команды 'git config --global user.name' и 'git config --global user.email'.",
+    "Расскажи анекдот": "Почему программисты не любят природу? Слишком много багов!",
+    "Какой сегодня день?": "Сегодня 24 января 2025 года.",
+    "Что значит 'псевдоним' в программировании?": "Псевдоним - это альтернативное имя для команды или набора команд.",
+    "Как создать новый проект на Python?": "Создайте новый файл с расширением .py и начните писать код.",
+    "Что такое массив?": "Массив - это структура данных, которая хранит элементы одного типа в упорядоченном виде.",
+    "Как выйти из Vim?": "Нажмите 'Esc', затем введите ':q!' и нажмите 'Enter'.",
+    "Что такое JSON?": "JSON (JavaScript Object Notation) - это формат обмена данными, который легко читается и пишется человеком, а также легко парсится и генерируется машинами.",
+    "Как сделать коммит в Git?": "Используйте команду 'git commit -m \"ваше сообщение\"'.",
+    "Что такое API?": "API (Application Programming Interface) - это набор функций и процедур, позволяющих создавать приложения, которые получают доступ к данным или функциям другой программы или службы.",
+    "Что такое REST?": "REST (Representational State Transfer) - это архитектурный стиль взаимодействия между компонентами распределённых приложений в сети.",
+    "Как установить Node.js?": "Загрузите установочный файл с официального сайта nodejs.org и следуйте инструкциям установки.",
+    "Что такое Docker?": "Docker - это платформа для разработки, доставки и запуска приложений в контейнерах.",
+    "Как написать Hello World на JavaScript?": "Создайте файл с расширением .js и добавьте строку: console.log('Hello, World!');",
+    "Что такое CSS?": "CSS (Cascading Style Sheets) - это язык стилей, используемый для описания внешнего вида веб-страниц.",
+    "Как сделать запрос на сервер с использованием fetch?": "Используйте следующую команду: fetch(url).then(response => response.json()).then(data => console.log(data));",
+    "Что такое SQL?": "SQL (Structured Query Language) - это язык программирования, используемый для управления и манипулирования реляционными базами данных.",
+    "Как создать таблицу в HTML?": "Используйте теги <table>, <tr> и <td> для создания таблицы в HTML.",
+    "Что такое объект в JavaScript?": "Объект - это коллекция свойств, где каждое свойство имеет имя и значение.",
+    "Как добавить элемент в массив в JavaScript?": "Используйте метод push: array.push(element);",
+    "Что такое замыкание в JavaScript?": "Замыкание - это функция, которая запоминает свое лексическое окружение в момент создания.",
+    "Как создать ветку в Git?": "Используйте команду 'git branch имя_ветки'.",
+    "Что такое компилятор?": "Компилятор - это программа, которая переводит исходный код на одном языке программирования в эквивалентный код на другом языке.",
+    "Как запустить скрипт на Python?": "Откройте терминал и введите 'python имя_файла.py'."
+};
+
+        // Функция поиска похожих вопросов
+        function findSimilarQuestions(input) {
+            const userInput = input.toLowerCase();
+            return Object.keys(database).filter(question => 
+                question.toLowerCase().includes(userInput) ||
+                userInput.includes(question.toLowerCase())
+            );
+        }
+
+        // Оптимизированное создание снежинок
         let snowflakeCount = 0;
-        const MAX_SNOWFLAKES = 5;
+        const MAX_SNOWFLAKES = 15;
 
         function createSnowflakes() {
-            if (snowflakeCount >= MAX_SNOWFLAKES) return;
+            if (snowflakeCount >= MAX_SNOWFLAKES) {
+                return;
+            }
 
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
@@ -307,14 +330,13 @@
             });
         }
 
-        setInterval(createSnowflakes, 1000);
+        setInterval(createSnowflakes, 800);
 
-        // Chat functionality
+        // Функции чата
         const chatContainer = document.getElementById('chatContainer');
-        const messagesWrapper = document.querySelector('.messages-wrapper');
+        const messagesWrapper = document.getElementById('messagesWrapper');
         const questionInput = document.getElementById('questionInput');
         const sendButton = document.getElementById('sendButton');
-        let isTyping = false;
 
         function createMessageElement(text, isUser) {
             const messageDiv = document.createElement('div');
@@ -354,67 +376,30 @@
             }
         }
 
-        async function callOpenAI(prompt) {
-            try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${OPENAI_API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: "gpt-3.5-turbo",
-                        messages: [
-                            {
-                                role: "system",
-                                content: "You are a helpful assistant. Provide concise, accurate answers in Russian language."
-                            },
-                            {
-                                role: "user",
-                                content: prompt
-                            }
-                        ],
-                        temperature: 0.7,
-                        max_tokens: 150
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('API request failed');
-                }
-
-                const data = await response.json();
-                return data.choices[0].message.content.trim();
-            } catch (error) {
-                console.error('OpenAI API Error:', error);
-                throw error;
-            }
-        }
-
         async function handleQuestion() {
             const question = questionInput.value.trim();
-            if (!question || isTyping) return;
+            if (!question) return;
 
             const messageElement = createMessageElement(question, true);
             messagesWrapper.appendChild(messageElement);
             questionInput.value = '';
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
-            isTyping = true;
-            questionInput.disabled = true;
-            sendButton.disabled = true;
-
-            try {
-                const response = await callOpenAI(question);
-                await typeResponse(response);
-            } catch (error) {
-                await typeResponse("Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже.");
-            } finally {
-                isTyping = false;
-                questionInput.disabled = false;
-                sendButton.disabled = false;
-                questionInput.focus();
+            // Поиск точного совпадения
+            let answer = database[question.toLowerCase()];
+            
+            // Если точного совпадения нет, ищем похожие вопросы
+            if (!answer) {
+                const similarQuestions = findSimilarQuestions(question);
+                if (similarQuestions.length > 0) {
+                    answer = "Возможно, вы имели в виду один из этих вопросов:\n\n" + 
+                            similarQuestions.join("\n");
+                } else {
+                    answer = "Извините, я не знаю ответа на этот вопрос. Попробуйте переформулировать или задать другой вопрос.";
+                }
             }
+
+            await typeResponse(answer);
         }
 
         questionInput.addEventListener('keypress', (e) => {
@@ -426,9 +411,8 @@
 
         sendButton.addEventListener('click', handleQuestion);
 
-        // Initial greeting
         setTimeout(() => {
-            typeResponse("Привет! Я AI ассистент. Задайте мне любой вопрос, и я постараюсь помочь.");
+            typeResponse("Привет! Задайте мне вопрос, и я постараюсь на него ответить.");
         }, 500);
     </script>
 </body>
