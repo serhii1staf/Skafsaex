@@ -22,6 +22,7 @@
             --user-message-bg: #2ea6ff;
             --input-bg: rgba(255, 255, 255, 0.06);
             --robot-color: #2ea6ff;
+            --keyboard-height: 0px;
         }
 
         body {
@@ -29,23 +30,28 @@
             color: var(--text-color);
             min-height: 100vh;
             overflow: hidden;
-            position: relative;
-            height: 100vh;
-            width: 100vw;
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
         }
 
         .snow-container {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
             z-index: 0;
+            overflow: hidden;
         }
 
         .snowflake {
-            position: fixed;
+            position: absolute;
             background: white;
             border-radius: 50%;
             opacity: 0.3;
@@ -63,6 +69,11 @@
             flex-direction: column;
             height: 100%;
             z-index: 1;
+            transition: height 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
+        }
+
+        .app-container.keyboard-visible {
+            height: calc(100% - var(--keyboard-height));
         }
 
         .robot-container {
@@ -115,14 +126,11 @@
         .chat-container {
             flex: 1;
             overflow-y: auto;
-            padding: 80px 16px 16px;
+            padding: 80px 16px 80px;
             -webkit-overflow-scrolling: touch;
             background: transparent;
-            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
-        }
-
-        .keyboard-visible .chat-container {
-            transform: translateY(-270px);
+            position: relative;
+            z-index: 1;
         }
 
         .message {
@@ -174,14 +182,8 @@
             left: 0;
             right: 0;
             padding: 8px;
-            background: transparent;
+            background: var(--bg-color);
             z-index: 2;
-            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
-            transform: translateY(0);
-        }
-
-        .keyboard-visible .input-area {
-            transform: translateY(-270px);
         }
 
         .input-container {
@@ -283,53 +285,81 @@
         const sendButton = document.getElementById('sendButton');
         const robotIcon = document.querySelector('.robot-icon');
 
-        // Определение высоты клавиатуры
+        // Определение высоты клавиатуры и управление состоянием
+        let keyboardVisible = false;
         let keyboardHeight = 0;
         const visualViewport = window.visualViewport;
 
-        if (visualViewport) {
-            visualViewport.addEventListener('resize', () => {
-                const currentHeight = visualViewport.height;
-                const windowHeight = window.innerHeight;
+        function updateKeyboardState(isVisible, height = 0) {
+            if (keyboardVisible !== isVisible) {
+                keyboardVisible = isVisible;
+                keyboardHeight = height;
                 
-                if (currentHeight < windowHeight) {
-                    keyboardHeight = windowHeight - currentHeight;
-                    document.documentElement.style.setProperty('--keyboard-height', `${keyboardHeight}px`);
+                document.documentElement.style.setProperty('--keyboard-height', `${height}px`);
+                
+                if (isVisible) {
                     appContainer.classList.add('keyboard-visible');
+                    // Прокручиваем чат к последнему сообщению
+                    setTimeout(() => {
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                    }, 100);
                 } else {
                     appContainer.classList.remove('keyboard-visible');
                 }
+            }
+        }
+
+        if (visualViewport) {
+            let lastHeight = visualViewport.height;
+            let resizeTimeout;
+
+            visualViewport.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                
+                resizeTimeout = setTimeout(() => {
+                    const currentHeight = visualViewport.height;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (currentHeight < lastHeight) {
+                        // Клавиатура появляется
+                        const keyboardHeight = windowHeight - currentHeight;
+                        updateKeyboardState(true, keyboardHeight);
+                    } else {
+                        // Клавиатура скрывается
+                        updateKeyboardState(false);
+                    }
+                    
+                    lastHeight = currentHeight;
+                }, 50);
             });
         }
 
-        // Двойной тап для скрытия клавиатуры
-        let lastTap = 0;
-        document.addEventListener('touchend', (e) => {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
-            
-            if (tapLength < 300 && tapLength > 0) {
-                questionInput.blur();
-                e.preventDefault();
-            }
-            lastTap = currentTime;
-        });
-
-        // Свайп вниз для скрытия клавиатуры
+        // Обработка свайпа для скрытия клавиатуры
         let touchStartY = 0;
+        let isSwiping = false;
+
         document.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
-        });
+            if (keyboardVisible) {
+                touchStartY = e.touches[0].clientY;
+                isSwiping = true;
+            }
+        }, { passive: true });
 
         document.addEventListener('touchmove', (e) => {
-            const touchY = e.touches[0].clientY;
-            const diff = touchY - touchStartY;
-            
-            if (diff > 50) {
-                questionInput.blur();
-                e.preventDefault();
+            if (isSwiping && keyboardVisible) {
+                const touchY = e.touches[0].clientY;
+                const diff = touchY - touchStartY;
+                
+                if (diff > 50) {
+                    questionInput.blur();
+                    isSwiping = false;
+                }
             }
-        });
+        }, { passive: true });
+
+        document.addEventListener('touchend', () => {
+            isSwiping = false;
+        }, { passive: true });
 
         // Снег
         function createSnowflake() {
