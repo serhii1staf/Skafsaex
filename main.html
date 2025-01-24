@@ -23,12 +23,14 @@
             --input-bg: rgba(255, 255, 255, 0.06);
             --robot-color: #2ea6ff;
             --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+            --keyboard-height: 0px;
         }
 
         html {
             height: 100%;
             width: 100%;
             overflow: hidden;
+            position: fixed;
         }
 
         body {
@@ -41,28 +43,8 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .snow-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .snowflake {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.3;
-            pointer-events: none;
-            filter: blur(1px);
-        }
-
         .app-container {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
@@ -74,72 +56,23 @@
             transform: translateZ(0);
             transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
             will-change: transform;
+            background-color: var(--bg-color);
         }
 
         .app-container.keyboard-visible {
-            transform: translateY(calc(var(--keyboard-offset) * -1));
-        }
-
-        .robot-container {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 48px;
-            height: 48px;
-            z-index: 10;
-            filter: drop-shadow(0 0 10px rgba(46, 166, 255, 0.5));
-            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
-            will-change: transform;
-        }
-
-        .keyboard-visible .robot-container {
-            transform: translate(-50%, -100%);
-        }
-
-        .robot-icon {
-            width: 100%;
-            height: 100%;
-            animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite;
-            transform-origin: center;
-            will-change: transform;
-        }
-
-        .robot-icon svg {
-            width: 100%;
-            height: 100%;
-            fill: var(--robot-color);
-            animation: think 4s ease-in-out infinite;
-            transform-origin: center;
-            will-change: transform;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-5px) rotate(-5deg); }
-            75% { transform: translateY(5px) rotate(5deg); }
-        }
-
-        @keyframes glow {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.3); }
-        }
-
-        @keyframes think {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            transform: translateY(calc(var(--keyboard-height) * -1));
         }
 
         .chat-container {
             flex: 1;
             overflow-y: auto;
-            padding: 80px 16px calc(80px + var(--safe-area-inset-bottom));
+            padding: 16px 16px calc(60px + var(--safe-area-inset-bottom));
             -webkit-overflow-scrolling: touch;
-            background: transparent;
             position: relative;
             z-index: 1;
             transform: translateZ(0);
             will-change: scroll-position;
+            overscroll-behavior-y: none;
         }
 
         .message {
@@ -152,8 +85,6 @@
             animation: fadeIn 0.2s ease-out;
             font-size: 15px;
             line-height: 1.4;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             transform: translateZ(0);
             will-change: transform, opacity;
         }
@@ -188,15 +119,16 @@
         }
 
         .input-area {
-            position: absolute;
+            position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             padding: 8px 8px calc(8px + var(--safe-area-inset-bottom));
             background: var(--bg-color);
-            z-index: 2;
+            z-index: 100;
             transform: translateZ(0);
             will-change: transform;
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.1, 0.9);
         }
 
         .input-container {
@@ -206,8 +138,6 @@
             padding: 6px;
             background: var(--input-bg);
             border-radius: 10px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
         }
 
         .input-field {
@@ -220,6 +150,7 @@
             min-height: 20px;
             max-height: 120px;
             line-height: 20px;
+            resize: none;
         }
 
         .input-field:focus {
@@ -266,7 +197,7 @@
             }
             
             .chat-container {
-                padding-bottom: max(80px, calc(80px + env(safe-area-inset-bottom)));
+                padding-bottom: max(60px, calc(60px + env(safe-area-inset-bottom)));
             }
         }
 
@@ -279,17 +210,9 @@
     </style>
 </head>
 <body>
-    <div class="snow-container" id="snowContainer"></div>
     <div class="app-container" id="appContainer">
-        <div class="robot-container">
-            <div class="robot-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" />
-                </svg>
-            </div>
-        </div>
         <div class="chat-container" id="chatContainer"></div>
-        <div class="input-area">
+        <div class="input-area" id="inputArea">
             <div class="input-container">
                 <input type="text" class="input-field" id="questionInput" placeholder="Сообщение">
                 <button class="send-button" id="sendButton">
@@ -311,123 +234,67 @@
         };
 
         const appContainer = document.getElementById('appContainer');
-        const snowContainer = document.getElementById('snowContainer');
         const chatContainer = document.getElementById('chatContainer');
+        const inputArea = document.getElementById('inputArea');
         const questionInput = document.getElementById('questionInput');
         const sendButton = document.getElementById('sendButton');
-        const robotIcon = document.querySelector('.robot-icon');
 
         // Оптимизированная обработка клавиатуры
         let keyboardVisible = false;
-        let keyboardHeight = 0;
         let lastWindowHeight = window.innerHeight;
-        let resizeTimeout;
+        let visualViewport = window.visualViewport || { height: window.innerHeight };
 
         function updateKeyboardState() {
-            requestAnimationFrame(() => {
-                const currentHeight = window.innerHeight;
-                const diff = lastWindowHeight - currentHeight;
+            const currentHeight = visualViewport.height;
+            const diff = lastWindowHeight - currentHeight;
+            
+            if (diff > 100) {
+                document.documentElement.style.setProperty('--keyboard-height', `${diff}px`);
+                appContainer.classList.add('keyboard-visible');
+                keyboardVisible = true;
                 
-                if (diff > 150) {
-                    // Клавиатура появилась
-                    document.documentElement.style.setProperty('--keyboard-offset', `${diff}px`);
-                    appContainer.classList.add('keyboard-visible');
-                    keyboardVisible = true;
-                    keyboardHeight = diff;
-                    
-                    // Прокрутка к последнему сообщению
-                    requestAnimationFrame(() => {
-                        chatContainer.scrollTop = chatContainer.scrollHeight;
-                    });
-                } else if (diff < 50) {
-                    // Клавиатура скрылась
-                    document.documentElement.style.setProperty('--keyboard-offset', '0px');
-                    appContainer.classList.remove('keyboard-visible');
-                    keyboardVisible = false;
-                    keyboardHeight = 0;
-                }
+                requestAnimationFrame(() => {
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                });
+            } else {
+                document.documentElement.style.setProperty('--keyboard-height', '0px');
+                appContainer.classList.remove('keyboard-visible');
+                keyboardVisible = false;
+            }
+        }
+
+        if (window.visualViewport) {
+            visualViewport.addEventListener('resize', () => {
+                requestAnimationFrame(updateKeyboardState);
+            });
+        } else {
+            window.addEventListener('resize', () => {
+                requestAnimationFrame(updateKeyboardState);
             });
         }
 
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                updateKeyboardState();
-                lastWindowHeight = window.innerHeight;
-            }, 100);
-        });
-
         // Улучшенная обработка свайпа
         let touchStartY = 0;
-        let touchStartTime = 0;
         const SWIPE_THRESHOLD = 50;
-        const SWIPE_TIME_THRESHOLD = 300;
 
         document.addEventListener('touchstart', (e) => {
             if (keyboardVisible) {
                 touchStartY = e.touches[0].clientY;
-                touchStartTime = Date.now();
             }
         }, { passive: true });
 
         document.addEventListener('touchmove', (e) => {
             if (keyboardVisible) {
                 const touchY = e.touches[0].clientY;
-                const timeDiff = Date.now() - touchStartTime;
                 const diff = touchY - touchStartY;
                 
-                if (diff > SWIPE_THRESHOLD && timeDiff < SWIPE_TIME_THRESHOLD) {
+                if (diff > SWIPE_THRESHOLD) {
                     questionInput.blur();
                 }
             }
         }, { passive: true });
 
-        // Оптимизированный снег
-        const SNOWFLAKE_POOL_SIZE = 50;
-        const snowflakePool = new Array(SNOWFLAKE_POOL_SIZE).fill(null).map(() => {
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-            return snowflake;
-        });
-
-        let activeSnowflakes = 0;
-
-        function createSnowflake() {
-            if (activeSnowflakes >= SNOWFLAKE_POOL_SIZE) return;
-            
-            const snowflake = snowflakePool[activeSnowflakes++];
-            const size = Math.random() * 3 + 1;
-            const startX = Math.random() * window.innerWidth;
-            const endX = startX + (Math.random() * 150 - 75);
-            const duration = Math.random() * 5 + 5;
-            
-            snowflake.style.cssText = `
-                width: ${size}px;
-                height: ${size}px;
-                left: ${startX}px;
-                top: -10px;
-            `;
-            
-            const animation = snowflake.animate([
-                { transform: 'translate(0, 0)', opacity: 0 },
-                { transform: `translate(${endX - startX}px, ${window.innerHeight + 10}px)`, opacity: 0.5 }
-            ], {
-                duration: duration * 1000,
-                easing: 'linear'
-            });
-            
-            animation.onfinish = () => {
-                snowflake.remove();
-                activeSnowflakes--;
-            };
-            
-            snowContainer.appendChild(snowflake);
-        }
-
-        const snowInterval = setInterval(createSnowflake, 200);
-
         // Оптимизированная обработка сообщений
-        const messageFragment = document.createDocumentFragment();
         const messageTemplate = document.createElement('template');
 
         function createMessageElement(text, isUser) {
@@ -448,10 +315,9 @@
 
         function addMessage(text, isUser = false) {
             const messageElement = createMessageElement(text, isUser);
-            messageFragment.appendChild(messageElement);
+            chatContainer.appendChild(messageElement);
             
             requestAnimationFrame(() => {
-                chatContainer.appendChild(messageFragment);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             });
         }
@@ -485,7 +351,7 @@
         }
 
         questionInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 handleQuestion();
             }
