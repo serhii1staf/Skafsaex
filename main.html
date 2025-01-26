@@ -116,6 +116,21 @@
             margin-right: auto;
             border-bottom-left-radius: 4px;
             padding-left: 45px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .bot-message {
+            cursor: default;
+        }
+
+        .bot-message a {
+            color: #2ea6ff;
+            text-decoration: none;
+        }
+
+        .bot-message a:hover {
+            text-decoration: underline;
         }
 
         .message-icon {
@@ -363,11 +378,39 @@ const learningModules = {
 
 // База данных вопросов и ответов
 const database = {
+    // Темы 2025 года
+    "расскажи про квантовые вычисления": "Квантовые вычисления - это технология, использующая принципы квантовой механики для выполнения сложных вычислений. Они могут решать определённые задачи значительно быстрее классических компьютеров.",
+    "что такое web3": "Web3 - это новое поколение интернета, основанное на блокчейне и децентрализованных технологиях. Оно позволяет пользователям иметь больший контроль над своими данными и цифровыми активами.",
+    "как развивается искусственный интеллект": "Искусственный интеллект активно развивается в направлениях машинного обучения, нейронных сетей, обработки естественного языка. Ключевые тренды включают генеративный ИИ и этичное использование ИИ.",
+    "что такое метавселенная": "Метавселенная - это виртуальное пространство, где люди могут взаимодействовать друг с другом через цифровые аватары, участвовать в виртуальных мероприятиях и создавать цифровой контент.",
+    "расскажи про зеленые технологии": "Зелёные технологии включают возобновляемые источники энергии, экологичное строительство, электротранспорт и решения для уменьшения углеродного следа.",
+
     // Базовые вариации для ссылок
-    "где найти ссылки": "Я могу помочь найти полезные ссылки по разным темам. Уточните, что именно вас интересует?",
+    "где найти ссылки": "У меня есть более 20 полезных образовательных ссылок. По какой теме вам нужны ссылки? (программирование, дизайн, языки, работа)",
+    "можешь скинуть ссылку": "Конечно! По какой теме вам нужна ссылка?",
+    "можешь отправить ссылку": "Да, конечно! Какая тема вас интересует?",
+    "а есть ссылки": "Есть много полезных ссылок. По какой теме вам нужны?",
+    "хочу ссылку": "С удовольствием поделюсь ссылкой. Какая тема вас интересует?",
+    "дай ссылки": "У меня есть много полезных ссылок. Какая тема вас интересует?",
+    "ссылку можно": "Конечно можно! По какой теме вам нужна ссылка?",
+    "отправь ссылки по программированию": "Рекомендую начать с https://learn.javascript.ru или https://w3schools.com",
+    "ссылки для программирования": "Вот полезные ресурсы: https://w3schools.com, https://learn.javascript.ru, https://freecodecamp.org",
+    "ссылки про программирование": "Лучшие ресурсы для изучения: https://learn.javascript.ru и https://w3schools.com",
+    "нужны образовательные сайты": "У меня есть ссылки на learn.javascript.ru, w3schools.com, freecodecamp.org, codecademy.com и другие образовательные платформы. Какая тема вас интересует?",
+    "покажи все ссылки": "Вот все доступные образовательные ресурсы: learn.javascript.ru, w3schools.com, freecodecamp.org, codecademy.com, coursera.org, udemy.com, python.org, behance.net, dribbble.com, skillshare.com, domestika.org, duolingo.com, lingualeo.com и другие.",
     "покажи ссылки": "Какие ссылки вас интересуют? Могу предложить ресурсы по разным темам.",
     "дай ссылку": "По какой теме вы хотели бы получить ссылку?",
     "нужны ссылки": "По какой теме вам нужны ссылки? Я помогу найти полезные ресурсы.",
+    "отправь ссылку": "Какую ссылку вам отправить? У меня есть ресурсы по программированию, дизайну, языкам и другим темам.",
+    "скинь ссылку": "По какой теме вам нужна ссылка? Могу предложить различные образовательные ресурсы.",
+    "поделись ссылкой": "С удовольствием поделюсь ссылками. Какая тема вас интересует?",
+    "где можно научиться программировать": "Рекомендую начать с https://learn.javascript.ru или https://w3schools.com",
+    "посоветуй сайт для обучения": "Для обучения программированию рекомендую https://freecodecamp.org или https://codecademy.com",
+    "сайт для изучения программирования": "Отличные сайты для изучения программирования: https://learn.javascript.ru и https://w3schools.com",
+    "помоги найти курсы программирования": "Лучшие курсы программирования доступны на https://coursera.org и https://udemy.com",
+    "где учиться кодить": "Начните обучение на https://learn.javascript.ru или https://python.org",
+    "платформа для обучения программированию": "Рекомендую платформы https://freecodecamp.org и https://codecademy.com",
+    "ресурсы для изучения программирования": "Полезные ресурсы: https://w3schools.com, https://learn.javascript.ru, https://freecodecamp.org",
 
     // Программирование и технологии
     "где учить программирование": "Рекомендую начать с https://learn.javascript.ru или https://w3schools.com",
@@ -515,7 +558,7 @@ const database = {
 
             // Новая база слов
             "Как работает алгоритм шифрования AES?": "AES (Advanced Encryption Standard) - это симметричный алгоритм шифрования, который использует ключи длиной 128, 192 или 256 бит для шифрования и дешифрования данных.",
-            "Что такое микросервисная архитектура?": "Микросервисная архитектура - это подход к разработке программного обеспечения, при котором приложение разбивается на небольшие, независимые сервисы, которые взаимодействуют друг с другом через API.",
+            "Что такое микросервисная архитектура?": "Микросервисная архитектура - это подход к разработкепрограммного обеспечения, при котором приложение разбивается на небольшие, независимые сервисы, которые взаимодействуют друг с другом через API.",
             "Как настроить автоматическое тестирование с использованием Jenkins?": "Создайте проект в Jenkins, добавьте шаги сборки для выполнения тестов и настройте триггеры для автоматического запуска тестов при изменении кода.",
             "Что такое технология WebAssembly?": "WebAssembly - это бинарный формат для выполнения кода в веб-браузере, который позволяет запускать высокопроизводительные приложения на веб-страницах.",
             "Как работает система контроля версий Git?": "Git - это распределённая система контроля версий, которая позволяет отслеживать изменения в коде, управлять ветками и слияниями, а также сотрудничать с другими разработчиками.",
@@ -709,6 +752,28 @@ const database = {
             const normalizedInput = userInput.replace(/\s+/g, ' ');
             const inputWords = normalizedInput.split(' ');
 
+            // Ключевые слова для запросов ссылок
+            const linkKeywords = ['ссылк', 'линк', 'url', 'адрес', 'сайт', 'открыть', 'найти', 'где', 'куда', 'путь', 'перейти', 'скин', 'кин', 'отправ', 'дай', 'напиши', 'подскаж', 'покаж'];
+
+            // Проверяем, является ли запрос просьбой о ссылке
+            const isLinkRequest = linkKeywords.some(keyword => 
+                normalizedInput.includes(keyword)
+            );
+
+            if (isLinkRequest) {
+                // Ищем вопросы, связанные со ссылками с повышенным приоритетом
+                const linkQuestions = Object.keys(database).filter(q => 
+                    q.toLowerCase().includes('ссылк') || 
+                    q.toLowerCase().includes('где найти') ||
+                    q.toLowerCase().includes('url') ||
+                    q.toLowerCase().includes('сайт')
+                );
+
+                if (linkQuestions.length > 0) {
+                    return linkQuestions;
+                }
+            }
+
             const results = Object.keys(database).map(question => {
                 const normalizedQuestion = question.toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
                 const questionWords = normalizedQuestion.split(' ');
@@ -719,6 +784,11 @@ const database = {
                         matchScore++;
                     }
                 });
+
+                // Повышаем релевантность для запросов со ссылками
+                if (isLinkRequest && (question.toLowerCase().includes('ссылк') || question.toLowerCase().includes('url'))) {
+                    matchScore *= 1.5;
+                }
 
                 return {
                     question,
@@ -799,25 +869,62 @@ const database = {
             }
 
             const textSpan = document.createElement('span');
-            textSpan.textContent = text;
+            // Check if text contains a URL
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            const parts = text.split(urlRegex);
+
+            parts.forEach((part, index) => {
+                if (part.match(urlRegex)) {
+                    const link = document.createElement('a');
+                    link.href = part;
+                    link.textContent = part;
+                    link.target = '_blank';
+                    textSpan.appendChild(link);
+                } else {
+                    textSpan.appendChild(document.createTextNode(part));
+                }
+            });
             messageDiv.appendChild(textSpan);
             return messageDiv;
         }
 
         async function typeResponse(text) {
-            const words = text.split(' ');
+            // Initial delay before starting to type
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
             const messageElement = createMessageElement('', false);
             const textSpan = messageElement.querySelector('span');
             messagesWrapper.appendChild(messageElement);
 
-            for (const word of words) {
-                await new Promise(resolve => {
-                    requestAnimationFrame(() => {
-                        textSpan.textContent += word + ' ';
-                        chatContainer.scrollTop = chatContainer.scrollHeight;
-                        setTimeout(resolve, 50);
-                    });
-                });
+            // Convert URLs into clickable links
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            const parts = text.split(urlRegex);
+
+            for (const part of parts) {
+                if (part.match(urlRegex)) {
+                    const link = document.createElement('a');
+                    link.href = part;
+                    link.textContent = part.includes('javascript') ? 'JavaScript' :
+                                     part.includes('python') ? 'Python' :
+                                     part.includes('w3schools') ? 'W3Schools' :
+                                     part.includes('freecodecamp') ? 'FreeCodeCamp' :
+                                     part.includes('codecademy') ? 'Codecademy' :
+                                     'перейти на сайт';
+                    link.target = '_blank';
+                    textSpan.appendChild(link);
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                } else {
+                    const words = part.split(' ');
+                    for (const word of words) {
+                        await new Promise(resolve => {
+                            requestAnimationFrame(() => {
+                                textSpan.appendChild(document.createTextNode(word + ' '));
+                                chatContainer.scrollTop = chatContainer.scrollHeight;
+                                setTimeout(resolve, 50);
+                            });
+                        });
+                    }
+                }
             }
         }
 
@@ -838,6 +945,21 @@ async function detectEmotion(text) {
 async function handleQuestion() {
     const question = questionInput.value.trim();
     if (!question) return;
+
+    // Проверяем историю диалога
+    if (window.lastContext && window.awaitingConfirmation) {
+        if (question.toLowerCase() === 'да') {
+            await typeResponse(window.lastContext.answer);
+            window.lastContext = null;
+            window.awaitingConfirmation = false;
+            return;
+        } else if (question.toLowerCase() === 'нет') {
+            await typeResponse("Хорошо, пожалуйста, уточните ваш вопрос.");
+            window.lastContext = null;
+            window.awaitingConfirmation = false;
+            return;
+        }
+    }
 
     // Определение эмоционального состояния
     const emotion = await detectEmotion(question);
@@ -904,9 +1026,23 @@ async function handleQuestion() {
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
             try {
+                // Проверка на повторяющийся вопрос
+                if (window.lastQuestion === question.toLowerCase()) {
+                    await typeResponse("Вы уже спрашивали об этом. Хотите узнать что-то другое?");
+                    return;
+                }
+                window.lastQuestion = question.toLowerCase();
+
                 // Поиск точного совпадения
                 const normalizedQuestion = question.toLowerCase().replace(/\s+/g, ' ');
                 let answer = database[normalizedQuestion];
+
+                // Обработка запросов на ссылки
+                if (normalizedQuestion.includes('ссылк') || normalizedQuestion.includes('сайт')) {
+                    await typeResponse("Уточните, пожалуйста, какая тема вас интересует?\n1. Программирование\n2. Дизайн\n3. Языки");
+                    window.awaitingTopic = true;
+                    return;
+                }
 
                 // Если точного совпадения нет, ищем похожие вопросы
                 if (!answer) {
