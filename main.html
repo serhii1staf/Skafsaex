@@ -201,6 +201,34 @@
             transform: rotate(45deg);
         }
 
+        .mic-button {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: #2ea6ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            box-shadow: 0 0 15px #2ea6ff;
+            margin-right: 8px;
+        }
+
+        .mic-button.recording {
+            background: #ff4444;
+            box-shadow: 0 0 15px #ff4444;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .mic-button svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
         /* Скроллбар */
         .chat-container::-webkit-scrollbar {
             width: 6px;
@@ -247,6 +275,11 @@
     <!-- Поле ввода -->
     <div class="input-container">
         <input type="text" class="input-field" id="questionInput" placeholder="Введите ваш вопрос...">
+        <button class="mic-button" id="micButton">
+            <svg viewBox="0 0 24 24">
+                <path d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"/>
+            </svg>
+        </button>
         <button class="send-button" id="sendButton">
             <svg viewBox="0 0 24 24">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
@@ -732,13 +765,13 @@ let questionCount = 0;
 async function handleQuestion() {
             const question = questionInput.value.trim();
             if (!question) return;
-            
+
             // Увеличиваем счетчик вопросов
             questionCount++;
 
             // Определяем категорию вопроса
             const category = determineCategory(question);
-            
+
             // Анализируем контекст
             if (category === lastQuestionCategory) {
                 // Если это третий вопрос из той же категории, предлагаем обобщенную информацию
@@ -869,8 +902,60 @@ async function handleQuestion() {
 
         // Приветственное сообщение
         setTimeout(() => {
-            typeResponse("Привет! Задайте мне вопрос, и я постараюсь на него ответить.");
+            typeResponse("Привет! Задайте мне вопрос голосом или текстом, и я постараюсь на него ответить.");
         }, 500);
+
+        // Инициализация распознавания речи
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'ru-RU';
+            recognition.continuous = false;
+            recognition.interimResults = true;
+
+            const micButton = document.getElementById('micButton');
+            let isRecording = false;
+
+            recognition.onstart = () => {
+                isRecording = true;
+                micButton.classList.add('recording');
+                questionInput.value = '';
+                questionInput.placeholder = 'Говорите...';
+            };
+
+            recognition.onend = () => {
+                isRecording = false;
+                micButton.classList.remove('recording');
+                questionInput.placeholder = 'Введите ваш вопрос...';
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = Array.from(event.results)
+                    .map(result => result[0].transcript)
+                    .join('');
+                questionInput.value = transcript;
+                if (event.results[0].isFinal) {
+                    handleQuestion();
+                    recognition.stop();
+                }
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Ошибка распознавания:', event.error);
+                recognition.stop();
+            };
+
+            micButton.addEventListener('click', () => {
+                if (!isRecording) {
+                    recognition.start();
+                } else {
+                    recognition.stop();
+                }
+            });
+        } else {
+            document.getElementById('micButton').style.display = 'none';
+            console.log('Распознавание речи не поддерживается в этом браузере');
+        }
     </script>
 </body>
 </html>
