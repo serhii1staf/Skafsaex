@@ -20,9 +20,14 @@
 <body>
   <h1>Hello, Telegram!</h1>
   <script>
-    // Разворачиваем на весь экран и убираем шапку
-    Telegram.WebApp.expand();
-    Telegram.WebApp.setHeaderColor('secondary_bg_color');
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.Telegram && Telegram.WebApp) {
+        Telegram.WebApp.expand(); // Разворачивает на весь экран
+        Telegram.WebApp.setHeaderColor('secondary_bg_color'); // Убирает шапку
+      } else {
+        console.error('Telegram WebApp API не загружен!');
+      }
+    });
   </script>
 </body>
 </html>
