@@ -1,139 +1,318 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Web App</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>AI Chat Interface</title>
     <style>
-        /* Сброс стандартных стилей */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-color: #ecf0f1;
+            --text-color: #2c3e50;
+            --chat-bg: #ffffff;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background-color: var(--tg-theme-bg-color, #fff);
-            color: var(--tg-theme-text-color, #000);
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
         }
 
-        /* Стили для экранов */
-        .screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .chat-interface {
+            background: var(--chat-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease-in-out;
+            height: 90vh;
         }
 
-        .screen.hidden {
-            transform: translateX(100%);
+        .chat-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
         }
 
-        /* Стили для кнопок */
-        .button {
-            background-color: var(--tg-theme-button-color, #2481cc);
-            color: var(--tg-theme-button-text-color, #ffffff);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 16px;
-            margin: 10px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        .button:active {
-            opacity: 0.8;
-        }
-
-        /* Кнопка закрытия */
-        .close-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        .close-button::before {
-            content: '×';
+        .chat-header h1 {
             font-size: 24px;
-            color: var(--tg-theme-text-color, #000);
+            margin-bottom: 10px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #2ecc71;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            max-width: 80%;
+            animation: messageAppear 0.3s ease-out;
+        }
+
+        @keyframes messageAppear {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            margin-left: auto;
+        }
+
+        .message-content {
+            padding: 15px;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .user .message-content {
+            background: var(--secondary-color);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .ai .message-content {
+            background: #f1f1f1;
+            border-bottom-left-radius: 5px;
+        }
+
+        .chat-input {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 25px;
+            outline: none;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .message-input:focus {
+            border-color: var(--secondary-color);
+        }
+
+        .send-button {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .send-button:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .send-button:active {
+            transform: scale(0.95);
+        }
+
+        .typing-indicator {
+            padding: 20px;
+            display: none;
+        }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: typing 1s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .chat-interface {
+                height: 100vh;
+                border-radius: 0;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .send-button {
+                padding: 15px 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Кнопка закрытия приложения -->
-    <div class="close-button" onclick="closeApp()"></div>
+    <div class="container">
+        <div class="chat-interface">
+            <div class="chat-header">
+                <span class="status-indicator"></span>
+                <h1>AI Assistant</h1>
+                <p>Онлайн и готов помочь</p>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai">
+                    <div class="message-content">
+                        Привет! Я ИИ-ассистент. Как я могу помочь вам сегодня?
+                    </div>
+                </div>
+            </div>
 
-    <!-- Главный экран -->
-    <div id="mainScreen" class="screen">
-        <h1>Главный экран</h1>
-        <button class="button" onclick="navigateToSecond()">Перейти на второй экран</button>
-    </div>
+            <div class="typing-indicator" id="typingIndicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
 
-    <!-- Второй экран -->
-    <div id="secondScreen" class="screen hidden">
-        <h1>Второй экран</h1>
-        <button class="button" onclick="navigateToMain()">Вернуться на главный экран</button>
+            <div class="chat-input">
+                <div class="input-container">
+                    <input type="text" class="message-input" id="messageInput" 
+                           placeholder="Введите ваше сообщение...">
+                    <button class="send-button" onclick="sendMessage()">
+                        Отправить
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Инициализация Telegram WebApp
-        let tg = window.Telegram.WebApp;
-        
-        // Расширяем на весь экран
-        tg.expand();
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const typingIndicator = document.getElementById('typingIndicator');
 
-        // Отключаем стандартную кнопку "Назад"
-        tg.BackButton.hide();
+        // Примеры ответов ИИ
+        const aiResponses = [
+            "Интересный вопрос! Давайте разберем это подробнее.",
+            "Я могу помочь вам с этим запросом.",
+            "Спасибо за ваш вопрос. Вот что я думаю по этому поводу...",
+            "Это очень важная тема. Позвольте объяснить подробнее.",
+            "Я проанализировал ваш запрос и вот что могу сказать..."
+        ];
 
-        // Функция закрытия приложения
-        function closeApp() {
-            tg.close();
+        function addMessage(message, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    ${message}
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        // Функция перехода на второй экран
-        function navigateToSecond() {
-            document.getElementById('mainScreen').classList.add('hidden');
-            document.getElementById('secondScreen').classList.remove('hidden');
+        function showTypingIndicator() {
+            typingIndicator.style.display = 'block';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        // Функция возврата на главный экран
-        function navigateToMain() {
-            document.getElementById('secondScreen').classList.add('hidden');
-            document.getElementById('mainScreen').classList.remove('hidden');
+        function hideTypingIndicator() {
+            typingIndicator.style.display = 'none';
         }
 
-        // Обработка аппаратной кнопки "Назад"
-        window.addEventListener('popstate', function(event) {
-            if (document.getElementById('secondScreen').classList.contains('hidden')) {
-                closeApp();
-            } else {
-                navigateToMain();
+        function getRandomResponse() {
+            return aiResponses[Math.floor(Math.random() * aiResponses.length)];
+        }
+
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message) {
+                // Добавляем сообщение пользователя
+                addMessage(message, true);
+                messageInput.value = '';
+
+                // Показываем индикатор набора текста
+                showTypingIndicator();
+
+                // Имитируем задержку ответа
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addMessage(getRandomResponse());
+                }, 1500);
+            }
+        }
+
+        // Обработка нажатия Enter
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
             }
         });
 
-        // Добавляем запись в историю при запуске
-        history.pushState({}, '');
+        // Анимация появления сообщений при скролле
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        // Наблюдаем за новыми сообщениями
+        const messages = document.querySelectorAll('.message');
+        messages.forEach(message => observer.observe(message));
     </script>
 </body>
 </html>
