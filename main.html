@@ -2,20 +2,22 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI Chat Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --text-color: #ffffff;
+            --button-hover: rgba(255, 255, 255, 0.2);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
         body {
@@ -26,34 +28,38 @@
             position: relative;
         }
 
-        /* Снежинки */
+        /* Улучшенные снежинки */
         .snowflake {
             position: fixed;
             width: 4px;
             height: 4px;
-            background: white;
+            background: rgba(255, 255, 255, 0.8);
             border-radius: 50%;
             pointer-events: none;
             animation: snowfall linear infinite;
+            z-index: 0;
         }
 
         @keyframes snowfall {
             0% {
                 transform: translateY(-100vh) translateX(0);
-                opacity: 1;
+                opacity: 0.8;
             }
             100% {
                 transform: translateY(100vh) translateX(100px);
-                opacity: 0.3;
+                opacity: 0.2;
             }
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 10px;
             position: relative;
             z-index: 1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .chat-interface {
@@ -62,17 +68,19 @@
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            height: 90vh;
+            flex: 1;
+            position: relative;
         }
 
         .chat-messages {
             flex: 1;
             overflow-y: auto;
             padding: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
         }
 
         .chat-messages::-webkit-scrollbar {
@@ -86,13 +94,9 @@
 
         .message {
             margin-bottom: 20px;
-            max-width: 80%;
+            max-width: 85%;
             animation: messageAppear 0.3s ease-out;
-        }
-
-        @keyframes messageAppear {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            position: relative;
         }
 
         .message.user {
@@ -100,107 +104,147 @@
         }
 
         .message-content {
-            padding: 15px;
+            padding: 12px 15px;
             border-radius: 15px;
-            position: relative;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
         }
 
         .user .message-content {
-            background: rgba(52, 152, 219, 0.3);
-            border-bottom-right-radius: 5px;
+            background: rgba(52, 152, 219, 0.15);
         }
 
-        .ai .message-content {
+        /* Кнопки действий с сообщением */
+        .message-actions {
+            position: absolute;
+            right: 0;
+            bottom: -25px;
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .message:hover .message-actions {
+            opacity: 1;
+        }
+
+        .action-button {
             background: rgba(255, 255, 255, 0.1);
-            border-bottom-left-radius: 5px;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: all 0.3s;
         }
 
-        .chat-input {
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .action-button:hover {
+            background: var(--button-hover);
+        }
+
+        /* Поле ввода и кнопки */
+        .input-area {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-top: 1px solid var(--glass-border);
+            position: relative;
         }
 
         .input-container {
             display: flex;
             gap: 10px;
+            align-items: center;
         }
 
         .message-input {
             flex: 1;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 25px;
-            outline: none;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
             color: white;
             font-size: 16px;
             transition: all 0.3s;
+            outline: none;
         }
 
         .message-input:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
-        .message-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .send-button {
-            background: rgba(52, 152, 219, 0.3);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 15px 30px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s;
-            backdrop-filter: blur(5px);
-        }
-
-        .send-button:hover {
-            background: rgba(52, 152, 219, 0.5);
-            transform: scale(1.05);
-        }
-
-        .typing-indicator {
-            padding: 20px;
-            display: none;
-        }
-
-        .typing-indicator span {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.5);
+        .voice-button, .send-button {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            margin-right: 5px;
-            animation: typing 1s infinite;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: all 0.3s;
         }
 
-        @keyframes typing {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        .voice-button:hover, .send-button:hover {
+            background: var(--button-hover);
         }
 
+        .voice-button.recording {
+            animation: pulse 1.5s infinite;
+            background: rgba(255, 0, 0, 0.3);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Адаптивность для мобильных устройств */
         @media (max-width: 768px) {
             .container {
-                padding: 10px;
+                padding: 0;
             }
 
             .chat-interface {
                 height: 100vh;
                 border-radius: 0;
             }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .input-area {
+                padding: 10px;
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+
+            .message-actions {
+                opacity: 1;
+                bottom: -20px;
+            }
+        }
+
+        /* Поддержка различных браузеров */
+        @supports not (backdrop-filter: blur(10px)) {
+            .chat-interface,
+            .message-content {
+                background: rgba(0, 0, 0, 0.7);
+            }
         }
     </style>
 </head>
-<body>
+  <body>
     <div class="container">
         <div class="chat-interface">
             <div class="chat-messages" id="chatMessages">
@@ -208,21 +252,29 @@
                     <div class="message-content">
                         Привет! Я ИИ-ассистент. Как я могу помочь вам сегодня?
                     </div>
+                    <div class="message-actions">
+                        <button class="action-button like-btn" title="Нравится">
+                            <i class="fas fa-thumbs-up"></i>
+                        </button>
+                        <button class="action-button dislike-btn" title="Не нравится">
+                            <i class="fas fa-thumbs-down"></i>
+                        </button>
+                        <button class="action-button copy-btn" title="Копировать">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div class="typing-indicator" id="typingIndicator">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-
-            <div class="chat-input">
+            <div class="input-area">
                 <div class="input-container">
+                    <button class="voice-button" id="voiceButton" title="Голосовой ввод">
+                        <i class="fas fa-microphone"></i>
+                    </button>
                     <input type="text" class="message-input" id="messageInput" 
-                           placeholder="Введите ваше сообщение...">
-                    <button class="send-button" onclick="sendMessage()">
-                        Отправить
+                           placeholder="Введите сообщение или нажмите для голосового ввода...">
+                    <button class="send-button" id="sendButton">
+                        <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
             </div>
@@ -233,12 +285,13 @@
         // Создание снежинок
         function createSnowflakes() {
             const numberOfSnowflakes = 50;
+            const existingSnowflakes = document.querySelectorAll('.snowflake');
+            existingSnowflakes.forEach(snowflake => snowflake.remove());
             
             for (let i = 0; i < numberOfSnowflakes; i++) {
                 const snowflake = document.createElement('div');
                 snowflake.className = 'snowflake';
                 
-                // Рандомные параметры для каждой снежинки
                 const size = Math.random() * 4 + 2;
                 const startPositionX = Math.random() * window.innerWidth;
                 const duration = Math.random() * 10 + 5;
@@ -254,76 +307,149 @@
             }
         }
 
-        // Основной код чата
-        const chatMessages = document.getElementById('chatMessages');
-        const messageInput = document.getElementById('messageInput');
-        const typingIndicator = document.getElementById('typingIndicator');
+        // Основной функционал чата
+        class ChatInterface {
+            constructor() {
+                this.chatMessages = document.getElementById('chatMessages');
+                this.messageInput = document.getElementById('messageInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.voiceButton = document.getElementById('voiceButton');
+                this.recognition = null;
+                this.isRecording = false;
 
-        const aiResponses = [
-            "Интересный вопрос! Давайте разберем это подробнее.",
-            "Я могу помочь вам с этим запросом.",
-            "Спасибо за ваш вопрос. Вот что я думаю по этому поводу...",
-            "Это очень важная тема. Позвольте объяснить подробнее.",
-            "Я проанализировал ваш запрос и вот что могу сказать..."
-        ];
+                this.setupEventListeners();
+                this.setupSpeechRecognition();
+            }
 
-        function addMessage(message, isUser = false) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
-            messageDiv.innerHTML = `
-                <div class="message-content">
-                    ${message}
-                </div>
-            `;
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
+            setupEventListeners() {
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+                this.messageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+                this.voiceButton.addEventListener('click', () => this.toggleVoiceInput());
 
-        function showTypingIndicator() {
-            typingIndicator.style.display = 'block';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
+                // Обработчики действий с сообщениями
+                this.chatMessages.addEventListener('click', (e) => {
+                    const target = e.target.closest('.action-button');
+                    if (!target) return;
 
-        function hideTypingIndicator() {
-            typingIndicator.style.display = 'none';
-        }
+                    const message = target.closest('.message');
+                    const messageContent = message.querySelector('.message-content').textContent;
 
-        function getRandomResponse() {
-            return aiResponses[Math.floor(Math.random() * aiResponses.length)];
-        }
+                    if (target.classList.contains('like-btn')) {
+                        target.classList.toggle('active');
+                        target.style.color = target.classList.contains('active') ? '#4CAF50' : '';
+                    } else if (target.classList.contains('dislike-btn')) {
+                        target.classList.toggle('active');
+                        target.style.color = target.classList.contains('active') ? '#f44336' : '';
+                    } else if (target.classList.contains('copy-btn')) {
+                        navigator.clipboard.writeText(messageContent)
+                            .then(() => this.showToast('Текст скопирован'));
+                    }
+                });
+            }
 
-        function sendMessage() {
-            const message = messageInput.value.trim();
-            if (message) {
-                addMessage(message, true);
-                messageInput.value = '';
-                showTypingIndicator();
+            setupSpeechRecognition() {
+                if ('webkitSpeechRecognition' in window) {
+                    this.recognition = new webkitSpeechRecognition();
+                    this.recognition.continuous = false;
+                    this.recognition.interimResults = false;
+                    this.recognition.lang = 'ru-RU';
+
+                    this.recognition.onresult = (event) => {
+                        const transcript = event.results[0][0].transcript;
+                        this.messageInput.value = transcript;
+                        this.sendMessage();
+                    };
+
+                    this.recognition.onend = () => {
+                        this.isRecording = false;
+                        this.voiceButton.classList.remove('recording');
+                    };
+                }
+            }
+
+            toggleVoiceInput() {
+                if (!this.recognition) {
+                    this.showToast('Голосовой ввод не поддерживается в вашем браузере');
+                    return;
+                }
+
+                if (this.isRecording) {
+                    this.recognition.stop();
+                } else {
+                    this.recognition.start();
+                    this.isRecording = true;
+                    this.voiceButton.classList.add('recording');
+                }
+            }
+
+            addMessage(message, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        ${message}
+                    </div>
+                    <div class="message-actions">
+                        ${!isUser ? `
+                            <button class="action-button like-btn" title="Нравится">
+                                <i class="fas fa-thumbs-up"></i>
+                            </button>
+                            <button class="action-button dislike-btn" title="Не нравится">
+                                <i class="fas fa-thumbs-down"></i>
+                            </button>
+                        ` : ''}
+                        <button class="action-button copy-btn" title="Копировать">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                `;
+                
+                this.chatMessages.appendChild(messageDiv);
+                this.scrollToBottom();
+            }
+
+            sendMessage() {
+                const message = this.messageInput.value.trim();
+                if (!message) return;
+
+                this.addMessage(message, true);
+                this.messageInput.value = '';
+
+                // Имитация ответа ИИ
+                setTimeout(() => {
+                    this.addMessage('Спасибо за ваше сообщение! Я обрабатываю ваш запрос...');
+                }, 1000);
+            }
+
+            scrollToBottom() {
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+
+            showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = message;
+                document.body.appendChild(toast);
 
                 setTimeout(() => {
-                    hideTypingIndicator();
-                    addMessage(getRandomResponse());
-                }, 1500);
+                    toast.remove();
+                }, 3000);
             }
         }
 
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            createSnowflakes();
+            const chat = new ChatInterface();
         });
 
-        // Создаем снежинки при загрузке страницы
-        window.addEventListener('load', createSnowflakes);
-
-        // Пересоздаем снежинки при изменении размера окна
+        // Пересоздание снежинок при изменении размера окна
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                const snowflakes = document.querySelectorAll('.snowflake');
-                snowflakes.forEach(snowflake => snowflake.remove());
-                createSnowflakes();
-            }, 200);
+            resizeTimeout = setTimeout(createSnowflakes, 200);
         });
     </script>
 </body>
