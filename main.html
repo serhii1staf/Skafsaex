@@ -6,12 +6,9 @@
     <title>AI Chat Interface</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --bg-color: #ecf0f1;
-            --text-color: #2c3e50;
-            --chat-bg: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-color: #ffffff;
         }
 
         * {
@@ -22,60 +19,69 @@
         }
 
         body {
-            background: var(--bg-color);
+            background: #0f0f1a;
             color: var(--text-color);
             min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Снежинки */
+        .snowflake {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-100vh) translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) translateX(100px);
+                opacity: 0.3;
+            }
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .chat-interface {
-            background: var(--chat-bg);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             overflow: hidden;
             display: flex;
             flex-direction: column;
             height: 90vh;
         }
 
-        .chat-header {
-            background: var(--primary-color);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .chat-header h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .status-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            background: #2ecc71;
-            border-radius: 50%;
-            margin-right: 10px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
         .chat-messages {
             flex: 1;
             overflow-y: auto;
             padding: 20px;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
         }
 
         .message {
@@ -97,23 +103,26 @@
             padding: 15px;
             border-radius: 15px;
             position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .user .message-content {
-            background: var(--secondary-color);
-            color: white;
+            background: rgba(52, 152, 219, 0.3);
             border-bottom-right-radius: 5px;
         }
 
         .ai .message-content {
-            background: #f1f1f1;
+            background: rgba(255, 255, 255, 0.1);
             border-bottom-left-radius: 5px;
         }
 
         .chat-input {
             padding: 20px;
-            background: white;
-            border-top: 1px solid #eee;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .input-container {
@@ -124,35 +133,39 @@
         .message-input {
             flex: 1;
             padding: 15px;
-            border: 2px solid #eee;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 25px;
             outline: none;
+            color: white;
             font-size: 16px;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
 
         .message-input:focus {
-            border-color: var(--secondary-color);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .message-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .send-button {
-            background: var(--secondary-color);
+            background: rgba(52, 152, 219, 0.3);
             color: white;
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 15px 30px;
             border-radius: 25px;
             cursor: pointer;
             font-size: 16px;
-            transition: transform 0.2s, background-color 0.3s;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
         }
 
         .send-button:hover {
-            background: #2980b9;
+            background: rgba(52, 152, 219, 0.5);
             transform: scale(1.05);
-        }
-
-        .send-button:active {
-            transform: scale(0.95);
         }
 
         .typing-indicator {
@@ -164,14 +177,11 @@
             display: inline-block;
             width: 8px;
             height: 8px;
-            background: var(--secondary-color);
+            background: rgba(255, 255, 255, 0.5);
             border-radius: 50%;
             margin-right: 5px;
             animation: typing 1s infinite;
         }
-
-        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
 
         @keyframes typing {
             0%, 100% { transform: translateY(0); }
@@ -187,26 +197,12 @@
                 height: 100vh;
                 border-radius: 0;
             }
-
-            .message {
-                max-width: 90%;
-            }
-
-            .send-button {
-                padding: 15px 20px;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="chat-interface">
-            <div class="chat-header">
-                <span class="status-indicator"></span>
-                <h1>AI Assistant</h1>
-                <p>Онлайн и готов помочь</p>
-            </div>
-            
             <div class="chat-messages" id="chatMessages">
                 <div class="message ai">
                     <div class="message-content">
@@ -234,11 +230,35 @@
     </div>
 
     <script>
+        // Создание снежинок
+        function createSnowflakes() {
+            const numberOfSnowflakes = 50;
+            
+            for (let i = 0; i < numberOfSnowflakes; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                
+                // Рандомные параметры для каждой снежинки
+                const size = Math.random() * 4 + 2;
+                const startPositionX = Math.random() * window.innerWidth;
+                const duration = Math.random() * 10 + 5;
+                const delay = Math.random() * 5;
+                
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                snowflake.style.left = `${startPositionX}px`;
+                snowflake.style.animationDuration = `${duration}s`;
+                snowflake.style.animationDelay = `${delay}s`;
+                
+                document.body.appendChild(snowflake);
+            }
+        }
+
+        // Основной код чата
         const chatMessages = document.getElementById('chatMessages');
         const messageInput = document.getElementById('messageInput');
         const typingIndicator = document.getElementById('typingIndicator');
 
-        // Примеры ответов ИИ
         const aiResponses = [
             "Интересный вопрос! Давайте разберем это подробнее.",
             "Я могу помочь вам с этим запросом.",
@@ -275,14 +295,10 @@
         function sendMessage() {
             const message = messageInput.value.trim();
             if (message) {
-                // Добавляем сообщение пользователя
                 addMessage(message, true);
                 messageInput.value = '';
-
-                // Показываем индикатор набора текста
                 showTypingIndicator();
 
-                // Имитируем задержку ответа
                 setTimeout(() => {
                     hideTypingIndicator();
                     addMessage(getRandomResponse());
@@ -290,29 +306,25 @@
             }
         }
 
-        // Обработка нажатия Enter
         messageInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 sendMessage();
             }
         });
 
-        // Анимация появления сообщений при скролле
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            },
-            { threshold: 0.1 }
-        );
+        // Создаем снежинки при загрузке страницы
+        window.addEventListener('load', createSnowflakes);
 
-        // Наблюдаем за новыми сообщениями
-        const messages = document.querySelectorAll('.message');
-        messages.forEach(message => observer.observe(message));
+        // Пересоздаем снежинки при изменении размера окна
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const snowflakes = document.querySelectorAll('.snowflake');
+                snowflakes.forEach(snowflake => snowflake.remove());
+                createSnowflakes();
+            }, 200);
+        });
     </script>
 </body>
 </html>
